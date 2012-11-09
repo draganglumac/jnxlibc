@@ -15,7 +15,7 @@ int running = true;
 void cancel_listener(void )
 {
 	if(running)
-		running = false;
+	running = false;
 }
 int setup_listener(int port,void (*Callback)(char*) )
 {
