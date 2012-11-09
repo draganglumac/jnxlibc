@@ -135,7 +135,7 @@ int send_message(char* host, int port, char* msg)
 
     send_fd = read( send_fd,send_transmission_buffer,MAXBUFFER );
 
-    printf("Recieved: %s", send_transmission_buffer);
+    printf("Recieved: %s\n", send_transmission_buffer);
 
     close(send_fd);
 
