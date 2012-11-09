@@ -6,13 +6,15 @@
 This is designed to be a highly simplified C network function set
 Currently operates via char buffer transmission
 */
-
-//function pointer callback
-//usage Callback = &function;
-// (*Callback)(receiver_buffer);
+///function pointer callback
+///usage Callback = &function;
+///(*Callback)(receiver_buffer);
 typedef void (*Callback)(char*msg);
+///Setup listener will create a socket listener on the selected port
+///Requires both (int) port and void(*Callback)(char*) functor as arguments
 int setup_listener(int port, void (*Callback)(char*) );
-
+///Send message uses a simple charbuffer over write socket to the desired host-port
+///Requires (char*)host (int) port and (char*) msg
 int send_message(char *host,int port,char *msg);
 
 #endif

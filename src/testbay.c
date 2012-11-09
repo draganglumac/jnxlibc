@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "src/network.h"
+#include "network.h"
 
 void callback(char*msg)
 {
@@ -11,9 +11,6 @@ void callback(char*msg)
 int main(int argc, char **argv) {
 
 
-    Callback c = &callback;
-    setup_listener(6001,c);
-
-
+	
     return 0;
 }

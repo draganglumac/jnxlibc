@@ -1,6 +1,6 @@
-project(booster)
+project(jnxlibc)
 
-add_executable(booster main.c src/network.c)
+add_executable(jnxlibc src/testbay.c src/network.c)
 
 
 add_subdirectory(src)
