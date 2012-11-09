@@ -1,4 +1,4 @@
-jnxlibc
+booster
 =======
 
-C based library based on libjnx
+C based common code library

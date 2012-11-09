@@ -2,10 +2,15 @@
 *.slo
 *.lo
 *.o
-
+build
+*~
+*swp
+*so
+lib
+*.kdev4
 # Compiled Dynamic libraries
 *.so
-
+*-swp
 # Compiled Static libraries
 *.lai
 *.la
