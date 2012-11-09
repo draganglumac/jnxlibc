@@ -1,0 +1,32 @@
+#!/bin/bash
+
+OS=`uname`	# Darwin is the value for Mac OS X Lion
+
+if [ -e Makefile ]; then
+rm Makefile
+fi
+
+cat Makefile.in | while IFS='' read -r LINE
+do
+if [[ "$LINE" = *build.shared.object* ]]; then
+if [ "$OS" = "Darwin" ]; then
+echo "	gcc -dynamiclib -undefined suppress -flat_namespace *.o -o libjnxc.1.0.dylib" >> Makefile
+else
+echo "	gcc -shared -Wl,-soname,libjnxc.so -o libjnxc.so.1.0 -ldl *.o" >> Makefile
+fi
+elif [[ "$LINE" = *install.shared.object* ]]; then
+if [ "$OS" = "Darwin" ]; then
+echo " mv lib/libjnxc.1.0.dylib /usr/lib/libjnxc.1.0.dylib; cp -rf lib/jnxc_headers /usr/include;" >> Makefile
+echo " ln -sf /usr/lib/libjnxc.1.0.dylib /usr/lib/libjnxc.dylib" >> Makefile
+
+echo "Configured for DARWIN"
+else
+echo "Configured for GNU/LINUX"
+echo "	mv lib/libjnxc.so.1.0 /usr/lib/libjnxc.so.1.0;cp -rf lib/jnxc_headers /usr/include;" >> Makefile
+echo "	ln -sf /usr/lib/libjnx.so.1.0 /usr/lib/libjnxc.so" >> Makefile
+echo "	ln -sf /usr/lib/libjnx.so.1.0 /usr/lib/libjnxc.so.1" >> Makefile
+fi
+else
+echo "$LINE" >> Makefile
+fi
+done
