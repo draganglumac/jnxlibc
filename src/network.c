@@ -12,7 +12,11 @@
 #define false 0
 
 int running = true;
-
+void cancel_listener(void )
+{
+	if(running)
+		running = false;
+}
 int setup_listener(int port,void (*Callback)(char*) )
 {
     int sockfd, newsockfd, clilen;
@@ -76,6 +80,7 @@ int setup_listener(int port,void (*Callback)(char*) )
         }
         (*Callback)(buffer); //function pointer callback
     }
+    close(newsockfd);
     return 0;
 }
 int send_message(char* host, int port, char* msg)

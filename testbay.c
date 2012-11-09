@@ -1,12 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "network.h"
-
-void callback(char*msg)
-{
-    printf("callback says -> %s\n",msg);
-}
+#include "src/network.h"
 
 int main(int argc, char **argv) {
 

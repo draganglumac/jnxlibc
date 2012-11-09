@@ -15,3 +15,5 @@ install:
 	cp -rf lib/jnxc_headers /usr/include;
 	ln -sf /usr/lib/libjnxc.so.1.0 /usr/lib/libjnxc.so
 	ln -sf /usr/lib/libjnxc.so.1.0 /usr/lib/libjnxc.so.1
+	rm -rf lib
+	echo "Installed successfully"

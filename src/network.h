@@ -13,6 +13,8 @@ typedef void (*Callback)(char*msg);
 ///Setup listener will create a socket listener on the selected port
 ///Requires both (int) port and void(*Callback)(char*) functor as arguments
 int setup_listener(int port, void (*Callback)(char*) );
+///Cancels the socket and closes it
+void cancel_listener(void);
 ///Send message uses a simple charbuffer over write socket to the desired host-port
 ///Requires (char*)host (int) port and (char*) msg
 int send_message(char *host,int port,char *msg);
