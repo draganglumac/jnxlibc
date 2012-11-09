@@ -14,10 +14,16 @@ echo "	gcc -dynamiclib -undefined suppress -flat_namespace *.o -o libjnxc.1.0.dy
 else
 echo "	gcc -shared -Wl,-soname,libjnxc.so -o libjnxc.so.1.0 -ldl *.o" >> Makefile
 fi
+elif [[ "$LINE" = *move.shared.object ]]; then
+if [ "$OS" = "Darwin" ]; then
+echo "	mv libjnxc.1.0.dylib lib;" >> Makefile
+else
+echo "	mv libjnxc.so.1.0 lib;" >> Makefile
+fi
 elif [[ "$LINE" = *install.shared.object* ]]; then
 if [ "$OS" = "Darwin" ]; then
-echo " mv lib/libjnxc.1.0.dylib /usr/lib/libjnxc.1.0.dylib; cp -rf lib/jnxc_headers /usr/include;" >> Makefile
-echo " ln -sf /usr/lib/libjnxc.1.0.dylib /usr/lib/libjnxc.dylib" >> Makefile
+echo "	mv lib/libjnxc.1.0.dylib /usr/lib/libjnxc.1.0.dylib; cp -rf lib/jnxc_headers /usr/include;" >> Makefile
+echo "	ln -sf /usr/lib/libjnxc.1.0.dylib /usr/lib/libjnxc.dylib" >> Makefile
 
 echo "Configured for DARWIN"
 else

@@ -6,7 +6,8 @@ main_artifact:
 shipping:
 	rm *.o
 	find . -type f -name "*~" -exec rm {} \;
-	mkdir -p lib; mv libjnxc.so.1.0 lib;
+	mkdir -p lib; 
+	move.shared.object
 	mkdir -p lib/jnxc_headers; cp src/*.h lib/jnxc_headers;
 	
 install:
