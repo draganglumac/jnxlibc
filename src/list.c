@@ -21,6 +21,8 @@ void* list_remove(struct list* A)
 	if(A->head->next_node == NULL)
 		return A->head->_data;
 	
+	struct node *head_origin = A->head;
+	
 	while(A->head)
 	{
 		struct node *next = A->head->next_node;
@@ -29,10 +31,12 @@ void* list_remove(struct list* A)
 		{
 			void *temp = next->_data;
 			A->head->next_node = NULL;  //Note that this doesn't delete the node, just the pointer to it. we return the node.
+			A->head = head_origin;
 			return temp;
 		}
 		A->head = next;
 	}
+	A->head = head_origin;
 	return NULL;
 }
 void list_delete(struct list* A)

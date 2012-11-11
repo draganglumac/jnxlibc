@@ -13,14 +13,21 @@ int main(int argc, char **argv) {
 	list_add(l,"down");
 	list_add(l,"bye");
 
-	list_delete(l);
 	
-	while(l->head)
-	{
-		printf("%s\n",(char*)l->head->_data);
-		
-		l->head = l->head->next_node;
-	}
+	char *ret1 = (char*)list_remove(l);
+	printf("%s",ret1);
+	
+	char *ret2 = (char*)list_remove(l);
+	printf("%s",ret2);
+	
+	char *ret3 = (char*)list_remove(l);
+	printf("%s",ret3);
+	
+	char *ret4 = (char*)list_remove(l);
+	printf("%s",ret4);
+	
+	char *ret5 = (char*)list_remove(l);
+	printf("%s",ret5);
 	
 	
     return 0;
