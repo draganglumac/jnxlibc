@@ -14,8 +14,8 @@
 int running = true;
 void cancel_listener(void )
 {
-    if(running)
-        running = false;
+	if(running)
+	running = false;
 }
 int setup_listener(int port,void (*Callback)(char*) )
 {
@@ -69,7 +69,7 @@ int setup_listener(int port,void (*Callback)(char*) )
         n = read( newsockfd,buffer,MAXBUFFER );
         if (n < 0)
         {
-            perror("ERROR reading from socket");
+            perror("ERROR reading from socket");	
             exit(1);
         }
         n = write(newsockfd,"MESSAGE RECEIVED",16);
@@ -142,3 +142,5 @@ int send_message(char* host, int port, char* msg)
     printf("Message sent\n");
     return 0;
 }
+
+
