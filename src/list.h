@@ -7,7 +7,6 @@ typedef struct node{
 };
 typedef struct list{
 	struct node *head;
-	struct node *tail;
 };
 ///Required argument is list pointer
 struct list* list_make(void);
