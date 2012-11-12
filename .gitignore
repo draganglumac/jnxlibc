@@ -16,3 +16,4 @@ Makefile
 *.lai
 *.la
 *.a
+CMakelists.txt
