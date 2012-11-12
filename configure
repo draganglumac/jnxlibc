@@ -29,8 +29,8 @@ do
     else
       echo "Configured for GNU/LINUX"
       echo "	mv lib/libjnxc.so.1.0 /usr/lib/libjnxc.so.1.0;cp -rf lib/jnxc_headers /usr/include;" >> Makefile
-      echo "	ln -sf /usr/lib/libjnx.so.1.0 /usr/lib/libjnxc.so" >> Makefile
-      echo "	ln -sf /usr/lib/libjnx.so.1.0 /usr/lib/libjnxc.so.1" >> Makefile
+      echo "	ln -sf /usr/lib/libjnxc.so.1.0 /usr/lib/libjnxc.so" >> Makefile
+      echo "	ln -sf /usr/lib/libjnxc.so.1.0 /usr/lib/libjnxc.so.1" >> Makefile
     fi
   else
     echo "$LINE" >> Makefile

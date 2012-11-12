@@ -18,5 +18,4 @@ void cancel_listener(void);
 ///Send message uses a simple charbuffer over write socket to the desired host-port
 ///Requires (char*)host (int) port and (char*) msg
 int send_message(char *host,int port,char *msg);
-
 #endif
