@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include "../src/list.h"
 
 int main(int argc, char **argv) {
@@ -14,20 +15,14 @@ int main(int argc, char **argv) {
 	list_add(l,"bye");
 
 	
-	char *ret1 = (char*)list_remove(l);
-	printf("%s",ret1);
+	struct list *n;
+	memcpy(n,l,sizeof(l));
 	
-	char *ret2 = (char*)list_remove(l);
-	printf("%s",ret2);
-	
-	char *ret3 = (char*)list_remove(l);
-	printf("%s",ret3);
-	
-	char *ret4 = (char*)list_remove(l);
-	printf("%s",ret4);
-	
-	char *ret5 = (char*)list_remove(l);
-	printf("%s",ret5);
+	while(n->head)
+	{
+		printf("%s",(char*)n->head->_data);
+		n->head = n->head->next_node;
+	}
 	
 	
     return 0;

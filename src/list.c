@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct node{
-	void *_data;
-	struct node *next_node;
-};
 struct list* list_make(void )
 {
 	struct list *temp = malloc(sizeof(struct list));
