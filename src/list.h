@@ -1,13 +1,8 @@
 #ifndef __LIST_H__
 #define __LIST_H__
 ///A very simple linked list
-typedef struct node{
-	void *_data;
-	struct node *next_node;
-};
-typedef struct list{
-	struct node *head;
-};
+typedef struct node;
+typedef struct list;
 ///Required argument is list pointer
 struct list* list_make(void);
 ///Providing the pointer to the list and the data you wish to save as arguments, this will insert a node
