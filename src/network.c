@@ -51,6 +51,7 @@ int setup_listener(int port,void (*Callback)(char*) )
     /* Now start listening for the clients, here process will
     * go in sleep mode and will wait for the incoming connection
     */
+	printf("Starting listener...\n");
     while(running)
     {
         clilen = sizeof(cli_addr);
