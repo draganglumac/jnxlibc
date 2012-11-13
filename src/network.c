@@ -135,9 +135,13 @@ int send_message(char* host, int port, char* msg)
     bzero(send_transmission_buffer,MAXBUFFER);
 
     send_fd = read( send_fd,send_transmission_buffer,MAXBUFFER );
-
+	if(send_fd < 0)
+	{
+		printf("Cannot read from socket\n");
+		return 1;
+	}
     printf("Recieved: %s\n", send_transmission_buffer);
-
+	
     close(send_fd);
 
     printf("Message sent\n");
