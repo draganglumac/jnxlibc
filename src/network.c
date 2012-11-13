@@ -67,6 +67,7 @@ int setup_listener(int port,void (*Callback)(char*) )
         }
         /* If connection is established then start communicating */
         bzero(buffer,MAXBUFFER);
+		
         n = read( newsockfd,buffer,MAXBUFFER );
         if (n < 0)
         {
@@ -132,16 +133,7 @@ int send_message(char* host, int port, char* msg)
         printf("Can't write to socket\n");
         return 1;
     }
-    bzero(send_transmission_buffer,MAXBUFFER);
-
-    send_fd = read( send_fd,send_transmission_buffer,MAXBUFFER );
-	if(send_fd < 0)
-	{
-		printf("Cannot read from socket\n");
-		return 1;
-	}
-    printf("Recieved: %s\n", send_transmission_buffer);
-	
+    bzero(send_transmission_buffer,MAXBUFFER);	
     close(send_fd);
 
     printf("Message sent\n");
