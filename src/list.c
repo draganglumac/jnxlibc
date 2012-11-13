@@ -6,10 +6,6 @@ typedef struct node{
 	void *_data;
 	struct node *next_node;
 };
-typedef struct list{
-	struct node *head;
-};
-
 struct list* list_make(void )
 {
 	struct list *temp = malloc(sizeof(struct list));

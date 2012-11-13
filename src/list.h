@@ -1,8 +1,12 @@
 #ifndef __LIST_H__
 #define __LIST_H__
 ///A very simple linked list
+///Node is prototyped and kept private
 typedef struct node;
-typedef struct list;
+typedef struct list{
+	struct node *head;
+};
+
 ///Required argument is list pointer
 struct list* list_make(void);
 ///Providing the pointer to the list and the data you wish to save as arguments, this will insert a node
