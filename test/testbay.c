@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
 
 	struct list* l = list_make();
 	
-	list_add(l,"hello");
+	list_add(l,"hello herp dp aoimaoi oimab \n aoimvao \n");
 	list_add(l,"hello");
 	list_add(l,"up");
 	list_add(l,"down");
@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
 		n->head = n->head->next_node;
 	}
 	
-	
+	list_delete(l);
+	printf("List pointer deleted i think, and should be just garbage");
     return 0;
 }

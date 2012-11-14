@@ -15,6 +15,7 @@ void list_add(struct list *A,void *_datain);
 ///It is import to note that the struct pointer is just forgotten from the list and the data returned
 ///Required argument is the list pointer
 void* list_remove(struct list *A);
+///frees the nodes and the list pointer
 void list_delete(struct list *A);
 #endif
  
