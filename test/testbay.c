@@ -14,17 +14,5 @@ int main(int argc, char **argv) {
 	list_add(l,"down");
 	list_add(l,"bye");
 
-	
-	struct list *n;
-	memcpy(n,l,sizeof(l));
-	
-	while(n->head)
-	{
-		printf("%s",(char*)n->head->_data);
-		n->head = n->head->next_node;
-	}
-	
-	list_delete(l);
-	printf("List pointer deleted i think, and should be just garbage");
     return 0;
 }

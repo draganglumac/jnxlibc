@@ -59,6 +59,5 @@ void list_delete(struct list* A)
 	
 	A->head = NULL;
 	
-	free(A);
 }
 

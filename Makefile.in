@@ -14,4 +14,6 @@ install:
 	install.shared.object
 	rm -rf lib
 	echo "Installed successfully"
+testbay:
+	cd test; gcc testbay.c ../src/list.c -o testbay
 	
