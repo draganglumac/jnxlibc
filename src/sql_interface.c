@@ -8,7 +8,11 @@ char *host;
 char *username;
 char *password;
 char *database;
-
+void sql_close(void )
+{
+	if(connection == NULL) return;
+	mysql_close(connection);
+}
 int sql_interface_setup(char* _host, char* _username, char* _password)
 {
 	connection = mysql_init(NULL);
@@ -58,7 +62,6 @@ int sql_query(char* query,void (*sql_callback)(MYSQL_RES*))
 	if ((status = mysql_next_result(connection)) > 0)
 		printf("Could not execute statement\n");
 	} while (status == 0);
-	mysql_close(connection);
 	return 0;
 }
 

@@ -8,5 +8,5 @@ typedef void (*sql_callback)(MYSQL_RES*);
 int sql_interface_setup(char *host,char *username, char *password);
 ///sql_query takes query string and callback
 int sql_query(char *query,void (*sql_callback)(MYSQL_RES*));
-
+void sql_close(void);
 #endif
