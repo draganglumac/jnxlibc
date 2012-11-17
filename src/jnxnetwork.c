@@ -1,4 +1,4 @@
-#include "network.h"
+#include "jnxnetwork.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -12,12 +12,12 @@
 #define false 0
 
 int running = true;
-void cancel_listener(void )
+void jnx_cancel_listener(void )
 {
 	if(running)
 	running = false;
 }
-int setup_listener(int port,void (*Callback)(char*) )
+int jnx_setup_listener(int port,void (*Callback)(char*) )
 {
     int sockfd, newsockfd, clilen;
     char buffer[MAXBUFFER];
@@ -85,7 +85,7 @@ int setup_listener(int port,void (*Callback)(char*) )
     close(newsockfd);
     return 0;
 }
-int send_message(char* host, int port, char* msg)
+int jnx_send_message(char* host, int port, char* msg)
 {
     struct hostent *send_server;
     struct sockaddr_in send_serv_addr;

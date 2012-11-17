@@ -1,21 +1,21 @@
-#include "list.h"
+#include "jnxlist.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-struct list* list_make(void )
+struct list* jnx_list_make(void )
 {
 	struct list *temp = malloc(sizeof(struct list));
 	
 	return temp;
 }
-void list_add(struct list* A, void* _datain)
+void jnx_list_add(struct list* A, void* _datain)
 {
 	struct node *temp = malloc(sizeof(struct node));
 	temp->_data = _datain;
 	temp->next_node = A->head;
 	A->head = temp;
 }
-void* list_remove(struct list* A)
+void* jnx_list_remove(struct list* A)
 {
 	if(A->head == NULL) return NULL;
 	if(A->head->next_node == NULL)
@@ -39,7 +39,7 @@ void* list_remove(struct list* A)
 	A->head = head_origin;
 	return NULL;
 }
-void list_delete(struct list* A)
+void jnx_list_delete(struct list* A)
 {
 	if(!A->head) return;
 	

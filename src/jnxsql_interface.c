@@ -1,4 +1,4 @@
-#include "sql_interface.h"
+#include "jnxsql_interface.h"
 #include <mysql/mysql.h>
 #include <stdio.h>
 MYSQL *connection;
@@ -8,12 +8,12 @@ char *host;
 char *username;
 char *password;
 char *database;
-void sql_close(void )
+void jnx_sql_close(void )
 {
 	if(connection == NULL) return;
 	mysql_close(connection);
 }
-int sql_interface_setup(char* _host, char* _username, char* _password)
+int jnx_sql_interface_setup(char* _host, char* _username, char* _password)
 {
 	connection = mysql_init(NULL);
 	if(connection == NULL) return 1;
@@ -22,7 +22,7 @@ int sql_interface_setup(char* _host, char* _username, char* _password)
 	password = _password;
 	return 0;
 }
-int sql_query(char* query,void (*sql_callback)(MYSQL_RES*))
+int jnx_sql_query(char* query,void (*sql_callback)(MYSQL_RES*))
 {
 	if(connection == NULL) return 1;
 	/* multi statements is useful for giving a string of commmands that are delimited with ; */
