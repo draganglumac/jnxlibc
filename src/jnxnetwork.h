@@ -17,5 +17,6 @@ int jnx_setup_listener(int port, void (*Callback)(char*) );
 void jnx_cancel_listener(void);
 ///Send message uses a simple charbuffer over write socket to the desired host-port
 ///Requires (char*)host (int) port and (char*) msg
+///It is not necessary to free host or message
 int jnx_send_message(char *host,int port,char *msg);
 #endif
