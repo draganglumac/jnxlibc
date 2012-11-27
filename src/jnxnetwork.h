@@ -1,7 +1,7 @@
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
 //This is the maximum char buffer size, though is also linked to the read buffer size
-#define MAXBUFFER 1024
+#define MAXBUFFER 4028
 /*
 This is designed to be a highly simplified C network function set
 Currently operates via char buffer transmission

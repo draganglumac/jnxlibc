@@ -136,7 +136,12 @@ int jnx_send_message(char* host, int port, char* msg)
     bzero(send_transmission_buffer,MAXBUFFER);	
     close(send_fd);
 
-    printf("Message sent\n");
+    printf("Message sent %s\n",send_transmission_buffer);
+	printf("Freeing resources...\n");
+	free(msg);
+	//Note: Host is also taken care of gethostbyname
+	//Note: typically the memory returned by gethostbyaddr
+	//will be allocated and managed by the sockets library you are using - you don't free it yourself.
     return 0;
 }
 
