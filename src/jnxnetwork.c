@@ -1,13 +1,26 @@
-#include "jnxnetwork.h"
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <unistd.h>
+#include <net/if.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/ioctl.h>
+#include "jnxnetwork.h"
 #define true 1
 #define false 0
 
@@ -136,8 +149,47 @@ int jnx_send_message(char* host, int port, char* msg)
     bzero(send_transmission_buffer,MAXBUFFER);	
     close(send_fd);
 
-    printf("Message sent\n");
+    printf("Message sent %s\n",send_transmission_buffer);
+	printf("Freeing resources...\n");
+	free(msg);
+	//Note: Host is also taken care of gethostbyname
+	//Note: typically the memory returned by gethostbyaddr
+	//will be allocated and managed by the sockets library you are using - you don't free it yourself.
     return 0;
 }
-
+char* jnx_local_ip ( char* interface )
+{
+	int fd;
+	struct if_nameindex *curif, *ifs;
+	struct ifreq req;
+	char *ipadd = NULL;
+	
+	if ( ( fd = socket ( PF_INET, SOCK_DGRAM, 0 ) ) != -1 )
+    {
+		ifs = if_nameindex();
+		if ( ifs )
+        {
+			for ( curif = ifs; curif && curif->if_name; curif++ )
+            {
+				strncpy ( req.ifr_name, curif->if_name, IFNAMSIZ );
+				req.ifr_name[IFNAMSIZ] = 0;
+				if ( ioctl ( fd, SIOCGIFADDR, &req ) < 0 )
+                perror ( "ioctl" );
+				else
+					if(strcmp(curif->if_name,interface) == 0)
+					{
+						ipadd = inet_ntoa ( ( ( struct sockaddr_in* ) &req.ifr_addr )->sin_addr );
+					}       
+            }
+			if_freenameindex ( ifs );
+			if ( close ( fd ) !=0 )
+				perror ( "close" );
+        }
+		else
+			perror ( "if_nameindex" );
+    }
+	else
+		perror ( "socket" );
+  return ipadd;
+}
 

@@ -8,7 +8,6 @@ typedef struct node _node;
 
 int main(int argc, char **argv) {
 
-
 	struct list *l = jnx_list_make();
 	
 	jnx_list_add(l,"char");
@@ -35,5 +34,6 @@ int main(int argc, char **argv) {
 	}
 	
 	jnx_list_delete(l);
+
     return 0;
 }
