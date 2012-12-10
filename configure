@@ -14,7 +14,7 @@ do
     else
       echo "	gcc -shared -Wl,-soname,libjnxc.so -o libjnxc.so.1.0 -ldl *.o" >> Makefile
     fi
-    elif [[ "$LINE" = *move.shared.object ]]; then
+    elif [[ "$LINE" = *move.shared.object* ]]; then
     if [ "$OS" = "Darwin" ]; then
       echo "	mv libjnxc.1.0.dylib lib;" >> Makefile
     else
