@@ -19,4 +19,6 @@ void jnx_cancel_listener(void);
 ///Requires (char*)host (int) port and (char*) msg
 ///It is not necessary to free host or message
 int jnx_send_message(char *host,int port,char *msg);
+///Returns the local machine ip for the selected interface
+char* jnx_local_ip(char *interface);
 #endif
