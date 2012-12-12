@@ -9,7 +9,7 @@ Currently operates via char buffer transmission
 ///function pointer callback
 ///usage Callback = &function;
 ///(*Callback)(receiver_buffer);
-typedef void (*Callback)(char*msg);
+typedef void (*jnx_listener_callback)(char*msg);
 ///Setup listener will create a socket listener on the selected port
 ///Requires both (int) port and void(*Callback)(char*) functor as arguments
 int jnx_setup_listener(int port, void (*Callback)(char*) );

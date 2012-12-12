@@ -30,7 +30,7 @@ void jnx_cancel_listener(void )
 	if(running)
 	running = false;
 }
-int jnx_setup_listener(int port,void (*Callback)(char*) )
+int jnx_setup_listener(int port,void (*jnx_listener_callback)(char*) )
 {
     int sockfd, newsockfd, clilen;
     char buffer[MAXBUFFER];
@@ -93,7 +93,7 @@ int jnx_setup_listener(int port,void (*Callback)(char*) )
             perror("ERROR writing to socket");
             exit(1);
         }
-        (*Callback)(buffer); //function pointer callback
+        (*jnx_listener_callback)(buffer); //function pointer callback
     }
     close(newsockfd);
     return 0;
