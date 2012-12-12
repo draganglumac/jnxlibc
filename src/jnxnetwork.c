@@ -159,37 +159,20 @@ int jnx_send_message(char* host, int port, char* msg)
 }
 char* jnx_local_ip ( char* interface )
 {
-	int fd;
-	struct if_nameindex *curif, *ifs;
-	struct ifreq req;
+    int fd;
 	char *ipadd = NULL;
+    struct ifreq ifr;
+
+    fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    ifr.ifr_addr.sa_family = AF_INET;
+
+    snprintf(ifr.ifr_name, IFNAMSIZ, interface);
+
+    ioctl(fd, SIOCGIFADDR, &ifr);
 	
-	if ( ( fd = socket ( PF_INET, SOCK_DGRAM, 0 ) ) != -1 )
-    {
-		ifs = if_nameindex();
-		if ( ifs )
-        {
-			for ( curif = ifs; curif && curif->if_name; curif++ )
-            {
-				strncpy ( req.ifr_name, curif->if_name, IFNAMSIZ );
-				req.ifr_name[IFNAMSIZ] = 0;
-				if ( ioctl ( fd, SIOCGIFADDR, &req ) < 0 )
-                perror ( "ioctl" );
-				else
-					if(strcmp(curif->if_name,interface) == 0)
-					{
-						ipadd = inet_ntoa ( ( ( struct sockaddr_in* ) &req.ifr_addr )->sin_addr );
-					}       
-            }
-			if_freenameindex ( ifs );
-			if ( close ( fd ) !=0 )
-				perror ( "close" );
-        }
-		else
-			perror ( "if_nameindex" );
-    }
-	else
-		perror ( "socket" );
-  return ipadd;
+	ipadd = inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr);
+    close(fd);
+	return ipadd;
 }
 

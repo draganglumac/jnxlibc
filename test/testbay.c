@@ -10,7 +10,6 @@ void callback(char* msg)
 }
 int main(int argc, char **argv) {
 
-	jnx_listener_callback c = &callback;
-	jnx_setup_listener(8080,c);
+	printf("%s\n",jnx_local_ip("wlan0"));
     return 0;
 }
