@@ -56,4 +56,12 @@ void jnx_list_delete(struct list *A)
     A->head = NULL;
 
 }
+void *jnx_list_next(struct list *A)
+{
+	if(A->head == NULL) return NULL;
+	
+	void *data = A->head->_data;
+	A->head = A->head->next_node;
+	return data;
+}
 

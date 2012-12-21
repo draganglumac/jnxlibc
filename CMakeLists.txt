@@ -1,6 +1,6 @@
 project(jnxlibc)
 
-add_executable(jnxlibc test/testbay.c src/jnxnetwork.c src/jnxlist.c)
+add_executable(jnxlibc test/testbay.c src/jnxfile.c)
 
 
 add_subdirectory(src)

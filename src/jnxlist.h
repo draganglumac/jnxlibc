@@ -17,5 +17,7 @@ void jnx_list_add(struct list *A, void *_datain);
 void *jnx_list_remove(struct list *A);
 ///frees the nodes and the list pointer
 void jnx_list_delete(struct list *A);
+
+void* jnx_list_next(struct list *A);
 #endif
 
