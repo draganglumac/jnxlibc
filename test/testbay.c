@@ -12,8 +12,8 @@ int main(int argc, char **argv)
 // 	printf("%s",res);
 
 	char *text = "TEST WRITING TO FILE\n";
-	jnx_file_fromstr("test.txt",text);
+	jnx_file_write("test.txt",text);
 	
-	printf("From our file -> %s\n",jnx_file_tostr("test.txt"));
+	printf("From our file -> %s\n",jnx_file_read("test.txt"));
 	return 0;
 }

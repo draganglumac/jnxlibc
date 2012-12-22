@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *jnx_file_tostr(char *path)
+char *jnx_file_read(char *path)
 {
 	FILE *fp;
 	if((fp = fopen(path,"r")) == NULL)
@@ -18,7 +18,7 @@ char *jnx_file_tostr(char *path)
 	fclose(fp);
 	return from_file_str;
 }
-int jnx_file_fromstr(char *path, char *data)
+int jnx_file_write(char *path, char *data)
 {
 	FILE *fp;
 	if((fp = fopen(path,"w")) == NULL)
