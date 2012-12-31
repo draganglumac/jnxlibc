@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 	char *boo = "boo";
 	char *who = "who";
 	
-	printf("%s\n",jnx_string_append(boo,who));
+	char *res = jnx_string_conc(boo,who);
 	
 	return 0;
 }
