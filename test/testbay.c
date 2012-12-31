@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "../src/jnxfile.h"
+#include "../src/jnxstring.h"
 
 
 int main(int argc, char **argv)
@@ -11,9 +11,10 @@ int main(int argc, char **argv)
 // 	char *res = jnx_file_tostr("Makefile");
 // 	printf("%s",res);
 
-	char *text = "TEST WRITING TO FILE\n";
-	jnx_file_write("test.txt",text);
+	char *boo = "boo";
+	char *who = "who";
 	
-	printf("From our file -> %s\n",jnx_file_read("test.txt"));
+	printf("%s\n",jnx_string_append(boo,who));
+	
 	return 0;
 }

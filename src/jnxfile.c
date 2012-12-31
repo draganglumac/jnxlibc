@@ -24,7 +24,7 @@ int jnx_file_write(char *path, char *data)
 	if((fp = fopen(path,"w")) == NULL)
 	{
 		perror("file: ");
-		return 1;
+	 	return 1;
 	}
 	int size = strlen(data);
 	fwrite(data,size,1,fp);
