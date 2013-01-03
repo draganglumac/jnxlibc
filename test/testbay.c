@@ -5,16 +5,36 @@
 #include "../src/jnxstring.h"
 
 
-int main(int argc, char **argv)
+void join(char **destination, char *buf)
 {
-// 	printf("starting\n");
-// 	char *res = jnx_file_tostr("Makefile");
-// 	printf("%s",res);
+	int orig_len;
+	int buf_len = strlen(buf);
+	if (*destination == NULL){
+		orig_len = 0;
+	}
+	else
+	{
+		orig_len = strlen(*destination);
+	}
+	*destination  = (char *) realloc(  *destination, (sizeof(orig_len + buf_len + 1)));
+	if ( orig_len != 0 ) 
+	{
+		strncpy(*destination + orig_len, buf, buf_len + 1);
+	} else {
+		strncpy(*destination, buf, buf_len + 1);
+	}
+}
 
-	char *boo = "boo";
-	char *who = "who";
+int main (int argc, char** argv)
+{
+	char *foo = malloc(strlen("foo")*sizeof(char));
+	strcpy(foo,"test");
+	char *bar = "barbarbar";
 	
-	char *res = jnx_string_conc(boo,who);
-	
-	return 0;
+	jnx_string_join(foo,bar);
+
+
+	printf("%s\n",foo);
+
+    return 0;
 }
