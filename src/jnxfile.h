@@ -9,7 +9,7 @@ typedef struct jnx_file_kvp_node
 ///Returns a callocd string with the file data, you will assume responsibility for freeing
 char* jnx_file_read (char* path);
 ///Returns a linkedlist of nodes that contain Key-value pairs from file
-struct jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char *path);
+struct jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char *path, char *delimiter);
 ///Writes a string directly to a file
 int jnx_file_write (char* path, char* data);
 ///Warning use with caution, will recursively delete everything within program permission
