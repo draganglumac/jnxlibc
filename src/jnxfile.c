@@ -30,13 +30,13 @@ struct jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path,char* delimiter
 
 	while (fgets(buffer, sizeof buffer, file) != NULL) 
 	{
-    struct jnx_file_kvp_node *node;
-    node = malloc(sizeof(struct jnx_file_kvp_node) + strlen(buffer) + 1);
-    node->key = strtok(strcpy((char*)(node+1), buffer), delimiter);
-    node->value = strtok(NULL, delimiter);
-    node->next = NULL;
-    *nextp = node;
-    nextp = &node->next;
+		struct jnx_file_kvp_node *node;
+		node = malloc(sizeof(struct jnx_file_kvp_node) + strlen(buffer) + 1);
+		node->key = strtok(strcpy((char*)(node+1), buffer), delimiter);
+		node->value = strtok(NULL, delimiter);
+		node->next = NULL;
+		*nextp = node;
+		nextp = &node->next;
 	}
 	return list;
 }
