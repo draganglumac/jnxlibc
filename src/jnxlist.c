@@ -2,19 +2,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct list* jnx_list_make (void) {
-    struct list* temp = malloc (sizeof (struct list));
+jnx_list* jnx_list_make (void) {
+    jnx_list* temp = malloc (sizeof (jnx_list));
 
     return temp;
 }
-void jnx_list_add (struct list* A, void* _datain)
+void jnx_list_add (jnx_list* A, void* _datain)
 {
-    struct node* temp = malloc (sizeof (struct node));
+    jnx_node* temp = malloc (sizeof (jnx_node));
     temp->_data = _datain;
     temp->next_node = A->head;
     A->head = temp;
 }
-void* jnx_list_remove (struct list* A)
+void* jnx_list_remove (jnx_list* A)
 {
     if (A->head == NULL) {
         return NULL;
@@ -23,10 +23,10 @@ void* jnx_list_remove (struct list* A)
         return A->head->_data;
     }
 
-    struct node* head_origin = A->head;
+    jnx_node* head_origin = A->head;
 
     while (A->head) {
-        struct node* next = A->head->next_node;
+        jnx_node* next = A->head->next_node;
 
         if (next->next_node == NULL) {
             void* temp = next->_data;
@@ -39,14 +39,14 @@ void* jnx_list_remove (struct list* A)
     A->head = head_origin;
     return NULL;
 }
-void jnx_list_delete (struct list* A)
+void jnx_list_delete (jnx_list* A)
 {
     if (!A->head) {
         return;
     }
 
-    struct node* current = A->head;
-    struct node* next = A->head->next_node;
+    jnx_node* current = A->head;
+    jnx_node* next = A->head->next_node;
 
     while (!next) {
         free (current);
@@ -61,7 +61,7 @@ void jnx_list_delete (struct list* A)
     A->head = NULL;
 
 }
-void* jnx_list_next (struct list* A)
+void* jnx_list_next (jnx_list* A)
 {
     if (A->head == NULL) {
         return NULL;

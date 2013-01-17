@@ -49,14 +49,12 @@ int jnx_file_recursive_delete(char* path)
     dp = opendir (dirname);
     if (dp != NULL)
     {
-        while ((ep = readdir (dp))) {
+        while ((ep = readdir (dp))) 
+		{
             struct stat stFileInfo;
-
             snprintf(abs_filename, FILENAME_MAX, "%s/%s", dirname, ep->d_name);
-
             if (lstat(abs_filename, &stFileInfo) < 0)
                 perror ( abs_filename );
-
             if(S_ISDIR(stFileInfo.st_mode)) {
                 if(strcmp(ep->d_name, ".") &&
                         strcmp(ep->d_name, "..")) {
@@ -69,7 +67,7 @@ int jnx_file_recursive_delete(char* path)
             }
         }
         (void) closedir (dp);
-    }
+    }	
     else
 	{
         perror ("Couldn't open the directory");
