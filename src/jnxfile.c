@@ -21,6 +21,25 @@ char* jnx_file_read (char* path)
     fclose (fp);
     return from_file_str;
 }
+struct jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path,char* delimiter)
+{
+	FILE *file = fopen(path,"r+");
+	
+	struct jnx_file_kvp_node *list = NULL, **nextp = &list;
+	char buffer[1024];
+
+	while (fgets(buffer, sizeof buffer, file) != NULL) 
+	{
+		struct jnx_file_kvp_node *node;
+		node = malloc(sizeof(struct jnx_file_kvp_node) + strlen(buffer) + 1);
+		node->key = strtok(strcpy((char*)(node+1), buffer), delimiter);
+		node->value = strtok(NULL, delimiter);
+		node->next = NULL;
+		*nextp = node;
+		nextp = &node->next;
+	}
+	return list;
+}
 int jnx_file_write (char* path, char* data)
 {
     FILE* fp;
