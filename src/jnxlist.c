@@ -2,19 +2,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-jnx_list* jnx_list_make (void) {
-    jnx_list* temp = malloc (sizeof (jnx_list));
+jnx_list* jnx_list_make(void)
+{
+    jnx_list* temp = malloc(sizeof(jnx_list));
 
     return temp;
 }
-void jnx_list_add (jnx_list* A, void* _datain)
+void jnx_list_add(jnx_list* A, void* _datain)
 {
-    jnx_node* temp = malloc (sizeof (jnx_node));
+    jnx_node* temp = malloc(sizeof(jnx_node));
     temp->_data = _datain;
     temp->next_node = A->head;
     A->head = temp;
 }
-void* jnx_list_remove (jnx_list* A)
+void* jnx_list_remove(jnx_list* A)
 {
     if (A->head == NULL) {
         return NULL;
@@ -39,7 +40,7 @@ void* jnx_list_remove (jnx_list* A)
     A->head = head_origin;
     return NULL;
 }
-void jnx_list_delete (jnx_list* A)
+void jnx_list_delete(jnx_list* A)
 {
     if (!A->head) {
         return;
@@ -49,19 +50,19 @@ void jnx_list_delete (jnx_list* A)
     jnx_node* next = A->head->next_node;
 
     while (!next) {
-        free (current);
+        free(current);
 
         current = next;
 
         next = next->next_node;
     }
 
-    free (current);
+    free(current);
 
     A->head = NULL;
 
 }
-void* jnx_list_next (jnx_list* A)
+void* jnx_list_next(jnx_list* A)
 {
     if (A->head == NULL) {
         return NULL;
