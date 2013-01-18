@@ -66,6 +66,20 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
         hashmap->used_up++;
     } else {
         // So we are here assuming that the bucket exists so we're going to append to the existing bucket...
+        //check to see if it already exists!
+		jnx_node* head = hashmap->data[index].bucket->head;
+            jnx_node* rewind_head = head;
+            while (head) {
+                jnx_hash_bucket_el* bucketel = head->_data;
+                if (strcmp(bucketel->origin_key, key) == 0) {
+					bucketel->origin_value = value;
+                    hashmap->data[index].bucket->head = rewind_head;
+                    return 0;
+                }
+                head = head->next_node;
+            }
+            hashmap->data[index].bucket->head = rewind_head;
+		
         jnx_hash_bucket_el* current_bucket_el = malloc(sizeof(jnx_hash_bucket_el));
         current_bucket_el->origin_key = key;
         current_bucket_el->origin_value = value;
@@ -75,5 +89,7 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
         hashmap->used_up++;
         //so the linked list length should be incremented....
     }
+    
+    return 0;
 }
 
