@@ -12,6 +12,16 @@ int jnx_hash_string(const char* input, int map_size)
 void jnx_hash_delete(jnx_hashmap* hashmap)
 {
     jnx_hashmap* m = hashmap;
+	int i;
+	for(i = 0; i < hashmap->size; ++i)
+	{
+		jnx_list *temp = hashmap->data[i].bucket;
+		if(temp != NULL)
+		{
+			free(temp);
+		}
+	}
+	
 	free(m->data);
     free(m);
 }
