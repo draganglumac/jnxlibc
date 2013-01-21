@@ -9,7 +9,7 @@ build
 lib
 CMakeFiles*
 Makefile
-*.kdev4
+*.kdev4*
 # Compiled Dynamic libraries
 *.so
 *-swp
