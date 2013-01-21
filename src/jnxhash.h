@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <jnxc_headers/jnxlist.h>
+#include "jnxlist.h"
 ///Our bucket element is the stored unit inside each hash link list
 typedef struct bucketel {
     const char* origin_key;
