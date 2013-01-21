@@ -11,10 +11,9 @@ typedef struct bucketel {
 } jnx_hash_bucket_el;
 typedef struct hashel {
     jnx_list* bucket;
-    int bucket_len; //haha
+    int bucket_len;
     int used;
 } jnx_hash_element;
-
 typedef struct hashmap {
     jnx_hash_element* data;
     unsigned int size;

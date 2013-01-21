@@ -21,7 +21,6 @@ void jnx_hash_delete(jnx_hashmap* hashmap)
 			free(temp);
 		}
 	}
-	
 	free(m->data);
     free(m);
 }
