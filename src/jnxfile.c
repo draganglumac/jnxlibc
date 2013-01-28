@@ -21,6 +21,7 @@ char* jnx_file_read(char* path)
     fclose(fp);
     return from_file_str;
 }
+
 struct jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
     FILE* file = fopen(path, "r+");
 
