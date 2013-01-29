@@ -57,43 +57,15 @@ int jnx_file_write(char* path, char* data)
     fclose(fp);
     return 0;
 }
+int jnx_file_recusive_delete_callback(const char *fpath,const struct stat *sb, int typeflag,struct FTW *ftwbuf)
+{
+	int rv = remove(fpath);
+	if(rv)
+		perror(fpath);
+	return rv;
+}
 int jnx_file_recursive_delete(char* path)
 {
-    DIR* dp;
-    struct dirent* ep;
 
-    char* dirname = malloc(sizeof((char) * path) + 1);
-
-    dirname[strlen(path)] = 0;
-
-    memcpy(dirname, path, strlen(path));
-
-    char abs_filename[FILENAME_MAX];
-
-    dp = opendir(dirname);
-    if (dp != NULL) {
-        while ((ep = readdir(dp))) {
-            struct stat stFileInfo;
-            snprintf(abs_filename, FILENAME_MAX, "%s/%s", dirname, ep->d_name);
-            if (lstat(abs_filename, &stFileInfo) < 0)
-                perror(abs_filename);
-            if (S_ISDIR(stFileInfo.st_mode)) {
-                if (strcmp(ep->d_name, ".") &&
-                        strcmp(ep->d_name, "..")) {
-                    printf("%s directory\n", abs_filename);
-                    jnx_file_recursive_delete(abs_filename);
-                }
-            } else {
-                printf("%s file\n", abs_filename);
-                remove(abs_filename);
-            }
-        }
-        (void) closedir(dp);
-    } else {
-        perror("Couldn't open the directory");
-        return 1;
-    }
-
-    remove(dirname);
-    return 0;
+    return nftw(path,jnx_file_recusive_delete_callback,64,8|1);
 }

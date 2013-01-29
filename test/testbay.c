@@ -3,10 +3,18 @@
 #include <unistd.h>
 #include <string.h>
 #include "../src/jnxhash.h"
+#include "../src/jnxfile.h"
+void foo()
+{
+	jnx_file_recursive_delete("temp");
 
-
+	exit(0);
+}
 int main(int argc, char** argv)
 {
+
+    foo();
+
     char* countries[] = {"UK", "France", "Sweden", "Ireland", "U.S", "San francisco", "Israel" };
     char* capitals[] = {"London", "Paris", "Stockholm", "Dublin", "Washington DC", "California", "Jeruseleum"};
     int count = 7;
