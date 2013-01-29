@@ -23,7 +23,13 @@ char* jnx_file_read(char* path)
 }
 
 jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
-    FILE* file = fopen(path, "r+");
+    FILE* file;
+   
+    if((file = fopen(path, "r+")) == NULL)
+    {
+	printf("Could not open file for KVP matching\n");
+	return NULL;
+    }
 
     jnx_file_kvp_node* list = NULL, ** nextp = &list;
     char buffer[1024];
