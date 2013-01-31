@@ -22,7 +22,24 @@
 #include <stdio.h>
 static int ISLOADING_SPIN = 0;
 pthread_t loader_thread;
+int fd;
+fpos_t pos;
+void jnx_term_override_stdout(char *path)
+{
+	fflush(stdout);
+	fgetpos(stdout,&pos);
+	fd = dup(fileno(stdout));
+	freopen(path,"w",stdout);
 
+}
+void jnx_term_reset_stdout()
+{
+	fflush(stdout);
+	dup2(fd,fileno(stdout));
+	close(fd);
+	clearerr(stdout);
+	fsetpos(stdout,&pos);
+}
 void *loading_loop(void *ptr)
 {
 	struct timespec _nano;

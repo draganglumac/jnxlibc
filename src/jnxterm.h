@@ -17,6 +17,5 @@
  */
 
 void jnx_term_load(int state);
-
-
-
+void jnx_term_override_stdout(char *path);
+void jnx_term_reset_stdout(void);
