@@ -3,11 +3,20 @@
 #include <unistd.h>
 #include <string.h>
 #include "../src/jnxhash.h"
+#include "../src/jnxterm.h"
 #include "../src/jnxfile.h"
 void foo()
 {
-	jnx_file_recursive_delete("temp");
 
+	jnx_term_load(1);
+	printf("1\n");
+
+	sleep(1);
+	printf("1\n");
+	sleep(1);
+	printf("1\n");
+	sleep(1);
+	jnx_term_load(0);	
 	exit(0);
 }
 int main(int argc, char** argv)

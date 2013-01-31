@@ -10,9 +10,9 @@ cat Makefile.in | while IFS='' read -r LINE
 do
   if [[ "$LINE" = *build.shared.object* ]]; then
     if [ "$OS" = "Darwin" ]; then
-      echo "	gcc -dynamiclib -undefined suppress -flat_namespace *.o -o libjnxc.1.0.dylib" >> Makefile
+      echo "	gcc -dynamiclib -undefined suppress -flat_namespace -pthread *.o -o libjnxc.1.0.dylib" >> Makefile
     else
-      echo "	gcc -shared -Wl,-soname,libjnxc.so -o libjnxc.so.1.0 -ldl *.o" >> Makefile
+      echo "	gcc -shared -Wl,-soname,libjnxc.so -o libjnxc.so.1.0 -ldl -pthread *.o" >> Makefile
     fi
     elif [[ "$LINE" = *move.shared.object* ]]; then
     if [ "$OS" = "Darwin" ]; then
