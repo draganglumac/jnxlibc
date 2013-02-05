@@ -6,6 +6,8 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#define __USE_XOPEN_EXTENDED
+#include <ftw.h>
 #include <libgen.h>
 char* jnx_file_read(char* path)
 {

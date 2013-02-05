@@ -96,9 +96,7 @@ int jnx_send_message(char* host, int port, char* msg)
 {
     struct hostent* send_server;
     struct sockaddr_in send_serv_addr;
-    struct sockaddr_in remote_server_add;
     char send_transmission_buffer[MAXBUFFER];
-    int send_port = port;
 
     int send_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (send_fd < 0) {
