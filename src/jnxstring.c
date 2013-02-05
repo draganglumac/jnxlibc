@@ -13,7 +13,7 @@ char* jnx_string_joincreate(char* destination, char* append)
     return str;
 }
 void jnx_string_join(char** destination, char* buf)
-{
+{//THERE ARE PROBLEMS WITH THIS!!!:
     int orig_len;
     int buf_len = strlen(buf);
     if (*destination == NULL) {

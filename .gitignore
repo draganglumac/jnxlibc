@@ -19,3 +19,5 @@ Makefile
 *.a
 *.bin
 CMakelists.txt
+*.swo
+*.swp

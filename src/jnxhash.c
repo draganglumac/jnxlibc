@@ -18,7 +18,9 @@ void jnx_hash_delete(jnx_hashmap* hashmap)
 		jnx_list *temp = hashmap->data[i].bucket;
 		if(temp != NULL)
 		{
-			free(temp);
+		//WARNING: Not tested & needs looking into ...!!	
+			jnx_list_delete(temp);
+		//	free(temp);
 		}
 	}
 	free(m->data);

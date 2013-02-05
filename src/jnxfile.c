@@ -12,8 +12,13 @@ char* jnx_file_read(char* path)
     FILE* fp;
     if ((fp = fopen(path, "r")) == NULL) {
         perror("file: ");
+	return NULL;
     }
-    fseek(fp, 0, SEEK_END);
+    if(fseek(fp, 0, SEEK_END) != 0)
+    {
+	    perror("file: ");
+	    exit(1);
+    }
     long int size = ftell(fp);
     rewind(fp);
     char* from_file_str = calloc(size + 1, 1);
