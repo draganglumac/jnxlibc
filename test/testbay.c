@@ -2,60 +2,52 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "../src/jnxhash.h"
-#include "../src/jnxterm.h"
-#include "../src/jnxnetwork.h"
-#include "../src/jnxfile.h"
-void foo()
+
+char* file_read(char* path)
 {
+	FILE* fp;
+	if ((fp = fopen(path, "r")) == NULL) {
+		perror("file: ");
+		return NULL;
+	}
+	if(fseek(fp, 0, SEEK_END) != 0)
+	{
+		perror("file: ");
+		exit(1);
+	}
+	long int size = ftell(fp);
+	rewind(fp);
+	char* from_file_str = calloc(size + 1, sizeof(char));
+	printf("Callocing size of %d\n",size + 1);
+	fread(from_file_str, 1, size, fp);
+	fclose(fp);
 
-	jnx_term_load(1);
-	printf("1\n");
-
-	sleep(1);
-	printf("1\n");
-	sleep(1);
-	printf("1\n");
-	sleep(1);
-	jnx_term_load(0);	
-	exit(0);
+	return from_file_str;
 }
-void listener_cb(char*cb)
-{
-	
-}
-void bar()
-{
+void mystring_join(char** destination, char* buf)
+{//THERE ARE PROBLEMS WITH THIS!!!:
+	int orig_len;
+	int buf_len = strlen(buf);
+	if (*destination == NULL) {
+		orig_len = 0;
+	} else {
+		orig_len = strlen(*destination);
+		printf("original length %d\n", orig_len); 
+	}
 
-	jnx_listener_callback jj = &listener_cb;
-	
-	jnx_send_message("localhost","0800","hi");
+	int newsize = orig_len + buf_len + 1;
+	printf("Buffer len %d\n",newsize);
 
+	*destination  = (char*) realloc(*destination,sizeof(newsize));
 
-	exit(0);
+	strncpy(*destination + orig_len, buf, buf_len + 1);
 }
 int main(int argc, char** argv)
 {
-	bar();
-
-	char* countries[] = {"UK", "France", "Sweden", "Ireland", "U.S", "San francisco", "Israel" };
-	char* capitals[] = {"London", "Paris", "Stockholm", "Dublin", "Washington DC", "California", "Jeruseleum"};
-	int count = 7;
-	int i;
-
-	jnx_hashmap* mymap = jnx_hash_init(5);
-
-	for (i = 0; i < count; ++i) {
-		jnx_hash_put(mymap, countries[i], capitals[i]);
-	}
-
-
-	printf("Country %s with Capital %s\n", countries[0], jnx_hash_get(mymap, countries[0]));
-	printf("Country %s with Capital %s\n", countries[3], jnx_hash_get(mymap, countries[3]));
-	printf("Country %s with Capital %s\n", countries[5], jnx_hash_get(mymap, countries[5]));
-	printf("Country %s with Capital %s\n", countries[6], jnx_hash_get(mymap, countries[6]));
-
-	jnx_hash_delete(mymap);
+	char *out = file_read("Makefile");	
+	printf("Raw makefile %s\n",out);
+	mystring_join(&out,"!");
+	printf("OUTPUT OF JOIN -> %s\n",out);
 
 
 	return 0;
