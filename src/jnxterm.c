@@ -73,6 +73,6 @@ void jnx_term_load(int state)
 	else
 	{
 		pthread_join(loader_thread,NULL);
-	
+        printf("\n");	
 	}
 }
