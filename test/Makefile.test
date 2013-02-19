@@ -1,2 +1,0 @@
-all:
-	gcc testbay.c -o test -pthread -ldl
