@@ -48,7 +48,9 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
 		node = malloc(sizeof(jnx_file_kvp_node) + strlen(buffer) + 1);
 		node->key = strtok(strcpy((char*)(node + 1), buffer), delimiter);
 		node->value = strtok(NULL, delimiter);
+        if(node->value[strlen(node->value)-1] == '\n'){
         node->value[strlen(node->value) -1] = 0;
+        }
 		node->next = NULL;
 		*nextp = node;
 		nextp = &node->next;
