@@ -101,15 +101,13 @@ char* jnx_get_time()
 }
 void jnx_log(char *message)
 {
-    char *output = (char*)malloc(256);
+    char *output = (char*)malloc(1024);
     char *timer = jnx_get_time();
     //to accomodate the extra colon we want to add to delimit time against message
     strcpy(output,timer);
     free(timer);
     strcat(output," : ");
     strcat(output,__FILE__);
-    strcat(output," : ");
-    strcat(output,__LINE__);
     strcat(output," : ");
     strcat(output,message);
 
