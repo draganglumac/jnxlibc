@@ -30,14 +30,14 @@ pthread_mutex_t _locker;
 char *log_path = NULL;
 logopt _logoption;
 
-void *jnx_write_to_log(char *message)
+void jnx_write_to_log(char *message)
 {
     pthread_mutex_lock(&_locker);
     FILE *fp = fopen(log_path,"a");
     if(fp == NULL) { 
         printf("Unable to open file for log writing\n");
         pthread_mutex_unlock(&_locker);
-        exit(1);
+        return;
     };
     switch(_logoption){
         case LOGWNEWLINE:
