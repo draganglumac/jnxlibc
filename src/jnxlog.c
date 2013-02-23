@@ -109,11 +109,14 @@ void jnx_log(char *message)
     strcat(output," : ");
     strcat(output,__FILE__);
     strcat(output," : ");
+    strcat(output,__LINE__);
+    strcat(output," : ");
     strcat(output,message);
 
     //the thread target function is responsible for freeing the string
     output = realloc(output,(strlen(output) + strlen(message)+1));
     pthread_t _thr;
     pthread_create(&_thr,NULL,(void*)jnx_write_to_log,output);    
+
 }
 
