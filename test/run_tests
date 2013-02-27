@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for file in `ls | grep *.c`; do `gcc $file  ../src/*.c -o ${file:0:${#file}-2} -pthread` echo "Built test for $file" `./${file:0:${#file}-2}` ;done;
+
+    # compile each file to its own binary
+
+# run each binary and look at the return codes

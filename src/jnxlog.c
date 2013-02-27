@@ -56,7 +56,6 @@ void jnx_write_to_log(char *message)
 }
 int jnx_log_setup(char *path,logopt l)
 {
-    if(l >= 2) { printf("Unknown log option\n"); return 1; };
     _logoption = l; 
     struct stat s;
     int err = stat(path,&s);

@@ -42,7 +42,7 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const char* key)
         if (hashmap->data[index].bucket_len == 1) {
             jnx_node* head = hashmap->data[index].bucket->head;
             jnx_hash_bucket_el* bucketel = head->_data;
-            return bucketel->origin_value;
+            return (void*)bucketel->origin_value;
         }
         if (hashmap->data[index].bucket_len > 1) {
             jnx_node* head = hashmap->data[index].bucket->head;
@@ -51,7 +51,7 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const char* key)
                 jnx_hash_bucket_el* bucketel = head->_data;
                 if (strcmp(bucketel->origin_key, key) == 0) {
                     hashmap->data[index].bucket->head = rewind_head;
-                    return bucketel->origin_value;
+                    return (void*)bucketel->origin_value;
                 }
                 head = head->next_node;
             }
@@ -63,7 +63,7 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const char* key)
 int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
 {
     int index = jnx_hash_string(key, hashmap->size);
-    if (hashmap->data[index].used == NULL) {
+    if (hashmap->data[index].used == 0) {
         // we need to setup the bucket
         hashmap->data[index].bucket = jnx_list_make();
         //okay so bucket is ready to get given a KVP entry, so we'll use our bucket struct

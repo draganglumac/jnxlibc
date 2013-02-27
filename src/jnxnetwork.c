@@ -69,7 +69,7 @@ int jnx_setup_listener(int port, void (*jnx_listener_callback)(char*))
 
         /* Accept actual connection from the client */
         newsockfd = accept(sockfd, (struct sockaddr*) &cli_addr,
-                           &clilen);
+                           (socklen_t*)&clilen);
         if (newsockfd < 0) {
             perror("ERROR on accept");
             exit(1);
