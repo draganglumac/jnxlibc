@@ -29,9 +29,8 @@ int main(int args, char **argv)
     jnx_hash_put(testhash,"Alex","Jones");
   
     assert((char*)jnx_hash_get(testhash,"Alex") == "Jones"); 
-
-    jnx_hash_delete(testhash);
-
-    assert(testhash == NULL);
+   
+    jnx_hash_delete(testhash);  
+    
     return 0;
 }

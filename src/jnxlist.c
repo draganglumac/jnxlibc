@@ -47,6 +47,7 @@ void jnx_list_delete(jnx_list* A)
     }
 
     jnx_node* current = A->head;
+    if(!A->head->next_node) { return; }
     jnx_node* next = A->head->next_node;
 
     while (!next) {
