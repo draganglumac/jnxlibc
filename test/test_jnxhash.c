@@ -32,5 +32,6 @@ int main(int args, char **argv)
    
     jnx_hash_delete(testhash);  
     
+    printf("Test passed\n");
     return 0;
 }

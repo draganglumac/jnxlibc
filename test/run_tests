@@ -1,7 +1,22 @@
 #!/bin/bash
 
-for file in `ls | grep *.c`; do `gcc $file  ../src/*.c -o ${file:0:${#file}-2} -pthread -g` echo "Built test for $file" `./${file:0:${#file}-2}` ;done;
+filelist=`ls | grep .c`
 
-    # compile each file to its own binary
+for file in $filelist; do
+    if [ "$file" == "run_tests" ] 
+    then
+        continue
+    fi 
+    echo "Building $file"
+    `gcc $file ../src/*.c -o ${file:0:${#file}-2} -pthread`
+    current=${file:0:${#file}-2}
+    echo "Running $current"
+    ./$current
+done;
+
+
+#for file in `ls | grep *.c`; do `gcc $file  ../src/*.c -o ${file:0:${#file}-2} -pthread -g` echo "Built test for $file" `./${file:0:${#file}-2}` ;done;
+
+# compile each file to its own binary
 
 # run each binary and look at the return codes
