@@ -7,16 +7,14 @@ for file in $filelist; do
     then
         continue
     fi 
+    current=${file:0:${#file}-2}
+    if [ -e $current ]
+    then
+        rm $current
+    fi
+    
     echo "Building $file"
     `gcc $file ../src/*.c -o ${file:0:${#file}-2} -pthread`
-    current=${file:0:${#file}-2}
     echo "Running $current"
     ./$current
 done;
-
-
-#for file in `ls | grep *.c`; do `gcc $file  ../src/*.c -o ${file:0:${#file}-2} -pthread -g` echo "Built test for $file" `./${file:0:${#file}-2}` ;done;
-
-# compile each file to its own binary
-
-# run each binary and look at the return codes
