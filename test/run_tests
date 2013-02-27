@@ -17,4 +17,5 @@ for file in $filelist; do
     `gcc $file ../src/*.c -o ${file:0:${#file}-2} -pthread`
     echo "Running $current"
     ./$current
+    rm $current
 done;
