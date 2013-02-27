@@ -23,7 +23,6 @@ void jnx_string_join(char** destination, char* buf)
 	}
 
 	int newsize = orig_len + buf_len + 1;
-	printf("Buffer len %d\n",newsize);
 
 	*destination  = (char*) realloc(*destination,newsize);
 
