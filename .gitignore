@@ -1,5 +1,5 @@
 # Compiled Object files
-test/test_*
+# test/test_*
 *.slo
 *.lo
 *.o
