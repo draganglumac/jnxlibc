@@ -1,5 +1,19 @@
 #!/bin/bash
 
+function echo_red()
+{
+    tput setaf 1
+    echo $1
+    tput sgr0
+}
+
+function echo_green()
+{
+    tput setaf 2
+    echo $1
+    tput sgr0
+}
+
 filelist=`ls | grep .c`
 
 for file in $filelist; do
@@ -19,12 +33,12 @@ for file in $filelist; do
     ./$current
     out=$?
     if [ ! $out -eq 0 ]; then
-        echo "Test failed"
+        echo_red "Test failed"
         rm $current
         exit 1
 
     else
-        echo "Test passed"
+        echo_green "Test passed"
         rm $current
     fi
 done;
