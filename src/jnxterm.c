@@ -20,6 +20,54 @@
 #include <pthread.h>
 #include <time.h>
 #include <stdio.h>
+#include <stdarg.h>
+
+#include "jnxterm.h"
+
+#define JNX_TERM_RESET     0
+#define JNX_TERM_BRIGHT    1
+#define JNX_TERM_DIM       2
+#define JNX_TERM_UNDERLINE 3
+#define JNX_TERM_BLINK     4
+#define JNX_TERM_REVERSE   7
+#define JNX_TERM_HIDDEN    8
+
+void text_and_background_color(int attr, int fg, int bg)
+{
+    printf("%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
+}
+
+void text_color(int attr, int fg)
+{
+    printf("%c[%d;%dm", 0x1B, attr, fg + 30);
+}
+
+void jnx_term_default()
+{
+    printf("%c[0m", 0x1B);
+}
+
+void jnx_term_color(int fg_col)
+{
+    if ( JNX_COL_BLACK <= fg_col && fg_col <= JNX_COL_WHITE )
+    {
+        text_color(JNX_TERM_RESET, fg_col);
+    }
+}
+
+void jnx_printf_in_color(int fg_col, const char* format, ...)
+{
+    jnx_term_color(fg_col);
+
+    va_list ap;
+    
+    va_start(ap, format);
+    vprintf(format, ap);
+    va_end(ap);
+
+    jnx_term_default(); 
+}
+
 static int ISLOADING_SPIN = 0;
 pthread_t loader_thread;
 int fd;
