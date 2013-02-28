@@ -13,4 +13,3 @@ shipping:
 install:
 	install.shared.object
 	rm -rf lib
-	echo "Installed successfully"
