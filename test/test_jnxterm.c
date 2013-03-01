@@ -21,13 +21,13 @@
 
 int main()
 {
-    jnx_printf_in_color(JNX_COL_YELLOW, "Bob's your uncle!\n");
-    jnx_printf_in_color(JNX_COL_BLUE, "Here's some formatted parameters: %d, %s\n", 42, "The meaning of life.");
+    jnx_term_printf_in_color(JNX_COL_YELLOW, "Bob's your uncle!\n");
+    jnx_term_printf_in_color(JNX_COL_BLUE, "Here's some formatted parameters: %d, %s\n", 42, "The meaning of life.");
 
     int i;
     for ( i = 0; i < 7; i++)
     {
-        jnx_printf_in_color(i, "I am colour %d\n", i);
+        jnx_term_printf_in_color(i, "I am colour %d\n", i);
     }
 
     jnx_term_color(JNX_COL_MAGENTA);

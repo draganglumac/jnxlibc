@@ -27,7 +27,7 @@
 
 void jnx_term_default();
 void jnx_term_color(int fg_col);
-void jnx_printf_in_color(int fg_col, const char* format, ...);
+void jnx_term_printf_in_color(int fg_col, const char* format, ...);
 
 void jnx_term_load(int state);
 void jnx_term_override_stdout(char *path);

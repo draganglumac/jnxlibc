@@ -55,7 +55,7 @@ void jnx_term_color(int fg_col)
     }
 }
 
-void jnx_printf_in_color(int fg_col, const char* format, ...)
+void jnx_term_printf_in_color(int fg_col, const char* format, ...)
 {
     jnx_term_color(fg_col);
 
