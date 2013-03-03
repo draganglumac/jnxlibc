@@ -24,14 +24,20 @@ int main(int args, char **argv)
     printf("Running test for jnxlist\n");
     
     jnx_list *list = jnx_list_make();
+    int x,y;
+    char alphabet = 'a';
+    for(x = 0; x < 26; ++x)
+    {
+        jnx_list_add(list,(void*)alphabet);
+        ++alphabet;
+    }
+    for(y = 0; y < x; ++y)
+    {
+        jnx_list_remove(list);
+        --alphabet;
+    }
 
-    jnx_list_add(list,"Alex");
 
-    char *ret = jnx_list_remove(list);
 
-    assert(ret == "Alex");
-
-    jnx_list_delete(list);
-    
     return 0;
 }
