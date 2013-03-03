@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "../src/jnxterm.h"
-
+#include <stdio.h>
 int main()
 {
     jnx_term_printf_in_color(JNX_COL_YELLOW, "Bob's your uncle!\n");
