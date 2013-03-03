@@ -1,76 +1,94 @@
-#include "jnxlist.h"
+/*
+ * =====================================================================================
+ *
+ *       Filename:  jnxlist.c
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  03/03/13 19:05:31
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Alex Jones (), alexsimonjones@gmail.com
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
 #include <stdlib.h>
+#include "jnxlist.h"
 #include <stdio.h>
 
 jnx_list* jnx_list_make(void)
 {
-    jnx_list* temp = malloc(sizeof(jnx_list));
-
-    return temp;
+    jnx_list *list = malloc(sizeof(jnx_list));
+    return list;
 }
 void jnx_list_add(jnx_list* A, void* _datain)
 {
-    jnx_node* temp = malloc(sizeof(jnx_node));
-    temp->_data = _datain;
-    temp->next_node = A->head;
-    A->head = temp;
+    if(A->head == NULL)
+    {
+        jnx_node *node = malloc(sizeof(jnx_node));
+        node->_data = _datain; 
+        node->next_node = NULL;
+        A->head = node;
+        return;
+    }
+    jnx_node *node = malloc(sizeof(jnx_node));
+    node->_data = _datain;
+    node->next_node = A->head;
+    A->head = node;  
 }
 void* jnx_list_remove(jnx_list* A)
 {
-    if (A->head == NULL) {
+    if(A->head == NULL)
+    {
         return NULL;
     }
-    if (A->head->next_node == NULL) {
-        return A->head->_data;
+    if(A->head->next_node == NULL)
+    {
+        void *data = A->head->_data;
+        free(A->head);
+        A->head = NULL;
+        return data;
     }
+    jnx_node *origin_head = A->head;
 
-    jnx_node* head_origin = A->head;
-
-    while (A->head) {
-        jnx_node* next = A->head->next_node;
-
-        if (next->next_node == NULL) {
-            void* temp = next->_data;
-            A->head->next_node = NULL;  //Note that this doesn't delete the node, just the pointer to it. we return the node.
-            A->head = head_origin;
-            return temp;
+    while(A->head)
+    {
+        jnx_node *next = A->head->next_node;
+        if(next->next_node == NULL)
+        {
+            void *data = next->_data;
+            free(next);
+            A->head->next_node = NULL;
+            A->head = origin_head; 
+            return data;
         }
         A->head = next;
     }
-    A->head = head_origin;
+    A->head = origin_head;
     return NULL;
 }
 void jnx_list_delete(jnx_list* A)
 {
-    if (!A->head) {
+    if(A->head == NULL)
+    {
         return;
     }
-
-    jnx_node* current = A->head;
-    if(!A->head->next_node) { return; }
-    jnx_node* next = A->head->next_node;
-
-    while (!next) {
+    jnx_node *current = A->head;
+    if(!current->next_node){ 
+        A->head = NULL;
+        return;
+    }
+    jnx_node *next = current->next_node;
+    while(next)
+    {
         free(current);
-
-        current = next;
-
+        current = next; 
         next = next->next_node;
     }
 
     free(current);
-
-    A->head = NULL;
-
+    current = NULL;
 }
-void* jnx_list_next(jnx_list* A)
-{
-    if (A->head == NULL) {
-        return NULL;
-    }
-
-    void* data = A->head->_data;
-    A->head = A->head->next_node;
-    return data;
-}
-

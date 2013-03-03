@@ -17,7 +17,5 @@ void jnx_list_add(jnx_list* A, void* _datain);
 void* jnx_list_remove(jnx_list* A);
 ///frees the nodes and the list pointer
 void jnx_list_delete(jnx_list* A);
-
-void* jnx_list_next(jnx_list* A);
 #endif
 
