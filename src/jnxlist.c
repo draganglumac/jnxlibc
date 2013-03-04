@@ -53,7 +53,6 @@ void* jnx_list_remove(jnx_list* A)
         return data;
     }
     jnx_node *origin_head = A->head;
-
     while(A->head)
     {
         jnx_node *next = A->head->next_node;
@@ -72,6 +71,11 @@ void* jnx_list_remove(jnx_list* A)
 }
 void jnx_list_delete(jnx_list* A)
 {
+    if(A == NULL)
+    {
+        printf("No list\n");
+        return;
+    }
     if(A->head == NULL)
     {
         return;
