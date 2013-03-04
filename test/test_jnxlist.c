@@ -31,7 +31,7 @@ void looper()
     jnx_list *list = jnx_list_make();
     int x,y;
     char alphabet = 'a';
-    for(x = 0; x < 26; ++x)
+    for(x = 0; x < 2; ++x)
     {
         jnx_list_add(list,(void*)alphabet);
         ++alphabet;
@@ -44,23 +44,27 @@ void looper()
     }
 
     jnx_list_delete(list);
+
 }
 void structo()
 {
+    looper();
+    printf("Ran loooper\n");
     jnx_list *secondlist = jnx_list_make();
     struct foo *f = malloc(sizeof(foo));
     f->number = 10;
+ 
     jnx_list_add(secondlist,(void*)f); 
+ 
     struct foo *output = (struct foo*)jnx_list_remove(secondlist);
     assert(output->number == 10);
     jnx_list_delete(secondlist);
+    printf("Ran listo\n");
 }
 int main(int args, char **argv)
 {
     printf("Running test for jnxlist\n");
 
-    looper();
-//    structo();
-
+    structo();
     return 0;
 }

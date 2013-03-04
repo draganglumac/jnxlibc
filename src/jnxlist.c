@@ -22,6 +22,7 @@
 jnx_list* jnx_list_make(void)
 {
     jnx_list *list = malloc(sizeof(jnx_list));
+    list->head = NULL;
     return list;
 }
 void jnx_list_add(jnx_list* A, void* _datain)
@@ -78,6 +79,7 @@ void jnx_list_delete(jnx_list* A)
     }
     if(A->head == NULL)
     {
+        printf("The head node is null\n");
         return;
     }
     jnx_node *current = A->head;
