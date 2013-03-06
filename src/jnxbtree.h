@@ -20,16 +20,22 @@
 #define _JNX_B_TREE_
 
 typedef struct {
+    void *key;
+    void *value;
+} datum;
+
+typedef int (*compare) (datum*, datum*);
+
+typedef struct {
     int count;
-    void **keys;
+    datum **data;
     void **children;
-    void **data;
 } jnx_B_tree_node;
 
 typedef struct {
     jnx_B_tree_node *root;
 } jnx_B_tree;
 
-jnx_B_tree* jnx_B_tree_init(int fanout);
+jnx_B_tree* jnx_B_tree_init(int fanout, compare callback);
 
 #endif // _JNX_B_TREE_
