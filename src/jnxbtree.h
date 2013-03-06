@@ -24,6 +24,17 @@ typedef struct {
     void *value;
 } datum;
 
+/*
+ * Callback function that the user needs to supply and which compares keys of two nodes.
+ *
+ * The B-tree keys are required to follow some order, so with respect to that order
+ * the function should return:
+ *     - an integer < 0 if first parameter comes before second parameter
+ *     - a 0 if first and second parameters are equal
+ *     - an integer > 0 if the first parameter comes after the second parameter
+ * 
+ * Typically, these values can be -1, 0, and 1 respectivelly.
+ */
 typedef int (*compare) (datum*, datum*);
 
 typedef struct {
