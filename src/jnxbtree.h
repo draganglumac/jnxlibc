@@ -16,8 +16,8 @@
  * =====================================================================================
  */
 
-#ifndef _JNX_B_TREE_
-#define _JNX_B_TREE_
+#ifndef __JNX_B_TREE__
+#define __JNX_B_TREE__
 
 typedef struct {
     void *key;
@@ -49,4 +49,4 @@ typedef struct {
 
 jnx_B_tree* jnx_B_tree_init(int fanout, compare callback);
 
-#endif // _JNX_B_TREE_
+#endif // __JNX_B_TREE__
