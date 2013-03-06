@@ -50,7 +50,28 @@ typedef struct {
 /*  
  * Initialise B-tree with order, which is the minimum number of records in a non-root node,
  * and callback function which compares the keys of two records.
+ *
+ * The function returns a pointer to the B-tree root.
  */
 jnx_B_tree* jnx_B_tree_init(int order, compare callback);
+
+/*
+ * Add a record (key, value) to the B-tree.
+ *
+ * The function returns a pointer to the (potentially new) root of the B-tree.
+ */
+jnx_B_tree* jnx_add_record_to_B_tree(jnx_B_tree *root, void *key, void *value);
+
+/*
+ * Remove a record with key equal to parameter key from the B-tree.
+ *
+ * The function returns a pointer to the (potentially new) root of the B-tree. 
+ */
+jnx_B_tree* jnx_B_tree_remove(jnx_B_tree *root, void *key);
+
+/*
+ * Delete the B-tree.
+ */
+void jnx_B_tree_delete(jnx_B_tree* root);
 
 #endif // __JNX_B_TREE__
