@@ -36,7 +36,7 @@ typedef struct {
  * 
  * Typically, these values can be -1, 0, and 1 respectivelly.
  */
-typedef int (*compare) (void*, void*);
+typedef int (*compare_keys) (void*, void*);
 
 typedef struct {
     int count;
@@ -54,7 +54,7 @@ typedef struct {
  *
  * The function returns a pointer to the B-tree root.
  */
-jnx_B_tree* jnx_B_tree_init(int order, compare callback);
+jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback);
 
 /*
  * Add a record (key, value) to the B-tree.
