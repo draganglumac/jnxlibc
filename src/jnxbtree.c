@@ -30,6 +30,12 @@ jnx_B_tree* jnx_B_tree_add(jnx_B_tree *root, void *key, void *value)
     return NULL;
 }
 
+void *jnx_B_tree_lookup(jnx_B_tree *root, void *key)
+{
+    // Stub
+    return NULL;
+}
+
 jnx_B_tree* jnx_B_tree_remove(jnx_B_tree *root, void *key)
 {
     // Stub
