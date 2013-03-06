@@ -25,7 +25,8 @@ typedef struct {
 } record;
 
 /*
- * Callback function that the user needs to supply and which compares keys of two records.
+ * Callback function that the user needs to supply and which compares two keys,
+ * and effectivelly two records as keys and values live together in a node record.
  *
  * The B-tree keys are required to follow some order, so with respect to that order
  * the function should return:
@@ -35,7 +36,7 @@ typedef struct {
  * 
  * Typically, these values can be -1, 0, and 1 respectivelly.
  */
-typedef int (*compare) (record*, record*);
+typedef int (*compare) (void*, void*);
 
 typedef struct {
     int count;
