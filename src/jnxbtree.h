@@ -60,7 +60,7 @@ jnx_B_tree* jnx_B_tree_init(int order, compare callback);
  *
  * The function returns a pointer to the (potentially new) root of the B-tree.
  */
-jnx_B_tree* jnx_add_record_to_B_tree(jnx_B_tree *root, void *key, void *value);
+jnx_B_tree* jnx_B_tree_add(jnx_B_tree *root, void *key, void *value);
 
 /*
  * Remove a record with key equal to parameter key from the B-tree.
