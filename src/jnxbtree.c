@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include "jnxbtree.h"
 
-jnx_B_tree* jnx_B_tree_init(int fanout, compare callback)
+jnx_B_tree* jnx_B_tree_init(int order, compare callback)
 {
     return NULL;
 }

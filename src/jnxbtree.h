@@ -22,10 +22,10 @@
 typedef struct {
     void *key;
     void *value;
-} datum;
+} record;
 
 /*
- * Callback function that the user needs to supply and which compares keys of two nodes.
+ * Callback function that the user needs to supply and which compares keys of two records.
  *
  * The B-tree keys are required to follow some order, so with respect to that order
  * the function should return:
@@ -35,11 +35,11 @@ typedef struct {
  * 
  * Typically, these values can be -1, 0, and 1 respectivelly.
  */
-typedef int (*compare) (datum*, datum*);
+typedef int (*compare) (record*, record*);
 
 typedef struct {
     int count;
-    datum **data;
+    record **records;
     void **children;
 } jnx_B_tree_node;
 
@@ -47,6 +47,10 @@ typedef struct {
     jnx_B_tree_node *root;
 } jnx_B_tree;
 
-jnx_B_tree* jnx_B_tree_init(int fanout, compare callback);
+/*  
+ * Initialise B-tree with order, which is the minimum number of records in a non-root node,
+ * and callback function which compares the keys of two records.
+ */
+jnx_B_tree* jnx_B_tree_init(int order, compare callback);
 
 #endif // __JNX_B_TREE__
