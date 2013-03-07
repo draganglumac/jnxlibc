@@ -38,10 +38,11 @@ typedef struct {
  */
 typedef int (*compare_keys) (void*, void*);
 
-typedef struct {
+typedef struct B_tree_node {
     int count;
+    int is_leaf;
     record **records;
-    void **children;
+    struct B_tree_node **children;
 } jnx_B_tree_node;
 
 typedef struct {
@@ -54,7 +55,7 @@ typedef struct {
  * Initialise B-tree with order, which is the minimum number of records in a non-root node,
  * and callback function which compares the keys of two records.
  *
- * The function returns a pointer to the B-tree root.
+ * The function returns a pointer to the new empty B-tree.
  */
 jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback);
 
