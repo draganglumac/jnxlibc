@@ -7,6 +7,7 @@ typedef struct node {
 } jnx_node;
 typedef struct list {
     struct node* head;
+    int counter;
 } jnx_list;
 ///Required argument is list pointer
 jnx_list* jnx_list_make(void);

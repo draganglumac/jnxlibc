@@ -15,7 +15,8 @@
  *
  * =====================================================================================
  */
-
+#ifndef __JNX_TERM_H__
+#define __JNX_TERM_H__
 #define JNX_COL_BLACK   0
 #define JNX_COL_RED     1
 #define JNX_COL_GREEN   2
@@ -32,3 +33,5 @@ void jnx_term_printf_in_color(int fg_col, const char* format, ...);
 void jnx_term_load(int state);
 void jnx_term_override_stdout(char *path);
 void jnx_term_reset_stdout(void);
+
+#endif
