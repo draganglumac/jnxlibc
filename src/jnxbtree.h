@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  jnxbplustree.h
+ *       Filename:  jnxbtree.h
  *
  *    Description:  
  *
@@ -45,6 +45,8 @@ typedef struct {
 } jnx_B_tree_node;
 
 typedef struct {
+    int order;
+    compare_keys compare_function;
     jnx_B_tree_node *root;
 } jnx_B_tree;
 
