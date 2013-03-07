@@ -58,28 +58,26 @@ jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback);
 
 /*
  * Add a record (key, value) to the B-tree.
- *
- * The function returns a pointer to the (potentially new) root of the B-tree.
  */
-jnx_B_tree* jnx_B_tree_add(jnx_B_tree *root, void *key, void *value);
+void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value);
 
 /* 
  * Retreive the value for key from the B-tree.
  *
  * The function returns the pointer to the value, or NULL if the key is not in the B-tree.
  */
-void *jnx_B_tree_lookup(jnx_B_tree *root, void *key);
+void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key);
 
 /*
  * Remove a record with key equal to parameter key from the B-tree.
  *
- * The function returns a pointer to the (potentially new) root of the B-tree. 
+ * If the record with key "key" is not in the tree, the tree is unchanged.
  */
-jnx_B_tree* jnx_B_tree_remove(jnx_B_tree *root, void *key);
+void jnx_B_tree_remove(jnx_B_tree *tree, void *key);
 
 /*
  * Delete the B-tree.
  */
-void jnx_B_tree_delete(jnx_B_tree* root);
+void jnx_B_tree_delete(jnx_B_tree* tree);
 
 #endif // __JNX_B_TREE__

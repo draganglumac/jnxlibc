@@ -20,14 +20,16 @@
 
 jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
 {
-    // Stub
-    return NULL;
+    jnx_B_tree_node *root = calloc(1, sizeof(jnx_B_tree_node));
+    jnx_B_tree *tree = calloc(1, sizeof(jnx_B_tree));
+    tree->root = root;
+
+    return tree; 
 }
 
-jnx_B_tree* jnx_B_tree_add(jnx_B_tree *root, void *key, void *value)
+void jnx_B_tree_add(jnx_B_tree *root, void *key, void *value)
 {
     // Stub
-    return NULL;
 }
 
 void *jnx_B_tree_lookup(jnx_B_tree *root, void *key)
@@ -36,10 +38,9 @@ void *jnx_B_tree_lookup(jnx_B_tree *root, void *key)
     return NULL;
 }
 
-jnx_B_tree* jnx_B_tree_remove(jnx_B_tree *root, void *key)
+void jnx_B_tree_remove(jnx_B_tree *root, void *key)
 {
     // Stub
-    return NULL;
 }
 
 void jnx_B_tree_delete(jnx_B_tree* root)
