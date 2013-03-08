@@ -23,6 +23,7 @@ jnx_list* jnx_list_make(void)
 {
     jnx_list *list = malloc(sizeof(jnx_list));
     list->head = NULL;
+    list->counter = 0;
     return list;
 }
 void jnx_list_add(jnx_list* A, void* _datain)
@@ -33,12 +34,14 @@ void jnx_list_add(jnx_list* A, void* _datain)
         node->_data = _datain; 
         node->next_node = NULL;
         A->head = node;
+        A->counter++;
         return;
     }
     jnx_node *node = malloc(sizeof(jnx_node));
     node->_data = _datain;
     node->next_node = A->head;
     A->head = node;  
+    A->counter++;
 }
 void* jnx_list_remove(jnx_list* A)
 {
@@ -51,6 +54,7 @@ void* jnx_list_remove(jnx_list* A)
         void *data = A->head->_data;
         free(A->head);
         A->head = NULL;
+        A->counter--;
         return data;
     }
     jnx_node *origin_head = A->head;
@@ -63,6 +67,7 @@ void* jnx_list_remove(jnx_list* A)
             free(next);
             A->head->next_node = NULL;
             A->head = origin_head; 
+            A->counter--;
             return data;
         }
         A->head = next;
@@ -95,6 +100,8 @@ void jnx_list_delete(jnx_list* A)
         next = next->next_node;
     }
 
+    
     free(current);
     current = NULL;
+    A->counter = 0;
 }

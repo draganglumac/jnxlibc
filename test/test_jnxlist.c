@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "../src/jnxlist.h"
-
+#include "../src/jnxterm.h"
 struct foo{
     int number;
 }foo;
@@ -31,15 +31,24 @@ void looper()
     jnx_list *list = jnx_list_make();
     int x,y;
     char alphabet = 'a';
-    for(x = 0; x < 2; ++x)
+    for(x = 0; x < 26; ++x)
     {
         jnx_list_add(list,(void*)alphabet);
+        jnx_term_printf_in_color((x % 8) + 1,"%c",alphabet);        
+        
+        if(x % 26 == 0)
+        {
+            printf("\n");
+        }
+        
         ++alphabet;
     }
     alphabet = 'a';
     for(y = 0; y < x; ++y)
     {
-        assert((char)jnx_list_remove(list) == alphabet);
+        char output = (char)jnx_list_remove(list);
+        jnx_term_printf_in_color((y % 8) + 1,"%c\n",alphabet);        
+        assert(output == alphabet);
         ++alphabet;
     }
 
