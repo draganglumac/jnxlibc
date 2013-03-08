@@ -37,9 +37,9 @@ void insert_into_nonfull_node(jnx_B_tree_node *node, record *r)
 }
 
 /*
- ********************************************
- * API functions implementations start here!
- ********************************************
+ * ===========================================
+ *  API functions implementations start here!
+ * ===========================================
  */
 
 jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
