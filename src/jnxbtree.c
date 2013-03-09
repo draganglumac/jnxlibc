@@ -100,12 +100,12 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     node->children[i + i] = sibling;
 }
 
-void insert_into_tree_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
+void insert_into_tree_node(jnx_B_tree *tree, jnx_B_tree_node *node, jnx_B_tree_node *parent, record *r)
 {
 	if ( ! node->is_leaf )
 	{
-		jnx_B_tree_node *child = find_subtree_for_record(tree, node, r);
-    	insert_into_tree_node(tree, child, r);
+		int i = find_child_index_for_record(tree, node, r);
+    	insert_into_child_at_index(tree, node, i, r);
 	}
     
 	if ( is_node_full(tree, node) )
@@ -116,6 +116,10 @@ void insert_into_tree_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 
         split_child_at_index(tree, tree->root, 0);
     }
+	else
+	{
+		
+	}
 }
 
 /*
@@ -141,7 +145,40 @@ void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value)
     r->key = key;
     r->value = value;
 
-    insert_into_tree_node(tree, tree->root, r);
+	if ( tree->root->is_leaf )
+	{
+		if ( is_node_full(tree->root) )
+		{
+			jnx_B_tree_node *temp = tree->root;
+			tree->root = new_node(tree->order, 0);
+			tree->root->children[0] = temp;
+
+			split_child_at_index(tree, tree->root, 0);
+
+			if ( r->key < tree->root->records[0]->key )
+			{
+				add_record_to_non_full_node(tree->root->children[0], r);
+			}
+			else if ( r->key > tree->root->records[0]->key )
+			{
+				add_record_to_non_full_node(tree->root->children[1], r);
+			}
+			else
+			{
+				// Update the value - same key
+				tree->root->records[0]->value = r->value;
+			}
+		}
+		else
+		{
+			add_record_to_non_full_node(tree->root, r);
+		}
+	}
+	else
+	{
+		int i = find_index_of_child_for_key(tree, tree->root, r->key);
+		insert_record_into_child_at_index(tree, tree->root, i, r);
+	}
 }
 
 void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
