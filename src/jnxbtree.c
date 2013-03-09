@@ -39,6 +39,28 @@ int find_index_for_record(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
     return 0;
 }
 
+int shift_right(jnx_B_tree *tree, jnx_B_tree * node, int start_index)
+{
+	// Stub
+	return 0;
+}
+
+int is_node_full(jnx_B_tree *tree, jnx_B_tree_node *node)
+{
+	if ( node->count == 2 * tree->order - 1 )
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
+jnx_B_tree_node *find_subtree_for_record(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
+{
+	int i = find_index_for_record(tree, node, r);
+	return node->children[i];
+}
+
 void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_index)
 {
     int tree_order = tree->order;
@@ -78,9 +100,22 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     node->children[i + i] = sibling;
 }
 
-void insert_into_nonfull_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
+void insert_into_tree_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 {
-    // Stub
+	if ( ! node->is_leaf )
+	{
+		jnx_B_tree_node *child = find_subtree_for_record(tree, node, r);
+    	insert_into_tree_node(tree, child, r);
+	}
+    
+	if ( is_node_full(tree, node) )
+    {
+        jnx_B_tree_node *temp = node;
+        node = new_node(tree->order, 0);
+        node->children[0] = temp;
+
+        split_child_at_index(tree, tree->root, 0);
+    }
 }
 
 /*
@@ -102,25 +137,11 @@ jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
 
 void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value)
 {
-
-    int max_records = 2 * tree->order - 1;
-    jnx_B_tree_node *root = tree->root;
-    
     record *r = malloc(sizeof(record));
     r->key = key;
     r->value = value;
 
-    // If root is full need to split it and add a level
-    if ( root->count == max_records )
-    {
-        jnx_B_tree_node *temp = root;
-        tree->root = new_node(tree->order, 0);
-        tree->root->children[0] = temp;
-
-        split_child_at_index(tree, tree->root, 0);
-    }
-    
-    insert_into_nonfull_node(tree, tree->root, r);
+    insert_into_tree_node(tree, tree->root, r);
 }
 
 void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
