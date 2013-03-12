@@ -193,7 +193,7 @@ jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
     
     tree->order = order;
     tree->compare_function = callback;
-    tree->root = NULL;
+    tree->root = new_node(tree->order, 1);
 
     return tree; 
 }
