@@ -10,7 +10,7 @@ typedef struct list {
     int counter;
 } jnx_list;
 ///Required argument is list pointer
-jnx_list* jnx_list_make(void);
+jnx_list* jnx_list_init(void);
 ///Providing the pointer to the list and the data you wish to save as arguments, this will insert a node
 void jnx_list_add(jnx_list* A, void* _datain);
 ///It is import to note that the struct pointer is just forgotten from the list and the data returned
