@@ -133,11 +133,16 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     node->count++;
 }
 
-void add_record_to_non_full_node(jnx_B_tree_node *node, record *r)
+void add_record_to_non_full_leaf(jnx_B_tree_node *node, record *r)
 {
-    // ToDo: Stub
-
     int size = node->count;
+    
+    if ( size == 0 )
+    {
+        node->records[0] = r;
+    }
+
+    node->count++;
 }
 
 /* 
@@ -152,7 +157,7 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
 {
    if ( node->is_leaf )
    {
-       add_record_to_non_full_node(node, r);
+       add_record_to_non_full_leaf(node, r);
        return;
    }
    
@@ -179,6 +184,37 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
 
    // Recurse down into the appropriate subtree
    insert_into_tree_at_node(tree, node->children[i], r);
+}
+
+
+void delete_node_and_subtrees(jnx_B_tree_node *node)
+{
+    if ( node == NULL )
+    {
+        return;
+    }
+
+    // Delete all the children first
+    int i;
+    for ( i = 0; i <= node->count; i++ )
+    {
+        if ( node->children[i] != NULL )
+        {
+            delete_node_and_subtrees(node->children[i]);
+        }
+    }
+
+    // Free memory for all the records
+    for (i = 0; i < node->count; i++ )
+    {
+        if ( node->records[i] != NULL )
+        {
+            free(node->records[i]);
+        }
+    }
+
+    // Finallu, free the node itself
+    free(node);
 }
 
 /*
@@ -256,5 +292,6 @@ void jnx_B_tree_delete(jnx_B_tree* tree)
         return;
     }
 
-    // Stub
+    delete_node_and_subtrees(tree->root);
+    free(tree);
 }

@@ -29,7 +29,8 @@ void test_new_node()
     // Since this is not an API funciton and is private
     // there's no need to test for order <= 1, since the
     // API functions take care of this case.
-
+    printf ("- test_new_node: ");
+    
     jnx_B_tree_node *n = new_node(2, 0);
     assert(n != NULL);
     assert(n->count == 0);
@@ -41,6 +42,8 @@ void test_new_node()
     assert(n->count == 0);
     assert(n->is_leaf == 1);
     free(n);
+    
+    printf("OK\n");
 }
 
 int compare_pints(void *first, void *second)
@@ -67,12 +70,69 @@ void test_find_index_of_child_for_key()
 
 }
 
+void test_new_empty_tree()
+{
+    printf("- test_new_tree: ");
+    
+    jnx_B_tree *tree = jnx_B_tree_init(-1, compare_pints);
+    assert(tree == NULL);
+
+    tree = jnx_B_tree_init(0, compare_pints);
+    assert(tree == NULL);
+
+    tree = jnx_B_tree_init(1, compare_pints);
+    assert(tree == NULL);
+
+    tree = jnx_B_tree_init(2, compare_pints);
+    assert(tree != NULL);
+    assert(tree->order == 2);
+    assert(tree->compare_function == compare_pints);
+    assert(tree->root != NULL);
+    assert(tree->root->count == 0);
+    jnx_B_tree_delete(tree);
+
+    tree = jnx_B_tree_init(5, compare_pints);
+    assert(tree != NULL);
+    assert(tree->order == 5);
+    assert(tree->compare_function == compare_pints);
+    assert(tree->root != NULL);
+    assert(tree->root->count == 0);
+    jnx_B_tree_delete(tree);
+
+    printf("OK\n");
+}
+
+void test_insert_first_record_into_tree()
+{
+    printf("- test_insert_first_record_into_tree: ");
+
+    jnx_B_tree *tree = jnx_B_tree_init(2, compare_pints);
+    int kv = 42;
+    jnx_B_tree_add(tree, (void *) &kv, (void *) &kv);
+    jnx_B_tree_node *root = tree->root;
+
+    assert(tree != NULL);
+    assert(root != NULL);
+    assert(root->records[0] != NULL);
+
+    int *key = (int *) (root->records[0]->key);
+    int *val = (int *) (root->records[0]->value);
+    assert(key == &kv && *key == kv);
+    assert(val == &kv && *val == kv);
+
+    jnx_B_tree_delete(tree);
+    
+    printf("OK\n");
+}
+
 int main()
 {
 
     printf("Running B-tree tests...\n");
 
     test_new_node();
+    test_new_empty_tree();
+    test_insert_first_record_into_tree();
 
     printf("B-tree tests completed.\n");
 
