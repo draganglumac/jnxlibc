@@ -72,10 +72,10 @@ int find_index_of_child_for_key(jnx_B_tree *tree, jnx_B_tree_node *node, void *k
 void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, int index)
 {
     // Copy the RHS half of the records and children to new node
-    memcpy((void *) target->records, 
+    memmove((void *) target->records, 
            (const void*) (source->records + index),
            source->count - index - 1);
-    memcpy((void *) target->children,
+    memmove((void *) target->children,
            (const void*) (source->children + index + 1),
            source->count - index);
     
@@ -91,11 +91,11 @@ void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, 
 void shift_right_from_index(jnx_B_tree_node *node, int index)
 {
     // Shift records to the right of i by one position
-    memcpy((void *) (node->records + index),
+    memmove((void *) (node->records + index),
            (const void*) (node->records + index + 1),
            node->count - index + 1);
     // Shift children to the rigth of i + 1 by one position
-    memcpy((void *) (node->children + index + 1),
+    memmove((void *) (node->children + index + 1),
            (const void*) (node->children + index + 2),
            node->count - index + 1);
 }
@@ -189,6 +189,11 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
 
 jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
 {
+    if ( order <= 1 )
+    {
+        return NULL;
+    }
+
     jnx_B_tree *tree = calloc(1, sizeof(jnx_B_tree));
     
     tree->order = order;
@@ -200,6 +205,11 @@ jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
 
 void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value)
 {
+    if ( tree == NULL)
+    {
+        return;
+    }
+
     record *r = malloc(sizeof(record));
     r->key = key;
     r->value = value;
@@ -220,16 +230,31 @@ void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value)
 
 void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
 {
+    if ( tree == NULL )
+    {
+        return NULL;
+    }
+
     // Stub
     return NULL;
 }
 
 void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
 {
+    if ( tree == NULL )
+    {
+        return;
+    }
+
     // Stub
 }
 
 void jnx_B_tree_delete(jnx_B_tree* tree)
 {
+    if ( tree == NULL )
+    {
+        return;
+    }
+
     // Stub
 }
