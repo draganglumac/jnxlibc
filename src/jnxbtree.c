@@ -24,7 +24,7 @@
 jnx_B_tree_node *new_node(int order, int is_leaf)
 {
     jnx_B_tree_node *node = calloc(1, sizeof(jnx_B_tree_node));
-    
+
     node->count = 0; // just to be explicit, calloc will already zero the field
     node->is_leaf = is_leaf;
     node->records = calloc(2 * order, sizeof(record*));
@@ -38,11 +38,11 @@ int find_index_of_child_for_key(jnx_B_tree *tree, jnx_B_tree_node *node, void *k
     // Records are ordered so to make search efficient
     // (especially for arrays with lots of records)
     // we use binary chop, which is O(lg n) time.
-   
+
     int last_index = node->count - 1; 
     int offset = node->count / 2;
     int next_index = offset;
-    
+
     do
     {
         void *node_key = node->records[next_index]->key;
@@ -53,7 +53,7 @@ int find_index_of_child_for_key(jnx_B_tree *tree, jnx_B_tree_node *node, void *k
             // Found exact match
             return next_index;
         }
-        
+
         offset = offset / 2;
         if ( cf < 0 )
         {
@@ -73,12 +73,12 @@ void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, 
 {
     // Copy the RHS half of the records and children to new node
     memmove((void *) target->records, 
-           (const void*) (source->records + index),
-           source->count - index - 1);
+            (const void*) (source->records + index),
+            source->count - index - 1);
     memmove((void *) target->children,
-           (const void*) (source->children + index + 1),
-           source->count - index);
-    
+            (const void*) (source->children + index + 1),
+            source->count - index);
+
     // Zero out the old records and children in the old node
     bzero((void *) (source->records + index), source->count - index - 1);
     bzero((void *) (source->children + index + 1), source->count - index);
@@ -91,23 +91,24 @@ void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, 
 void shift_right_from_index(jnx_B_tree_node *node, int index)
 {
     // Shift records to the right of i by one position
-    memmove((void *) (node->records + index),
-           (const void*) (node->records + index + 1),
-           node->count - index + 1);
+    void *rdest = memmove((void *)(node->records + (index + 1)),
+            (const void*)(node->records + index),
+            (node->count - index) * sizeof(record *));
+    
     // Shift children to the rigth of i + 1 by one position
-    memmove((void *) (node->children + index + 1),
-           (const void*) (node->children + index + 2),
-           node->count - index + 1);
+    void *cdest = memmove((void *)(node->children + (index + 2)),
+            (const void*)(node->children + (index + 1)),
+            (node->count - index + 1) * sizeof(jnx_B_tree_node *));
 }
 
 int is_node_full(jnx_B_tree *tree, jnx_B_tree_node *node)
 {
-	if ( node->count == 2 * tree->order - 1 )
-	{
-		return 1;
-	}
+    if ( node->count == 2 * tree->order - 1 )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_index)
@@ -116,7 +117,7 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
 
     jnx_B_tree_node *temp = node->children[child_index];
     jnx_B_tree_node *sibling = new_node(tree_order, temp->is_leaf);
-    
+
     move_contents_from_index(temp, sibling, tree_order);
 
     // Now rearrange "node" to fit the new record and its children
@@ -124,7 +125,7 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     int i = find_index_of_child_for_key(tree, node, middle->key);
 
     shift_right_from_index(node, i);
-    
+
     // move the middle record up
     node->records[i] = middle;
     // attach newly created sibling
@@ -133,31 +134,70 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     node->count++;
 }
 
-int find_index_for_record(jnx_B_tree_node *node, record *r)
+int find_index_for_record(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 {
-    return 0;
+    if ( node->count == 0 )
+    {
+        return 0;
+    }
+   
+    int left_bound = 0;
+    int right_bound = node->count - 1;
+    int curr_index = (right_bound - left_bound) / 2; 
+
+    do
+    {
+        void *key = node->records[curr_index]->key;
+        int cf = tree->compare_function(key, r->key);
+        
+        if ( cf == 0 )
+        {
+            // Found exact match
+            return curr_index;
+        }
+
+        if ( cf < 0 )
+        {
+            left_bound = curr_index + 1;
+        }
+        else
+        {
+            right_bound = curr_index - 1;
+        }
+
+        curr_index = left_bound + (right_bound - left_bound) / 2;
+    }
+    while ( right_bound >= left_bound );
+
+    return curr_index;
 }
 
 void add_record_to_non_full_leaf(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 {
-    int size = node->count;
-   
-    if ( size == 0 )
+    int i = find_index_for_record(tree, node, r);
+
+    if ( node->records[i] == NULL )
     {
-        node->records[0] = r;
+        node->records[i] = r;
         node->count++;
     }
     else
     {
-        int i = find_index_for_record(node, r);
         void *key = node->records[i]->key;
-        
+
         if ( tree->compare_function(key, r->key) == 0 )
         {
+            // Replace the value only scenario
             free(node->records[i]);
             node->records[i] = r;
-        }     
-    }
+        }
+        else
+        {
+            shift_right_from_index(node, i);
+            node->records[i] = r;
+            node->count++;
+        }
+    }  
 }
 
 /* 
@@ -170,35 +210,35 @@ void add_record_to_non_full_leaf(jnx_B_tree *tree, jnx_B_tree_node *node, record
  */
 void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 {
-   if ( node->is_leaf )
-   {
-       add_record_to_non_full_leaf(tree, node, r);
-       return;
-   }
-   
-   int i = find_index_of_child_for_key(tree, node, r->key);
-   
-   if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
-   {
-       // Same key so just replace the old record with the new one
-       free(node->records[i]);
-       node->records[i] = r;
-       return;
-   }
+    if ( node->is_leaf )
+    {
+        add_record_to_non_full_leaf(tree, node, r);
+        return;
+    }
 
-   if ( is_node_full(tree, node->children[i]) )
-   {
-       split_child_at_index(tree, node, i);
-       
-       if ( tree->compare_function(node->records[i]->key, r->key) < 0 )
-       {
-           // We're going to the right of the record that moved up
-           i++;
-       }
-   }
+    int i = find_index_of_child_for_key(tree, node, r->key);
 
-   // Recurse down into the appropriate subtree
-   insert_into_tree_at_node(tree, node->children[i], r);
+    if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
+    {
+        // Same key so just replace the old record with the new one
+        free(node->records[i]);
+        node->records[i] = r;
+        return;
+    }
+
+    if ( is_node_full(tree, node->children[i]) )
+    {
+        split_child_at_index(tree, node, i);
+
+        if ( tree->compare_function(node->records[i]->key, r->key) < 0 )
+        {
+            // We're going to the right of the record that moved up
+            i++;
+        }
+    }
+
+    // Recurse down into the appropriate subtree
+    insert_into_tree_at_node(tree, node->children[i], r);
 }
 
 
@@ -228,7 +268,7 @@ void delete_node_and_subtrees(jnx_B_tree_node *node)
         }
     }
 
-    // Finallu, free the node itself
+    // Finally, free the node itself
     free(node);
 }
 
@@ -246,7 +286,7 @@ jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
     }
 
     jnx_B_tree *tree = calloc(1, sizeof(jnx_B_tree));
-    
+
     tree->order = order;
     tree->compare_function = callback;
     tree->root = new_node(tree->order, 1);

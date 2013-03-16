@@ -135,6 +135,61 @@ void test_insert_first_record_into_tree()
     printf("OK\n");
 }
 
+void print_tree(jnx_B_tree *tree)
+{
+    jnx_B_tree_node *root = tree->root;
+
+    printf("\t[DEBUG] root->count = %d\n", root->count);
+    int i;
+    for ( i = 0; i < root->count; i++ )
+    {
+        record *r = root->records[i];
+        
+        if ( r == NULL )
+        {
+            printf("\t[DEBUG] Record %d is NULL.\n", i);
+            continue;
+        }
+        
+        int *key = (int *)(root->records[i]->key);
+        int *val = (int *)(root->records[i]->value);
+
+        printf("\t[DEBUG] records[%d] = (%d, %d)\n", i, *key, *val);
+    }
+    printf("\t[DEBUG]\n");
+}
+
+void test_insert_records_into_leaf_root()
+{
+    printf("- test_insert_records_into_leaf_root: \n");
+    
+    jnx_B_tree *tree = jnx_B_tree_init(5, compare_pints);
+    int data[] = { 42, 12, 56, 3, 27, 100, 31, 1, 47 };
+    int i;
+
+    for ( i = 0; i < 9; i++ )
+    {
+        jnx_B_tree_add(tree, data + i, data + i);
+        print_tree(tree);
+    }
+
+    jnx_B_tree_node *root = tree->root;
+    assert(root->count == 9);
+    assert(compare_pints(root->records[0]->key, data + 7) == 0);
+    assert(compare_pints(root->records[1]->key, data + 3) == 0);
+    assert(compare_pints(root->records[2]->key, data + 1) == 0);
+    assert(compare_pints(root->records[3]->key, data + 4) == 0);
+    assert(compare_pints(root->records[4]->key, data + 6) == 0);
+    assert(compare_pints(root->records[5]->key, data + 0) == 0);
+    assert(compare_pints(root->records[6]->key, data + 8) == 0);
+    assert(compare_pints(root->records[7]->key, data + 2) == 0);
+    assert(compare_pints(root->records[8]->key, data + 5) == 0);
+
+    jnx_B_tree_delete(tree);
+
+    printf("OK\n"); 
+}
+
 int main()
 {
 
@@ -143,6 +198,7 @@ int main()
     test_new_node();
     test_new_empty_tree();
     test_insert_first_record_into_tree();
+    test_insert_records_into_leaf_root();
 
     printf("B-tree tests completed.\n");
 
