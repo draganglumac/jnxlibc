@@ -33,42 +33,6 @@ jnx_B_tree_node *new_node(int order, int is_leaf)
     return node;
 }
 
-int find_index_of_child_for_key(jnx_B_tree *tree, jnx_B_tree_node *node, void *key)
-{
-    // Records are ordered so to make search efficient
-    // (especially for arrays with lots of records)
-    // we use binary chop, which is O(lg n) time.
-
-    int last_index = node->count - 1; 
-    int offset = node->count / 2;
-    int next_index = offset;
-
-    do
-    {
-        void *node_key = node->records[next_index]->key;
-        int cf = tree->compare_function(node_key, key);
-
-        if ( cf == 0 )
-        {
-            // Found exact match
-            return next_index;
-        }
-
-        offset = offset / 2;
-        if ( cf < 0 )
-        {
-            next_index = next_index + offset;
-        }
-        else
-        {
-            next_index = next_index - offset;
-        }
-    }
-    while ( offset > 1 );
-
-    return next_index;
-}
-
 void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, int index)
 {
     // Copy the RHS half of the records and children to new node
@@ -111,31 +75,12 @@ int is_node_full(jnx_B_tree *tree, jnx_B_tree_node *node)
     return 0;
 }
 
-void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_index)
-{
-    int tree_order = tree->order;
-
-    jnx_B_tree_node *temp = node->children[child_index];
-    jnx_B_tree_node *sibling = new_node(tree_order, temp->is_leaf);
-
-    move_contents_from_index(temp, sibling, tree_order);
-
-    // Now rearrange "node" to fit the new record and its children
-    record *middle = temp->records[tree_order - 1];
-    int i = find_index_of_child_for_key(tree, node, middle->key);
-
-    shift_right_from_index(node, i);
-
-    // move the middle record up
-    node->records[i] = middle;
-    // attach newly created sibling
-    node->children[i + i] = sibling;
-    // finally, increment the record count in the current node
-    node->count++;
-}
-
 int find_index_for_record(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 {
+    // Records are ordered so to make search efficient
+    // (especially for arrays with lots of records)
+    // we use binary chop, which is O(lg n) time.
+    
     if ( node->count == 0 )
     {
         return 0;
@@ -170,6 +115,29 @@ int find_index_for_record(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
     while ( right_bound >= left_bound );
 
     return curr_index;
+}
+
+void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_index)
+{
+    int tree_order = tree->order;
+
+    jnx_B_tree_node *temp = node->children[child_index];
+    jnx_B_tree_node *sibling = new_node(tree_order, temp->is_leaf);
+
+    move_contents_from_index(temp, sibling, tree_order);
+
+    // Now rearrange "node" to fit the new record and its children
+    record *middle = temp->records[tree_order - 1];
+    int i = find_index_for_record(tree, node, middle);
+
+    shift_right_from_index(node, i);
+
+    // move the middle record up
+    node->records[i] = middle;
+    // attach newly created sibling
+    node->children[i + i] = sibling;
+    // finally, increment the record count in the current node
+    node->count++;
 }
 
 void add_record_to_non_full_leaf(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
@@ -216,7 +184,7 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
         return;
     }
 
-    int i = find_index_of_child_for_key(tree, node, r->key);
+    int i = find_index_for_record(tree, node, r->key);
 
     if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
     {

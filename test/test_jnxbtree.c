@@ -156,7 +156,6 @@ void print_tree(jnx_B_tree *tree)
 
         printf("\t[DEBUG] records[%d] = (%d, %d)\n", i, *key, *val);
     }
-    printf("\t[DEBUG]\n");
 }
 
 void test_insert_records_into_leaf_root()
@@ -170,9 +169,9 @@ void test_insert_records_into_leaf_root()
     for ( i = 0; i < 9; i++ )
     {
         jnx_B_tree_add(tree, data + i, data + i);
-        print_tree(tree);
     }
-
+    print_tree(tree);
+    
     jnx_B_tree_node *root = tree->root;
     assert(root->count == 9);
     assert(compare_pints(root->records[0]->key, data + 7) == 0);
@@ -187,7 +186,7 @@ void test_insert_records_into_leaf_root()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n"); 
+    printf("  OK\n"); 
 }
 
 int main()
