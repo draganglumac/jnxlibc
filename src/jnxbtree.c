@@ -133,16 +133,31 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     node->count++;
 }
 
-void add_record_to_non_full_leaf(jnx_B_tree_node *node, record *r)
+int find_index_for_record(jnx_B_tree_node *node, record *r)
+{
+    return 0;
+}
+
+void add_record_to_non_full_leaf(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 {
     int size = node->count;
-    
+   
     if ( size == 0 )
     {
         node->records[0] = r;
+        node->count++;
     }
-
-    node->count++;
+    else
+    {
+        int i = find_index_for_record(node, r);
+        void *key = node->records[i]->key;
+        
+        if ( tree->compare_function(key, r->key) == 0 )
+        {
+            free(node->records[i]);
+            node->records[i] = r;
+        }     
+    }
 }
 
 /* 
@@ -157,7 +172,7 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
 {
    if ( node->is_leaf )
    {
-       add_record_to_non_full_leaf(node, r);
+       add_record_to_non_full_leaf(tree, node, r);
        return;
    }
    

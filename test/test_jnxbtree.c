@@ -119,6 +119,16 @@ void test_insert_first_record_into_tree()
     int *val = (int *) (root->records[0]->value);
     assert(key == &kv && *key == kv);
     assert(val == &kv && *val == kv);
+    assert(root->count == 1);
+
+    // test replacing the value in i a single-record tree
+    int v2 = 24;
+    jnx_B_tree_add(tree, (void *) &kv, (void *) &v2);
+    key = (int *) (root->records[0]->key);
+    val = (int *) (root->records[0]->value);
+    assert(key == &kv && *key == kv);
+    assert(val == &v2 && *val == v2);
+    assert(root->count == 1);
 
     jnx_B_tree_delete(tree);
     
