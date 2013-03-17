@@ -65,6 +65,17 @@ void shift_right_from_index(jnx_B_tree_node *node, int index)
             (node->count - index + 1) * sizeof(jnx_B_tree_node *));
 }
 
+void shift_left_from_index(jnx_B_tree_node *node, int index)
+{
+    // Shift records to the right of i by one position
+    memmove((void *)(node->records + index - 1),
+            (const void*)(node->records + index),
+            (node->count - index) * sizeof(record *));
+    bzero((void *) (node->records + node->count - 1), sizeof(record *));
+    
+    // ToDo: Handle children when the time comes!
+}
+
 int is_node_full(jnx_B_tree *tree, jnx_B_tree_node *node)
 {
     if ( node->count == 2 * tree->order - 1 )
@@ -341,11 +352,23 @@ void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
         return;
     }
 
-    record *r = tree->root->records[0];
-    if ( tree->compare_function(r->key, key) == 0 )
+    if ( tree->root->is_leaf )
     {
-        tree->root->records[0] = NULL;
-        tree->root->count--;
+        jnx_B_tree_node *root = tree->root;
+
+        record *r = malloc(sizeof(record));
+        r->key = key;
+        r->value = key;
+        
+        int i = find_index_for_record(tree, root, r);
+        if ( tree->compare_function(root->records[i]->key, key) == 0 )
+        {
+            record *temp = root->records[i];
+            shift_left_from_index(root, i + 1);
+            root->count--;
+            
+            free(temp);
+        }
 
         free(r);
     }

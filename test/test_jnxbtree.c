@@ -18,10 +18,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 #include "../src/jnxbtree.h"
 
 extern jnx_B_tree_node* new_node(int, int);
+extern int find_index_of_child_for_key(jnx_B_tree *tree, jnx_B_tree_node *node, void *key);
 
 void test_new_node()
 {
@@ -672,6 +674,69 @@ void test_removing_record_from_single_record_tree()
     printf("OK\n");
 }
 
+char *node_contents(jnx_B_tree_node *node)
+{
+    char *contents = calloc(128, 1);
+
+    int i;
+    for ( i = 0; i < node->count; i++ )
+    {
+        char next[16];
+        sprintf(next, "%d ", *((int *) node->records[i]->key));
+        strcat(contents, next);
+    }
+
+    return contents;
+}
+
+void test_removing_record_from_leaf_root()
+{
+    printf("- test_removing_record_from_leaf_root:");
+
+    jnx_B_tree *tree = jnx_B_tree_init(5, compare_pints);
+    int data[] = { 42, 12, 56, 3, 27, 100, 31, 1, 47 };
+    int i;
+
+    
+    for ( i = 0; i < 9; i++ )
+    {
+        jnx_B_tree_add(tree, data + i, data + i);
+    }
+
+    // remove from the middle
+    jnx_B_tree_remove(tree, (void *) data);
+    assert(tree->root->count == 8);
+    char *contents = node_contents(tree->root);
+    assert(strcmp(contents, "1 3 12 27 31 47 56 100 ") == 0);
+    free(contents);
+
+    // remove first
+    jnx_B_tree_remove(tree, (void *) (data + 7));
+    assert(tree->root->count == 7);
+    contents = node_contents(tree->root);
+    assert(strcmp(contents, "3 12 27 31 47 56 100 ") == 0);
+    free(contents);
+
+    // remove last
+    jnx_B_tree_remove(tree, (void *) (data + 5));
+    assert(tree->root->count == 6);
+    contents = node_contents(tree->root);
+    assert(strcmp(contents, "3 12 27 31 47 56 ") == 0);
+    free(contents);
+
+    // remove record not in node 
+    int bob = -1;
+    jnx_B_tree_remove(tree, (void *) &bob);
+    assert(tree->root->count == 6);
+    contents = node_contents(tree->root);
+    assert(strcmp(contents, "3 12 27 31 47 56 ") == 0);
+    free(contents);
+
+    jnx_B_tree_delete(tree);
+
+    printf("OK\n");
+}
+
 int main()
 {
 
@@ -697,6 +762,7 @@ int main()
     // Remove tests
     test_removing_key_from_empty_tree();
     test_removing_record_from_single_record_tree();
+    test_removing_record_from_leaf_root();
 
     printf("B-tree tests completed.\n");
 
