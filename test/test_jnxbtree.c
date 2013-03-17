@@ -22,7 +22,7 @@
 #include "../src/jnxbtree.h"
 
 extern jnx_B_tree_node* new_node(int, int);
-extern int find_index_of_child_for_key(jnx_B_tree *tree, jnx_B_tree_node *node, void *key);
+Delta compression using up to 4 threads.
 
 void test_new_node()
 {
