@@ -19,7 +19,7 @@
 #include "jnxlist.h"
 #include <stdio.h>
 
-jnx_list* jnx_list_make(void)
+jnx_list* jnx_list_init(void)
 {
     jnx_list *list = malloc(sizeof(jnx_list));
     list->head = NULL;
