@@ -134,9 +134,9 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     jnx_B_tree_node *temp = node->children[child_index];
     jnx_B_tree_node *sibling = new_node(tree_order, temp->is_leaf);
     record *middle = temp->records[tree_order - 1];
-    
+
     move_contents_from_index(temp, sibling, tree_order);
-    
+
     // Now rearrange "node" to fit the new record and its children
     int i = find_index_for_record(tree, node, middle);
     if ( node->records[i] != NULL )
@@ -266,7 +266,7 @@ void *find_value_for_key_in_node(jnx_B_tree *tree, jnx_B_tree_node *node, void *
     r.key = key;
 
     int i =  find_index_for_record(tree, node, &r);
-    
+
     if ( node->records[i] != NULL )
     {
         if ( tree->compare_function(r.key, node->records[i]->key) == 0 )
@@ -336,12 +336,19 @@ void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
 
 void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
 {
-    if ( tree == NULL )
+    if ( tree == NULL || tree->root->count == 0 )
     {
         return;
     }
 
-    // Stub
+    record *r = tree->root->records[0];
+    if ( tree->compare_function(r->key, key) == 0 )
+    {
+        tree->root->records[0] = NULL;
+        tree->root->count--;
+
+        free(r);
+    }
 }
 
 void jnx_B_tree_delete(jnx_B_tree* tree)

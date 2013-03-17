@@ -635,6 +635,49 @@ void test_lookup_does_not_modify_tree()
     printf("OK\n"); 
 }
 
+void test_removing_key_from_empty_tree()
+{
+    printf("- test_removing_key_from_empty_tree:");
+
+    jnx_B_tree *tree = NULL;
+    int kv = 42;
+
+    jnx_B_tree_remove(tree, (void *) &kv);
+    assert(tree == NULL);
+
+    tree = jnx_B_tree_init(2, compare_pints);
+    jnx_B_tree_remove(tree, (void *) &kv);
+    assert(tree->root->count == 0);
+
+    jnx_B_tree_delete(tree);
+
+    printf("OK\n");
+}
+
+void test_removing_record_from_single_record_tree()
+{
+    printf("- test_removing_record_from_single_record_tree:");
+    
+    jnx_B_tree *tree = NULL;
+    int kv = 42, kv2 = 24;
+
+    tree = jnx_B_tree_init(2, compare_pints);
+    jnx_B_tree_add(tree, (void *) &kv, (void *) &kv);
+    assert(tree->root->count == 1);
+
+    jnx_B_tree_remove(tree, (void *) &kv2);
+    assert(tree->root->count == 1);
+    assert(compare_pints(tree->root->records[0]->key, (void *) &kv) == 0);
+
+    jnx_B_tree_remove(tree, (void *) &kv);
+    assert(tree->root->count == 0);
+    assert(tree->root->records[0] == NULL);
+
+    jnx_B_tree_delete(tree);
+    
+    printf("OK\n");
+}
+
 int main()
 {
 
@@ -656,6 +699,10 @@ int main()
     test_lookup_in_leaf_root();
     test_lookup_in_tree_of_depth_3();
     test_lookup_does_not_modify_tree();
+
+    // Remove tests
+    test_removing_key_from_empty_tree();
+    test_removing_record_from_single_record_tree();
 
     printf("B-tree tests completed.\n");
 
