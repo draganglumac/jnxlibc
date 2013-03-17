@@ -189,6 +189,43 @@ void test_insert_records_into_leaf_root()
     printf("  OK\n"); 
 }
 
+void test_growing_to_depth_of_2()
+{
+    printf("- test_growing_to_depth_of_2: ");
+
+    jnx_B_tree *tree = jnx_B_tree_init(3, compare_pints);
+    
+    int data[] = { 42, 12, 56, 3, 27, 100, 31, 1, 47 };
+    
+    int i;
+    for ( i = 0; i < 9; i++ )
+    {
+        jnx_B_tree_add(tree, data + i, data + i);
+    }
+
+    jnx_B_tree_node *root = tree->root;
+    assert(root->count == 1);
+    assert(compare_pints(root->records[0]->key, data + 4) == 0);
+
+    jnx_B_tree_node *first = root->children[0];
+    assert(first->count == 3);
+    assert(compare_pints(first->records[0]->key, data + 7) == 0);
+    assert(compare_pints(first->records[1]->key, data + 3) == 0);
+    assert(compare_pints(first->records[2]->key, data + 1) == 0);
+
+    jnx_B_tree_node *second = root->children[1];
+    assert(second->count == 5);
+    assert(compare_pints(second->records[0]->key, data + 6) == 0);
+    assert(compare_pints(second->records[1]->key, data + 0) == 0);
+    assert(compare_pints(second->records[2]->key, data + 8) == 0);
+    assert(compare_pints(second->records[3]->key, data + 2) == 0);
+    assert(compare_pints(second->records[4]->key, data + 5) == 0);
+   
+    jnx_B_tree_delete(tree);
+
+    printf("OK\n");
+}
+
 int main()
 {
 
@@ -198,6 +235,7 @@ int main()
     test_new_empty_tree();
     test_insert_first_record_into_tree();
     test_insert_records_into_leaf_root();
+    test_growing_to_depth_of_2();
 
     printf("B-tree tests completed.\n");
 

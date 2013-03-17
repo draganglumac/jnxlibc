@@ -38,18 +38,19 @@ void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, 
     // Copy the RHS half of the records and children to new node
     memmove((void *) target->records, 
             (const void*) (source->records + index),
-            source->count - index - 1);
+            (source->count / 2) * sizeof(record *));
     memmove((void *) target->children,
             (const void*) (source->children + index + 1),
-            source->count - index);
+            (source->count / 2 + 1) * sizeof(jnx_B_tree_node *));
 
     // Zero out the old records and children in the old node
-    bzero((void *) (source->records + index), source->count - index - 1);
-    bzero((void *) (source->children + index + 1), source->count - index);
+    int new_count = source->count / 2;
+//    bzero((void *) (source->records + index - 1), (new_count + 1) * sizeof(record *));
+//    bzero((void *) (source->children + index), (new_count + 1) * sizeof(jnx_B_tree_node *));
 
     // Adjust record counts in the nodes
-    source->count = source->count - index - 1;
-    target->count = source->count;
+    source->count = new_count;
+    target->count = new_count;
 }
 
 void shift_right_from_index(jnx_B_tree_node *node, int index)
@@ -58,7 +59,7 @@ void shift_right_from_index(jnx_B_tree_node *node, int index)
     void *rdest = memmove((void *)(node->records + (index + 1)),
             (const void*)(node->records + index),
             (node->count - index) * sizeof(record *));
-    
+
     // Shift children to the rigth of i + 1 by one position
     void *cdest = memmove((void *)(node->children + (index + 2)),
             (const void*)(node->children + (index + 1)),
@@ -80,12 +81,12 @@ int find_index_for_record(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
     // Records are ordered so to make search efficient
     // (especially for arrays with lots of records)
     // we use binary chop, which is O(lg n) time.
-    
+
     if ( node->count == 0 )
     {
         return 0;
     }
-   
+
     int left_bound = 0;
     int right_bound = node->count - 1;
     int curr_index = (right_bound - left_bound) / 2; 
@@ -94,7 +95,7 @@ int find_index_for_record(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
     {
         void *key = node->records[curr_index]->key;
         int cf = tree->compare_function(key, r->key);
-        
+
         if ( cf == 0 )
         {
             // Found exact match
@@ -125,17 +126,16 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     jnx_B_tree_node *sibling = new_node(tree_order, temp->is_leaf);
 
     move_contents_from_index(temp, sibling, tree_order);
-
+    
     // Now rearrange "node" to fit the new record and its children
     record *middle = temp->records[tree_order - 1];
     int i = find_index_for_record(tree, node, middle);
-
     shift_right_from_index(node, i);
 
     // move the middle record up
     node->records[i] = middle;
     // attach newly created sibling
-    node->children[i + i] = sibling;
+    node->children[i + 1] = sibling;
     // finally, increment the record count in the current node
     node->count++;
 }
@@ -184,14 +184,17 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
         return;
     }
 
-    int i = find_index_for_record(tree, node, r->key);
+    int i = find_index_for_record(tree, node, r);
 
-    if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
+    if ( i < node->count )
     {
-        // Same key so just replace the old record with the new one
-        free(node->records[i]);
-        node->records[i] = r;
-        return;
+        if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
+        {
+            // Same key so just replace the old record with the new one
+            free(node->records[i]);
+            node->records[i] = r;
+            return;
+        }
     }
 
     if ( is_node_full(tree, node->children[i]) )
@@ -280,8 +283,6 @@ void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value)
         tree->root->children[0] = temp;
 
         split_child_at_index(tree, tree->root, 0);
-
-        tree->root->count = 1;
     }
 
     insert_into_tree_at_node(tree, tree->root, r);
