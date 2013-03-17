@@ -18,9 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-
 #include "jnxbtree.h"
-
 
 jnx_B_tree_node *new_node(int order, int is_leaf)
 {
@@ -41,7 +39,7 @@ void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, 
             (const void*) (source->records + index),
             (source->count / 2) * sizeof(record *));
     memmove((void *) target->children,
-            (const void*) (source->children + index + 1),
+            (const void*) (source->children + index),
             (source->count / 2 + 1) * sizeof(jnx_B_tree_node *));
 
     // Zero out the old records and children in the old node
@@ -70,6 +68,16 @@ void shift_right_from_index(jnx_B_tree_node *node, int index)
 int is_node_full(jnx_B_tree *tree, jnx_B_tree_node *node)
 {
     if ( node->count == 2 * tree->order - 1 )
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+int is_node_empty(jnx_B_tree_node *node)
+{
+    if ( node == NULL || node->count == 0 )
     {
         return 1;
     }
@@ -217,7 +225,6 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
     insert_into_tree_at_node(tree, node->children[i], r);
 }
 
-
 void delete_node_and_subtrees(jnx_B_tree_node *node)
 {
     if ( node == NULL )
@@ -247,6 +254,30 @@ void delete_node_and_subtrees(jnx_B_tree_node *node)
     // Finally, free the node itself
     free(node);
 }
+
+void *find_value_for_key_in_node(jnx_B_tree *tree, jnx_B_tree_node *node, void *key)
+{
+    if ( is_node_empty(node) )
+    { 
+        return NULL;
+    }
+
+    record r;
+    r.key = key;
+
+    int i =  find_index_for_record(tree, node, &r);
+    
+    if ( node->records[i] != NULL )
+    {
+        if ( tree->compare_function(r.key, node->records[i]->key) == 0 )
+        {
+            return node->records[i]->value;
+        }
+    }
+
+    return find_value_for_key_in_node(tree, node->children[i], key);
+}
+
 
 /*
  * ===========================================
@@ -300,8 +331,7 @@ void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
         return NULL;
     }
 
-    // Stub
-    return NULL;
+    return find_value_for_key_in_node(tree, tree->root, key);
 }
 
 void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
@@ -322,5 +352,6 @@ void jnx_B_tree_delete(jnx_B_tree* tree)
     }
 
     delete_node_and_subtrees(tree->root);
+
     free(tree);
 }
