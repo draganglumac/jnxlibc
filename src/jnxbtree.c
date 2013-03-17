@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include "jnxbtree.h"
 
@@ -45,8 +46,8 @@ void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, 
 
     // Zero out the old records and children in the old node
     int new_count = source->count / 2;
-//    bzero((void *) (source->records + index - 1), (new_count + 1) * sizeof(record *));
-//    bzero((void *) (source->children + index), (new_count + 1) * sizeof(jnx_B_tree_node *));
+    bzero((void *) (source->records + index - 1), (new_count + 1) * sizeof(record *));
+    bzero((void *) (source->children + index), (new_count + 1) * sizeof(jnx_B_tree_node *));
 
     // Adjust record counts in the nodes
     source->count = new_count;
@@ -124,13 +125,17 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
 
     jnx_B_tree_node *temp = node->children[child_index];
     jnx_B_tree_node *sibling = new_node(tree_order, temp->is_leaf);
-
+    record *middle = temp->records[tree_order - 1];
+    
     move_contents_from_index(temp, sibling, tree_order);
     
     // Now rearrange "node" to fit the new record and its children
-    record *middle = temp->records[tree_order - 1];
     int i = find_index_for_record(tree, node, middle);
-    shift_right_from_index(node, i);
+    if ( node->records[i] != NULL )
+    {
+        // Shift only if the record slot is not empty
+        shift_right_from_index(node, i);
+    }
 
     // move the middle record up
     node->records[i] = middle;
