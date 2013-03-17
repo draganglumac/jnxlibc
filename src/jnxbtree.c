@@ -55,12 +55,12 @@ void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, 
 void shift_right_from_index(jnx_B_tree_node *node, int index)
 {
     // Shift records to the right of i by one position
-    void *rdest = memmove((void *)(node->records + (index + 1)),
+    memmove((void *)(node->records + (index + 1)),
             (const void*)(node->records + index),
             (node->count - index) * sizeof(record *));
 
     // Shift children to the rigth of i + 1 by one position
-    void *cdest = memmove((void *)(node->children + (index + 2)),
+    memmove((void *)(node->children + (index + 2)),
             (const void*)(node->children + (index + 1)),
             (node->count - index + 1) * sizeof(jnx_B_tree_node *));
 }
