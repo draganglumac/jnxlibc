@@ -28,7 +28,7 @@ struct foo{
 
 void looper()
 {
-    jnx_list *list = jnx_list_make();
+    jnx_list *list = jnx_list_init();
     int x,y;
     char alphabet = 'a';
     for(x = 0; x < 26; ++x)
@@ -59,7 +59,7 @@ void structo()
 {
     looper();
     printf("Ran loooper\n");
-    jnx_list *secondlist = jnx_list_make();
+    jnx_list *secondlist = jnx_list_init();
     struct foo *f = malloc(sizeof(foo));
     f->number = 10;
  
