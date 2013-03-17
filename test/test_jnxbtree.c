@@ -22,7 +22,6 @@
 #include "../src/jnxbtree.h"
 
 extern jnx_B_tree_node* new_node(int, int);
-Delta compression using up to 4 threads.
 
 void test_new_node()
 {
