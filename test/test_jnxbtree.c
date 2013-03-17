@@ -65,11 +65,6 @@ int compare_pints(void *first, void *second)
     }
 }
 
-void test_find_index_of_child_for_key()
-{
-
-}
-
 void test_new_empty_tree()
 {
     printf("- test_new_tree: ");
