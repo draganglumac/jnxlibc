@@ -65,7 +65,7 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
     int index = jnx_hash_string(key, hashmap->size);
     if (hashmap->data[index].used == 0) {
         // we need to setup the bucket
-        hashmap->data[index].bucket = jnx_list_make();
+        hashmap->data[index].bucket = jnx_list_init();
         //okay so bucket is ready to get given a KVP entry, so we'll use our bucket struct
         jnx_hash_bucket_el* current_bucket_el = malloc(sizeof(jnx_hash_bucket_el));
         current_bucket_el->origin_key = key;
