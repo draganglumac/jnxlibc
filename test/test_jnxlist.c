@@ -33,7 +33,7 @@ void looper()
     char alphabet = 'a';
     for(x = 0; x < 26; ++x)
     {
-        jnx_list_add(list,(void*)alphabet);
+        jnx_list_add(list,alphabet);
         jnx_term_printf_in_color((x % 8) + 1,"%c",alphabet);        
         
         if(x % 26 == 0)
