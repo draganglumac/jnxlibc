@@ -5,12 +5,36 @@ typedef struct jnx_file_kvp_node {
     char* value;
     struct jnx_file_kvp_node* next;
 }jnx_file_kvp_node;
-///Returns a callocd string with the file data, you will assume responsibility for freeing
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_file_read
+ *  Description:  Returns a calloced string that the user is responsible for freeing
+ * =====================================================================================
+ */
 char* jnx_file_read(char* path);
-///Returns a linkedlist of nodes that contain Key-value pairs from file
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_file_read_keyvaluepairs
+ *  Description:  Returns a linkedlist from kvp found in the target file
+ * =====================================================================================
+ */
 jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter);
-///Writes a string directly to a file
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_file_read_keyvaluepairs
+ *  Description:  Writes a string directly into a file, no fuss
+ * =====================================================================================
+ */
 int jnx_file_write(char* path, char* data);
-///Warning use with caution, will recursively delete everything within program permission
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_file_read_keyvaluepairs
+ *  Description:  Recursively deletes a path, use with caution
+ * =====================================================================================
+ */
 int jnx_file_recursive_delete(char* path);
 #endif
