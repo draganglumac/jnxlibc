@@ -28,7 +28,7 @@ for file in $filelist; do
     fi
 
     echo "Building $file"
-    `gcc $file ../src/*.c -o ${file:0:${#file}-2} -pthread`
+    `gcc $file ../src/*.c -o ${file:0:${#file}-2} -pthread -w`
     echo "Running $current"
     ./$current
     out=$?
