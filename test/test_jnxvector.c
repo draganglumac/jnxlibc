@@ -23,49 +23,41 @@
 typedef struct{
     int a;
 }teststruct;
-void test_creation()
-{
-    printf("test_creation\n");
-    jnx_vector *myvector = jnx_vector_init();
-    assert(myvector != NULL);
-    jnx_vector_delete(myvector);    
-}
-void test_push()
-{
-    printf("test_push\n");
-    jnx_vector *myvector = jnx_vector_init();
-    int x;
-    for(x = 0; x < 10; ++x)
-    {
-        jnx_vector_push(myvector,(void*)"A");
-    }
-    assert((char*)jnx_vector_pop(myvector) == "A");
-    jnx_vector_delete(myvector);    
-}
-void test_pop()
-{
-    printf("test_pop\n");
-    teststruct *d = malloc(sizeof(teststruct));
-    d->a = 10;
-    jnx_vector *myvector = jnx_vector_init();
-    jnx_vector_push(myvector,d);
 
-    teststruct *ret = (teststruct*)jnx_vector_pop(myvector);
-    assert(ret->a == d->a); 
-    jnx_vector_delete(myvector);    
-    free(d);
-}
-void test_fullrun()
+void test_complex_insertion()
 {
+    printf("test_complex_insertion\n");
     jnx_vector *vector = jnx_vector_init();
+    int spread[5] = { 1, 200, 412, 55, 65 };
+    //we are testing to see how well the vector handles distribution and reallocation on demand
     int x;
-    for(x = 0; x < 10; ++x)
+    while(x < 5)
     {
-        jnx_vector_push(vector,(void*)x);
+        teststruct *temp = malloc(sizeof(teststruct));
+        temp->a = x;
+        jnx_vector_insert_at(vector,spread[x],temp);
+        teststruct *res = vector->vector[spread[x]]->data;
+        assert(res->a == x);
+        ++x;
     }
-    for(x = 0; x < 10; ++x)
+    
+    jnx_vector_delete(vector);
+}
+void test_sequential_insertion()
+{
+    printf("test_sequential_insertion\n");
+    jnx_vector *vector = jnx_vector_init();
+
+    int x = 0;
+    do{
+        jnx_vector_insert(vector,x);
+        ++x;
+    }while(x < 100);
+    int y = 0;
+    while(y < vector->count)
     {
-        printf("%d\n",(int)vector->vector[x]->data);
+        assert(vector->vector[y]->data == y);
+        ++y;
     }
     jnx_vector_delete(vector);
 }
@@ -73,15 +65,29 @@ void test_insert_position()
 {
     printf("test_insert_position\n");
     jnx_vector *vector = jnx_vector_init();
-    
+    jnx_vector_insert_at(vector,15,"Test"); 
+    jnx_vector_insert_at(vector,100,"Derp"); 
+    assert(vector->vector[15]->used == 1);
+    assert(vector->vector[100]->used == 1);
+    assert((char*)vector->vector[15]->data == "Test");    
+    assert((char*)vector->vector[100]->data == "Derp");    
+}
+void test_remove_position()
+{
+    printf("test_remove_position\n");
+    jnx_vector *vector = jnx_vector_init();
+    jnx_vector_insert(vector,"Hello");
+    jnx_vector_insert_at(vector,90,"Bye");
+    jnx_vector_remove_at(vector,15);
+    assert(vector->vector[15]->data == NULL);
+    assert((char*)vector->vector[90]->data == "Bye");
     jnx_vector_delete(vector);
 }
 int main(int argc, char **argv)
 {
-    test_creation();
-    test_push();
-    test_pop();
-    test_fullrun();
     test_insert_position();
+    test_remove_position();
+    test_sequential_insertion();
+    test_complex_insertion();
     return 0;
 }

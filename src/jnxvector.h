@@ -18,6 +18,7 @@
 #ifndef __JNX_VECTOR_H__
 #define __JNX_VECTOR_H__
 typedef struct{
+    int used;
     void *data;
 }jnx_vector_record;
 typedef struct{
@@ -25,11 +26,44 @@ typedef struct{
     jnx_vector_record **vector;
 }jnx_vector;
 jnx_vector *jnx_vector_init(void);
-//The user is responsible for deleting pointers contained within the vector
-//Delete will only remove the vector structure and its datastructure components
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_vector_delete
+ *  Description:  Deletes the vector data structure and its buckets, user assumes data responsibility FOR DELETING DATA
+ * =====================================================================================
+ */
 void jnx_vector_delete(jnx_vector* vector);
-void jnx_vector_push(jnx_vector *vector, void *value);
-void jnx_vector_insert(jnx_vector *vector, int position, void *value);
-//returns the last element in the vector and removes it from the array
-void *jnx_vector_pop(jnx_vector *vector);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_vector_insert
+ *  Description:  Insert to the end of the vector 
+ * =====================================================================================
+ */
+void jnx_vector_insert(jnx_vector *vector, void *value);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_vector_insert_at
+ *  Description:  Inserts into a vector at position 
+ * =====================================================================================
+ */
+void jnx_vector_insert_at(jnx_vector *vector, int position, void *value);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_vector_last
+ *  Description:  removes the last element from the vector and returns its data
+ * =====================================================================================
+ */
+void *jnx_vector_last(jnx_vector *vector);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_vector_remove_at
+ *  Description:  Delete a vector positions data
+ * =====================================================================================
+ */
+void jnx_vector_remove_at(jnx_vector *vector,int position);
 #endif 
