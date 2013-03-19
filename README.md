@@ -1,6 +1,6 @@
 jnxlibc
 =======
-[![Build Status](https://travis-ci.org/[AlexsJones]/[jnxlibc].png)](https://travis-ci.org/[AlexsJones]/[jnxlibc])
+[![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
 
 C based common code library based on libjnx philosophy of general purpose & lightweight development.
 
