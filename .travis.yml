@@ -8,4 +8,5 @@ notifications:
         recipients:
             - alexsimonjones@gmail.com
             - dragan.glumac@gmail.com
-        on_failure: [always|never|change] # default: always
+        on_sucess: [never]
+        on_failure: [always] # default: always
