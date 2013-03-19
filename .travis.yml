@@ -2,7 +2,7 @@ language: c
 compiler:
     - gcc
     - clang
-script: ./configure && make && cd tests && ./run_tests
+script: ./configure && make && cd test && ./run_tests
 notifications:
     email:
         recipients:
