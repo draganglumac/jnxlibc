@@ -1,24 +1,43 @@
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
-//This is the maximum char buffer size, though is also linked to the read buffer size
+/*-----------------------------------------------------------------------------
+ *  This is the max char buffer size by default, also linked to read buffer size
+ *-----------------------------------------------------------------------------*/
 #define MAXBUFFER 4028
-/*
-This is designed to be a highly simplified C network function set
-Currently operates via char buffer transmission
-*/
-///function pointer callback
-///usage Callback = &function;
-///(*Callback)(receiver_buffer);
+/*-----------------------------------------------------------------------------
+ *  This is the function pointer to a callback function for received comms
+ *-----------------------------------------------------------------------------*/
 typedef void (*jnx_listener_callback)(char* msg);
-///Setup listener will create a socket listener on the selected port
-///Requires both (int) port and void(*Callback)(char*) functor as arguments
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_setup_listener
+ *  Description:  Using port and a function pointer callback it will create a listener
+ * =====================================================================================
+ */
 int jnx_setup_listener(int port, void (*Callback)(char*));
-///Cancels the socket and closes it
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_cancel_listener
+ *  Description:  Cancels the listener
+ * =====================================================================================
+ */
 void jnx_cancel_listener(void);
-///Send message uses a simple charbuffer over write socket to the desired host-port
-///Requires (char*)host (int) port and (char*) msg
-///It is not necessary to free host or message
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_send_message
+ *  Description:  given host port and message, will send via tcp to target
+ * =====================================================================================
+ */
 int jnx_send_message(char* host, int port, char* msg);
-///Returns the local machine ip for the selected interface
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_local_ip
+ *  Description:  Gets ip for the targetted interface
+ * =====================================================================================
+ */
 char* jnx_local_ip(char* interface);
 #endif

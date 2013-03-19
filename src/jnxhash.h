@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "jnxlist.h"
-///Our bucket element is the stored unit inside each hash link list
 typedef struct bucketel {
     const char* origin_key;
     const char* origin_value;
@@ -20,9 +19,43 @@ typedef struct hashmap {
     unsigned int used_up;
 } jnx_hashmap;
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_hash_delete
+ *  Description:  Deletes the hashelement lists and the hash elements, and the hashmap 
+ * =====================================================================================
+ */
 void jnx_hash_delete(jnx_hashmap* hashmap);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_hash_init
+ *  Description:  Returns a newly created hashmap and requires a init size i.e 1024
+ * =====================================================================================
+ */
 jnx_hashmap* jnx_hash_init(unsigned int size);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_hash_delete
+ *  Description:  Given a key and value this hashs and stores
+ * =====================================================================================
+ */
 int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_hash_get
+ *  Description:  Returns the value for a given key
+ * =====================================================================================
+ */
 void* jnx_hash_get(jnx_hashmap* hashmap, const char* key);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_hash_get
+ *  Description:  Allows access to the hash string function, returning and unsigned int
+ * =====================================================================================
+ */
 int jnx_hash_string(const char* input, int map_size);
 #endif

@@ -18,10 +18,22 @@
 #ifndef __JNX_LOG_H__
 #define __JNX_LOG_H__
 #include <stdarg.h>
-//setup the logger on a file path, will create the log if it doesn't exist
 typedef enum { LOGWNEWLINE,LOGNOCHANGE} logopt;
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_log_setup
+ *  Description:   Sets up a logger on the target filepath with options
+ * =====================================================================================
+ */
 int jnx_log_setup(char *path,logopt l);
-//log message to be written to the logger file
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  jnx_log
+ *  Description:  Logs a message to the logger path
+ * =====================================================================================
+ */
 void jnx_log(char *message);
 
 #endif

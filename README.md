@@ -7,7 +7,8 @@ Key features:
 - Simple listen/send over IP/port functions
 - Easy to use file read/write functions
 - Simple logger system
-- Several useful data structures (hash, list)
+- Terminal loading spinners and fancy colors done easily.
+- Several useful data structures (hash, list, vector, btree)
 
 
 #Installation
