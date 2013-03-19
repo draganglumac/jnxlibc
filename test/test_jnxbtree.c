@@ -644,7 +644,7 @@ void test_removing_key_from_empty_tree()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    printf(" OK\n");
 }
 
 void test_removing_record_from_single_record_tree()
@@ -668,7 +668,7 @@ void test_removing_record_from_single_record_tree()
 
     jnx_B_tree_delete(tree);
     
-    printf("OK\n");
+    printf(" OK\n");
 }
 
 char *int_node_contents(jnx_B_tree_node *node)
@@ -745,7 +745,7 @@ void test_removing_record_from_leaf_root()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    printf(" OK\n");
 }
 
 void print_char_tree_at_node(jnx_B_tree_node *node, char *(*str)(jnx_B_tree_node *), int level)
@@ -855,7 +855,7 @@ void test_simple_remove_from_leaf()
     
     char c = 'X';
 
-    jnx_B_tree_node *leaf = tree->root->children[3]->children[4]; 
+    jnx_B_tree_node *leaf = tree->root->children[1]->children[4]; 
     assert(leaf->count == 5);
 
     jnx_B_tree_remove(tree, (void *) &c);
@@ -865,6 +865,8 @@ void test_simple_remove_from_leaf()
     assert(leaf->count == 4);
 
     print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    jnx_B_tree_delete(tree);
 
     printf("  OK\n");
 }
@@ -897,6 +899,7 @@ int main()
     test_removing_key_from_empty_tree();
     test_removing_record_from_single_record_tree();
     test_removing_record_from_leaf_root();
+    test_simple_remove_from_leaf();
 
     printf("B-tree tests completed.\n");
 
