@@ -65,6 +65,17 @@ void shift_right_from_index(jnx_B_tree_node *node, int index)
             (node->count - index + 1) * sizeof(jnx_B_tree_node *));
 }
 
+void shift_left_from_index(jnx_B_tree_node *node, int index)
+{
+    // Shift records to the right of i by one position
+    memmove((void *)(node->records + index - 1),
+            (const void*)(node->records + index),
+            (node->count - index) * sizeof(record *));
+    bzero((void *) (node->records + node->count - 1), sizeof(record *));
+    
+    // ToDo: Handle children when the time comes!
+}
+
 int is_node_full(jnx_B_tree *tree, jnx_B_tree_node *node)
 {
     if ( node->count == 2 * tree->order - 1 )
@@ -134,9 +145,9 @@ void split_child_at_index(jnx_B_tree *tree, jnx_B_tree_node *node, int child_ind
     jnx_B_tree_node *temp = node->children[child_index];
     jnx_B_tree_node *sibling = new_node(tree_order, temp->is_leaf);
     record *middle = temp->records[tree_order - 1];
-    
+
     move_contents_from_index(temp, sibling, tree_order);
-    
+
     // Now rearrange "node" to fit the new record and its children
     int i = find_index_for_record(tree, node, middle);
     if ( node->records[i] != NULL )
@@ -266,7 +277,7 @@ void *find_value_for_key_in_node(jnx_B_tree *tree, jnx_B_tree_node *node, void *
     r.key = key;
 
     int i =  find_index_for_record(tree, node, &r);
-    
+
     if ( node->records[i] != NULL )
     {
         if ( tree->compare_function(r.key, node->records[i]->key) == 0 )
@@ -336,12 +347,31 @@ void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
 
 void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
 {
-    if ( tree == NULL )
+    if ( tree == NULL || tree->root->count == 0 )
     {
         return;
     }
 
-    // Stub
+    if ( tree->root->is_leaf )
+    {
+        jnx_B_tree_node *root = tree->root;
+
+        record *r = malloc(sizeof(record));
+        r->key = key;
+        r->value = key;
+        
+        int i = find_index_for_record(tree, root, r);
+        if ( tree->compare_function(root->records[i]->key, key) == 0 )
+        {
+            record *temp = root->records[i];
+            shift_left_from_index(root, i + 1);
+            root->count--;
+            
+            free(temp);
+        }
+
+        free(r);
+    }
 }
 
 void jnx_B_tree_delete(jnx_B_tree* tree)
