@@ -710,7 +710,6 @@ void test_removing_record_from_leaf_root()
     int data[] = { 42, 12, 56, 3, 27, 100, 31, 1, 47 };
     int i;
 
-    
     for ( i = 0; i < 9; i++ )
     {
         jnx_B_tree_add(tree, data + i, data + i);
@@ -783,49 +782,63 @@ void print_char_tree_at_node(jnx_B_tree_node *node, char *(*str)(jnx_B_tree_node
     }
 }
 
-void test_alphabet_tree()
+jnx_B_tree *build_alphabet_tree(int random)
 {
-    printf("- test_alphabet_tree: \n");
-   
-    printf("\n    Tree order: 3\n");
-
-    // Try in order insertion
-    printf("\n    Sorted Alphabet Insertion\n");
-    printf("    -------------------------\n");
     jnx_B_tree *tree = jnx_B_tree_init(3, compare_pchars);
 
     char *data = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     int i;
 
-    for ( i = 0; i < 26; i++ )
+    if ( random )
     {
-        jnx_B_tree_add(tree, (void *) (data + i), (void *) (data + i));
+        srand(time(0));
+
+        int* flags = calloc(26, sizeof(int));
+        for ( i = 0; i < 26; i++ )
+        {
+            int next;
+            do
+            {
+                next = rand() % 26;
+            }
+            while ( *(flags + next) == 1 );
+
+            flags[next] = 1;
+            jnx_B_tree_add(tree, (void *) (data + next), (void *) (data + next));
+        }
+
     }
+    else
+    {
+        for ( i = 0; i < 26; i++ )
+        {
+            jnx_B_tree_add(tree, (void *) (data + i), (void *) (data + i));
+        }
+    }    
+    return tree;
+}
+
+void test_alphabet_tree()
+{
+    printf("- test_alphabet_tree: \n");
+
+    jnx_B_tree *tree = build_alphabet_tree(0);
+
+    printf("\n    Tree order: 3\n");
+
+    // Try in order insertion
+    printf("\n    Sorted Alphabet Insertion\n");
+    printf("    -------------------------\n");
 
     print_char_tree_at_node(tree->root, char_node_contents, 1);
-    
+
     jnx_B_tree_delete(tree);
 
     // Try random insertion
     printf("\n    Randomised Alphabet Insertion\n");
     printf("    -----------------------------\n"); 
-    tree = jnx_B_tree_init(3, compare_pchars);
-    srand(time(0));
 
-    int* flags = calloc(26, sizeof(int));
-
-    for ( i = 0; i < 26; i++ )
-    {
-        int next;
-        do
-        {
-            next = rand() % 26;
-        }
-        while ( *(flags + next) == 1 );
-
-        flags[next] = 1;
-        jnx_B_tree_add(tree, (void *) (data + next), (void *) (data + next));
-    }
+    tree = build_alphabet_tree(1); 
 
     print_char_tree_at_node(tree->root, char_node_contents, 1);
     printf("\n");
