@@ -849,7 +849,7 @@ void test_alphabet_tree()
 
 void test_simple_remove_from_leaf()
 {
-    printf("- test_simple_remove_from_leaf:");
+    printf("- test_simple_remove_from_leaf:\n");
 
     jnx_B_tree *tree = build_alphabet_tree(0);
     
@@ -864,7 +864,9 @@ void test_simple_remove_from_leaf()
     assert(strcmp(contents, "VWYZ") == 0);
     assert(leaf->count == 4);
 
-    printf("OK\n");
+    print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    printf("  OK\n");
 }
 
 
