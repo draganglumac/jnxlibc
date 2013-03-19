@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (), 
+ *         Author: Dragan Glumac 
  *   Organization:  
  *
  * =====================================================================================
@@ -24,7 +24,6 @@
 #include "../src/jnxbtree.h"
 
 extern jnx_B_tree_node* new_node(int, int);
-extern int find_index_of_child_for_key(jnx_B_tree *tree, jnx_B_tree_node *node, void *key);
 
 void test_new_node()
 {
@@ -847,6 +846,27 @@ void test_alphabet_tree()
 
     printf("  OK\n"); 
 }
+
+void test_simple_remove_from_leaf()
+{
+    printf("- test_simple_remove_from_leaf:");
+
+    jnx_B_tree *tree = build_alphabet_tree(0);
+    
+    char c = 'X';
+
+    jnx_B_tree_node *leaf = tree->root->children[3]->children[4]; 
+    assert(leaf->count == 5);
+
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    char *contents = char_node_contents(leaf);
+    assert(strcmp(contents, "VWYZ") == 0);
+    assert(leaf->count == 4);
+
+    printf("OK\n");
+}
+
 
 int main()
 {

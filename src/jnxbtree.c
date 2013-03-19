@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (), 
+ *         Author: Dragan Glumac 
  *   Organization:  
  *
  * =====================================================================================
@@ -345,6 +345,30 @@ void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
     return find_value_for_key_in_node(tree, tree->root, key);
 }
 
+void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
+{
+    int i = find_index_for_record(tree, node, r);
+    
+    if ( node->is_leaf )
+    {
+        if ( node == tree->root || node->count >= tree->order)
+        {
+            if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
+            {
+                record *temp = node->records[i];
+                shift_left_from_index(node, i + 1);
+                node->count--;
+
+                free(temp);
+            }
+
+            return;
+        }
+    }
+
+    delete_record_from_node(tree, node->children[i], r);
+}
+
 void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
 {
     if ( tree == NULL || tree->root->count == 0 )
@@ -352,26 +376,13 @@ void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
         return;
     }
 
-    if ( tree->root->is_leaf )
-    {
-        jnx_B_tree_node *root = tree->root;
+    record *r = malloc(sizeof(record));
+    r->key = key;
+    r->value = key;
 
-        record *r = malloc(sizeof(record));
-        r->key = key;
-        r->value = key;
-        
-        int i = find_index_for_record(tree, root, r);
-        if ( tree->compare_function(root->records[i]->key, key) == 0 )
-        {
-            record *temp = root->records[i];
-            shift_left_from_index(root, i + 1);
-            root->count--;
-            
-            free(temp);
-        }
+    delete_record_from_node(tree, tree->root, r);
 
-        free(r);
-    }
+    free(r);
 }
 
 void jnx_B_tree_delete(jnx_B_tree* tree)
