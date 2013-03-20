@@ -371,7 +371,13 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
         }
     }
 
-    record *node_rec = node->records[i];
+    // Index 'i' returned by find_index_for_record is one of two things:
+    // - index of the record itself, if the key is in this node
+    // - index of the appropriate sutbree, if key is not in this node
+    // This unfortunately means that we have to guard against going past the
+    // records array upper bound which is at most node->count + 1
+    int rec_i = i < node->count ? i : node->count - 1; 
+    record *node_rec = node->records[rec_i];
     record *temp = NULL;
 
     if ( tree->compare_function(node_rec->key, r->key) == 0 )
