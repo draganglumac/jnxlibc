@@ -63,6 +63,36 @@ int compare_pchars(void *first, void *second)
     return (*f - *s);
 }
 
+char *int_node_contents(jnx_B_tree_node *node)
+{
+    char *contents = calloc(128, 1);
+
+    int i;
+    for ( i = 0; i < node->count; i++ )
+    {
+        char next[16];
+        sprintf(next, "%d ", *((int *) node->records[i]->key));
+        strcat(contents, next);
+    }
+
+    return contents;
+}
+
+char *char_node_contents(jnx_B_tree_node *node)
+{
+    char *contents = calloc(128, 1);
+
+    int i;
+    for ( i = 0; i < node->count; i++ )
+    {
+        char next[2];
+        sprintf(next, "%c", *((char *) node->records[i]->key));
+        strcat(contents, next);
+    }
+
+    return contents;
+}
+
 void test_new_empty_tree()
 {
     printf("- test_new_tree: ");
@@ -142,6 +172,7 @@ void test_insert_records_into_leaf_root()
     }
 
     jnx_B_tree_node *root = tree->root;
+    printf(">%s\n<", int_node_contents(root));
     assert(root->count == 9);
     assert(compare_pints(root->records[0]->key, data + 7) == 0);
     assert(compare_pints(root->records[1]->key, data + 3) == 0);
@@ -671,36 +702,6 @@ void test_removing_record_from_single_record_tree()
     printf(" OK\n");
 }
 
-char *int_node_contents(jnx_B_tree_node *node)
-{
-    char *contents = calloc(128, 1);
-
-    int i;
-    for ( i = 0; i < node->count; i++ )
-    {
-        char next[16];
-        sprintf(next, "%d ", *((int *) node->records[i]->key));
-        strcat(contents, next);
-    }
-
-    return contents;
-}
-
-char *char_node_contents(jnx_B_tree_node *node)
-{
-    char *contents = calloc(128, 1);
-
-    int i;
-    for ( i = 0; i < node->count; i++ )
-    {
-        char next[2];
-        sprintf(next, "%c", *((char *) node->records[i]->key));
-        strcat(contents, next);
-    }
-
-    return contents;
-}
-
 void test_removing_record_from_leaf_root()
 {
     printf("- test_removing_record_from_leaf_root:");
@@ -781,7 +782,7 @@ void print_char_tree_at_node(jnx_B_tree_node *node, char *(*str)(jnx_B_tree_node
     }
 }
 
-jnx_B_tree *build_alphabet_tree(int random)
+jnx_B_tree *build_alphabet_tree(int random, int midway_split)
 {
     jnx_B_tree *tree = jnx_B_tree_init(3, compare_pchars);
 
@@ -811,7 +812,15 @@ jnx_B_tree *build_alphabet_tree(int random)
     {
         for ( i = 0; i < 26; i++ )
         {
-            jnx_B_tree_add(tree, (void *) (data + i), (void *) (data + i));
+            if ( midway_split )
+            {
+                int j = (11 + i) % 26;
+                jnx_B_tree_add(tree, (void *) (data + j), (void *) (data + j));
+            }
+            else
+            {
+                jnx_B_tree_add(tree, (void *) (data + i), (void *) (data + i));
+            }
         }
     }    
     return tree;
@@ -821,7 +830,7 @@ void test_alphabet_tree()
 {
     printf("- test_alphabet_tree: \n");
 
-    jnx_B_tree *tree = build_alphabet_tree(0);
+    jnx_B_tree *tree = build_alphabet_tree(0, 0);
 
     printf("\n    Tree order: 3\n");
 
@@ -833,11 +842,21 @@ void test_alphabet_tree()
 
     jnx_B_tree_delete(tree);
 
+    // Try reverse order insertion
+    printf("\n    Midway Alphabet Insertion\n");
+    printf("    -------------------------\n");
+
+    tree = build_alphabet_tree(0, 1);
+
+    print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    jnx_B_tree_delete(tree);
+
     // Try random insertion
     printf("\n    Randomised Alphabet Insertion\n");
     printf("    -----------------------------\n"); 
 
-    tree = build_alphabet_tree(1); 
+    tree = build_alphabet_tree(1, 0); 
 
     print_char_tree_at_node(tree->root, char_node_contents, 1);
     printf("\n");
@@ -851,8 +870,8 @@ void test_simple_remove_from_leaf()
 {
     printf("- test_simple_remove_from_leaf:\n");
 
-    jnx_B_tree *tree = build_alphabet_tree(0);
-    
+    jnx_B_tree *tree = build_alphabet_tree(0, 0);
+
     char c = 'X';
 
     jnx_B_tree_node *leaf = tree->root->children[1]->children[4]; 
@@ -871,6 +890,36 @@ void test_simple_remove_from_leaf()
     printf("  OK\n");
 }
 
+void test_removing_record_from_inner_node()
+{
+    printf("- test_removing_record_from_inner_node:\n");
+
+    // Case when preceeding sibling has degree >= n
+    jnx_B_tree *tree = build_alphabet_tree(0, 1);    
+    char c = 'N';
+
+    jnx_B_tree_remove(tree, (void *) &c);
+    
+    jnx_B_tree_delete(tree);
+
+    // Case when succeeding sibling has degree >= n
+    tree = build_alphabet_tree(0, 1);
+    c = 'I';
+    
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    jnx_B_tree_delete(tree);
+
+    // Case when siblings have to be merged, i.e. both have degree < n
+    tree = build_alphabet_tree(0, 1);
+    c = 'F';
+
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    jnx_B_tree_delete(tree);
+
+    printf("  OK\n");
+}
 
 int main()
 {
@@ -900,6 +949,7 @@ int main()
     test_removing_record_from_single_record_tree();
     test_removing_record_from_leaf_root();
     test_simple_remove_from_leaf();
+    test_removing_record_from_inner_node();
 
     printf("B-tree tests completed.\n");
 
