@@ -868,7 +868,7 @@ void test_alphabet_tree()
 
 void test_simple_remove_from_leaf()
 {
-    printf("- test_simple_remove_from_leaf:\n");
+    printf("- test_simple_remove_from_leaf:");
 
     jnx_B_tree *tree = build_alphabet_tree(0, 0);
 
@@ -883,7 +883,7 @@ void test_simple_remove_from_leaf()
     assert(strcmp(contents, "VWYZ") == 0);
     assert(leaf->count == 4);
 
-    print_char_tree_at_node(tree->root, char_node_contents, 1);
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
 
     jnx_B_tree_delete(tree);
 
@@ -892,14 +892,25 @@ void test_simple_remove_from_leaf()
 
 void test_removing_record_from_inner_node()
 {
-    printf("- test_removing_record_from_inner_node:\n");
+    printf("- test_removing_record_from_inner_node:");
 
     // Case when preceeding sibling has degree >= n
     jnx_B_tree *tree = build_alphabet_tree(0, 1);    
     char c = 'N';
 
     jnx_B_tree_remove(tree, (void *) &c);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1); 
     
+    jnx_B_tree_node *root = tree->root;
+    assert(strcmp(char_node_contents(root->children[0]), "CFIM") == 0);
+    assert(root->children[0]->count == 4);
+    assert(root->children[0]->records[4] == NULL);
+   
+    assert(strcmp(char_node_contents(root->children[0]->children[3]), "JKL") == 0);
+    assert(root->children[0]->children[3]->count == 3);
+    assert(root->children[0]->children[3]->records[3] == NULL);
+
     jnx_B_tree_delete(tree);
 
     // Case when succeeding sibling has degree >= n
@@ -907,7 +918,18 @@ void test_removing_record_from_inner_node()
     c = 'I';
     
     jnx_B_tree_remove(tree, (void *) &c);
+    
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
 
+    root = tree->root;
+    assert(strcmp(char_node_contents(root->children[0]), "CFJN") == 0);
+    assert(root->children[0]->count == 4);
+    assert(root->children[0]->records[4] == NULL);
+   
+    assert(strcmp(char_node_contents(root->children[0]->children[3]), "KLM") == 0);
+    assert(root->children[0]->children[3]->count == 3);
+    assert(root->children[0]->children[3]->records[3] == NULL);
+    
     jnx_B_tree_delete(tree);
 
     // Case when siblings have to be merged, i.e. both have degree < n
@@ -916,6 +938,36 @@ void test_removing_record_from_inner_node()
 
     jnx_B_tree_remove(tree, (void *) &c);
 
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    root = tree->root;
+    assert(strcmp(char_node_contents(root->children[0]), "CIN") == 0);
+    assert(root->children[0]->count == 3);
+    assert(root->children[0]->records[3] == NULL);
+   
+    assert(strcmp(char_node_contents(root->children[0]->children[1]), "DEGH") == 0);
+    assert(root->children[0]->children[1]->count == 4);
+    assert(root->children[0]->children[1]->records[4] == NULL);
+
+    jnx_B_tree_delete(tree);
+
+    // Case when siblings have to be merged but on a boundary
+    tree = build_alphabet_tree(0, 1);
+    c = 'C';
+
+    jnx_B_tree_remove(tree, (void *) &c);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    root = tree->root;
+    assert(strcmp(char_node_contents(root->children[0]), "FIN") == 0);
+    assert(root->children[0]->count == 3);
+    assert(root->children[0]->records[3] == NULL);
+   
+    assert(strcmp(char_node_contents(root->children[0]->children[0]), "ABDE") == 0);
+    assert(root->children[0]->children[0]->count == 4);
+    assert(root->children[0]->children[0]->records[4] == NULL);
+    
     jnx_B_tree_delete(tree);
 
     printf("  OK\n");

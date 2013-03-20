@@ -75,8 +75,8 @@ void shift_left_from_index(jnx_B_tree_node *node, int index)
     
     memmove((void *)(node->children + index - 1),
             (const void*)(node->children + index),
-            (node->count - index) * sizeof(jnx_B_tree_node *));
-    bzero((void *) (node->children + node->count - 1), sizeof(jnx_B_tree_node *));
+            (node->count - index + 1) * sizeof(jnx_B_tree_node *));
+    bzero((void *) (node->children + node->count), sizeof(jnx_B_tree_node *));
 }
 
 int is_node_full(jnx_B_tree *tree, jnx_B_tree_node *node)
@@ -303,6 +303,7 @@ record *find_rightmost_record_in_subtree_at_node(jnx_B_tree_node *node)
 
     record *rec = temp->records[temp->count - 1];
     temp->records[temp->count - 1] = NULL;
+    temp->count--;
 
     return rec;
 }
@@ -318,7 +319,8 @@ record *find_leftmost_record_in_subtree_at_node(jnx_B_tree_node *node)
 
     record *rec = temp->records[0];
     temp->records[0] = NULL;
-    shift_right_from_index(temp, 1);
+    shift_left_from_index(temp, 1);
+    temp->count--;
 
     return rec;
 }
@@ -331,11 +333,11 @@ void merge_subtrees_around_index(jnx_B_tree_node *node, int index)
     first->records[first->count] = node->records[index];
     first->count++;
 
-    memmove((void *)(first->records + first->count + 1),
+    memmove((void *)(first->records + first->count),
             (const void *)(second->records),
             second->count * sizeof(record));
 
-    memmove((void *)(first->children + first->count + 1),
+    memmove((void *)(first->children + first->count),
             (const void *)(second->children),
             (second->count + 1) * sizeof(jnx_B_tree_node *));
     
@@ -344,7 +346,11 @@ void merge_subtrees_around_index(jnx_B_tree_node *node, int index)
 
     // Fill the gap in node by shifting records and children
     // that are to the right of index by 1 position to the left.
+    node->children[index + 1] = first;
     shift_left_from_index(node, index + 1);
+
+    // Removed the record from node so adjust the count
+    node->count--;
 
     // Delete the second node, i.e. free its memory on the heap
     free(second);
@@ -388,19 +394,24 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
         // add a level is to split a node at the previous, a record
         // in an inner node will have both left and right subtrees.
  
-        if ( node->children[i]->count >= tree->order )
+        if ( node->children[rec_i]->count >= tree->order )
         {
-            temp = find_rightmost_record_in_subtree_at_node(node->children[i]);
-            node->records[i] = temp;
+            temp = find_rightmost_record_in_subtree_at_node(node->children[rec_i]);
+            node->records[rec_i] = temp;
+
+            free(node_rec);
         }
-        else if ( node->children[i+1]->count >= tree->order )
+        else if ( node->children[rec_i + 1]->count >= tree->order )
         {
-            temp = find_leftmost_record_in_subtree_at_node(node->children[i + 1]);
-            node->records[i] = temp;
+            temp = find_leftmost_record_in_subtree_at_node(node->children[rec_i + 1]);
+            node->records[rec_i] = temp;
+
+            free(node_rec);
         }
         else
         {
-            merge_subtrees_around_index(node, i);
+            merge_subtrees_around_index(node, rec_i);
+            delete_record_from_node(tree, node->children[rec_i], r);
         }
        
         return;
