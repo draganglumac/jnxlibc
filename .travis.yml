@@ -1,0 +1,12 @@
+language: c
+compiler:
+    - gcc
+    - clang
+script: ./configure && make #&& cd test && ./run_tests note that run tests will manipulate the stdout and not show logs on travis correctly
+notifications:
+    email:
+        recipients:
+            - alexsimonjones@gmail.com
+            - dragan.glumac@gmail.com
+        on_sucess: [never]
+        on_failure: [always] # default: always
