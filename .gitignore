@@ -1,5 +1,6 @@
 # Compiled Object files
 # test/test_*
+docs
 *.slo
 *.lo
 *.o
