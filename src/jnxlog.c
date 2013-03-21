@@ -88,12 +88,19 @@ char* jnx_get_time()
 }
 void jnx_log(const char * format, ...)
 {
+    char output[2048];
     char buffer[1024];
+    strcpy(output,jnx_get_time());
+    strcat(output, ":");
+    strcat(output, __FILE__);
+    strcat(output, ": ");
     va_list ap;
     va_start(ap,format);
     vsprintf(buffer,format,ap);
     va_end(ap);
+    
+    strcat(output,buffer);
     pthread_t _thr;
-    pthread_create(&_thr,NULL,(void*)jnx_write_to_log,buffer);    
+    pthread_create(&_thr,NULL,(void*)jnx_write_to_log,output);    
 }
 
