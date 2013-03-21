@@ -90,7 +90,8 @@ void jnx_log(const char * format, ...)
 {
     char output[2048];
     char buffer[1024];
-    strcpy(output,jnx_get_time());
+    char *_time = jnx_get_time();
+    strcpy(output,_time);
     strcat(output, ":");
     strcat(output, __FILE__);
     strcat(output, ": ");
@@ -98,8 +99,8 @@ void jnx_log(const char * format, ...)
     va_start(ap,format);
     vsprintf(buffer,format,ap);
     va_end(ap);
-    
     strcat(output,buffer);
+    free(_time);
     pthread_t _thr;
     pthread_create(&_thr,NULL,(void*)jnx_write_to_log,output);    
 }
