@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (), 
+ *         Author: Dragan Glumac 
  *   Organization:  
  *
  * =====================================================================================
@@ -73,7 +73,10 @@ void shift_left_from_index(jnx_B_tree_node *node, int index)
             (node->count - index) * sizeof(record *));
     bzero((void *) (node->records + node->count - 1), sizeof(record *));
     
-    // ToDo: Handle children when the time comes!
+    memmove((void *)(node->children + index - 1),
+            (const void*)(node->children + index),
+            (node->count - index + 1) * sizeof(jnx_B_tree_node *));
+    bzero((void *) (node->children + node->count), sizeof(jnx_B_tree_node *));
 }
 
 int is_node_full(jnx_B_tree *tree, jnx_B_tree_node *node)
@@ -289,6 +292,134 @@ void *find_value_for_key_in_node(jnx_B_tree *tree, jnx_B_tree_node *node, void *
     return find_value_for_key_in_node(tree, node->children[i], key);
 }
 
+record *find_rightmost_record_in_subtree_at_node(jnx_B_tree_node *node)
+{
+    jnx_B_tree_node *temp = node;
+    
+    while ( temp->children[temp->count] != NULL )
+    {
+        temp = temp->children[temp->count];
+    }
+
+    record *rec = temp->records[temp->count - 1];
+    temp->records[temp->count - 1] = NULL;
+    temp->count--;
+
+    return rec;
+}
+
+record *find_leftmost_record_in_subtree_at_node(jnx_B_tree_node *node)
+{
+    jnx_B_tree_node *temp = node;
+    
+    while ( temp->children[0] != NULL )
+    {
+        temp = temp->children[0];
+    }
+
+    record *rec = temp->records[0];
+    temp->records[0] = NULL;
+    shift_left_from_index(temp, 1);
+    temp->count--;
+
+    return rec;
+}
+
+void merge_subtrees_around_index(jnx_B_tree_node *node, int index)
+{
+    jnx_B_tree_node *first = node->children[index];
+    jnx_B_tree_node *second = node->children[index + 1];
+
+    first->records[first->count] = node->records[index];
+    first->count++;
+
+    memmove((void *)(first->records + first->count),
+            (const void *)(second->records),
+            second->count * sizeof(record));
+
+    memmove((void *)(first->children + first->count),
+            (const void *)(second->children),
+            (second->count + 1) * sizeof(jnx_B_tree_node *));
+    
+    // Adjust the count
+    first->count += second->count;
+
+    // Fill the gap in node by shifting records and children
+    // that are to the right of index by 1 position to the left.
+    node->children[index + 1] = first;
+    shift_left_from_index(node, index + 1);
+
+    // Removed the record from node so adjust the count
+    node->count--;
+
+    // Delete the second node, i.e. free its memory on the heap
+    free(second);
+}
+
+void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
+{
+    int i = find_index_for_record(tree, node, r);
+    
+    if ( node->is_leaf )
+    {
+        if ( node == tree->root || node->count >= tree->order)
+        {
+            if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
+            {
+                record *temp = node->records[i];
+                shift_left_from_index(node, i + 1);
+                node->count--;
+
+                free(temp);
+            }
+
+            return;
+        }
+    }
+
+    // Index 'i' returned by find_index_for_record is one of two things:
+    // - index of the record itself, if the key is in this node
+    // - index of the appropriate sutbree, if key is not in this node
+    // This unfortunately means that we have to guard against going past the
+    // records array upper bound which is at most node->count + 1
+    int rec_i = i < node->count ? i : node->count - 1; 
+    record *node_rec = node->records[rec_i];
+    record *temp = NULL;
+
+    if ( tree->compare_function(node_rec->key, r->key) == 0 )
+    {
+        // It is safe not to check for NULL children here because
+        // we are in an internal node, and since by definition
+        // a B-tree grows from the leaves up, and the only way to
+        // add a level is to split a node at the previous, a record
+        // in an inner node will have both left and right subtrees.
+ 
+        if ( node->children[rec_i]->count >= tree->order )
+        {
+            temp = find_rightmost_record_in_subtree_at_node(node->children[rec_i]);
+            node->records[rec_i] = temp;
+
+            free(node_rec);
+        }
+        else if ( node->children[rec_i + 1]->count >= tree->order )
+        {
+            temp = find_leftmost_record_in_subtree_at_node(node->children[rec_i + 1]);
+            node->records[rec_i] = temp;
+
+            free(node_rec);
+        }
+        else
+        {
+            merge_subtrees_around_index(node, rec_i);
+            delete_record_from_node(tree, node->children[rec_i], r);
+        }
+       
+        return;
+    }
+
+    delete_record_from_node(tree, node->children[i], r);
+}
+
 
 /*
  * ===========================================
@@ -352,26 +483,13 @@ void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
         return;
     }
 
-    if ( tree->root->is_leaf )
-    {
-        jnx_B_tree_node *root = tree->root;
+    record *r = malloc(sizeof(record));
+    r->key = key;
+    r->value = key;
 
-        record *r = malloc(sizeof(record));
-        r->key = key;
-        r->value = key;
-        
-        int i = find_index_for_record(tree, root, r);
-        if ( tree->compare_function(root->records[i]->key, key) == 0 )
-        {
-            record *temp = root->records[i];
-            shift_left_from_index(root, i + 1);
-            root->count--;
-            
-            free(temp);
-        }
+    delete_record_from_node(tree, tree->root, r);
 
-        free(r);
-    }
+    free(r);
 }
 
 void jnx_B_tree_delete(jnx_B_tree* tree)
