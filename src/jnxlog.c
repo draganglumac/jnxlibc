@@ -95,6 +95,5 @@ void jnx_log(const char * format, ...)
     va_end(ap);
     pthread_t _thr;
     pthread_create(&_thr,NULL,(void*)jnx_write_to_log,buffer);    
-
 }
 

@@ -18,12 +18,10 @@
 #ifndef __JNX_LOG_H__
 #define __JNX_LOG_H__
 #include <stdarg.h>
-typedef enum { LOGWNEWLINE,LOGNOCHANGE} logopt;
-
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  jnx_log_setup
- *  Description:   Sets up a logger on the target filepath with options
+ *  Description:   Sets up a logger on the target filepath
  * =====================================================================================
  */
 int jnx_log_setup(char *path);
