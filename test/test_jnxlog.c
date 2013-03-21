@@ -24,8 +24,9 @@ int main(int args, char **argv)
 {
     printf("Running test for jnxlog\n");
 
-    assert(jnx_log_setup("test.log",LOGWNEWLINE) == 0);
-    jnx_log("Hello from log!");
+    assert(jnx_log_setup("test.log") == 0);
+    jnx_log("Hello from log!\n");
+    jnx_log("Hello from log with %s %s formatted args %d\n","lots","of",3);
     system("rm test.log");
 
     return 0;

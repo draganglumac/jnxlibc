@@ -26,7 +26,7 @@ typedef enum { LOGWNEWLINE,LOGNOCHANGE} logopt;
  *  Description:   Sets up a logger on the target filepath with options
  * =====================================================================================
  */
-int jnx_log_setup(char *path,logopt l);
+int jnx_log_setup(char *path);
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -34,6 +34,6 @@ int jnx_log_setup(char *path,logopt l);
  *  Description:  Logs a message to the logger path
  * =====================================================================================
  */
-void jnx_log(char *message);
+void jnx_log(const char * format, ...);
 
 #endif

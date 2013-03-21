@@ -20,7 +20,6 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include "jnxlog.h"
-#include "jnxlist.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -28,7 +27,6 @@
 #include <unistd.h>
 pthread_mutex_t _locker;
 char *log_path = NULL;
-logopt _logoption;
 
 void jnx_write_to_log(char *message)
 {
@@ -39,24 +37,13 @@ void jnx_write_to_log(char *message)
         pthread_mutex_unlock(&_locker);
         return;
     };
-    switch(_logoption){
-        case LOGWNEWLINE:
-            fprintf(fp,"%s\n",(char*)message); 
-            break;
-        case LOGNOCHANGE:
-            fprintf(fp,"%s",(char*)message);
-            break;
-        default:
-            fprintf(fp,"%s",(char*)message);
-    }
+    fprintf(fp,"%s",(char*)message);
     fclose(fp);
     //free our string
-    free(message);
     pthread_mutex_unlock(&_locker);
 }
-int jnx_log_setup(char *path,logopt l)
+int jnx_log_setup(char *path)
 {
-    _logoption = l; 
     struct stat s;
     int err = stat(path,&s);
     if(-1 == err)
@@ -99,21 +86,15 @@ char* jnx_get_time()
     snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
     return buf;
 }
-void jnx_log(char *message)
+void jnx_log(const char * format, ...)
 {
-    char *output = (char*)malloc(1024);
-    char *timer = jnx_get_time();
-    //to accomodate the extra colon we want to add to delimit time against message
-    strcpy(output,timer);
-    free(timer);
-    strcat(output," : ");
-    strcat(output,__FILE__);
-    strcat(output," : ");
-    strcat(output,message);
-    //the thread target function is responsible for freeing the string
-    output = realloc(output,(strlen(output) + strlen(message)+1));
+    char buffer[1024];
+    va_list ap;
+    va_start(ap,format);
+    vsprintf(buffer,format,ap);
+    va_end(ap);
     pthread_t _thr;
-    pthread_create(&_thr,NULL,(void*)jnx_write_to_log,output);    
+    pthread_create(&_thr,NULL,(void*)jnx_write_to_log,buffer);    
 
 }
 
