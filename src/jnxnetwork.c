@@ -25,13 +25,13 @@
 #define false 0
 
 int running = true;
-void jnx_cancel_listener(void)
+void jnx_network_cancel_listener(void)
 {
     if (running) {
         running = false;
     }
 }
-int jnx_setup_listener(int port, void (*jnx_listener_callback)(char*))
+int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(char*))
 {
     int sockfd, newsockfd, clilen;
     char buffer[MAXBUFFER];
@@ -55,13 +55,13 @@ int jnx_setup_listener(int port, void (*jnx_listener_callback)(char*))
         exit(1);
     }
     if (bind(sockfd, (struct sockaddr*) &serv_addr,
-             sizeof(serv_addr)) < 0) {
+                sizeof(serv_addr)) < 0) {
         perror("ERROR on binding");
         exit(1);
     }
     /* Now start listening for the clients, here process will
-    * go in sleep mode and will wait for the incoming connection
-    */
+     * go in sleep mode and will wait for the incoming connection
+     */
     printf("Starting listener...\n");
     while (running) {
         clilen = sizeof(cli_addr);
@@ -69,7 +69,7 @@ int jnx_setup_listener(int port, void (*jnx_listener_callback)(char*))
 
         /* Accept actual connection from the client */
         newsockfd = accept(sockfd, (struct sockaddr*) &cli_addr,
-                           (socklen_t*)&clilen);
+                (socklen_t*)&clilen);
         if (newsockfd < 0) {
             perror("ERROR on accept");
             exit(1);
@@ -87,12 +87,12 @@ int jnx_setup_listener(int port, void (*jnx_listener_callback)(char*))
             perror("ERROR writing to socket");
             exit(1);
         }
-        (*jnx_listener_callback)(buffer);      //function pointer callback
+        (*jnx_network_listener_callback)(buffer);      //function pointer callback
     }
     close(newsockfd);
     return 0;
 }
-int jnx_send_message(char* host, int port, char* msg)
+int jnx_network_send_message(char* host, int port, char* msg)
 {
     struct hostent* send_server;
     struct sockaddr_in send_serv_addr;
@@ -136,15 +136,69 @@ int jnx_send_message(char* host, int port, char* msg)
     }
     bzero(send_transmission_buffer, MAXBUFFER);
     close(send_fd);
-
     printf("Message sent %s\n", send_transmission_buffer);
-    printf("Freeing resources...\n");
-    //Note: Host is also taken care of gethostbyname
-    //Note: typically the memory returned by gethostbyaddr
-    //will be allocated and managed by the sockets library you are using - you don't free it yourself.
     return 0;
 }
-char* jnx_local_ip(char* interface)
+void jnx_network_send_broadcast(int port,char *broadcastgroup,char *message)
+{
+    struct sockaddr_in addr;
+    int fd;
+    if((fd=socket(AF_INET,SOCK_DGRAM,0)) < 0){
+        perror("broadcast");
+        exit(1);
+    }
+    memset(&addr,0,sizeof(addr));
+    addr.sin_family=AF_INET;
+    addr.sin_addr.s_addr=inet_addr(broadcastgroup);
+    addr.sin_port=htons(port);
+    if(sendto(fd,message,strlen(message),0,(struct sockaddr *) &addr, sizeof(addr)) < 0)
+    {
+        perror("sendto");
+        exit(1);
+    }
+}
+void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_network_broadcast_callback)(char*))
+{
+    struct sockaddr_in addr;
+    int fd, nbytes, addrlen;
+    struct ip_mreq mreq;
+    char buffer[MAXBUFFER];
+    u_int yes=1;
+    if((fd=socket(AF_INET,SOCK_DGRAM,0)) < 0){
+        perror("broadcast listener");
+        exit(1);
+    }
+    if(setsockopt(fd,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(yes)) < 0)
+    {
+        perror("broadcast listener setsockopts");
+        exit(1);
+    }
+    memset(&addr,0,sizeof(addr));
+    addr.sin_family=AF_INET;
+    addr.sin_addr.s_addr=htonl(INADDR_ANY); /* N.B.: differs from sender */
+    addr.sin_port=htons(port);
+    if(bind(fd,(struct sockaddr*)&addr,sizeof(addr)) < 0){
+        perror("broadcast listener bind");
+        exit(1);
+    }
+    mreq.imr_multiaddr.s_addr=inet_addr(broadcastgroup);
+    mreq.imr_interface.s_addr=htonl(INADDR_ANY);
+    if(setsockopt(fd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq)) < 0)
+    {
+        perror("broadcast listener setsockopt");
+        exit(1);
+    }    
+    while(1)
+    {
+        addrlen=sizeof(addr);
+        if((nbytes=recvfrom(fd,buffer,MAXBUFFER,0,(struct sockaddr*)&addr,(socklen_t*)&addrlen)) < 0){
+            perror("broadcast listener recvfrom");
+            exit(1);
+        }
+        (*jnx_network_broadcast_callback)(buffer);
+    }
+}
+char* jnx_network_local_ip(char* interface)
 {
     int fd;
     char* ipadd = NULL;
