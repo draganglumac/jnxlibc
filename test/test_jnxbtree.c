@@ -22,6 +22,7 @@
 #include <time.h>
 
 #include "../src/jnxbtree.h"
+#include "../src/jnxterm.h"
 
 extern jnx_B_tree_node* new_node(int, int);
 
@@ -44,7 +45,7 @@ void test_new_node()
     assert(n->is_leaf == 1);
     free(n);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 int compare_pints(void *first, void *second)
@@ -122,7 +123,7 @@ void test_new_empty_tree()
     assert(tree->root->count == 0);
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_insert_first_record_into_tree()
@@ -155,7 +156,7 @@ void test_insert_first_record_into_tree()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_insert_records_into_leaf_root()
@@ -172,7 +173,6 @@ void test_insert_records_into_leaf_root()
     }
 
     jnx_B_tree_node *root = tree->root;
-    printf(">%s\n<", int_node_contents(root));
     assert(root->count == 9);
     assert(compare_pints(root->records[0]->key, data + 7) == 0);
     assert(compare_pints(root->records[1]->key, data + 3) == 0);
@@ -186,7 +186,7 @@ void test_insert_records_into_leaf_root()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n"); 
 }
 
 void test_growing_to_depth_of_2()
@@ -223,7 +223,7 @@ void test_growing_to_depth_of_2()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_spliting_a_leaf_node_that_is_not_root()
@@ -264,7 +264,7 @@ void test_spliting_a_leaf_node_that_is_not_root()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_growing__to_depth_of_3()
@@ -345,7 +345,7 @@ void test_growing__to_depth_of_3()
     
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_splitting_inner_node()
@@ -449,7 +449,7 @@ void test_splitting_inner_node()
     
     jnx_B_tree_delete(tree);
     
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_lookup_in_empty_tree()
@@ -464,7 +464,7 @@ void test_lookup_in_empty_tree()
 
     jnx_B_tree_delete(tree);
     
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_lookup_in_single_record_tree()
@@ -484,7 +484,7 @@ void test_lookup_in_single_record_tree()
 
     jnx_B_tree_delete(tree);
     
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_lookup_in_leaf_root()
@@ -515,7 +515,7 @@ void test_lookup_in_leaf_root()
    
     jnx_B_tree_delete(tree);
 
-    printf("OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n"); 
 }
 
 void test_lookup_in_tree_of_depth_3()
@@ -546,7 +546,7 @@ void test_lookup_in_tree_of_depth_3()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_lookup_does_not_modify_tree()
@@ -656,7 +656,7 @@ void test_lookup_does_not_modify_tree()
     
     jnx_B_tree_delete(tree);
 
-    printf("OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n"); 
 }
 
 void test_removing_key_from_empty_tree()
@@ -675,7 +675,7 @@ void test_removing_key_from_empty_tree()
 
     jnx_B_tree_delete(tree);
 
-    printf(" OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 
 void test_removing_record_from_single_record_tree()
@@ -699,7 +699,7 @@ void test_removing_record_from_single_record_tree()
 
     jnx_B_tree_delete(tree);
     
-    printf(" OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 
 void test_removing_record_from_leaf_root()
@@ -746,7 +746,7 @@ void test_removing_record_from_leaf_root()
 
     jnx_B_tree_delete(tree);
 
-    printf(" OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 
 void print_char_tree_at_node(jnx_B_tree_node *node, char *(*str)(jnx_B_tree_node *), int level)
@@ -858,7 +858,7 @@ void test_mixed_tree()
 
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n"); 
 }
 
 void test_alphabet_tree()
@@ -898,7 +898,7 @@ void test_alphabet_tree()
 
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n"); 
 }
 
 void test_simple_remove_from_leaf()
@@ -922,7 +922,7 @@ void test_simple_remove_from_leaf()
 
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 
 void test_removing_record_from_inner_node()
@@ -1005,7 +1005,7 @@ void test_removing_record_from_inner_node()
     
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 
 void test_removing_key_from_child_that_has_too_few_records()
@@ -1078,7 +1078,7 @@ void test_removing_key_from_child_that_has_too_few_records()
 //    printf("----------------------------------------------\n");
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 
 void test_removing_key_from_root()
@@ -1123,7 +1123,7 @@ void test_removing_key_from_root()
 //    printf("----------------------------------------------\n");
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 
 int main()
@@ -1140,7 +1140,7 @@ int main()
     test_spliting_a_leaf_node_that_is_not_root();
     test_growing__to_depth_of_3();
     test_splitting_inner_node();
-    test_alphabet_tree();
+//    test_alphabet_tree();
 
     // Lookup tests
     test_lookup_in_empty_tree();
@@ -1155,7 +1155,7 @@ int main()
     test_removing_record_from_leaf_root();
     test_simple_remove_from_leaf();
     test_removing_record_from_inner_node();
-    test_mixed_tree();
+//    test_mixed_tree();
     test_removing_key_from_child_that_has_too_few_records();
     test_removing_key_from_root();
 
