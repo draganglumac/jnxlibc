@@ -232,6 +232,14 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
     {
         split_child_at_index(tree, node, i);
 
+        if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
+        {
+            // Case when the node that moved up is actually the node we want to insert
+            free(node->records[i]);
+            node->records[i] = r;
+            return;
+        }
+
         if ( tree->compare_function(node->records[i]->key, r->key) < 0 )
         {
             // We're going to the right of the record that moved up
