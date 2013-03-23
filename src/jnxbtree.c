@@ -335,7 +335,7 @@ void merge_subtrees_around_index(jnx_B_tree_node *node, int index)
 
     memmove((void *)(first->records + first->count),
             (const void *)(second->records),
-            second->count * sizeof(record));
+            second->count * sizeof(record *));
 
     memmove((void *)(first->children + first->count),
             (const void *)(second->children),
