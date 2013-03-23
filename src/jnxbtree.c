@@ -417,6 +417,13 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
         return;
     }
 
+    if ( node->children[i]->count < tree->order )
+    {
+        // ToDo: Restructure the child
+        // 3a) Child has a sibling that has at least tree->order records
+        // 3b) Child has no siblings that have at least tree->order records
+    }
+
     delete_record_from_node(tree, node->children[i], r);
 }
 
