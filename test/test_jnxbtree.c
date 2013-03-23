@@ -833,6 +833,34 @@ jnx_B_tree *build_alphabet_tree(int random, int midway_split)
     return tree;
 }
 
+jnx_B_tree *build_mixed_tree(int random, int midway_split)
+{
+    jnx_B_tree *tree = jnx_B_tree_init(2, compare_pchars);
+
+    char *data = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    populate_char_tree(tree, data, 36, random, midway_split);
+
+    return tree;
+}
+
+void test_mixed_tree()
+{
+    printf("- test_mixed_tree:\n");
+
+    // Try reverse order insertion
+    printf("\n    Midway Mixed Insertion\n");
+    printf("    ----------------------\n");
+
+    jnx_B_tree *tree = build_mixed_tree(0, 1);
+
+    print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    jnx_B_tree_delete(tree);
+
+    printf("  OK\n"); 
+}
+
 void test_alphabet_tree()
 {
     printf("- test_alphabet_tree: \n");
@@ -984,7 +1012,32 @@ void test_removing_key_from_child_that_has_too_few_records()
 {
     printf("- test_removing_key_from_child_that_has_too_few_records:\n");
 
-    jnx_B_tree *tree = build_alphabet_tree(0, 1);
+    jnx_B_tree *tree = build_mixed_tree(0, 1);
+    char c = 'D';
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    print_char_tree_at_node(tree->root, char_node_contents, 1);
+    printf("----------------------------------------------\n");
+    
+    jnx_B_tree_delete(tree);
+
+    tree = build_mixed_tree(0, 1);
+    c = 'H';
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    print_char_tree_at_node(tree->root, char_node_contents, 1);
+    printf("----------------------------------------------\n");
+    
+    jnx_B_tree_delete(tree);
+
+    tree = build_mixed_tree(0, 1);
+    c = '9';
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    print_char_tree_at_node(tree->root, char_node_contents, 1);
+    printf("----------------------------------------------\n");
+    
+    jnx_B_tree_delete(tree);
 
     printf("  OK\n");
 }
@@ -1018,6 +1071,7 @@ int main()
     test_removing_record_from_leaf_root();
     test_simple_remove_from_leaf();
     test_removing_record_from_inner_node();
+    test_mixed_tree();
     test_removing_key_from_child_that_has_too_few_records();
 
     printf("B-tree tests completed.\n");

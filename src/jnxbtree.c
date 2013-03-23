@@ -325,8 +325,10 @@ record *find_leftmost_record_in_subtree_at_node(jnx_B_tree_node *node)
     return rec;
 }
 
-void merge_subtrees_around_index(jnx_B_tree_node *node, int index)
+void merge_subtrees_around_index(jnx_B_tree *tree, jnx_B_tree_node *node, int index)
 {
+    jnx_B_tree_node *root = tree->root;
+
     jnx_B_tree_node *first = node->children[index];
     jnx_B_tree_node *second = node->children[index + 1];
 
@@ -354,6 +356,16 @@ void merge_subtrees_around_index(jnx_B_tree_node *node, int index)
 
     // Delete the second node, i.e. free its memory on the heap
     free(second);
+
+    // Since root is the only node that can have less than t-1 records
+    // we have to account for the fact when root has only one record
+    // and that record's just been pushed down to the first child as a
+    // result of the merge.
+    if ( node == root )
+    {
+        tree->root = first;
+        free(root);
+    }
 }
 
 void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
@@ -410,7 +422,7 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
         }
         else
         {
-            merge_subtrees_around_index(node, rec_i);
+            merge_subtrees_around_index(tree, node, rec_i);
             delete_record_from_node(tree, node->children[rec_i], r);
         }
        
@@ -419,9 +431,50 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 
     if ( node->children[i]->count < tree->order )
     {
-        // ToDo: Restructure the child
-        // 3a) Child has a sibling that has at least tree->order records
-        // 3b) Child has no siblings that have at least tree->order records
+        // guard the boundaries
+        int b = i > 0 ? i - 1 : 0;
+        int a = i < 2 * tree->order ? i + 1 : 2 * tree->order;
+
+        jnx_B_tree_node *subtree = node->children[i];
+        
+        if ( a != i && node->children[a]->count >= tree->order )
+        {
+            jnx_B_tree_node *sibling = node->children[a];
+            
+            // Shift records around
+            subtree->records[subtree->count] = node->records[i];
+            node->records[i] = sibling->records[0];
+            subtree->children[subtree->count + 1] = sibling->children[0];
+           
+            // Fix up sibling 
+            shift_left_from_index(sibling, 1);
+            
+            // Adjust counts
+            subtree->count++;
+            sibling->count--;
+        }
+        else if ( b != i && node->children[b]->count >= tree->order )
+        {
+            jnx_B_tree_node *sibling = node->children[b];
+            
+            // Shift records around
+            shift_right_from_index(subtree, 0);
+            subtree->records[0] = node->records[i];
+            node->records[i] = sibling->records[sibling->count - 1];
+            subtree->children[0] = sibling->children[sibling->count];
+            
+            // Fix up the sibling
+            sibling->records[sibling->count - 1] = NULL;
+            sibling->children[sibling->count] = NULL;
+            
+            // Adjust counts
+            subtree->count++;
+            sibling->count--;
+        }
+        else
+        {
+            merge_subtrees_around_index(tree, node, i);
+        }
     }
 
     delete_record_from_node(tree, node->children[i], r);
