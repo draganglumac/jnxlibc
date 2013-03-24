@@ -21,20 +21,10 @@
 #include <stdio.h>
 int main()
 {
-    jnx_term_printf_in_color(JNX_COL_YELLOW, "Bob's your uncle!\n");
-    jnx_term_printf_in_color(JNX_COL_BLUE, "Here's some formatted parameters: %d, %s\n", 42, "The meaning of life.");
-
-    int i;
-    for ( i = 0; i < 7; i++)
-    {
-        jnx_term_printf_in_color(i, "I am colour %d\n", i);
-    }
-
-    jnx_term_color(JNX_COL_MAGENTA);
-    printf("Let's print some lines in magenta.\n");
-    printf("And another one.\n");
-    printf("And one with some formats %d %c\n", 2, 'B');
+    printf("Running jnx_term tests\n");
+    printf("- terminal tests");
+    jnx_term_printf_in_color(JNX_COL_YELLOW, "  NOT IMPLEMENTED\n");
     jnx_term_default();
-
+    printf("Terminal tests completed.\n");
     return 0;
 }

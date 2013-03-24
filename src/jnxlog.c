@@ -48,8 +48,6 @@ int jnx_log_setup(char *path)
     int err = stat(path,&s);
     if(-1 == err)
     {
-        printf("No log file at %s\n",path);
-        printf("Creating new log\n");
         FILE *fp = fopen(path,"w+");
         if(fp == NULL)
         {
@@ -58,7 +56,6 @@ int jnx_log_setup(char *path)
         }
         else
         {
-            printf("Done\n");
             fclose(fp);
             //after our successful log creation, we'll assign the log_path
             log_path = path;

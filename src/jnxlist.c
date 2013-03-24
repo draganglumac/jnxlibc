@@ -84,7 +84,6 @@ void jnx_list_delete(jnx_list* A)
     }
     if(A->head == NULL)
     {
-        printf("The head node is null\n");
         return;
     }
     jnx_node *current = A->head;

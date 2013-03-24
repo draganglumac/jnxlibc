@@ -20,9 +20,10 @@
 #include <assert.h>
 #include <string.h>
 #include "../src/jnxfile.h"
+#include "../src/jnxterm.h"
 int main(int args, char **argv)
 {
-    printf("Running test for jnxfile\n");
+    printf("- test_jnxfile");
   
     char buffer[1024];
     strcpy(buffer,"K=V");
@@ -31,11 +32,10 @@ int main(int args, char **argv)
     char *output = jnx_file_read("test_jnxfile.txt");
 
     assert(strcmp(buffer,output) == 0);
-
-    jnx_file_kvp_node *node = jnx_file_read_keyvaluepairs("test_jnxfile.txt","=");
-
     
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
     system("rm test_jnxfile.txt");
 
+    printf("File tests completed.\n");
     return 0;
 }

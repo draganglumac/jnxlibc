@@ -24,7 +24,6 @@ char* jnx_file_read(char* path)
     long int size = ftell(fp);
     rewind(fp);
     char* from_file_str = calloc(size + 1, sizeof(char));
-    printf("Callocing size of %ld\n",size + 1);
     fread(from_file_str, 1, size, fp);
     fclose(fp);
 

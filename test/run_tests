@@ -27,9 +27,7 @@ for file in $filelist; do
         rm $current
     fi
 
-    echo "Building $file"
     `gcc $file ../src/*.c -o ${file:0:${#file}-2} -pthread -w`
-    echo "Running $current"
     ./$current
     out=$?
     if [ ! $out -eq 0 ]; then

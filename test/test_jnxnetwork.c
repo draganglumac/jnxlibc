@@ -17,12 +17,14 @@
  */
 #include <stdlib.h>
 #include "../src/jnxnetwork.h"
+#include "../src/jnxterm.h"
 #include <pthread.h>
 #include <stdio.h>
 #include <assert.h>
 void network_listener_callback(char *message)
 {
     assert(strcmp(message,"Hello there") == 0);
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
     exit(0);
 }
 void *worker_thread(void*args)
@@ -32,11 +34,14 @@ void *worker_thread(void*args)
 }
 int main(int argc, char **argv)
 {
+    printf("Running tests for jnxnetwork\n");
     pthread_t threadone;
-
+    printf("- test multicast");
     pthread_create(&threadone, NULL, &worker_thread, NULL); 
     sleep(1);
     jnx_network_send_broadcast(12345,"225.0.0.37","Hello there");
     sleep(2);
+
+    printf("Network tests completed.\n");
     return 0;
 }

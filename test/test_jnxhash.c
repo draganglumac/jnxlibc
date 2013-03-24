@@ -19,11 +19,13 @@
 #include <stdio.h>
 #include <assert.h>
 #include "../src/jnxhash.h"
+#include "../src/jnxterm.h"
 int main(int args, char **argv)
 {
     printf("Running test for jnxhash\n");
     
     //setup
+    printf("- test_hash_insertion");
     jnx_hashmap *testhash = jnx_hash_init(1024); 
      
     jnx_hash_put(testhash,"Alex","Jones");
@@ -31,6 +33,7 @@ int main(int args, char **argv)
     assert((char*)jnx_hash_get(testhash,"Alex") == "Jones"); 
    
     jnx_hash_delete(testhash);  
-    
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+    printf("Hash tests completed.\n"); 
     return 0;
 }

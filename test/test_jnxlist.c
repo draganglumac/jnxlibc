@@ -34,20 +34,12 @@ void looper()
     for(x = 0; x < 26; ++x)
     {
         jnx_list_add(list,alphabet);
-        jnx_term_printf_in_color((x % 8) + 1,"%c",alphabet);        
-        
-        if(x % 26 == 0)
-        {
-            printf("\n");
-        }
-        
         ++alphabet;
     }
     alphabet = 'a';
     for(y = 0; y < x; ++y)
     {
         char output = (char)jnx_list_remove(list);
-        jnx_term_printf_in_color((y % 8) + 1,"%c\n",alphabet);        
         assert(output == alphabet);
         ++alphabet;
     }
@@ -58,7 +50,7 @@ void looper()
 void structo()
 {
     looper();
-    printf("Ran loooper\n");
+    printf("- test_list_creation");
     jnx_list *secondlist = jnx_list_init();
     struct foo *f = malloc(sizeof(foo));
     f->number = 10;
@@ -68,12 +60,13 @@ void structo()
     struct foo *output = (struct foo*)jnx_list_remove(secondlist);
     assert(output->number == 10);
     jnx_list_delete(secondlist);
-    printf("Ran listo\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 int main(int args, char **argv)
 {
-    printf("Running test for jnxlist\n");
+    printf("Running list tests...\n");
 
     structo();
+    printf("List tests completed.\n");
     return 0;
 }
