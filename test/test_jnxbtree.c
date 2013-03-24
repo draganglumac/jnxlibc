@@ -22,6 +22,7 @@
 #include <time.h>
 
 #include "../src/jnxbtree.h"
+#include "../src/jnxterm.h"
 
 extern jnx_B_tree_node* new_node(int, int);
 
@@ -44,7 +45,7 @@ void test_new_node()
     assert(n->is_leaf == 1);
     free(n);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 int compare_pints(void *first, void *second)
@@ -122,7 +123,7 @@ void test_new_empty_tree()
     assert(tree->root->count == 0);
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_insert_first_record_into_tree()
@@ -155,7 +156,7 @@ void test_insert_first_record_into_tree()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_insert_records_into_leaf_root()
@@ -172,7 +173,6 @@ void test_insert_records_into_leaf_root()
     }
 
     jnx_B_tree_node *root = tree->root;
-    printf(">%s\n<", int_node_contents(root));
     assert(root->count == 9);
     assert(compare_pints(root->records[0]->key, data + 7) == 0);
     assert(compare_pints(root->records[1]->key, data + 3) == 0);
@@ -186,7 +186,7 @@ void test_insert_records_into_leaf_root()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n"); 
 }
 
 void test_growing_to_depth_of_2()
@@ -223,7 +223,7 @@ void test_growing_to_depth_of_2()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_spliting_a_leaf_node_that_is_not_root()
@@ -264,7 +264,7 @@ void test_spliting_a_leaf_node_that_is_not_root()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_growing__to_depth_of_3()
@@ -345,7 +345,7 @@ void test_growing__to_depth_of_3()
     
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_splitting_inner_node()
@@ -449,7 +449,7 @@ void test_splitting_inner_node()
     
     jnx_B_tree_delete(tree);
     
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_lookup_in_empty_tree()
@@ -464,7 +464,7 @@ void test_lookup_in_empty_tree()
 
     jnx_B_tree_delete(tree);
     
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_lookup_in_single_record_tree()
@@ -484,7 +484,7 @@ void test_lookup_in_single_record_tree()
 
     jnx_B_tree_delete(tree);
     
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_lookup_in_leaf_root()
@@ -515,7 +515,7 @@ void test_lookup_in_leaf_root()
    
     jnx_B_tree_delete(tree);
 
-    printf("OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n"); 
 }
 
 void test_lookup_in_tree_of_depth_3()
@@ -546,7 +546,7 @@ void test_lookup_in_tree_of_depth_3()
 
     jnx_B_tree_delete(tree);
 
-    printf("OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
 void test_lookup_does_not_modify_tree()
@@ -656,7 +656,7 @@ void test_lookup_does_not_modify_tree()
     
     jnx_B_tree_delete(tree);
 
-    printf("OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n"); 
 }
 
 void test_removing_key_from_empty_tree()
@@ -675,7 +675,7 @@ void test_removing_key_from_empty_tree()
 
     jnx_B_tree_delete(tree);
 
-    printf(" OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 
 void test_removing_record_from_single_record_tree()
@@ -699,7 +699,7 @@ void test_removing_record_from_single_record_tree()
 
     jnx_B_tree_delete(tree);
     
-    printf(" OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 
 void test_removing_record_from_leaf_root()
@@ -746,7 +746,7 @@ void test_removing_record_from_leaf_root()
 
     jnx_B_tree_delete(tree);
 
-    printf(" OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 
 void print_char_tree_at_node(jnx_B_tree_node *node, char *(*str)(jnx_B_tree_node *), int level)
@@ -782,24 +782,21 @@ void print_char_tree_at_node(jnx_B_tree_node *node, char *(*str)(jnx_B_tree_node
     }
 }
 
-jnx_B_tree *build_alphabet_tree(int random, int midway_split)
+void populate_char_tree(jnx_B_tree *tree, char *data, int size, int random, int midway_split)
 {
-    jnx_B_tree *tree = jnx_B_tree_init(3, compare_pchars);
-
-    char *data = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     int i;
 
     if ( random )
     {
         srand(time(0));
 
-        int* flags = calloc(26, sizeof(int));
-        for ( i = 0; i < 26; i++ )
+        int* flags = calloc(size, sizeof(int));
+        for ( i = 0; i < size; i++ )
         {
             int next;
             do
             {
-                next = rand() % 26;
+                next = rand() % size;
             }
             while ( *(flags + next) == 1 );
 
@@ -810,11 +807,11 @@ jnx_B_tree *build_alphabet_tree(int random, int midway_split)
     }
     else
     {
-        for ( i = 0; i < 26; i++ )
+        for ( i = 0; i < size; i++ )
         {
             if ( midway_split )
             {
-                int j = (11 + i) % 26;
+                int j = (11 + i) % size;
                 jnx_B_tree_add(tree, (void *) (data + j), (void *) (data + j));
             }
             else
@@ -823,7 +820,45 @@ jnx_B_tree *build_alphabet_tree(int random, int midway_split)
             }
         }
     }    
+}
+
+jnx_B_tree *build_alphabet_tree(int random, int midway_split)
+{
+    jnx_B_tree *tree = jnx_B_tree_init(3, compare_pchars);
+
+    char *data = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    populate_char_tree(tree, data, 26, random, midway_split);
+
     return tree;
+}
+
+jnx_B_tree *build_mixed_tree(int random, int midway_split)
+{
+    jnx_B_tree *tree = jnx_B_tree_init(2, compare_pchars);
+
+    char *data = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789AB18CD23EFB614";
+
+    populate_char_tree(tree, data, 50, random, midway_split);
+
+    return tree;
+}
+
+void test_mixed_tree()
+{
+    printf("- test_mixed_tree:\n");
+
+    // Try reverse order insertion
+    printf("\n    Midway Mixed Insertion\n");
+    printf("    ----------------------\n");
+
+    jnx_B_tree *tree = build_mixed_tree(0, 1);
+
+    print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    jnx_B_tree_delete(tree);
+
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n"); 
 }
 
 void test_alphabet_tree()
@@ -863,7 +898,7 @@ void test_alphabet_tree()
 
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n"); 
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n"); 
 }
 
 void test_simple_remove_from_leaf()
@@ -887,7 +922,7 @@ void test_simple_remove_from_leaf()
 
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 
 void test_removing_record_from_inner_node()
@@ -970,7 +1005,152 @@ void test_removing_record_from_inner_node()
     
     jnx_B_tree_delete(tree);
 
-    printf("  OK\n");
+    tree = build_alphabet_tree(0, 1);
+    c = 'x';
+   
+    jnx_B_tree_remove(tree, (void *) &c);
+  
+    root = tree->root; 
+    assert(strcmp(char_node_contents(root), "N") == 0);
+    assert(root->count == 1);
+    assert(strcmp(char_node_contents(root->children[1]), "QTW") == 0);
+    assert(root->children[1]->count == 3);
+    assert(strcmp(char_node_contents(root->children[1]->children[3]), "XYZ") == 0);
+    assert(root->children[1]->children[3]->count == 3);
+
+    c = '1';
+
+    jnx_B_tree_remove(tree, (void *) &c);
+    
+    root = tree->root; 
+    assert(strcmp(char_node_contents(root), "N") == 0);
+    assert(root->count == 1);
+    assert(strcmp(char_node_contents(root->children[0]), "FI") == 0);
+    assert(root->children[0]->count == 2);
+    assert(strcmp(char_node_contents(root->children[0]->children[0]), "ABCDE") == 0);
+    assert(root->children[0]->children[0]->count == 5);
+
+    jnx_B_tree_delete(tree);
+
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+
+void test_removing_key_from_child_that_has_too_few_records()
+{
+    printf("- test_removing_key_from_child_that_has_too_few_records:");
+
+    jnx_B_tree *tree = build_mixed_tree(0, 1);
+    char c = 'D';
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    jnx_B_tree_node *root = tree->root;
+    assert(strcmp(char_node_contents(root->children[1]), "BH") == 0);
+    assert(root->children[1]->count == 2);
+    assert(strcmp(char_node_contents(root->children[1]->children[0]), "9") == 0);
+    assert(root->children[1]->children[0]->count == 1);
+    assert(strcmp(char_node_contents(root->children[1]->children[1]), "F") == 0);
+    assert(root->children[1]->children[1]->count == 1);
+    assert(strcmp(char_node_contents(root->children[1]->children[2]), "JM") == 0);
+    assert(root->children[1]->children[2]->count == 2);
+    assert(strcmp(char_node_contents(root->children[1]->children[1]->children[0]), "CE") == 0);
+    assert(root->children[1]->children[1]->children[0]->count == 2);
+    assert(strcmp(char_node_contents(root->children[1]->children[1]->children[1]), "G") == 0);
+    assert(root->children[1]->children[1]->children[1]->count == 1);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+//    printf("----------------------------------------------\n");
+    jnx_B_tree_delete(tree);
+
+    tree = build_mixed_tree(0, 1);
+    c = 'S';
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    root = tree->root;
+    assert(strcmp(char_node_contents(root), "7F") == 0);
+    assert(root->count == 2);
+    assert(strcmp(char_node_contents(root->children[1]), "B") == 0);
+    assert(root->children[1]->count == 1);
+    assert(strcmp(char_node_contents(root->children[2]), "OT") == 0);
+    assert(root->children[2]->count == 2);
+    assert(strcmp(char_node_contents(root->children[2]->children[0]), "HJM") == 0);
+    assert(root->children[2]->children[0]->count == 3);
+    assert(strcmp(char_node_contents(root->children[2]->children[1]), "Q") == 0);
+    assert(root->children[2]->children[1]->count == 1);
+    assert(strcmp(char_node_contents(root->children[2]->children[2]), "W") == 0);
+    assert(root->children[2]->children[2]->count == 1);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+//    printf("----------------------------------------------\n");
+    jnx_B_tree_delete(tree);
+
+    tree = build_mixed_tree(0, 1);
+    c = '9';
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    root = tree->root;
+    assert(strcmp(char_node_contents(root->children[1]), "F") == 0);
+    assert(root->children[1]->count == 1);
+    assert(strcmp(char_node_contents(root->children[1]->children[0]), "BD") == 0);
+    assert(root->children[1]->children[0]->count == 2);
+    assert(strcmp(char_node_contents(root->children[1]->children[1]), "HJM") == 0);
+    assert(root->children[1]->children[1]->count == 3);
+    assert(strcmp(char_node_contents(root->children[1]->children[0]->children[0]), "8A") == 0);
+    assert(root->children[1]->children[0]->children[0]->count == 2);
+    assert(strcmp(char_node_contents(root->children[1]->children[0]->children[1]), "C") == 0);
+    assert(root->children[1]->children[0]->children[1]->count == 1);
+    assert(strcmp(char_node_contents(root->children[1]->children[0]->children[2]), "E") == 0);
+    assert(root->children[1]->children[0]->children[2]->count == 1);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+//    printf("----------------------------------------------\n");
+    jnx_B_tree_delete(tree);
+
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+
+void test_removing_key_from_root()
+{
+    printf("- test_removing_key_from_root:");
+
+    jnx_B_tree *tree = build_alphabet_tree(0, 1);
+    char c = 'Q';
+
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    jnx_B_tree_node *root = tree->root;
+    assert(strcmp(char_node_contents(root), "P") == 0);
+    assert(root->count == 1);
+    assert(strcmp(char_node_contents(root->children[0]), "CFIM") == 0);
+    assert(root->children[0]->count == 4);
+    assert(strcmp(char_node_contents(root->children[0]->children[3]), "JKL") == 0);
+    assert(root->children[0]->children[3]->count == 3);
+    assert(strcmp(char_node_contents(root->children[0]->children[4]), "NO") == 0);
+    assert(root->children[0]->children[4]->count == 2);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+//    printf("----------------------------------------------\n");
+    jnx_B_tree_delete(tree);
+
+    tree = build_mixed_tree(0, 1);
+    c = '7';
+
+    jnx_B_tree_remove(tree, (void *) &c);
+
+    root = tree->root;
+    assert(strcmp(char_node_contents(root), "8O") == 0);
+    assert(root->count == 2);
+    assert(strcmp(char_node_contents(root->children[1]), "F") == 0);
+    assert(root->children[1]->count == 1);
+    assert(strcmp(char_node_contents(root->children[1]->children[0]), "BD") == 0);
+    assert(root->children[1]->children[0]->count == 2);
+    assert(strcmp(char_node_contents(root->children[1]->children[0]->children[0]), "9A") == 0);
+    assert(root->children[1]->children[0]->children[0]->count == 2);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+//    printf("----------------------------------------------\n");
+    jnx_B_tree_delete(tree);
+
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 
 int main()
@@ -987,7 +1167,7 @@ int main()
     test_spliting_a_leaf_node_that_is_not_root();
     test_growing__to_depth_of_3();
     test_splitting_inner_node();
-    test_alphabet_tree();
+//    test_alphabet_tree();
 
     // Lookup tests
     test_lookup_in_empty_tree();
@@ -1002,6 +1182,9 @@ int main()
     test_removing_record_from_leaf_root();
     test_simple_remove_from_leaf();
     test_removing_record_from_inner_node();
+//    test_mixed_tree();
+    test_removing_key_from_child_that_has_too_few_records();
+    test_removing_key_from_root();
 
     printf("B-tree tests completed.\n");
 
