@@ -10,7 +10,7 @@ Key features:
 - Simple logger system
 - Terminal loading spinners and fancy colors done easily.
 - Several useful data structures (hash, list, vector, btree)
-
+- Auto generated documentation and logical API
 
 #Installation
 
