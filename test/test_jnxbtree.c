@@ -1005,6 +1005,33 @@ void test_removing_record_from_inner_node()
     
     jnx_B_tree_delete(tree);
 
+    tree = build_alphabet_tree(0, 1);
+    c = 'x';
+   
+    jnx_B_tree_remove(tree, (void *) &c);
+  
+    root = tree->root; 
+    assert(strcmp(char_node_contents(root), "N") == 0);
+    assert(root->count == 1);
+    assert(strcmp(char_node_contents(root->children[1]), "QTW") == 0);
+    assert(root->children[1]->count == 3);
+    assert(strcmp(char_node_contents(root->children[1]->children[3]), "XYZ") == 0);
+    assert(root->children[1]->children[3]->count == 3);
+
+    c = '1';
+
+    jnx_B_tree_remove(tree, (void *) &c);
+    
+    root = tree->root; 
+    assert(strcmp(char_node_contents(root), "N") == 0);
+    assert(root->count == 1);
+    assert(strcmp(char_node_contents(root->children[0]), "FI") == 0);
+    assert(root->children[0]->count == 2);
+    assert(strcmp(char_node_contents(root->children[0]->children[0]), "ABCDE") == 0);
+    assert(root->children[0]->children[0]->count == 5);
+
+    jnx_B_tree_delete(tree);
+
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 
