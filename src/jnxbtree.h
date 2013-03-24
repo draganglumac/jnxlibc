@@ -27,7 +27,7 @@
 /**
  * @brief Internal representation of a (key, value) pair.
  */
-typedef struct {
+typedef struct B_tree_record {
     void *key; /**< The key for the record. */
     void *value; /**< The value for the record.  */
 } record;
@@ -64,7 +64,7 @@ typedef struct B_tree_node {
 /**
  * @brief Internal representation of the whole B-tree.
  */
-typedef struct {
+typedef struct B_tree {
     int order; /**< The order of the tree, i.e. the minimum number of records a non-root node can have. */
     compare_keys compare_function; /**< Callback function to compare keys. @see compare_keys */
     jnx_B_tree_node *root; /**< The root node of the B-tree. */
