@@ -1,19 +1,6 @@
-/*
- * =====================================================================================
- *
- *       Filename:  jnxterm.h
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  01/30/13 20:33:18
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  alexsimonjones@gmail.com, 
- *   Organization:  
- *
- * =====================================================================================
+/**
+ * @file jnxterm.h
+ * @brief terminal manipulation of colours, stdout and loading spinnders
  */
 #ifndef __JNX_TERM_H__
 #define __JNX_TERM_H__
@@ -26,50 +13,43 @@
 #define JNX_COL_CYAN    6
 #define JNX_COL_WHITE   7
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_term_default
- *  Description:  Sets terminal color to default
- * =====================================================================================
+/**
+ * @fn jnx_term_default
+ * @brief resets to default terminal colors
  */
 void jnx_term_default();
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_term_color
- *  Description:  Sets the terminal color
- * =====================================================================================
+
+/**
+ * @fn jnx_term_color(int fg_col)
+ * @brief changes the terminal color 
+ * @param fg_col select a color between 0-7 from JNX_COL
  */
 void jnx_term_color(int fg_col);
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_term_printf_in_color
- *  Description:  Prints given the target colour with arguments
- * =====================================================================================
+/**
+ * @fn jnx_term_printf_in_color(int fg_col, const char* format, ...)
+ * @brief prints a single line in selected color
+ * @param fg_col select a color between 0-7 from JNX_COL
+ * @param format formatted string
+ * @param ... formatted string optional arguments
  */
 void jnx_term_printf_in_color(int fg_col, const char* format, ...);
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_term_load
- *  Description:  Starts a loading spinner in the current terminal, does not block io
- * =====================================================================================
+/**
+ * @fn jnx_term_load(int state)
+ * @brief starts/stops a loading spinner in the terminal on another thread
+ * @param state toggles between 0 and 1 for off/on
  */
 void jnx_term_load(int state);
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_term_override_stdout
- *  Description:  Redirects stdout into a file
- * =====================================================================================
+/**
+ * @fn jnx_term_override_stdout(char *path)
+ * @brief redirects stdout to a file
+ * @param path path of the output file, requires real file path
  */
 void jnx_term_override_stdout(char *path);
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_term_reset_stdout
- *  Description:  Pipes the stdout back to the current terminal
- * =====================================================================================
+/**
+ * @fn jnx_term_reset_stdout
+ * @brief resets the stdout back to the current terminal
  */
 void jnx_term_reset_stdout(void);
 

@@ -1,36 +1,24 @@
-/*
- * =====================================================================================
- *
- *       Filename:  jnx_log.h
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  02/20/13 10:15:04
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (), 
- *   Organization:  
- *
- * =====================================================================================
+/**
+ * @file jnxlog.h
+ * @brief Simple logger that allows program output to be captured to file
  */
 #ifndef __JNX_LOG_H__
 #define __JNX_LOG_H__
 #include <stdarg.h>
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_log_setup
- *  Description:   Sets up a logger on the target filepath
- * =====================================================================================
+/**
+ * @fn jnx_log_setup(char *path)
+ *
+ * @param path location of log output
+ *
+ * @return success on 0
  */
 int jnx_log_setup(char *path);
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_log
- *  Description:  Logs a message to the logger path
- * =====================================================================================
+/**
+ * @fn jnx_log(const char *format, ...)
+ *
+ * @param format Log formatted string
+ * @param ... optional arguments for insertion into formatted string
  */
 void jnx_log(const char * format, ...);
 

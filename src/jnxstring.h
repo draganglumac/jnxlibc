@@ -1,18 +1,26 @@
+/**
+ * @file jnxstring.h
+ * @brief manipulate char* by joining 
+ */
 #ifndef __JNXSTRING_H__
 #define __JNXSTRING_H__
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_string_joincreate
- *  Description:  Creates a new string returned from the two inputs, does not free original
- * =====================================================================================
+/**
+ * @fn jnx_string_joincreate(char *destination, char *buf)
+ *
+ * @param destination the destination string for joining, must be malloced
+ * @param buf the input buffer to be joined to destination
+ *
+ * @return returns a new char* string
+ *
+ * @warning user is responsible for memory management of new returned string and originals
  */
 char* jnx_string_joincreate(char* destination, char* buf);
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_string_join
- *  Description:  Concats the strings together
- * =====================================================================================
+/**
+ * @fn jnx_string_join(char **destination, char* buf)
+ *
+ * @param destination this requires a pointer to the memory for the destination string
+ * @param buf takes a buffer and appends it to the destination string
  */
 void jnx_string_join(char** destination, char* buf);
 #endif
