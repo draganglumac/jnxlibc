@@ -1,27 +1,34 @@
 #ifndef __JNXLIST_H__
 #define __JNXLIST_H__
+/** @file jnxlist.h
+ *  @brief API for jnxlibc implementation of list
+ */
+
+/**
+ * @brief Node represents a link in the list 
+ */
 typedef struct node {
     void* _data;
     struct node* next_node;
 } jnx_node;
+/**
+ * @brief Represents the list data structure as seen by the user
+ */
 typedef struct list {
     struct node* head;
     int counter;
 } jnx_list;
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_list_init
- *  Description:  Returns newly created list
- * =====================================================================================
+/** @fn jnx_list_init(void)
+ *  @brief Returns newly created list
+ *  @return jnx_list* to a newly created list of 0 length
  */
 jnx_list* jnx_list_init(void);
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  jnx_list_init
- *  Description:  Accepts a void pointer for input with list
- * =====================================================================================
+/** @fn jnx_list_add(jnx_list *A, void *_datain)
+ *  @brief  Accepts a void pointer for input with list
+ *  @param A is the target list
+ *  @param _datain is the data to insert
  */
 void jnx_list_add(jnx_list* A, void* _datain);
 

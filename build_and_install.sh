@@ -11,5 +11,7 @@ cd ../
 exit 1
 fi
 cd ../
+doxygen Doxyfile
+sudo cp docs/man/man3/* /usr/share/man/man3/
 sudo make install
 echo "Installed succesfully"
