@@ -14,6 +14,11 @@ Key features:
 
 #Installation
 
+Arch linux users
+````
+https://aur.archlinux.org/packages/jnxlibc/
+````
+
 Grab this repo.
 ````
 ./configure
