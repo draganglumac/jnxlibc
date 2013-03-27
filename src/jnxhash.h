@@ -6,6 +6,8 @@
 #include "jnxlist.h"
 /** @file jnxhash.h
  *  @brief API for jnxlibc's implementation of hashmap
+ *
+ *  #include <jnxc_headers/jnxhash.h>
  */
 /**
  * @brief Internal container for a key value pair

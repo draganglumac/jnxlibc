@@ -2,6 +2,8 @@
 #define __JNXLIST_H__
 /** @file jnxlist.h
  *  @brief API for jnxlibc implementation of list
+ *
+ *  #include <jnxc_headers/jnxlist.h>
  */
 
 /**
