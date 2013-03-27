@@ -9,7 +9,6 @@ shipping:
 	mkdir -p lib; 
 	move.shared.object
 	mkdir -p lib/jnxc_headers; cp src/*.h lib/jnxc_headers;
-	
 install:
 	install.shared.object
 	rm -rf lib

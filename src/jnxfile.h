@@ -1,5 +1,7 @@
 /** @file jnxfile.h
  *  @brief File manipulation, read/write, kvp plucking and recursive deletion
+ *
+ *  #include <jnxc_headers/jnxfile.h>
  */
 #ifndef __JNXFILE_H__
 #define __JNXFILE_H__

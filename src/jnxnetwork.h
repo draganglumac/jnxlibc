@@ -2,6 +2,8 @@
 #define __JNXNETWORK_H__
 /** @file jnxnetwork.h
  *  @brief The API for jnxlibc networking (includes TCP, UDP )
+ *
+ *  #include <jnxc_headers/jnxnetwork.h>
  */
 
 /**

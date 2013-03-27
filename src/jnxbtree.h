@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  Dragan Glumac (), 
+ *         Author:  Dragan Glumac (dragan.glumac@gmail.com), 
  *   Organization:  
  *
  * =====================================================================================
@@ -18,6 +18,8 @@
 
 /** @file jnxbtree.h
  * @brief The API for jnxlibc's implementation of B-trees.
+ *
+ * #include <jnxc_headers/jnxbtree.h>
  */
 
 #ifndef __JNX_B_TREE__

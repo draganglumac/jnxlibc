@@ -1,6 +1,8 @@
 /**
  * @file jnxstring.h
- * @brief manipulate char* by joining 
+ * @brief manipulate char* by joining
+ *
+ * #include <jnxc_headers/jnxstring.h> 
  */
 #ifndef __JNXSTRING_H__
 #define __JNXSTRING_H__

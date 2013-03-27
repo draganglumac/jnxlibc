@@ -1,6 +1,8 @@
 /**
  * @file jnxterm.h
  * @brief terminal manipulation of colours, stdout and loading spinnders
+ *
+ * #include <jnxc_headers/jnxterm.h>
  */
 #ifndef __JNX_TERM_H__
 #define __JNX_TERM_H__
