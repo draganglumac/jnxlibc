@@ -83,4 +83,6 @@ int main()
     test_pop_off_empty_stack();
     test_pop_off_the_stack();
     printf("Stack tests completed.\n");
+    
+    return 0;
 }
