@@ -11,6 +11,12 @@
  */
 #define MAXBUFFER 4028
 
+
+/**
+ * @brief This is a callback for sending a message to retrieve the response
+ *
+ */
+typedef void (*jnx_network_send_message_callback)(char* msg);
 /**
  *  @brief This is the callback for the received buffer from the network listener
  */
@@ -39,10 +45,10 @@ void jnx_network_cancel_listener(void);
  * @param host the ip address of the host you wish to connect to
  * @param port port number to connect to
  * @param msg message to be sent
- *
+ * @param callback_function gives a function pointer to a handler for any response text
  * @return returns 0 on success
  */
-int jnx_network_send_message(char* host, int port, char* msg);
+int jnx_network_send_message(char* host, int port, char* msg, void (*callback_function)(char*));
 
 /** @fn jnx_network_send_broadcast(int port, char *broadcastgroup,char *message)
  * @brief Sends a UDP datagram across the selected group range 
@@ -52,7 +58,7 @@ int jnx_network_send_message(char* host, int port, char* msg);
  * http://www.tldp.org/HOWTO/Multicast-HOWTO-2.html
  * @param message the message to transmit to the broadcast group
  */
-void jnx_network_send_broadcast(int port,char *broadcastgroup,char *message);
+int jnx_network_send_broadcast(int port,char *broadcastgroup,char *message);
 
 /**@fn jnx_network_broadcast_listener(int port, char *broadcastgroup, void(*callback_function)(char*))
  * @brief sets up a listener for udp datagram broadcasts
