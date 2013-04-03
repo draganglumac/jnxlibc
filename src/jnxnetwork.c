@@ -90,7 +90,6 @@ int jnx_network_send_message(char* host, int port, char* msg, void (*jnx_network
 	}
 	struct hostent* send_server;
 	struct sockaddr_in send_serv_addr;
-	char send_transmission_buffer[MAXBUFFER];
 	int send_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (send_fd < 0) {
 		printf("jnx_network_send_message couldn't open send port\n");
@@ -111,8 +110,6 @@ int jnx_network_send_message(char* host, int port, char* msg, void (*jnx_network
 		return 1;
 	}
 	printf("jnx_network_send_message connected\n");
-	bzero(send_transmission_buffer, MAXBUFFER);
-	strcpy(send_transmission_buffer, msg);
 	size_t n;
 	char response_buffer[MAXBUFFER];
 	n = write(send_fd, msg, strlen(msg));
