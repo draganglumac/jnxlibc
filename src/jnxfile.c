@@ -73,7 +73,8 @@ int jnx_file_recusive_delete_callback(const char *fpath,const struct stat *sb, i
     int rv = remove(fpath);
     if(rv)
         perror(fpath);
-    return rv;
+	
+	return 0;
 }
 int jnx_file_recursive_delete(char* path)
 {
