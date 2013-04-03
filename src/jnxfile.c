@@ -68,16 +68,14 @@ int jnx_file_write(char* path, char* data)
     fclose(fp);
     return 0;
 }
-int jnx_file_recusive_delete_callback(const char *fpath,const struct stat *sb, int typeflag,struct FTW *ftwbuf)
-{
-    int rv = remove(fpath);
-    if(rv)
-        perror(fpath);
-	
-	return 0;
-}
 int jnx_file_recursive_delete(char* path)
 {
-
-    return nftw(path,jnx_file_recusive_delete_callback,64,8|1);
+	DIR *dir = opendir(path);
+	struct dirent *d;
+	if(dir == NULL) { return 1; }
+	while (( d = readdir(dir)) != NULL) 
+	{
+		//WIP	
+	}
+	closedir(dir);
 }

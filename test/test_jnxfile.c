@@ -19,8 +19,11 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "../src/jnxfile.h"
 #include "../src/jnxterm.h"
+
 int main(int args, char **argv)
 {
     printf("- test_jnxfile");
@@ -36,6 +39,7 @@ int main(int args, char **argv)
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
     system("rm test_jnxfile.txt");
 
+	printf("- test_recursive_deletion");
     printf("File tests completed.\n");
     return 0;
 }
