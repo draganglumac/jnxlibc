@@ -23,7 +23,14 @@
 #include <sys/stat.h>
 #include "../src/jnxfile.h"
 #include "../src/jnxterm.h"
+void test_recursive_dir()
+{
+	system("mkdir -p bob/jim/james");
 
+	jnx_file_recursive_delete("bob");
+
+	system("rm -rf bob");
+}
 int main(int args, char **argv)
 {
     printf("- test_jnxfile");
@@ -41,5 +48,7 @@ int main(int args, char **argv)
 
 	printf("- test_recursive_deletion");
     printf("File tests completed.\n");
-    return 0;
+	
+	test_recursive_dir();
+	return 0;
 }
