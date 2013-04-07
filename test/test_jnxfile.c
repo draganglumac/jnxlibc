@@ -23,7 +23,7 @@
 #include <sys/stat.h>
 #include "../src/jnxfile.h"
 #include "../src/jnxterm.h"
-int main(int args, char **argv)
+void test_recursive_delete()
 {
 	system("mkdir -p bob/james/frank");
 	system("touch bob/a.txt");
@@ -33,8 +33,16 @@ int main(int args, char **argv)
 	system("touch bob/james/e.txt");
 	system("touch bob/f.txt");
 	system("touch bob/g.txt");
-	
-	
 	jnx_file_recursive_delete("bob",3);
+	struct stat _sb;
+	assert(stat("bob",&_sb) != 0);
+
+}
+int main(int args, char **argv)
+{
+	printf("Running file tests...\n");
+	printf("- test recursive delete");	
+	test_recursive_delete();
+	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 	return 0;
 }
