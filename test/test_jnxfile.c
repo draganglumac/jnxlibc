@@ -23,32 +23,18 @@
 #include <sys/stat.h>
 #include "../src/jnxfile.h"
 #include "../src/jnxterm.h"
-void test_recursive_dir()
-{
-	system("mkdir -p bob/jim/james");
-
-	jnx_file_recursive_delete("bob");
-
-	system("rm -rf bob");
-}
 int main(int args, char **argv)
 {
-    printf("- test_jnxfile");
-  
-    char buffer[1024];
-    strcpy(buffer,"K=V");
-    jnx_file_write("test_jnxfile.txt",buffer);
-
-    char *output = jnx_file_read("test_jnxfile.txt");
-
-    assert(strcmp(buffer,output) == 0);
-    
-    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-    system("rm test_jnxfile.txt");
-
-	printf("- test_recursive_deletion");
-    printf("File tests completed.\n");
+	system("mkdir -p bob/james/frank");
+	system("touch bob/a.txt");
+	system("touch bob/james/b.txt");
+	system("touch bob/james/frank/c.txt");
+	system("touch bob/james/frank/d.txt");
+	system("touch bob/james/e.txt");
+	system("touch bob/f.txt");
+	system("touch bob/g.txt");
 	
-	test_recursive_dir();
+	
+	jnx_file_recursive_delete("bob",3);
 	return 0;
 }

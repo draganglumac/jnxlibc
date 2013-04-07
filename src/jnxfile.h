@@ -51,10 +51,10 @@ int jnx_file_write(char* path, char* data);
  * @fn jnx_file_recursive_delete(char* path)
  *
  * @param path the provided path will have all its sub directories and files deleted
- *
+ * @param depth defines how deep to recursively delete in a folder structure
  * @return success on 0
  *
  * @warning extremely powerful and can make unrepairable changes to your file system
  */
-int jnx_file_recursive_delete(char* path);
+int jnx_file_recursive_delete(char* path,int depth);
 #endif

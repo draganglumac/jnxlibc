@@ -68,33 +68,17 @@ int jnx_file_write(char* path, char* data)
     fclose(fp);
     return 0;
 }
-int jnx_file_recursive_delete(char* path)
+int jnx_file_recursive_delete_callback(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
 {
-	DIR *dir = opendir(path);
-	struct dirent *d;
-	if(dir == NULL) { return 1; }
-	while (( d = readdir(dir)) != NULL) 
+	remove(fpath);
+	return 0;
+}
+int jnx_file_recursive_delete(char* path, int depth)
+{
+	if( nftw(path,jnx_file_recursive_delete_callback, depth, FTW_DEPTH) != 0)
 	{
-		if(strcmp(".",d->d_name) == 0)
-			continue;
-		if(strcmp("..",d->d_name) == 0)
-			continue;
-		
-		printf("%s\n",d->d_name);
-		struct stat _sb;
-		stat(d->d_name,&_sb);
-		if(S_ISREG(_sb.st_mode))
-		{
-			remove(d->d_name);
-		}
-		else
-		{
-			printf("%s is a directory\n",d->d_name);
-			jnx_file_recursive_delete(d->d_name);
-			remove(d->d_name);
-		}
-	}
-	closedir(dir);
-
+		perror("jnx_file_recursive_delete");
+		return -1;
+	}	
 	return 0;
 }
