@@ -177,6 +177,7 @@ void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_net
 		perror("jnx_network_broadcast_listener setsockopt");
 		return;
 	}    
+	bzero(buffer,MAXBUFFER);
 	while(1)
 	{
 		addrlen=sizeof(addr);
