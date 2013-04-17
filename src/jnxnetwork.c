@@ -23,7 +23,6 @@
 #include "jnxnetwork.h"
 #define true 1
 #define false 0
-#define DEFAULTRESPONSE "Received"
 int running = true;
 void jnx_network_cancel_listener(void)
 {
@@ -31,20 +30,26 @@ void jnx_network_cancel_listener(void)
 		running = false;
 	}
 }
-int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(char*))
+void* jnx_network_get_in_addr(struct sockaddr *sa)
+{
+	if(sa->sa_family == ADDRESSFAMILY)
+		return &(((struct sockaddr_in*)sa)->sin_addr);
+	return &(((struct sockaddr_in6*)sa)->sin6_addr);
+}
+int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(char*,char*))
 {
 	int sockfd, newsockfd, clilen;
 	char buffer[MAXBUFFER];
 	struct sockaddr_in serv_addr, cli_addr;
 	int  n;
 	int optval = 1;
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	sockfd = socket(ADDRESSFAMILY, SOCK_STREAM, 0);
 	if (sockfd < 0) {
 		perror("jnx_network_setup_listener error opening socket");
 		return 1;
 	}
 	bzero((char*) &serv_addr, sizeof(serv_addr));
-	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_family = ADDRESSFAMILY;
 	serv_addr.sin_addr.s_addr = INADDR_ANY;
 	serv_addr.sin_port = htons(port);
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval) > 0) {
@@ -76,7 +81,9 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 			perror("jnx_network_setup_listener error writing to socket");
 			return 1;
 		}
-		(*jnx_network_listener_callback)(buffer);      //function pointer callback
+		char client_ip_addr[INET6_ADDRSTRLEN];
+		inet_ntop(ADDRESSFAMILY, &(cli_addr.sin_addr),client_ip_addr,INET6_ADDRSTRLEN);
+		(*jnx_network_listener_callback)(buffer,client_ip_addr);      //function pointer callback
 	}
 	close(newsockfd);
 	return 0;
@@ -90,7 +97,7 @@ int jnx_network_send_message(char* host, int port, char* msg, void (*jnx_network
 	}
 	struct hostent* send_server;
 	struct sockaddr_in send_serv_addr;
-	int send_fd = socket(AF_INET, SOCK_STREAM, 0);
+	int send_fd = socket(ADDRESSFAMILY, SOCK_STREAM, 0);
 	if (send_fd < 0) {
 		printf("jnx_network_send_message couldn't open send port\n");
 		return 1;
@@ -101,7 +108,7 @@ int jnx_network_send_message(char* host, int port, char* msg, void (*jnx_network
 		return 1;
 	}
 	bzero((char*) &send_serv_addr, sizeof(send_serv_addr));
-	send_serv_addr.sin_family = AF_INET;
+	send_serv_addr.sin_family = ADDRESSFAMILY;
 	bcopy((char*) send_server->h_addr, (char*) &send_serv_addr.sin_addr.s_addr, send_server->h_length);
 	send_serv_addr.sin_port = htons(port);
 	printf("jnx_network_send_message attempting to connect...\n");
@@ -123,20 +130,20 @@ int jnx_network_send_message(char* host, int port, char* msg, void (*jnx_network
 		return 1;
 	}
 	close(send_fd);
- 	if(strlen(response_buffer) > 0)	
-	(*jnx_network_send_message_callback)(response_buffer);
+	if(strlen(response_buffer) > 0)	
+		(*jnx_network_send_message_callback)(response_buffer);
 	return 0;
 }
 int jnx_network_send_broadcast(int port,char *broadcastgroup,char *message)
 {
 	struct sockaddr_in addr;
 	int fd;
-	if((fd=socket(AF_INET,SOCK_DGRAM,0)) < 0){
+	if((fd=socket(ADDRESSFAMILY,SOCK_DGRAM,0)) < 0){
 		perror(" jnx_network_send_broadcast broadcast");
 		return 1;
 	}
 	memset(&addr,0,sizeof(addr));
-	addr.sin_family=AF_INET;
+	addr.sin_family=ADDRESSFAMILY;
 	addr.sin_addr.s_addr=inet_addr(broadcastgroup);
 	addr.sin_port=htons(port);
 	if(sendto(fd,message,strlen(message),0,(struct sockaddr *) &addr, sizeof(addr)) < 0)
@@ -153,7 +160,7 @@ void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_net
 	struct ip_mreq mreq;
 	char buffer[MAXBUFFER];
 	u_int yes=1;
-	if((fd=socket(AF_INET,SOCK_DGRAM,0)) < 0){
+	if((fd=socket(ADDRESSFAMILY,SOCK_DGRAM,0)) < 0){
 		perror("jnx_network_broadcast_listener broadcast listener");
 		return;
 	}
@@ -163,7 +170,7 @@ void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_net
 		return;
 	}
 	memset(&addr,0,sizeof(addr));
-	addr.sin_family=AF_INET;
+	addr.sin_family=ADDRESSFAMILY;
 	addr.sin_addr.s_addr=htonl(INADDR_ANY); /* N.B.: differs from sender */
 	addr.sin_port=htons(port);
 	if(bind(fd,(struct sockaddr*)&addr,sizeof(addr)) < 0){
@@ -193,8 +200,8 @@ char* jnx_network_local_ip(char* interface)
 	int fd;
 	char* ipadd = NULL;
 	struct ifreq ifr;
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
-	ifr.ifr_addr.sa_family = AF_INET;
+	fd = socket(ADDRESSFAMILY, SOCK_DGRAM, 0);
+	ifr.ifr_addr.sa_family = ADDRESSFAMILY;
 	snprintf(ifr.ifr_name, IFNAMSIZ, interface);
 	ioctl(fd, SIOCGIFADDR, &ifr);
 	ipadd = inet_ntoa(((struct sockaddr_in*) &ifr.ifr_addr)->sin_addr);

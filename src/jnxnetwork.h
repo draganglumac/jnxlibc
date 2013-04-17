@@ -11,7 +11,17 @@
  */
 #define MAXBUFFER 4028
 
-
+#ifndef JNXNETWORK_RESPONSE_SUPRESS
+#define DEFAULTRESPONSE "Received"
+#endif
+/*-----------------------------------------------------------------------------
+ * Currently the library defaults to the use of IPv4, this can be overriden with USEIPV6 
+ *-----------------------------------------------------------------------------*/
+#ifndef JNXNETWORK_USEIPV6
+#define ADDRESSFAMILY AF_INET
+#else
+#define ADDRESSFAMILY AF_INET6
+#endif
 /**
  * @brief This is a callback for sending a message to retrieve the response
  *
@@ -19,8 +29,9 @@
 typedef void (*jnx_network_send_message_callback)(char* msg);
 /**
  *  @brief This is the callback for the received buffer from the network listener
+ *  @warning User does not need to free client_ip_addr
  */
-typedef void (*jnx_network_listener_callback)(char* msg);
+typedef void (*jnx_network_listener_callback)(char* msg,char*client_ip_addr);
 /**
  *  @brief This is the callback for UDP datagram listening in the broadcast listener
  */
@@ -32,7 +43,7 @@ typedef void (*jnx_network_broadcast_callback)(char *msg);
  *  @param Callback this is a function pointer to your jnx_network_listener_callback
  *  @return status code 0 success
  */
-int jnx_network_setup_listener(int port, void (*Callback)(char*));
+int jnx_network_setup_listener(int port, void (*Callback)(char*,char*));
 
 /** @fn jnx_network_cancel_listener(void)
  * @brief Cancels the last set listener
