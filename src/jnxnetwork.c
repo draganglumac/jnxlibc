@@ -76,11 +76,13 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 			perror("jnx_network_setup_listener error reading from socket");
 			return 1;
 		}
-		n = write(newsockfd, DEFAULTRESPONSE, 16);
+#ifndef JNXNETWORK_RESPONSE_SUPRESS
+		n = write(newsockfd, DEFAULTRESPONSE, strlen(DEFAULTRESPONSE));
 		if (n < 0) {
 			perror("jnx_network_setup_listener error writing to socket");
 			return 1;
 		}
+#endif
 		char client_ip_addr[INET6_ADDRSTRLEN];
 		inet_ntop(ADDRESSFAMILY, &(cli_addr.sin_addr),client_ip_addr,INET6_ADDRSTRLEN);
 		(*jnx_network_listener_callback)(buffer,client_ip_addr);      //function pointer callback
