@@ -153,6 +153,7 @@ int jnx_network_send_broadcast(int port,char *broadcastgroup,char *message)
 		perror("jnx_network_send_broadcast sendto");
 		return 1;
 	}
+	close(fd);
 	return 0;
 }
 void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_network_broadcast_callback)(char*))
@@ -196,6 +197,7 @@ void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_net
 		}
 		(*jnx_network_broadcast_callback)(buffer);
 	}
+	close(fd);
 }
 char* jnx_network_local_ip(char* interface)
 {
