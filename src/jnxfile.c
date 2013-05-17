@@ -35,8 +35,7 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
 
 	if((file = fopen(path, "r+")) == NULL)
 	{
-		print
-			("Could not open file for KVP matching\n");
+		printf("Could not open file for KVP matching\n");
 		return NULL;
 	}
 	jnx_file_kvp_node* list = NULL, ** nextp = &list;
