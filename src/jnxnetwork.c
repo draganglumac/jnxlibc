@@ -112,12 +112,14 @@ int jnx_network_send_message(char* host, int port, char* msg, void (*jnx_network
 		printf("jnx_network_send_message couldn't open send port\n");
 		return 1;
 	}
+	printf("1\n");
 	send_server = gethostbyname(host);
 	if (send_server < 0) {
 		printf(" jnx_network_send_message couldnt resolve ip\n");
 		close(send_fd);
 		return 1;
 	}
+	printf("2\n");
 	bzero((char*) &send_serv_addr, sizeof(send_serv_addr));
 	send_serv_addr.sin_family = ADDRESSFAMILY;
 	bcopy((char*) send_server->h_addr, (char*) &send_serv_addr.sin_addr.s_addr, send_server->h_length);

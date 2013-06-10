@@ -21,6 +21,8 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
+#include <unistd.h>
 void network_listener_callback(char *message)
 {
     assert(strcmp(message,"Hello there") == 0);
