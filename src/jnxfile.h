@@ -19,11 +19,13 @@ typedef struct jnx_file_kvp_node {
  *
  * @param path path to the target file for reading
  *
- * @return a malloced char* of the file content
+ * @param buffer that will be filled
+ *
+ * @return bytes_read
  *
  * @warning it is the users responsibility to manage the memory of the char*
  */
-char* jnx_file_read(char* path);
+int jnx_file_read(char* path, char **buffer);
 
 /**
  * @fn jnx_file_read_keyvaluepairs(char *path, char* delimiter)

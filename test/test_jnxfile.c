@@ -38,11 +38,21 @@ void test_recursive_delete()
 	assert(stat("bob",&_sb) != 0);
 
 }
+void test_jnx_file()
+{
+	system("echo 'whats up' >> tmp.txt");
+	char *buffer;
+	int size = jnx_file_read("tmp.txt",&buffer);
+	buffer[strlen(buffer) -1] = '\0';
+	assert(strcmp("whats up", buffer) == 0);	
+	system("rm tmp.txt");
+}
 int main(int args, char **argv)
 {
 	printf("Running file tests...\n");
 	printf("- test recursive delete");	
 	test_recursive_delete();
+	test_jnx_file();
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 	return 0;
 }

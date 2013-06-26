@@ -10,12 +10,12 @@
 #include <ftw.h>
 #include <libgen.h>
 #include <assert.h>
-char* jnx_file_read(char* path)
+int jnx_file_read(char* path, char **buffer)
 {
 	FILE* fp;
 	if ((fp = fopen(path, "r")) == NULL) {
 		perror("file: ");
-		return NULL;
+		return 0;
 	}
 	if(fseek(fp, 0, SEEK_END) != 0)
 	{
@@ -24,11 +24,11 @@ char* jnx_file_read(char* path)
 	}
 	long int size = ftell(fp);
 	rewind(fp);
-	char* from_file_str = calloc(size + 1, sizeof(char));
-	fread(from_file_str, 1, size, fp);
+	(*buffer) = calloc(size + 1, sizeof(char));
+	fread((*buffer), 1, size, fp);
 	fclose(fp);
 
-	return from_file_str;
+	return size;
 }
 jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
 	FILE* file;
