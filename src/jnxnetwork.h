@@ -12,7 +12,7 @@
 #define MAXBUFFER 4028
 
 #ifndef JNXNETWORK_RESPONSE_SUPRESS
-#define DEFAULTRESPONSE "Received"
+#define DEFAULTRESPONSE "OK"
 #endif
 /*-----------------------------------------------------------------------------
  * Currently the library defaults to the use of IPv4, this can be overriden with USEIPV6 
