@@ -11,9 +11,6 @@
  */
 #define MAXBUFFER 4028
 
-#ifndef JNXNETWORK_RESPONSE_SUPRESS
-#define DEFAULTRESPONSE "OK"
-#endif
 /*-----------------------------------------------------------------------------
  * Currently the library defaults to the use of IPv4, this can be overriden with USEIPV6 
  *-----------------------------------------------------------------------------*/
@@ -27,11 +24,8 @@
  *  @warning User does not need to free client_ip_addr
  */
 typedef void (*jnx_network_listener_callback)(char* msg,char*client_ip_addr);
-/**
- *  @brief This is the callback for UDP datagram listening in the broadcast listener
- */
-typedef void (*jnx_network_broadcast_callback)(char *msg);
- 
+
+typedef void (*jnx_network_broadcast_listener_callback)(char* msg);
 /** @fn jnx_network_setup_listener(int port, void (*Callback)(char*))
  *  @brief Using port and a function pointer callback it will create a listener
  *  @param port selet target listener port

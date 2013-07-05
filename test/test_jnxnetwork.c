@@ -31,7 +31,7 @@ void network_listener_callback(char *message)
 }
 void *worker_thread(void*args)
 {
-    jnx_network_broadcast_callback c = &network_listener_callback;
+    jnx_network_broadcast_listener_callback c = &network_listener_callback;
     jnx_network_broadcast_listener(12345,"225.0.0.37",c);    
 }
 int main(int argc, char **argv)

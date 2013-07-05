@@ -39,7 +39,7 @@ void* jnx_network_get_in_addr(struct sockaddr *sa)
 int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(char*,char*))
 {
 	int sockfd, newsockfd, clilen;
-	char *buffer = malloc(MAXBUFFER);
+	char buffer[MAXBUFFER];;
 	struct sockaddr_in serv_addr, cli_addr;
 	int  n;
 	int optval = 1;
@@ -74,10 +74,7 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 			return 1;
 		}
 		bzero(buffer, MAXBUFFER);
-		while((n = read(newsockfd, buffer, MAXBUFFER)) != 0)
-		{
-			buffer = realloc(buffer,strlen(buffer) + MAXBUFFER);
-		}
+		n = read(newsockfd, buffer, MAXBUFFER);
 		printf("jnx_network_setup_listener read %d bytes\n",n);
 		if (n < 0) {
 			perror("jnx_network_setup_listener error reading from socket");
@@ -85,15 +82,6 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 			close(newsockfd);
 			return 1;
 		}
-#ifndef JNXNETWORK_RESPONSE_SUPRESS
-		n = write(newsockfd, DEFAULTRESPONSE, strlen(DEFAULTRESPONSE));
-		if (n < 0) {
-			perror("jnx_network_setup_listener error writing to socket");
-			close(sockfd);
-			close(newsockfd);
-			return 1;
-		}
-#endif
 		char client_ip_addr[INET6_ADDRSTRLEN];
 		inet_ntop(ADDRESSFAMILY, &(cli_addr.sin_addr),client_ip_addr,INET6_ADDRSTRLEN);
 		(*jnx_network_listener_callback)(buffer,client_ip_addr);      //function pointer callback
@@ -163,7 +151,7 @@ int jnx_network_send_broadcast(int port,char *broadcastgroup,char *message)
 	close(fd);
 	return 0;
 }
-void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_network_broadcast_callback)(char*))
+void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_network_broadcast_listener_callback)(char*))
 {
 	struct sockaddr_in addr;
 	int fd, nbytes, addrlen;
@@ -206,7 +194,7 @@ void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_net
 			close(fd);
 			return;
 		}
-		(*jnx_network_broadcast_callback)(buffer);
+		(*jnx_network_broadcast_listener_callback)(buffer);
 	}
 	close(fd);
 }
