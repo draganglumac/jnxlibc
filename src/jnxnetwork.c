@@ -39,7 +39,7 @@ void* jnx_network_get_in_addr(struct sockaddr *sa)
 int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(char*,char*))
 {
 	int sockfd, newsockfd, clilen;
-	char buffer[MAXBUFFER];
+	char *buffer = malloc(MAXBUFFER);
 	struct sockaddr_in serv_addr, cli_addr;
 	int  n;
 	int optval = 1;
@@ -74,7 +74,11 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 			return 1;
 		}
 		bzero(buffer, MAXBUFFER);
-		n = read(newsockfd, buffer, MAXBUFFER);
+		while((n = read(newsockfd, buffer, MAXBUFFER)) != 0)
+		{
+			buffer = realloc(buffer,strlen(buffer) + MAXBUFFER);
+		}
+		printf("jnx_network_setup_listener read %d bytes\n",n);
 		if (n < 0) {
 			perror("jnx_network_setup_listener error reading from socket");
 			close(sockfd);
@@ -98,55 +102,45 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 	close(newsockfd);
 	return 0;
 }
-int jnx_network_send_message(char* host, int port, char* msg, void (*jnx_network_send_message_callback)(char*))
+int jnx_network_send_message(char* host, int port, char* msg,size_t msg_len)
 {
 	if(host == NULL || port < 0 || msg == NULL) 
 	{
 		printf("jnx_network_send_message error in input values\n");
-		return 1;
+		return -1;
 	}
 	struct hostent* send_server;
 	struct sockaddr_in send_serv_addr;
 	int send_fd = socket(ADDRESSFAMILY, SOCK_STREAM, 0);
 	if (send_fd < 0) {
 		printf("jnx_network_send_message couldn't open send port\n");
-		return 1;
+		return -1;
 	}
 	send_server = gethostbyname(host);
 	if (send_server < 0) {
 		printf(" jnx_network_send_message couldnt resolve ip\n");
 		close(send_fd);
-		return 1;
+		return -1;
 	}
 	bzero((char*) &send_serv_addr, sizeof(send_serv_addr));
 	send_serv_addr.sin_family = ADDRESSFAMILY;
 	bcopy((char*) send_server->h_addr, (char*) &send_serv_addr.sin_addr.s_addr, send_server->h_length);
 	send_serv_addr.sin_port = htons(port);
-	printf("jnx_network_send_message attempting to connect...\n");
 	if (connect(send_fd, (struct sockaddr*) &send_serv_addr, sizeof(send_serv_addr)) < 0) {
 		printf("jnx_network_send_message error whilst connecting\n");
 		close(send_fd);
-		return 1;
+		return -1;
 	}
-	printf("jnx_network_send_message connected\n");
 	size_t n;
-	char response_buffer[MAXBUFFER];
 	n = write(send_fd, msg, strlen(msg));
 	if (n < 0) {
 		perror("jnx_network_send_message error writing to socket");
 		close(send_fd);
-		return 1;
-	}
-	n = read(send_fd,response_buffer,MAXBUFFER -1 );	
-	if (n < 0) {
-		perror("jnx_network_send_message error reading from socket");
-		close(send_fd);
-		return 1;
+		return -1;
 	}
 	close(send_fd);
-	if(strlen(response_buffer) > 0)	
-		(*jnx_network_send_message_callback)(response_buffer);
-	return 0;
+	printf("jnx_network_send_message sent %zu bytes\n",n);
+	return n;
 }
 int jnx_network_send_broadcast(int port,char *broadcastgroup,char *message)
 {

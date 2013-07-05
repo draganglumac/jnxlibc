@@ -23,11 +23,6 @@
 #define ADDRESSFAMILY AF_INET6
 #endif
 /**
- * @brief This is a callback for sending a message to retrieve the response
- *
- */
-typedef void (*jnx_network_send_message_callback)(char* msg);
-/**
  *  @brief This is the callback for the received buffer from the network listener
  *  @warning User does not need to free client_ip_addr
  */
@@ -56,10 +51,10 @@ void jnx_network_cancel_listener(void);
  * @param host the ip address of the host you wish to connect to
  * @param port port number to connect to
  * @param msg message to be sent
- * @param callback_function gives a function pointer to a handler for any response text
- * @return returns 0 on success
+ * @param msg_len length of message
+ * @return returns number of bytes sent success, -1 on failure
  */
-int jnx_network_send_message(char* host, int port, char* msg, void (*callback_function)(char*));
+int jnx_network_send_message(char* host, int port, char* msg,size_t msg_len);
 
 /** @fn jnx_network_send_broadcast(int port, char *broadcastgroup,char *message)
  * @brief Sends a UDP datagram across the selected group range 
