@@ -23,7 +23,7 @@
  *  @brief This is the callback for the received buffer from the network listener
  *  @warning User does not need to free client_ip_addr
  */
-typedef void (*jnx_network_listener_callback)(char* msg,char*client_ip_addr);
+typedef void (*jnx_network_listener_callback)(char* msg,size_t bytes,char*client_ip_addr);
 
 typedef void (*jnx_network_broadcast_listener_callback)(char* msg);
 /** @fn jnx_network_setup_listener(int port, void (*Callback)(char*))
@@ -32,7 +32,7 @@ typedef void (*jnx_network_broadcast_listener_callback)(char* msg);
  *  @param Callback this is a function pointer to your jnx_network_listener_callback
  *  @return status code 0 success
  */
-int jnx_network_setup_listener(int port, void (*Callback)(char*,char*));
+int jnx_network_setup_listener(int port, void (*Callback)(char*,size_t,char*));
 
 /** @fn jnx_network_cancel_listener(void)
  * @brief Cancels the last set listener

@@ -45,7 +45,7 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter);
  * @param path path to the target file for writing
  * @param data pointer to the char* for writing to the file
  *
- * @return success on 0
+ * @return bytes written on success
  */
 int jnx_file_write(char* path, char* data);
 

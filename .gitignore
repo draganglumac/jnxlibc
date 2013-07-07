@@ -1,6 +1,7 @@
 # Compiled Object files
 # test/test_*
 docs
+*.dSYM
 *.slo
 *.lo
 *.o

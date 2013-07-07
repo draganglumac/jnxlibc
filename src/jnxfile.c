@@ -64,12 +64,12 @@ int jnx_file_write(char* path, char* data)
 	FILE* fp;
 	if ((fp = fopen(path, "w")) == NULL) {
 		perror("file: ");
-		return 1;
+		return -1;
 	}
 	int size = strlen(data);
 	fwrite(data, size, 1, fp);
 	fclose(fp);
-	return 0;
+	return size;
 }
 int jnx_file_recursive_delete_callback(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
 {

@@ -21,6 +21,7 @@
 #include <arpa/inet.h>
 #include <sys/ioctl.h>
 #include "jnxnetwork.h"
+#include "jnxlist.h"
 #define true 1
 #define false 0
 int running = true;
@@ -36,10 +37,9 @@ void* jnx_network_get_in_addr(struct sockaddr *sa)
 		return &(((struct sockaddr_in*)sa)->sin_addr);
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
-int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(char*,char*))
+int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(char*,size_t,char*))
 {
 	int sockfd, newsockfd, clilen;
-	char buffer[MAXBUFFER];;
 	struct sockaddr_in serv_addr, cli_addr;
 	int  n;
 	int optval = 1;
@@ -73,9 +73,21 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 			close(sockfd);
 			return 1;
 		}
-		bzero(buffer, MAXBUFFER);
-		n = read(newsockfd, buffer, MAXBUFFER);
-		printf("jnx_network_setup_listener read %d bytes\n",n);
+		
+		size_t bytes = 0;
+		int size = MAXBUFFER;
+		char *outbuffer = malloc(size);
+		while(n != 0)
+		{
+			char buffer[MAXBUFFER];	
+			n= read(newsockfd, buffer,MAXBUFFER);
+			bytes = bytes + n;
+			strcat(outbuffer,buffer);
+			int realloc_size = size + MAXBUFFER;
+			outbuffer = realloc(outbuffer,realloc_size);
+			size = size + MAXBUFFER;	
+		}
+		printf("jnx_network_setup_listener read %zu bytes\n",bytes);
 		if (n < 0) {
 			perror("jnx_network_setup_listener error reading from socket");
 			close(sockfd);
@@ -84,7 +96,7 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 		}
 		char client_ip_addr[INET6_ADDRSTRLEN];
 		inet_ntop(ADDRESSFAMILY, &(cli_addr.sin_addr),client_ip_addr,INET6_ADDRSTRLEN);
-		(*jnx_network_listener_callback)(buffer,client_ip_addr);      //function pointer callback
+		(*jnx_network_listener_callback)(outbuffer,bytes,client_ip_addr);      //function pointer callback
 	}
 	close(sockfd);
 	close(newsockfd);
