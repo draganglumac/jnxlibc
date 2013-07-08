@@ -19,7 +19,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <sys/stat.h>
 #include <sys/ioctl.h>
+#include "jnxfile.h"
 #include "jnxnetwork.h"
 #include "jnxlist.h"
 #define true 1
@@ -73,20 +75,28 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 			close(sockfd);
 			return 1;
 		}
-		
+		FILE *temp_file = tmpfile();
+		if(temp_file == NULL) 
+		{
+			perror("jnx_network_setup_listener error opening temp file");
+			close(sockfd);
+			close(newsockfd);
+			return 1;
+		}
 		size_t bytes = 0;
-		int size = MAXBUFFER;
-		char *outbuffer = malloc(size);
 		while(n != 0)
 		{
 			char buffer[MAXBUFFER];	
 			n= read(newsockfd, buffer,MAXBUFFER);
 			bytes = bytes + n;
-			strcat(outbuffer,buffer);
-			int realloc_size = size + MAXBUFFER;
-			outbuffer = realloc(outbuffer,realloc_size);
-			size = size + MAXBUFFER;	
+			fwrite(buffer,1,n,temp_file);
 		}
+		int len = ftell(temp_file);
+		rewind(temp_file);
+		char *outbuffer = calloc(len + 1, sizeof(char));	
+		fread(outbuffer,1,len,temp_file);
+		fclose(temp_file);	
+
 		printf("jnx_network_setup_listener read %zu bytes\n",bytes);
 		if (n < 0) {
 			perror("jnx_network_setup_listener error reading from socket");
@@ -97,6 +107,8 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 		char client_ip_addr[INET6_ADDRSTRLEN];
 		inet_ntop(ADDRESSFAMILY, &(cli_addr.sin_addr),client_ip_addr,INET6_ADDRSTRLEN);
 		(*jnx_network_listener_callback)(outbuffer,bytes,client_ip_addr);      //function pointer callback
+
+		n = -1;
 	}
 	close(sockfd);
 	close(newsockfd);
