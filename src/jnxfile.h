@@ -25,6 +25,18 @@ typedef struct jnx_file_kvp_node {
  *
  * @warning it is the users responsibility to manage the memory of the char*
  */
+int jnx_file_readb(char* path, char **buffer);
+/**
+ * @fn jnx_file_read(char* path)
+ *
+ * @param path path to the target file for reading
+ *
+ * @param buffer that will be filled
+ *
+ * @return bytes_read
+ *
+ * @warning it is the users responsibility to manage the memory of the char*
+ */
 int jnx_file_read(char* path, char **buffer);
 
 /**

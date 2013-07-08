@@ -10,6 +10,26 @@
 #include <ftw.h>
 #include <libgen.h>
 #include <assert.h>
+int jnx_file_readb(char* path, char **buffer)
+{
+	FILE* fp;
+	if ((fp = fopen(path, "rb")) == NULL) {
+		perror("file: ");
+		return 0;
+	}
+	if(fseek(fp, 0, SEEK_END) != 0)
+	{
+		perror("file: ");
+		exit(1);
+	}
+	long int size = ftell(fp);
+	rewind(fp);
+	(*buffer) = calloc(size + 1, sizeof(char));
+	fread((*buffer), 1, size, fp);
+	fclose(fp);
+
+	return size;
+}
 int jnx_file_read(char* path, char **buffer)
 {
 	FILE* fp;
