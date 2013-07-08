@@ -50,6 +50,16 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter);
 int jnx_file_write(char* path, char* data);
 
 /**
+ * @fn jnx_file_writeb(char *path, char* data)
+ *
+ * @param path path to the target file for writing in byte mode
+ * @param data pointer to the char* for writing to the file
+ *
+ * @return bytes written on success
+ */
+int jnx_file_writeb(char* path, char* data);
+
+/**
  * @fn jnx_file_recursive_delete(char* path)
  *
  * @param path the provided path will have all its sub directories and files deleted
