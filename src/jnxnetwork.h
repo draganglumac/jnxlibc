@@ -21,6 +21,7 @@
 #endif
 /**
  *  @brief This is the callback for the received buffer from the network listener
+ *  @warning User must free the msg as it has been malloced for fread purposes
  *  @warning User does not need to free client_ip_addr
  */
 typedef void (*jnx_network_listener_callback)(char* msg,size_t bytes,char*client_ip_addr);
