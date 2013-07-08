@@ -25,4 +25,13 @@ char* jnx_string_joincreate(char* destination, char* buf);
  * @param buf takes a buffer and appends it to the destination string
  */
 void jnx_string_join(char** destination, char* buf);
+
+/**
+ * @fn jnx_string_itos(int input)
+ *
+ * @param input requires an int input for conversion
+ *
+ * @return returns a string on the stack which is the converted input. NULL is returned on failure
+ */
+char* jnx_string_itos(int input);
 #endif

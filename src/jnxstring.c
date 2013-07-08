@@ -32,3 +32,22 @@ void jnx_string_join(char** destination, char* buf)
 		strncpy(*destination, buf, buf_len + 1);
 	}
 }
+/**
+ * @fn jnx_string_itos(int input)
+ *
+ * @param input requires an int input for conversion
+ *
+ * @return returns a string on the stack which is the converted input. NULL is returned on failure
+ * @warning User is responsible for freeing the returned string
+ */
+char* jnx_string_itos(int input)
+{
+	char *str = malloc(24);
+	if(sprintf(str,"%d",input) > 0)
+	{
+		return str;
+	}else
+	{
+		return NULL;
+	}
+}
