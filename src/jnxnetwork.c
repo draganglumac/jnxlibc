@@ -43,7 +43,7 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 {
 	int sockfd, newsockfd, clilen;
 	struct sockaddr_in serv_addr, cli_addr;
-	int  n;
+	int  n = -1;
 	int optval = 1;
 	sockfd = socket(ADDRESSFAMILY, SOCK_STREAM, 0);
 	if (sockfd < 0) {
