@@ -1,5 +1,6 @@
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
+#include <stddef.h>
 /** @file jnxnetwork.h
  *  @brief The API for jnxlibc networking (includes TCP, UDP )
  *
