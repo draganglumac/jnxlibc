@@ -44,11 +44,16 @@ void test_jnx_file()
 	char *buffer;
 	int size = jnx_file_read("tmp.txt",&buffer);
 	printf("tmp.txt size %d\n",size);
-	char *test_string = "whats up";
-
+	char *test_string = "whats up\n";
 	while(*buffer != '\0')
 	{
-		assert(*buffer == *test_string);
+		char a = *buffer;
+		char b = *test_string;
+		if(a != b)
+		{
+			printf("%X %X do not match\n",a,b);
+		}
+		assert(a == b);
 		test_string++;
 		buffer++;
 	}
