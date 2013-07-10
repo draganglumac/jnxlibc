@@ -40,11 +40,18 @@ void test_recursive_delete()
 }
 void test_jnx_file()
 {
-	system("echo 'whats up' >> tmp.txt");
+	system("echo 'whats up' > tmp.txt");
 	char *buffer;
 	int size = jnx_file_read("tmp.txt",&buffer);
-	buffer[strlen(buffer) -1] = '\0';
-	assert(strcmp("whats up", buffer) == 0);	
+	printf("tmp.txt size %d\n",size);
+	char *test_string = "whats up";
+
+	while(*buffer != '\0')
+	{
+		assert(*buffer == *test_string);
+		test_string++;
+		buffer++;
+	}
 	system("rm tmp.txt");
 }
 int main(int args, char **argv)
