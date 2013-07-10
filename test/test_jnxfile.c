@@ -43,7 +43,6 @@ void test_jnx_file()
 	system("echo 'whats up' > tmp.txt");
 	char *buffer;
 	int size = jnx_file_read("tmp.txt",&buffer);
-	printf("tmp.txt size %d\n",size);
 	char *test_string = "whats up\n";
 	while(*buffer != '\0')
 	{
