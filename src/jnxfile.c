@@ -78,27 +78,25 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
 	}
 	return list;
 }
-int jnx_file_writeb(char* path, char* data)
+size_t jnx_file_writeb(char* path, char* data, size_t data_size)
 {
 	FILE* fp;
 	if ((fp = fopen(path, "wb")) == NULL) {
 		perror("file: ");
 		return -1;
 	}
-	int size = strlen(data);
-	fwrite(data, size, 1, fp);
+	size_t size = fwrite(data, data_size, 1, fp);
 	fclose(fp);
 	return size;
 }
-int jnx_file_write(char* path, char* data)
+size_t jnx_file_write(char* path, char* data, size_t data_size)
 {
 	FILE* fp;
 	if ((fp = fopen(path, "w")) == NULL) {
 		perror("file: ");
 		return -1;
 	}
-	int size = strlen(data);
-	fwrite(data, size, 1, fp);
+	size_t size = fwrite(data, data_size, 1, fp);
 	fclose(fp);
 	return size;
 }

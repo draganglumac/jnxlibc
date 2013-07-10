@@ -5,6 +5,7 @@
  */
 #ifndef __JNXFILE_H__
 #define __JNXFILE_H__
+#include <stddef.h>
 /**
  *  @brief an internal representation of the kvp node populated when used in key value pair retrieval from a file
  */
@@ -56,20 +57,19 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter);
  *
  * @param path path to the target file for writing
  * @param data pointer to the char* for writing to the file
- *
+ * @param size_t data_size of data to be written
  * @return bytes written on success
  */
-int jnx_file_write(char* path, char* data);
-
+size_t jnx_file_write(char* path, char* data, size_t data_size);
 /**
  * @fn jnx_file_writeb(char *path, char* data)
  *
  * @param path path to the target file for writing in byte mode
  * @param data pointer to the char* for writing to the file
- *
+ * @param size_t data_size to be written
  * @return bytes written on success
  */
-int jnx_file_writeb(char* path, char* data);
+size_t jnx_file_writeb(char* path, char* data,size_t data_size);
 
 /**
  * @fn jnx_file_recursive_delete(char* path)
