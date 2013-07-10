@@ -10,7 +10,7 @@
 #include <ftw.h>
 #include <libgen.h>
 #include <assert.h>
-int jnx_file_readb(char* path, char **buffer)
+size_t jnx_file_readb(char* path, char **buffer)
 {
 	FILE* fp;
 	if ((fp = fopen(path, "rb")) == NULL) {
@@ -22,7 +22,7 @@ int jnx_file_readb(char* path, char **buffer)
 		perror("file: ");
 		exit(1);
 	}
-	long int size = ftell(fp);
+	size_t size = ftell(fp);
 	rewind(fp);
 	(*buffer) = calloc(size, sizeof(char));
 	fread((*buffer), 1, size, fp);
@@ -30,7 +30,7 @@ int jnx_file_readb(char* path, char **buffer)
 
 	return size;
 }
-int jnx_file_read(char* path, char **buffer)
+size_t jnx_file_read(char* path, char **buffer)
 {
 	FILE* fp;
 	if ((fp = fopen(path, "r")) == NULL) {
@@ -42,7 +42,7 @@ int jnx_file_read(char* path, char **buffer)
 		perror("file: ");
 		exit(1);
 	}
-	long int size = ftell(fp);
+	size_t size = ftell(fp);
 	rewind(fp);
 	(*buffer) = calloc(size, sizeof(char));
 	fread((*buffer), 1, size, fp);
