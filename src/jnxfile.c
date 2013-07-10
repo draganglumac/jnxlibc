@@ -24,7 +24,7 @@ int jnx_file_readb(char* path, char **buffer)
 	}
 	long int size = ftell(fp);
 	rewind(fp);
-	(*buffer) = calloc(size + 1, sizeof(char));
+	(*buffer) = calloc(size, sizeof(char));
 	fread((*buffer), 1, size, fp);
 	fclose(fp);
 
@@ -44,7 +44,7 @@ int jnx_file_read(char* path, char **buffer)
 	}
 	long int size = ftell(fp);
 	rewind(fp);
-	(*buffer) = calloc(size + 1, sizeof(char));
+	(*buffer) = calloc(size, sizeof(char));
 	fread((*buffer), 1, size, fp);
 	fclose(fp);
 
