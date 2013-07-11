@@ -85,7 +85,7 @@ size_t jnx_file_writeb(char* path, char* data, size_t data_size)
 		perror("file: ");
 		return -1;
 	}
-	size_t size = fwrite(data, data_size, 1, fp);
+	size_t size = fwrite(data, 1,data_size, fp);
 	fclose(fp);
 	return size;
 }
@@ -96,7 +96,7 @@ size_t jnx_file_write(char* path, char* data, size_t data_size)
 		perror("file: ");
 		return -1;
 	}
-	size_t size = fwrite(data, data_size, 1, fp);
+	size_t size = fwrite(data, 1,data_size, fp);
 	fclose(fp);
 	return size;
 }
