@@ -31,10 +31,11 @@ typedef void (*jnx_network_broadcast_listener_callback)(char* msg);
 /** @fn jnx_network_setup_listener(int port, void (*Callback)(char*))
  *  @brief Using port and a function pointer callback it will create a listener
  *  @param port selet target listener port
+ *  @param max_connections is the size of the backlog queue
  *  @param Callback this is a function pointer to your jnx_network_listener_callback
  *  @return status code 0 success
  */
-int jnx_network_setup_listener(int port, void (*Callback)(char*,size_t,char*));
+int jnx_network_setup_listener(int port,int max_connections, void (*Callback)(char*,size_t,char*));
 
 /** @fn jnx_network_cancel_listener(void)
  * @brief Cancels the last set listener
