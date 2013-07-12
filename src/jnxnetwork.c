@@ -39,7 +39,7 @@ void* jnx_network_get_in_addr(struct sockaddr *sa)
 		return &(((struct sockaddr_in*)sa)->sin_addr);
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
-int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(char*,size_t,char*))
+int jnx_network_setup_listener(int port,int max_connections, void (*jnx_network_listener_callback)(char*,size_t,char*))
 {
 	int sockfd, newsockfd, clilen;
 	struct sockaddr_in serv_addr, cli_addr;
@@ -67,7 +67,7 @@ int jnx_network_setup_listener(int port, void (*jnx_network_listener_callback)(c
 	}
 	while (running) {
 		clilen = sizeof(cli_addr);
-		listen(sockfd, 5);
+		listen(sockfd, max_connections);
 		newsockfd = accept(sockfd, (struct sockaddr*) &cli_addr,
 				(socklen_t*)&clilen);
 		if (newsockfd < 0) {
