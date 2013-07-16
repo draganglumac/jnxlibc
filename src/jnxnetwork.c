@@ -78,7 +78,7 @@ int jnx_network_setup_listener(int port,int max_connections, void (*jnx_network_
 		FILE *temp_file = tmpfile();
 		if(temp_file == NULL) 
 		{
-			perror("jnx_network_setup_listener error opening temp file");
+			printf("jnx_network_setup_listener: %s\n",strerror(errno));
 			close(sockfd);
 			close(newsockfd);
 			return 1;
