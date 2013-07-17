@@ -65,9 +65,9 @@ int jnx_network_setup_listener(int port,int max_connections, void (*jnx_network_
 		close(sockfd);
 		return 1;
 	}
+	listen(sockfd, max_connections);
 	while (running) {
 		clilen = sizeof(cli_addr);
-		listen(sockfd, max_connections);
 		newsockfd = accept(sockfd, (struct sockaddr*) &cli_addr,
 				(socklen_t*)&clilen);
 		if (newsockfd < 0) {
@@ -109,9 +109,9 @@ int jnx_network_setup_listener(int port,int max_connections, void (*jnx_network_
 		(*jnx_network_listener_callback)(outbuffer,bytes,client_ip_addr);      //function pointer callback
 
 		n = -1;
+		close(newsockfd);
 	}
 	close(sockfd);
-	close(newsockfd);
 	return 0;
 }
 int jnx_network_send_message(char* host, int port, char* msg,size_t msg_len)
