@@ -17,6 +17,7 @@
 #include <net/if.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <ifaddrs.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/stat.h>
@@ -224,15 +225,28 @@ void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*jnx_net
 }
 char* jnx_network_local_ip(char* interface)
 {
-	int fd;
-	char* ipadd = NULL;
-	struct ifreq ifr;
-	fd = socket(ADDRESSFAMILY, SOCK_DGRAM, 0);
-	ifr.ifr_addr.sa_family = ADDRESSFAMILY;
-	snprintf(ifr.ifr_name, IFNAMSIZ, interface);
-	ioctl(fd, SIOCGIFADDR, &ifr);
-	ipadd = inet_ntoa(((struct sockaddr_in*) &ifr.ifr_addr)->sin_addr);
-	close(fd);
-	return ipadd;
+    struct ifaddrs * ifAddrStruct=NULL;
+    struct ifaddrs * ifa=NULL;
+    void * tmpAddrPtr=NULL;
+	getifaddrs(&ifAddrStruct);
+
+    for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next)
+    {
+        if (ifa ->ifa_addr->sa_family==AF_INET)
+        {   // check it is IP4
+            tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
+            char *addressBuffer = malloc(sizeof(char) *INET_ADDRSTRLEN);
+            inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
+
+            if(strcmp(ifa->ifa_name,interface) == 0)
+			{
+				free(ifAddrStruct);
+				return addressBuffer;
+            }
+
+        }
+    }
+    if (ifAddrStruct!=NULL) freeifaddrs(ifAddrStruct);
+	return NULL;
 }
 
