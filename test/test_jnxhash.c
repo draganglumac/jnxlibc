@@ -30,10 +30,37 @@ int main(int args, char **argv)
      
     jnx_hash_put(testhash,"Alex","Jones");
   
+    jnx_hash_put(testhash,"Bob","Marley");
     assert((char*)jnx_hash_get(testhash,"Alex") == "Jones"); 
-   
+
+
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	
+	printf("- test_hash_get_keys");
+
+	const char **buffer;
+	int number_of_keys = jnx_hash_get_keys(testhash,&buffer);
+
+
+	printf("Number of keys returned %d\n",number_of_keys);
+	int x;
+	for(x = 0; x < number_of_keys; ++x)
+	{
+		printf("Current key -> %s\n",buffer[x]);
+	}
+
+
+	assert(number_of_keys == 2);
+	free(buffer);
+
     jnx_hash_delete(testhash);  
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-    printf("Hash tests completed.\n"); 
+
+
+
+
+
+
+	printf("Hash tests completed.\n"); 
     return 0;
 }

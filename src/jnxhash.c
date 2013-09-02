@@ -60,6 +60,30 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const char* key)
     }
     return NULL;
 }
+int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys)
+{
+	int x, counter = 0;
+	int default_size = sizeof(char*);
+	*keys = calloc(1,default_size);
+
+	for(x = 0; x < hashmap->size; ++x)
+	{
+		if(hashmap->data[x].used)
+		{
+			jnx_node *head_of_buckets = hashmap->data[x].bucket->head;
+			while(head_of_buckets){
+				
+				jnx_hash_bucket_el *current_bucket = head_of_buckets->_data;
+				(*keys)[counter] = current_bucket->origin_key;
+				++counter;
+				*keys = realloc(*keys, (default_size * counter));
+				head_of_buckets = head_of_buckets->next_node;
+			}
+		}
+	}
+
+	return counter;
+}
 int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
 {
     int index = jnx_hash_string(key, hashmap->size);
@@ -69,8 +93,7 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
         //okay so bucket is ready to get given a KVP entry, so we'll use our bucket struct
         jnx_hash_bucket_el* current_bucket_el = malloc(sizeof(jnx_hash_bucket_el));
         current_bucket_el->origin_key = key;
-        current_bucket_el->origin_value = value;
-        //insert our bucket element...
+        current_bucket_el->origin_value = value;//insert our bucket element...
         jnx_list_add(hashmap->data[index].bucket, current_bucket_el);
         hashmap->data[index].bucket_len++;
         hashmap->data[index].used++;

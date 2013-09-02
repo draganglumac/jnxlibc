@@ -61,7 +61,13 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value);
  *  @return void pointer to the data from value
  */
 void* jnx_hash_get(jnx_hashmap* hashmap, const char* key);
-
+/** @fn jnx_hash_get_keys(jnx_hashmap *hashmap, char **keys)
+ *  @brief Returns the number of keys found, and mallocs keys array and inserts keys
+ *  @param hashmap pointer to hashmap for retrieval
+ *  @param keys is a pointer to an array which is given for mallocing and insertion
+ *  @return number of keys found
+ */
+int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys);
 /** @fn jnx_hash_string(const char *input, int map_size) 
  *  @brief  Allows access to the hash string function, returning and unsigned int
  *  @param input is the string to be hashed
