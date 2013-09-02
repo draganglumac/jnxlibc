@@ -18,13 +18,28 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "../src/jnxterm.h"
+#include "../src/jnxfile.h"
 #include <stdio.h>
+#include <string.h>
+void test_redirect()
+{
+	char *test_path = "console_redirect.log";
+	system("touch console_redirect.log");
+	jnx_term_override_stdout(test_path);
+	system("echo 'test'");
+	jnx_term_reset_stdout();
+	char *buffer;
+	size_t read = jnx_file_read(test_path,&buffer);
+	system("rm console_redirect.log");
+	buffer[strlen(buffer) - 1] = '\0';
+	assert(strcmp(buffer,"test") == 0);
+}
 int main()
 {
     printf("Running jnx_term tests\n");
-    printf("- terminal tests");
-    jnx_term_printf_in_color(JNX_COL_YELLOW, "  NOT IMPLEMENTED\n");
-    jnx_term_default();
+    printf("- terminal tests ");
+	test_redirect();
+	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
     printf("Terminal tests completed.\n");
     return 0;
 }
