@@ -62,7 +62,8 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const char* key)
 }
 int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys)
 {
-	int x, counter = 1;
+	int x, counter = 0;
+	int offset = 1;
 	int default_size = sizeof(char*);
 	*keys = calloc(1,default_size);
 
@@ -74,9 +75,10 @@ int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys)
 			while(head_of_buckets){
 				jnx_hash_bucket_el *current_bucket = head_of_buckets->_data;
 				(*keys)[counter] = current_bucket->origin_key;
-				++counter;
-				*keys = realloc(*keys, (default_size * counter));
+				++offset;
+				*keys = realloc(*keys, (default_size * offset));
 				head_of_buckets = head_of_buckets->next_node;
+				++counter;
 			}
 		}
 	}

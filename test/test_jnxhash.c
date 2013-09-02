@@ -49,7 +49,6 @@ int main(int args, char **argv)
 		printf("Current key -> %s\n",buffer[x]);
 	}
 
-
 	assert(number_of_keys == 2);
 	free(buffer);
 
