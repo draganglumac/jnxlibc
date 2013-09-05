@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <time.h>
+#include <string.h>
 #include "../src/jnxterm.h"
 typedef struct{
     int a;
@@ -81,9 +82,10 @@ void test_remove_position()
     jnx_vector *vector = jnx_vector_init();
     jnx_vector_insert(vector,"Hello");
     jnx_vector_insert_at(vector,90,"Bye");
-    jnx_vector_remove_at(vector,15);
     assert(vector->vector[15]->data == NULL);
     assert((char*)vector->vector[90]->data == "Bye");
+    char *data = jnx_vector_remove_at(vector,90);
+	assert(strcmp("Bye",(char*)data) == 0);
     jnx_vector_delete(vector);
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
