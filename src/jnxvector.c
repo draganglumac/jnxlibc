@@ -91,14 +91,16 @@ void jnx_vector_insert_at(jnx_vector *vector, int position, void *value)
         vector->vector[position]->data = value;
     }
 }
-void jnx_vector_remove_at(jnx_vector *vector,int position)
+void* jnx_vector_remove_at(jnx_vector *vector,int position)
 {
     if(vector->vector[position]->used)
     {
-        free(vector->vector[position]->data);
-        vector->vector[position]->data = NULL;
+        void *data = vector->vector[position]->data;
+	   	vector->vector[position]->data = NULL;
         vector->vector[position]->used = 0;
-    }
+		return data;
+   	}
+	return NULL;
 }
 void jnx_vector_insert(jnx_vector *vector, void *value)
 {

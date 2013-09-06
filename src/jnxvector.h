@@ -39,7 +39,7 @@ void jnx_vector_delete(jnx_vector* vector);
 void jnx_vector_insert(jnx_vector *vector, void *value);
 
 /**
- * @fn jnx_vector_insert_at(jnx_vector *vector int position, void *value)
+ * @fn jnx_vector_insert_at(jnx_vector *vector, int position, void *value)
  * @brief inserts into the vector at a particular position, if it doesn't exist it will be crearted
  * @param vector 
  * @param position
@@ -61,6 +61,7 @@ void *jnx_vector_last(jnx_vector *vector);
  * @brief removes an entry at position in the vector
  * @param vector points to the target vector
  * @param position target position
+ * @return returns the value, returns NULL on error 
  */
-void jnx_vector_remove_at(jnx_vector *vector,int position);
+void* jnx_vector_remove_at(jnx_vector *vector,int position);
 #endif 
