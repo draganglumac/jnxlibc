@@ -43,12 +43,11 @@ static fpos_t pos;
 
 void text_and_background_color(int attr, int fg, int bg)
 {
-    printf("%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
+	printf("%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
 }
-
 void text_color(int attr, int fg)
 {
-    printf("%c[%d;%dm", 0x1B, attr, fg + 30);
+	printf("%c[%d;%dm", 0x1B, attr, fg + 30);
 }
 int get_width()
 {
@@ -59,28 +58,26 @@ int get_width()
 }
 void jnx_term_default()
 {
-    printf("%c[0m", 0x1B);
+	printf("%c[0m", 0x1B);
 }
-
 void jnx_term_color(int fg_col)
 {
-    if ( JNX_COL_BLACK <= fg_col && fg_col <= JNX_COL_WHITE )
-    {
-        text_color(JNX_TERM_RESET, fg_col);
-    }
+	if ( JNX_COL_BLACK <= fg_col && fg_col <= JNX_COL_WHITE )
+	{
+		text_color(JNX_TERM_RESET, fg_col);
+	}
 }
-
 void jnx_term_printf_in_color(int fg_col, const char* format, ...)
 {
-    jnx_term_color(fg_col);
+	jnx_term_color(fg_col);
 
-    va_list ap;
-    
-    va_start(ap, format);
-    vprintf(format, ap);
-    va_end(ap);
+	va_list ap;
 
-    jnx_term_default(); 
+	va_start(ap, format);
+	vprintf(format, ap);
+	va_end(ap);
+
+	jnx_term_default(); 
 }
 void jnx_term_override_stdout(char *path)
 {
@@ -106,17 +103,16 @@ void *loading_loop(void *ptr)
 
 	char spin_status[4] = {'|','/','-','\\'};
 	int counter = 0;
-
-	printf("Loading -  ");
+	char *loading_text = "Loading";
+	printf("\033[s%s",loading_text);
 
 	while(ISLOADING_SPIN == 1)
 	{
-		printf("\033[1D\033[K%c", spin_status[counter%4]);
+		printf("\033[u\033[2K%s %c",loading_text, spin_status[counter%4]);
 		fflush(stdout);
 		++counter;
 		nanosleep(&_nano,NULL);
 	}
-	printf("\n");
 	return NULL;
 }
 void *loading_loop_bar()
@@ -137,13 +133,11 @@ void *loading_loop_bar()
 		{
 			strcat(sigil_buffer,sigil);
 		}
-
 		char msg[256];
 		sprintf(msg,"Loading %s",sigil_buffer);
 		printf("\033[u\033[2K%s",msg);
 		fflush(stdout);
 		nanosleep(&_nano,NULL);
-
 		++bar_size;
 		if(bar_size == (width - strlen(loading_text)))
 		{
@@ -162,6 +156,7 @@ void jnx_term_load_spinner(int state)
 	else
 	{
 		pthread_join(loader_thread,NULL);
+		printf("\033[u\033[2K\n");
 	}
 }
 void jnx_term_load_bar(int state)
@@ -170,6 +165,7 @@ void jnx_term_load_bar(int state)
 	if(ISLOADING_BAR == 1)
 	{
 		pthread_create(&bar_loader_thread,NULL,loading_loop_bar,NULL);
+		printf("\033[u\033[2K\n");
 	}else
 	{
 		pthread_join(bar_loader_thread,NULL);
