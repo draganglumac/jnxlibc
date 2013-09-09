@@ -25,7 +25,6 @@ void jnx_stack_push(jnx_stack* A, void* _datain)
         // We don't accept NULL data
         return;
     }
-    
     jnx_node *temp = malloc(sizeof(jnx_node));
     temp->_data = _datain;
     temp->next_node = A->top;

@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "../src/jnxhash.h"
+#include "../src/jnxterm.h"
 void test_key_deletion()
 {
 	jnx_hashmap *testhash = jnx_hash_init(1024);
@@ -65,12 +66,11 @@ void test_hash_get_keys()
 int main(int argc, char **argv)
 {
  	printf("Running test for jnxhash\n");
-	printf("- test_key_deletion");
+	printf("- test_key_deletion: ");
 	test_key_deletion();
-	printf(  "  OK\n");
-
-	printf("- test_hash_get_keys");
+	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+	printf("- test_hash_get_keys: ");
 	test_hash_get_keys();
-	printf(  "  OK\n");
+	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
 	return 0;
 }

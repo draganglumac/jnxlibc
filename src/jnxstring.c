@@ -21,25 +21,14 @@ void jnx_string_join(char** destination, char* buf)
 	} else {
 		orig_len = strlen(*destination);
 	}
-
 	int newsize = orig_len + buf_len + 1;
-
 	*destination  = (char*) realloc(*destination,newsize);
-
 	if (orig_len != 0) {
 		strncpy(*destination + orig_len, buf, buf_len + 1);
 	} else {
 		strncpy(*destination, buf, buf_len + 1);
 	}
 }
-/**
- * @fn jnx_string_itos(int input)
- *
- * @param input requires an int input for conversion
- *
- * @return returns a string on the stack which is the converted input. NULL is returned on failure
- * @warning User is responsible for freeing the returned string
- */
 char* jnx_string_itos(int input)
 {
 	char *str = malloc(24);
