@@ -98,8 +98,6 @@ void jnx_list_delete(jnx_list* A)
         current = next; 
         next = next->next_node;
     }
-
-    
     free(current);
     current = NULL;
     A->counter = 0;

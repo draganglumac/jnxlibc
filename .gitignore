@@ -5,6 +5,7 @@ docs
 *.slo
 *.lo
 *.o
+*.log
 build
 *~
 *swp
