@@ -20,6 +20,7 @@ size_t jnx_file_readb(char* path, char **buffer)
 	if(fseek(fp, 0, SEEK_END) != 0)
 	{
 		perror("file: ");
+		fclose(fp);
 		exit(1);
 	}
 	size_t size = ftell(fp);
@@ -27,7 +28,6 @@ size_t jnx_file_readb(char* path, char **buffer)
 	(*buffer) = calloc(size, sizeof(char));
 	fread((*buffer), 1, size, fp);
 	fclose(fp);
-
 	return size;
 }
 size_t jnx_file_read(char* path, char **buffer)
@@ -51,7 +51,6 @@ size_t jnx_file_read(char* path, char **buffer)
 }
 jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
 	FILE* file;
-
 	if((file = fopen(path, "r+")) == NULL)
 	{
 		printf("Could not open file for KVP matching\n");
@@ -76,6 +75,7 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
 		*nextp = node;
 		nextp = &node->next;
 	}
+	fclose(file);
 	return list;
 }
 size_t jnx_file_writeb(char* path, char* data, size_t data_size)
