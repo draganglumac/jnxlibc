@@ -13,7 +13,7 @@
  * @brief Internal container for a key value pair
  */
 typedef struct bucketel {
-    const char* origin_key;
+		  char* origin_key;
     const char* origin_value;
 } jnx_hash_bucket_el;
 /**
@@ -35,10 +35,17 @@ typedef struct hashmap {
 
 /** @fn jnx_hash_delete(jnx_hashmap *hashmap)
  *  @brief Deletes the hashelement lists and the hash elements, and the hashmap 
- *  @param hashmap* pointer to the map to be deleted
+ *  @param *hashmap pointer to the map to be deleted
  */
 void jnx_hash_delete(jnx_hashmap* hashmap);
 
+/** @fn jnx_hash_remove(jnx_hashmap *hashamp, char *key
+ *  @brief removes the key and returns the value for an entry
+ *  @param *hashmap pointer to the map 
+ *  @param pointer to key for lookup and removal
+ *  @return pointer to value
+ */
+void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key);
 /** @fn jnx_hash_init(unsigned int size)
  *  @brief Returns a newly created hashmap
  *  @param size initial size for the hashmap, unsigned int i.e 1024

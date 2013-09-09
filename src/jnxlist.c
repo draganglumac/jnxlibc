@@ -77,28 +77,31 @@ void* jnx_list_remove(jnx_list* A)
 }
 void jnx_list_delete(jnx_list* A)
 {
-    if(A == NULL)
+	if(A == NULL)
     {
-        printf("No list\n");
-        return;
-    }
-    if(A->head == NULL)
-    {
+        printf("jnx_list_delete: No list\n");
         return;
     }
     jnx_node *current = A->head;
-    if(!current->next_node){ 
-        A->head = NULL;
-        return;
+	if(!current)
+	{
+		free(A);
+		A = NULL;
+		return;
+	}
+	if(!current->next_node){ 
+		free(current);
+		free(A);
+        A = NULL;
+		return;
     }
-    jnx_node *next = current->next_node;
-    while(next)
-    {
-        free(current);
-        current = next; 
-        next = next->next_node;
-    }
-    free(current);
-    current = NULL;
-    A->counter = 0;
+	while(current)
+	{
+		jnx_node *current_node = current;
+		free(current_node);
+		current = current->next_node; 
+	}
+	free(A);
+	A = NULL;	
 }
+
