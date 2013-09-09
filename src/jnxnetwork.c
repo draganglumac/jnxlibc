@@ -98,7 +98,6 @@ int jnx_network_setup_listener(int port,int max_connections, void (*jnx_network_
 		fread(outbuffer,1,len,temp_file);
 		fclose(temp_file);	
 
-		printf("jnx_network_setup_listener read %zu bytes\n",bytes);
 		if (n < 0) {
 			perror("jnx_network_setup_listener error reading from socket");
 			close(sockfd);
