@@ -21,6 +21,7 @@
 #include "../src/jnxfile.h"
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 void test_redirect()
 {
 	char *test_path = "console_redirect.log";
@@ -40,6 +41,14 @@ int main()
     printf("- terminal tests ");
 	test_redirect();
 	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
-    printf("Terminal tests completed.\n");
+	printf("- terminal output ");
+	jnx_term_load_bar(1);
+	sleep(2);
+	jnx_term_load_bar(0);
+	jnx_term_load_spinner(1);
+	sleep(2);
+	jnx_term_load_spinner(0);
+	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+	printf("Terminal tests completed.\n");
     return 0;
 }

@@ -37,12 +37,17 @@ void jnx_term_color(int fg_col);
  */
 void jnx_term_printf_in_color(int fg_col, const char* format, ...);
 /**
- * @fn jnx_term_load(int state)
+ * @fn jnx_term_load_spinner(int state)
  * @brief starts/stops a loading spinner in the terminal on another thread
  * @param state toggles between 0 and 1 for off/on
  */
-void jnx_term_load(int state);
-
+void jnx_term_load_spinner(int state);
+/**
+ * @fn jnx_term_load_bar(int state)
+ * @brief starts/stops a loading spinner in the terminal on another thread
+ * @param state toggles between 0 and 1 for off/on
+ */
+void jnx_term_load_bar(int state);
 /**
  * @fn jnx_term_override_stdout(char *path)
  * @brief redirects stdout to a file
