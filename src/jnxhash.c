@@ -91,8 +91,8 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
 		hashmap->data[index].bucket_len = 0;
 		//okay so bucket is ready to get given a KVP entry, so we'll use our bucket struct
 		jnx_hash_bucket_el* current_bucket_el = malloc(sizeof(jnx_hash_bucket_el));
-		current_bucket_el->origin_key = malloc(strlen(key));
-		strncpy(current_bucket_el->origin_key,key,strlen(key));
+		current_bucket_el->origin_key = malloc(strlen(key) + 1);
+		strncpy(current_bucket_el->origin_key,key,strlen(key) + 1);
 		current_bucket_el->origin_value = value;//insert our bucket element...
 		jnx_list_add(hashmap->data[index].bucket, current_bucket_el);
 		hashmap->data[index].bucket_len++;
@@ -115,8 +115,8 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
 		hashmap->data[index].bucket->head = rewind_head;
 		//If the list has been searched and the entry does not exist, we'll do a new insert
 		jnx_hash_bucket_el* current_bucket_el = malloc(sizeof(jnx_hash_bucket_el));
-		current_bucket_el->origin_key = malloc(strlen(key));
-		strncpy(current_bucket_el->origin_key,key,strlen(key));
+		current_bucket_el->origin_key = malloc(strlen(key) + 1);
+		strncpy(current_bucket_el->origin_key,key,strlen(key) + 1);
 		current_bucket_el->origin_value = value;
 		jnx_list_add(hashmap->data[index].bucket, current_bucket_el);
 		hashmap->data[index].bucket_len++;
