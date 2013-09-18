@@ -34,7 +34,8 @@ typedef struct hashmap {
 } jnx_hashmap;
 
 /** @fn jnx_hash_delete(jnx_hashmap *hashmap)
- *  @brief Deletes the hashelement lists and the hash elements, and the hashmap 
+ *  @brief Deletes the keys and the hashmap 
+ *  @warning Does not remove values 
  *  @param *hashmap pointer to the map to be deleted
  */
 void jnx_hash_delete(jnx_hashmap* hashmap);

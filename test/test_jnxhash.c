@@ -63,11 +63,25 @@ void test_hash_get_keys()
 	assert(num_keys == 4);
 	jnx_hash_delete(testhash);
 }
+void test_hash_deletion()
+{
+	jnx_hashmap *testhash = jnx_hash_init(1024);
+	char *key_one = "ABC";
+	char *key_two = "DEF";
+	char *test_data = "Void";
+	jnx_hash_put(testhash,key_one,test_data);
+	jnx_hash_put(testhash,key_two,test_data);
+
+	jnx_hash_delete(testhash);
+}
 int main(int argc, char **argv)
 {
  	printf("Running test for jnxhash\n");
 	printf("- test_key_deletion: ");
 	test_key_deletion();
+	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+	printf("- test_hash_deletion: ");
+	test_hash_deletion();
 	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
 	printf("- test_hash_get_keys: ");
 	test_hash_get_keys();
