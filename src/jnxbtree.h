@@ -126,7 +126,7 @@ void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value);
 void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key);
 
 
-/** @fn void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
+/** @fn void* jnx_B_tree_remove(jnx_B_tree *tree, void **key)
  * @brief Remove from the B-tree the record which matches the passed in key.
  *
  * If the record with @a key is in the @a tree, the record is removed and
@@ -134,13 +134,19 @@ void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key);
  * is not in the @a tree, the tree is unchanged.
  *
  * @param tree The B-tree from which to remove the record.
- * @param key The key for which to remove the record.
+ * @param key_in The key for which to remove the record.
+ * @param key_out The reference by which the pointer to the memory for key from the tree record
+ *                is returned. Set this to NULL if your keys are not malloced.
+ * @param val_out The reference by which the pointer to the memory for value from the tree record
+ *                is returned. Set this to NULL if your values are not malloced.
+ *
+ * @return Pointer to the value from the tree so that users can free potentially malloc'd values.
  *
  * @warning This operation will clean up the internal structures but will not attempt to free
  * the memory for the key and value of the deleted record. It's worth bearing this in mind to
  * avoid memory leaks.
  */
-void jnx_B_tree_remove(jnx_B_tree *tree, void *key);
+void jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void **key_out, void **val_out);
 
 
 /** @fn void jnx_B_tree_delete(jnx_B_tree *tree)
