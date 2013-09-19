@@ -2,7 +2,7 @@
  * @file jnxvector.h
  * @brief The API for jnxlibc's implementation of vector
  *
- * #incude <jnxc_headers/jnxvector.h>
+ * #include <jnxc_headers/jnxvector.h>
  */
 #ifndef __JNX_VECTOR_H__
 #define __JNX_VECTOR_H__
