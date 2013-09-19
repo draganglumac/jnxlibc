@@ -366,7 +366,7 @@ void merge_subtrees_around_index(jnx_B_tree *tree, jnx_B_tree_node *node, int in
 	node->count--;
 
 	// Delete the second node, i.e. free its memory on the heap
-	free(second);
+	delete_node(second);
 
 	// Since root is the only node that can have less than t-1 records
 	// we have to account for the fact when root has only one record
@@ -375,7 +375,7 @@ void merge_subtrees_around_index(jnx_B_tree *tree, jnx_B_tree_node *node, int in
 	if ( node == root )
 	{
 		tree->root = first;
-		free(root);
+		delete_node(root);
 	}
 }
 
