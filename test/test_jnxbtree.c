@@ -1172,9 +1172,9 @@ void test_removing_key_from_root()
 
 int main()
 {
-	printf("[DEBUG] sizeof(record) = %u\n", sizeof(record));
-	printf("[DEBUG] sizeof(jnx_B_tree_node) = %u\n", sizeof(jnx_B_tree_node));
-	printf("[DEBUG] sizeof(jnx_B_tree) = %u\n", sizeof(jnx_B_tree));
+//	printf("[DEBUG] sizeof(record) = %u\n", sizeof(record));
+//	printf("[DEBUG] sizeof(jnx_B_tree_node) = %u\n", sizeof(jnx_B_tree_node));
+//	printf("[DEBUG] sizeof(jnx_B_tree) = %u\n", sizeof(jnx_B_tree));
 
     printf("Running B-tree tests...\n");
     
