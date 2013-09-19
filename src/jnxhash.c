@@ -11,18 +11,27 @@ int jnx_hash_string(const char* input, int map_size)
 }
 void jnx_hash_delete(jnx_hashmap* hashmap)
 {
-	jnx_hashmap* m = hashmap;
-	int i;
-	for(i = 0; i < hashmap->size; ++i)
+	int len = hashmap->size;
+	int count;
+	
+	for(count = 0; count < len; ++count)
 	{
-		jnx_list *temp = hashmap->data[i].bucket;
-		if(temp != NULL)
+		jnx_hash_element *current_element = &hashmap->data[count];
+		
+		if(current_element->used)
 		{
-			jnx_list_delete(temp);
+			jnx_list *current_bucket = current_element->bucket;
+			while(current_bucket->head)
+			{
+				jnx_hash_bucket_el *current_element = current_bucket->head->_data;
+				free(current_element->origin_key);
+				free(current_element);
+				current_bucket->head = current_bucket->head->next_node;
+			}
+			jnx_list_delete(current_bucket);
 		}
-	}
-	free(m->data);
-	free(m);
+	}		
+	free(hashmap);
 }
 jnx_hashmap* jnx_hash_init(unsigned int size)
 {

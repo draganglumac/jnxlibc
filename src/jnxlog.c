@@ -33,7 +33,7 @@ void jnx_write_to_log(char *message)
     pthread_mutex_lock(&_locker);
     FILE *fp = fopen(log_path,"a");
     if(fp == NULL) { 
-        printf("Unable to open file for log writing\n");
+        printf("jnx_write_to_log: Unable to open file for log writing\n");
         pthread_mutex_unlock(&_locker);
         return;
     };
@@ -51,7 +51,7 @@ int jnx_log_setup(char *path)
         FILE *fp = fopen(path,"w+");
         if(fp == NULL)
         {
-            printf("Error creating log file\n");
+            printf("jnx_log_setup: Error creating log file\n");
             return 1;
         }
         else
@@ -65,10 +65,10 @@ int jnx_log_setup(char *path)
     {
         if(S_ISDIR(s.st_mode))
         {
-            printf("Exists but is a directory\n");
+            printf("jnx_log_setup: Exists but is a directory\n");
             return 1;
         }
-        printf("Found existing log, will continue logging\n");
+        printf("jnx_log_setup: Found existing log, will continue logging\n");
         //assigning to our global log path
         log_path = path;
     } 
