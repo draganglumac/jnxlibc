@@ -37,7 +37,7 @@ if [[ $HAS_DOXYGEN -eq 0 && $HAS_DOXY2MAN -eq 0 ]]; then
 	rm -rf man
 	mkdir -p docs/man/man3
 	doxygen
-	for f in docs/xml/*.xml; do
+	for f in docs/xml/*_8h.xml; do
 		doxy2man -o docs/man/man3 $f
 	done
 	rm -rf docs/xml
