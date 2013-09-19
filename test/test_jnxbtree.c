@@ -946,43 +946,43 @@ void test_removing_record_from_inner_node()
 	char c;
 	jnx_B_tree_node *root;
 
-//    // Case when preceeding sibling has degree >= n
-//    tree = build_alphabet_tree(0, 1);    
-//    c = 'N';
-//
-//    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
-//
-////    print_char_tree_at_node(tree->root, char_node_contents, 1); 
-//    
-//    root = tree->root;
-//    assert(strcmp_node_contents_with_string(root->children[0], "CFIM") == 0);
-//    assert(root->children[0]->count == 4);
-//    assert(root->children[0]->records[4] == NULL);
-//   
-//    assert(strcmp_node_contents_with_string(root->children[0]->children[3], "JKL") == 0);
-//    assert(root->children[0]->children[3]->count == 3);
-//    assert(root->children[0]->children[3]->records[3] == NULL);
-//
-//    jnx_B_tree_delete(tree);
-//
-//    // Case when succeeding sibling has degree >= n
-//    tree = build_alphabet_tree(0, 1);
-//    c = 'I';
-//    
-//    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
-//    
-////    print_char_tree_at_node(tree->root, char_node_contents, 1);
-//
-//    root = tree->root;
-//    assert(strcmp_node_contents_with_string(root->children[0], "CFJN") == 0);
-//    assert(root->children[0]->count == 4);
-//    assert(root->children[0]->records[4] == NULL);
-//   
-//    assert(strcmp_node_contents_with_string(root->children[0]->children[3], "KLM") == 0);
-//    assert(root->children[0]->children[3]->count == 3);
-//    assert(root->children[0]->children[3]->records[3] == NULL);
-//    
-//    jnx_B_tree_delete(tree);
+    // Case when preceeding sibling has degree >= n
+    tree = build_alphabet_tree(0, 1);    
+    c = 'N';
+
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1); 
+    
+    root = tree->root;
+    assert(strcmp_node_contents_with_string(root->children[0], "CFIM") == 0);
+    assert(root->children[0]->count == 4);
+    assert(root->children[0]->records[4] == NULL);
+   
+    assert(strcmp_node_contents_with_string(root->children[0]->children[3], "JKL") == 0);
+    assert(root->children[0]->children[3]->count == 3);
+    assert(root->children[0]->children[3]->records[3] == NULL);
+
+    jnx_B_tree_delete(tree);
+
+    // Case when succeeding sibling has degree >= n
+    tree = build_alphabet_tree(0, 1);
+    c = 'I';
+    
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
+    
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    root = tree->root;
+    assert(strcmp_node_contents_with_string(root->children[0], "CFJN") == 0);
+    assert(root->children[0]->count == 4);
+    assert(root->children[0]->records[4] == NULL);
+   
+    assert(strcmp_node_contents_with_string(root->children[0]->children[3], "KLM") == 0);
+    assert(root->children[0]->children[3]->count == 3);
+    assert(root->children[0]->children[3]->records[3] == NULL);
+    
+    jnx_B_tree_delete(tree);
 
     // Case when siblings have to be merged, i.e. both have degree < n
     tree = build_alphabet_tree(0, 1);
@@ -1002,52 +1002,52 @@ void test_removing_record_from_inner_node()
     assert(root->children[0]->children[1]->records[4] == NULL);
 
     jnx_B_tree_delete(tree);
-//
-//    // Case when siblings have to be merged but on a boundary
-//    tree = build_alphabet_tree(0, 1);
-//    c = 'C';
-//
-//    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
-//
-////    print_char_tree_at_node(tree->root, char_node_contents, 1);
-//
-//    root = tree->root;
-//    assert(strcmp_node_contents_with_string(root->children[0], "FIN") == 0);
-//    assert(root->children[0]->count == 3);
-//    assert(root->children[0]->records[3] == NULL);
-//   
-//    assert(strcmp_node_contents_with_string(root->children[0]->children[0], "ABDE") == 0);
-//    assert(root->children[0]->children[0]->count == 4);
-//    assert(root->children[0]->children[0]->records[4] == NULL);
-//    
-//    jnx_B_tree_delete(tree);
-//
-//    tree = build_alphabet_tree(0, 1);
-//    c = 'x';
-//   
-//    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
-//  
-//    root = tree->root; 
-//    assert(strcmp_node_contents_with_string(root, "N") == 0);
-//    assert(root->count == 1);
-//    assert(strcmp_node_contents_with_string(root->children[1], "QTW") == 0);
-//    assert(root->children[1]->count == 3);
-//    assert(strcmp_node_contents_with_string(root->children[1]->children[3], "XYZ") == 0);
-//    assert(root->children[1]->children[3]->count == 3);
-//
-//    c = '1';
-//
-//    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
-//    
-//    root = tree->root; 
-//    assert(strcmp_node_contents_with_string(root, "N") == 0);
-//    assert(root->count == 1);
-//    assert(strcmp_node_contents_with_string(root->children[0], "FI") == 0);
-//    assert(root->children[0]->count == 2);
-//    assert(strcmp_node_contents_with_string(root->children[0]->children[0], "ABCDE") == 0);
-//    assert(root->children[0]->children[0]->count == 5);
-//
-//    jnx_B_tree_delete(tree);
+
+    // Case when siblings have to be merged but on a boundary
+    tree = build_alphabet_tree(0, 1);
+    c = 'C';
+
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
+
+//    print_char_tree_at_node(tree->root, char_node_contents, 1);
+
+    root = tree->root;
+    assert(strcmp_node_contents_with_string(root->children[0], "FIN") == 0);
+    assert(root->children[0]->count == 3);
+    assert(root->children[0]->records[3] == NULL);
+   
+    assert(strcmp_node_contents_with_string(root->children[0]->children[0], "ABDE") == 0);
+    assert(root->children[0]->children[0]->count == 4);
+    assert(root->children[0]->children[0]->records[4] == NULL);
+    
+    jnx_B_tree_delete(tree);
+
+    tree = build_alphabet_tree(0, 1);
+    c = 'x';
+   
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
+  
+    root = tree->root; 
+    assert(strcmp_node_contents_with_string(root, "N") == 0);
+    assert(root->count == 1);
+    assert(strcmp_node_contents_with_string(root->children[1], "QTW") == 0);
+    assert(root->children[1]->count == 3);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[3], "XYZ") == 0);
+    assert(root->children[1]->children[3]->count == 3);
+
+    c = '1';
+
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
+    
+    root = tree->root; 
+    assert(strcmp_node_contents_with_string(root, "N") == 0);
+    assert(root->count == 1);
+    assert(strcmp_node_contents_with_string(root->children[0], "FI") == 0);
+    assert(root->children[0]->count == 2);
+    assert(strcmp_node_contents_with_string(root->children[0]->children[0], "ABCDE") == 0);
+    assert(root->children[0]->children[0]->count == 5);
+
+    jnx_B_tree_delete(tree);
 
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
@@ -1172,36 +1172,39 @@ void test_removing_key_from_root()
 
 int main()
 {
+	printf("[DEBUG] sizeof(record) = %u\n", sizeof(record));
+	printf("[DEBUG] sizeof(jnx_B_tree_node) = %u\n", sizeof(jnx_B_tree_node));
+	printf("[DEBUG] sizeof(jnx_B_tree) = %u\n", sizeof(jnx_B_tree));
 
     printf("Running B-tree tests...\n");
+    
+	// Insertion tests
+    test_new_node();
+    test_new_empty_tree();
+    test_insert_first_record_into_tree();
+    test_insert_records_into_leaf_root();
+    test_growing_to_depth_of_2();
+    test_spliting_a_leaf_node_that_is_not_root();
+    test_growing_to_depth_of_3();
+    test_splitting_inner_node();
+//    test_alphabet_tree();
 
-    // Insertion tests
-//    test_new_node();
-//    test_new_empty_tree();
-//    test_insert_first_record_into_tree();
-//    test_insert_records_into_leaf_root();
-//    test_growing_to_depth_of_2();
-//    test_spliting_a_leaf_node_that_is_not_root();
-//    test_growing_to_depth_of_3();
-//    test_splitting_inner_node();
-////    test_alphabet_tree();
-//
-//    // Lookup tests
-//    test_lookup_in_empty_tree();
-//    test_lookup_in_single_record_tree();
-//    test_lookup_in_leaf_root();
-//    test_lookup_in_tree_of_depth_3();
-//    test_lookup_does_not_modify_tree();
-//
-//    // Remove tests
-//    test_removing_key_from_empty_tree();
-//    test_removing_record_from_single_record_tree();
-//    test_removing_record_from_leaf_root();
-//    test_simple_remove_from_leaf();
+    // Lookup tests
+    test_lookup_in_empty_tree();
+    test_lookup_in_single_record_tree();
+    test_lookup_in_leaf_root();
+    test_lookup_in_tree_of_depth_3();
+    test_lookup_does_not_modify_tree();
+
+    // Remove tests
+    test_removing_key_from_empty_tree();
+    test_removing_record_from_single_record_tree();
+    test_removing_record_from_leaf_root();
+    test_simple_remove_from_leaf();
     test_removing_record_from_inner_node();
-////    test_mixed_tree();
-//    test_removing_key_from_child_that_has_too_few_records();
-//    test_removing_key_from_root();
+//    test_mixed_tree();
+    test_removing_key_from_child_that_has_too_few_records();
+    test_removing_key_from_root();
 
     printf("B-tree tests completed.\n");
 

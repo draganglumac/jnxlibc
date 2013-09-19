@@ -447,7 +447,7 @@ record *delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record 
 		else
 		{
 			merge_subtrees_around_index(tree, node, rec_i);
-			delete_record_from_node(tree, node->children[rec_i], r);
+			retval = delete_record_from_node(tree, node->children[rec_i], r);
 		}
 
 		return retval;
