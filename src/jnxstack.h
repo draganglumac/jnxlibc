@@ -31,10 +31,9 @@ jnx_stack* jnx_stack_init(void);
  *  @brief Returns 1 (true) if the stack is empty, and 0 otherwise.
  *  @param A is the target stack.
  */
-
 int jnx_stack_is_empty(jnx_stack* A);
 
-/** @fn jnx_stack_is_empty(jnx_stack *A)
+/** @fn jnx_stack_push(jnx_stack *A, void* _datain)
  *  @brief  Accepts a void pointer to input data to push onto the stack
  *  @param A is the target stack
  *  @param _datain is the data to insert

@@ -40,7 +40,9 @@ int jnx_log_setup(char *path);
 /**
  * @fn jnx_log(const char *format, ...)
  *
- * @brief Call this function to log a formatted string to your log file.i
+ * @brief Call this function to log a formatted string to your log file.
+ *			You pass it a format string and optional arguments to match
+ *			the format rules of printf.
  *
  * @param format Log formatted string, same format as printf.
  * @param ... optional arguments for insertion into formatted string

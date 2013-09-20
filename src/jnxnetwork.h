@@ -28,7 +28,8 @@
 typedef void (*jnx_network_listener_callback)(char* msg,size_t bytes,char*client_ip_addr);
 
 typedef void (*jnx_network_broadcast_listener_callback)(char* msg);
-/** @fn jnx_network_setup_listener(int port, void (*Callback)(char*))
+
+/** @fn jnx_network_setup_listener(int port, int max_connections, void (*Callback)(char*,size_t,char*))
  *  @brief Using port and a function pointer callback it will create a listener
  *  @param port selet target listener port
  *  @param max_connections is the size of the backlog queue
@@ -42,7 +43,7 @@ int jnx_network_setup_listener(int port,int max_connections, void (*Callback)(ch
  */
 void jnx_network_cancel_listener(void);
 
-/** @fn jnx_network_send_message(char* host, int port, char* msg)
+/** @fn jnx_network_send_message(char* host, int port, char* msg, size_t msg_len)
  * @brief This sends a message via selected port to host
  *
  * @param host the ip address of the host you wish to connect to
@@ -51,7 +52,7 @@ void jnx_network_cancel_listener(void);
  * @param msg_len length of message
  * @return returns number of bytes sent success, -1 on failure
  */
-int jnx_network_send_message(char* host, int port, char* msg,size_t msg_len);
+int jnx_network_send_message(char* host, int port, char* msg, size_t msg_len);
 
 /** @fn jnx_network_send_broadcast(int port, char *broadcastgroup,char *message)
  * @brief Sends a UDP datagram across the selected group range 
