@@ -1,0 +1,48 @@
+.TH "B_tree" 3 "Fri Sep 20 2013" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+B_tree \- 
+.PP
+Internal representation of the whole B-tree\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include 'jnxbtree\&.h'\fP
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "int \fBorder\fP"
+.br
+.ti -1c
+.RI "\fBcompare_keys\fP \fBcompare_function\fP"
+.br
+.ti -1c
+.RI "\fBjnx_B_tree_node\fP * \fBroot\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Internal representation of the whole B-tree\&. 
+.SH "Member Data Documentation"
+.PP 
+.SS "\fBcompare_keys\fP B_tree::compare_function"
+Callback function to compare keys\&. 
+.PP
+\fBSee Also:\fP
+.RS 4
+\fBcompare_keys\fP 
+.RE
+.PP
+
+.SS "int B_tree::order"
+The order of the tree, i\&.e\&. the minimum number of records a non-root node can have\&. 
+.SS "\fBjnx_B_tree_node\fP* B_tree::root"
+The root node of the B-tree\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

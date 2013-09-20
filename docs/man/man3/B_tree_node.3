@@ -1,0 +1,46 @@
+.TH "B_tree_node" 3 "Fri Sep 20 2013" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+B_tree_node \- 
+.PP
+Internal representation of a node in a B-tree\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include 'jnxbtree\&.h'\fP
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "int \fBcount\fP"
+.br
+.ti -1c
+.RI "int \fBis_leaf\fP"
+.br
+.ti -1c
+.RI "\fBrecord\fP ** \fBrecords\fP"
+.br
+.ti -1c
+.RI "struct \fBB_tree_node\fP ** \fBchildren\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Internal representation of a node in a B-tree\&. 
+.SH "Member Data Documentation"
+.PP 
+.SS "struct \fBB_tree_node\fP** B_tree_node::children"
+The subtrees of the node\&. A leaf node has each of its subtrees set to NULL\&. 
+.SS "int B_tree_node::count"
+How many records are in the node\&. 
+.SS "int B_tree_node::is_leaf"
+Is it a leaf node (set to 1) or an internal node (set to 0)\&. 
+.SS "\fBrecord\fP** B_tree_node::records"
+The records contained in the node\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

@@ -2,7 +2,7 @@
  * @file jnxvector.h
  * @brief The API for jnxlibc's implementation of vector
  *
- * #incude <jnxc_headers/jnxvector.h>
+ * #include <jnxc_headers/jnxvector.h>
  */
 #ifndef __JNX_VECTOR_H__
 #define __JNX_VECTOR_H__
@@ -20,7 +20,15 @@ typedef struct{
     int count;
     jnx_vector_record **vector;
 }jnx_vector;
+
+
+/**
+ * @fn jnx_vector_init(void)
+ * @brief Function that initialises internal vector structures. Call this function
+ *			before you call any other function from the API.
+ */
 jnx_vector *jnx_vector_init(void);
+
 /**
  * @fn jnx_vector_delete(jnx_vector* vector)
  * @brief Deletes the vector and its data structures

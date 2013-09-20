@@ -25,6 +25,7 @@
 #include "../src/jnxterm.h"
 
 extern jnx_B_tree_node* new_node(int, int);
+extern void delete_node(jnx_B_tree_node*);
 
 void test_new_node()
 {
@@ -37,13 +38,13 @@ void test_new_node()
     assert(n != NULL);
     assert(n->count == 0);
     assert(n->is_leaf == 0);
-    free(n);
+    delete_node(n);
 
     n = new_node(5, 1);
     assert(n != NULL);
     assert(n->count == 0);
     assert(n->is_leaf == 1);
-    free(n);
+    delete_node(n);
 
     jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
@@ -267,9 +268,9 @@ void test_spliting_a_leaf_node_that_is_not_root()
     jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
 }
 
-void test_growing__to_depth_of_3()
+void test_growing_to_depth_of_3()
 {
-    printf("- test_growing__to_depth_of_3: ");
+    printf("- test_growing_to_depth_of_3: ");
 
     jnx_B_tree *tree = jnx_B_tree_init(2, compare_pints);
     int data[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -666,11 +667,11 @@ void test_removing_key_from_empty_tree()
     jnx_B_tree *tree = NULL;
     int kv = 42;
 
-    jnx_B_tree_remove(tree, (void *) &kv);
+    jnx_B_tree_remove(tree, (void *) &kv, NULL, NULL);
     assert(tree == NULL);
 
     tree = jnx_B_tree_init(2, compare_pints);
-    jnx_B_tree_remove(tree, (void *) &kv);
+    jnx_B_tree_remove(tree, (void *) &kv, NULL, NULL);
     assert(tree->root->count == 0);
 
     jnx_B_tree_delete(tree);
@@ -689,11 +690,11 @@ void test_removing_record_from_single_record_tree()
     jnx_B_tree_add(tree, (void *) &kv, (void *) &kv);
     assert(tree->root->count == 1);
 
-    jnx_B_tree_remove(tree, (void *) &kv2);
+    jnx_B_tree_remove(tree, (void *) &kv2, NULL, NULL);
     assert(tree->root->count == 1);
     assert(compare_pints(tree->root->records[0]->key, (void *) &kv) == 0);
 
-    jnx_B_tree_remove(tree, (void *) &kv);
+    jnx_B_tree_remove(tree, (void *) &kv, NULL, NULL);
     assert(tree->root->count == 0);
     assert(tree->root->records[0] == NULL);
 
@@ -716,21 +717,21 @@ void test_removing_record_from_leaf_root()
     }
 
     // remove from the middle
-    jnx_B_tree_remove(tree, (void *) data);
+    jnx_B_tree_remove(tree, (void *) data, NULL, NULL);
     assert(tree->root->count == 8);
     char *contents = int_node_contents(tree->root);
     assert(strcmp(contents, "1 3 12 27 31 47 56 100 ") == 0);
     free(contents);
 
     // remove first
-    jnx_B_tree_remove(tree, (void *) (data + 7));
+    jnx_B_tree_remove(tree, (void *) (data + 7), NULL, NULL);
     assert(tree->root->count == 7);
     contents = int_node_contents(tree->root);
     assert(strcmp(contents, "3 12 27 31 47 56 100 ") == 0);
     free(contents);
 
     // remove last
-    jnx_B_tree_remove(tree, (void *) (data + 5));
+    jnx_B_tree_remove(tree, (void *) (data + 5), NULL, NULL);
     assert(tree->root->count == 6);
     contents = int_node_contents(tree->root);
     assert(strcmp(contents, "3 12 27 31 47 56 ") == 0);
@@ -738,7 +739,7 @@ void test_removing_record_from_leaf_root()
 
     // remove record not in node 
     int bob = -1;
-    jnx_B_tree_remove(tree, (void *) &bob);
+    jnx_B_tree_remove(tree, (void *) &bob, NULL, NULL);
     assert(tree->root->count == 6);
     contents = int_node_contents(tree->root);
     assert(strcmp(contents, "3 12 27 31 47 56 ") == 0);
@@ -759,7 +760,9 @@ void print_char_tree_at_node(jnx_B_tree_node *node, char *(*str)(jnx_B_tree_node
         {
             printf("    ");
         }
-        printf("%s\n", str(node));
+		char *temp = str(node);
+        printf("%s\n", temp);
+		free(temp);
 
         return;
     }
@@ -804,6 +807,7 @@ void populate_char_tree(jnx_B_tree *tree, char *data, int size, int random, int 
             jnx_B_tree_add(tree, (void *) (data + next), (void *) (data + next));
         }
 
+		free(flags);
     }
     else
     {
@@ -912,7 +916,7 @@ void test_simple_remove_from_leaf()
     jnx_B_tree_node *leaf = tree->root->children[1]->children[4]; 
     assert(leaf->count == 5);
 
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
     char *contents = char_node_contents(leaf);
     assert(strcmp(contents, "VWYZ") == 0);
@@ -920,29 +924,42 @@ void test_simple_remove_from_leaf()
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
 
+	free(contents);
     jnx_B_tree_delete(tree);
 
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+
+int strcmp_node_contents_with_string(jnx_B_tree_node *node, char *str)
+{
+	char *contents = char_node_contents(node);
+	int retval = strcmp(contents, str);
+	free(contents);
+	return retval;
 }
 
 void test_removing_record_from_inner_node()
 {
     printf("- test_removing_record_from_inner_node:");
 
-    // Case when preceeding sibling has degree >= n
-    jnx_B_tree *tree = build_alphabet_tree(0, 1);    
-    char c = 'N';
+	jnx_B_tree *tree;
+	char c;
+	jnx_B_tree_node *root;
 
-    jnx_B_tree_remove(tree, (void *) &c);
+    // Case when preceeding sibling has degree >= n
+    tree = build_alphabet_tree(0, 1);    
+    c = 'N';
+
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1); 
     
-    jnx_B_tree_node *root = tree->root;
-    assert(strcmp(char_node_contents(root->children[0]), "CFIM") == 0);
+    root = tree->root;
+    assert(strcmp_node_contents_with_string(root->children[0], "CFIM") == 0);
     assert(root->children[0]->count == 4);
     assert(root->children[0]->records[4] == NULL);
    
-    assert(strcmp(char_node_contents(root->children[0]->children[3]), "JKL") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0]->children[3], "JKL") == 0);
     assert(root->children[0]->children[3]->count == 3);
     assert(root->children[0]->children[3]->records[3] == NULL);
 
@@ -952,16 +969,16 @@ void test_removing_record_from_inner_node()
     tree = build_alphabet_tree(0, 1);
     c = 'I';
     
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
     
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
 
     root = tree->root;
-    assert(strcmp(char_node_contents(root->children[0]), "CFJN") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0], "CFJN") == 0);
     assert(root->children[0]->count == 4);
     assert(root->children[0]->records[4] == NULL);
    
-    assert(strcmp(char_node_contents(root->children[0]->children[3]), "KLM") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0]->children[3], "KLM") == 0);
     assert(root->children[0]->children[3]->count == 3);
     assert(root->children[0]->children[3]->records[3] == NULL);
     
@@ -971,16 +988,16 @@ void test_removing_record_from_inner_node()
     tree = build_alphabet_tree(0, 1);
     c = 'F';
 
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
 
     root = tree->root;
-    assert(strcmp(char_node_contents(root->children[0]), "CIN") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0], "CIN") == 0);
     assert(root->children[0]->count == 3);
     assert(root->children[0]->records[3] == NULL);
    
-    assert(strcmp(char_node_contents(root->children[0]->children[1]), "DEGH") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0]->children[1], "DEGH") == 0);
     assert(root->children[0]->children[1]->count == 4);
     assert(root->children[0]->children[1]->records[4] == NULL);
 
@@ -990,16 +1007,16 @@ void test_removing_record_from_inner_node()
     tree = build_alphabet_tree(0, 1);
     c = 'C';
 
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
 
     root = tree->root;
-    assert(strcmp(char_node_contents(root->children[0]), "FIN") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0], "FIN") == 0);
     assert(root->children[0]->count == 3);
     assert(root->children[0]->records[3] == NULL);
    
-    assert(strcmp(char_node_contents(root->children[0]->children[0]), "ABDE") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0]->children[0], "ABDE") == 0);
     assert(root->children[0]->children[0]->count == 4);
     assert(root->children[0]->children[0]->records[4] == NULL);
     
@@ -1008,26 +1025,26 @@ void test_removing_record_from_inner_node()
     tree = build_alphabet_tree(0, 1);
     c = 'x';
    
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
   
     root = tree->root; 
-    assert(strcmp(char_node_contents(root), "N") == 0);
+    assert(strcmp_node_contents_with_string(root, "N") == 0);
     assert(root->count == 1);
-    assert(strcmp(char_node_contents(root->children[1]), "QTW") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1], "QTW") == 0);
     assert(root->children[1]->count == 3);
-    assert(strcmp(char_node_contents(root->children[1]->children[3]), "XYZ") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[3], "XYZ") == 0);
     assert(root->children[1]->children[3]->count == 3);
 
     c = '1';
 
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
     
     root = tree->root; 
-    assert(strcmp(char_node_contents(root), "N") == 0);
+    assert(strcmp_node_contents_with_string(root, "N") == 0);
     assert(root->count == 1);
-    assert(strcmp(char_node_contents(root->children[0]), "FI") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0], "FI") == 0);
     assert(root->children[0]->count == 2);
-    assert(strcmp(char_node_contents(root->children[0]->children[0]), "ABCDE") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0]->children[0], "ABCDE") == 0);
     assert(root->children[0]->children[0]->count == 5);
 
     jnx_B_tree_delete(tree);
@@ -1041,20 +1058,20 @@ void test_removing_key_from_child_that_has_too_few_records()
 
     jnx_B_tree *tree = build_mixed_tree(0, 1);
     char c = 'D';
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
     jnx_B_tree_node *root = tree->root;
-    assert(strcmp(char_node_contents(root->children[1]), "BH") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1], "BH") == 0);
     assert(root->children[1]->count == 2);
-    assert(strcmp(char_node_contents(root->children[1]->children[0]), "9") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[0], "9") == 0);
     assert(root->children[1]->children[0]->count == 1);
-    assert(strcmp(char_node_contents(root->children[1]->children[1]), "F") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[1], "F") == 0);
     assert(root->children[1]->children[1]->count == 1);
-    assert(strcmp(char_node_contents(root->children[1]->children[2]), "JM") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[2], "JM") == 0);
     assert(root->children[1]->children[2]->count == 2);
-    assert(strcmp(char_node_contents(root->children[1]->children[1]->children[0]), "CE") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[1]->children[0], "CE") == 0);
     assert(root->children[1]->children[1]->children[0]->count == 2);
-    assert(strcmp(char_node_contents(root->children[1]->children[1]->children[1]), "G") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[1]->children[1], "G") == 0);
     assert(root->children[1]->children[1]->children[1]->count == 1);
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
@@ -1063,20 +1080,20 @@ void test_removing_key_from_child_that_has_too_few_records()
 
     tree = build_mixed_tree(0, 1);
     c = 'S';
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
     root = tree->root;
-    assert(strcmp(char_node_contents(root), "7F") == 0);
+    assert(strcmp_node_contents_with_string(root, "7F") == 0);
     assert(root->count == 2);
-    assert(strcmp(char_node_contents(root->children[1]), "B") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1], "B") == 0);
     assert(root->children[1]->count == 1);
-    assert(strcmp(char_node_contents(root->children[2]), "OT") == 0);
+    assert(strcmp_node_contents_with_string(root->children[2], "OT") == 0);
     assert(root->children[2]->count == 2);
-    assert(strcmp(char_node_contents(root->children[2]->children[0]), "HJM") == 0);
+    assert(strcmp_node_contents_with_string(root->children[2]->children[0], "HJM") == 0);
     assert(root->children[2]->children[0]->count == 3);
-    assert(strcmp(char_node_contents(root->children[2]->children[1]), "Q") == 0);
+    assert(strcmp_node_contents_with_string(root->children[2]->children[1], "Q") == 0);
     assert(root->children[2]->children[1]->count == 1);
-    assert(strcmp(char_node_contents(root->children[2]->children[2]), "W") == 0);
+    assert(strcmp_node_contents_with_string(root->children[2]->children[2], "W") == 0);
     assert(root->children[2]->children[2]->count == 1);
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
@@ -1085,20 +1102,20 @@ void test_removing_key_from_child_that_has_too_few_records()
 
     tree = build_mixed_tree(0, 1);
     c = '9';
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
     root = tree->root;
-    assert(strcmp(char_node_contents(root->children[1]), "F") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1], "F") == 0);
     assert(root->children[1]->count == 1);
-    assert(strcmp(char_node_contents(root->children[1]->children[0]), "BD") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[0], "BD") == 0);
     assert(root->children[1]->children[0]->count == 2);
-    assert(strcmp(char_node_contents(root->children[1]->children[1]), "HJM") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[1], "HJM") == 0);
     assert(root->children[1]->children[1]->count == 3);
-    assert(strcmp(char_node_contents(root->children[1]->children[0]->children[0]), "8A") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[0]->children[0], "8A") == 0);
     assert(root->children[1]->children[0]->children[0]->count == 2);
-    assert(strcmp(char_node_contents(root->children[1]->children[0]->children[1]), "C") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[0]->children[1], "C") == 0);
     assert(root->children[1]->children[0]->children[1]->count == 1);
-    assert(strcmp(char_node_contents(root->children[1]->children[0]->children[2]), "E") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[0]->children[2], "E") == 0);
     assert(root->children[1]->children[0]->children[2]->count == 1);
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
@@ -1115,16 +1132,16 @@ void test_removing_key_from_root()
     jnx_B_tree *tree = build_alphabet_tree(0, 1);
     char c = 'Q';
 
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
     jnx_B_tree_node *root = tree->root;
-    assert(strcmp(char_node_contents(root), "P") == 0);
+    assert(strcmp_node_contents_with_string(root, "P") == 0);
     assert(root->count == 1);
-    assert(strcmp(char_node_contents(root->children[0]), "CFIM") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0], "CFIM") == 0);
     assert(root->children[0]->count == 4);
-    assert(strcmp(char_node_contents(root->children[0]->children[3]), "JKL") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0]->children[3], "JKL") == 0);
     assert(root->children[0]->children[3]->count == 3);
-    assert(strcmp(char_node_contents(root->children[0]->children[4]), "NO") == 0);
+    assert(strcmp_node_contents_with_string(root->children[0]->children[4], "NO") == 0);
     assert(root->children[0]->children[4]->count == 2);
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
@@ -1134,16 +1151,16 @@ void test_removing_key_from_root()
     tree = build_mixed_tree(0, 1);
     c = '7';
 
-    jnx_B_tree_remove(tree, (void *) &c);
+    jnx_B_tree_remove(tree, (void *) &c, NULL, NULL);
 
     root = tree->root;
-    assert(strcmp(char_node_contents(root), "8O") == 0);
+    assert(strcmp_node_contents_with_string(root, "8O") == 0);
     assert(root->count == 2);
-    assert(strcmp(char_node_contents(root->children[1]), "F") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1], "F") == 0);
     assert(root->children[1]->count == 1);
-    assert(strcmp(char_node_contents(root->children[1]->children[0]), "BD") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[0], "BD") == 0);
     assert(root->children[1]->children[0]->count == 2);
-    assert(strcmp(char_node_contents(root->children[1]->children[0]->children[0]), "9A") == 0);
+    assert(strcmp_node_contents_with_string(root->children[1]->children[0]->children[0], "9A") == 0);
     assert(root->children[1]->children[0]->children[0]->count == 2);
 
 //    print_char_tree_at_node(tree->root, char_node_contents, 1);
@@ -1155,17 +1172,20 @@ void test_removing_key_from_root()
 
 int main()
 {
+//	printf("[DEBUG] sizeof(record) = %u\n", sizeof(record));
+//	printf("[DEBUG] sizeof(jnx_B_tree_node) = %u\n", sizeof(jnx_B_tree_node));
+//	printf("[DEBUG] sizeof(jnx_B_tree) = %u\n", sizeof(jnx_B_tree));
 
     printf("Running B-tree tests...\n");
-
-    // Insertion tests
+    
+	// Insertion tests
     test_new_node();
     test_new_empty_tree();
     test_insert_first_record_into_tree();
     test_insert_records_into_leaf_root();
     test_growing_to_depth_of_2();
     test_spliting_a_leaf_node_that_is_not_root();
-    test_growing__to_depth_of_3();
+    test_growing_to_depth_of_3();
     test_splitting_inner_node();
 //    test_alphabet_tree();
 

@@ -1,6 +1,6 @@
 # Compiled Object files
 # test/test_*
-docs
+docs/xml
 *.dSYM
 *.slo
 *.lo

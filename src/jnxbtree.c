@@ -32,6 +32,13 @@ jnx_B_tree_node *new_node(int order, int is_leaf)
 	return node;
 }
 
+void delete_node(jnx_B_tree_node *node)
+{
+	free(node->records);
+	free(node->children);
+	free(node);
+}
+
 void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, int index)
 {
 	// Copy the RHS half of the records and children to new node
@@ -278,7 +285,7 @@ void delete_node_and_subtrees(jnx_B_tree_node *node)
 	}
 
 	// Finally, free the node itself
-	free(node);
+	delete_node(node);
 }
 
 void *find_value_for_key_in_node(jnx_B_tree *tree, jnx_B_tree_node *node, void *key)
@@ -359,7 +366,7 @@ void merge_subtrees_around_index(jnx_B_tree *tree, jnx_B_tree_node *node, int in
 	node->count--;
 
 	// Delete the second node, i.e. free its memory on the heap
-	free(second);
+	delete_node(second);
 
 	// Since root is the only node that can have less than t-1 records
 	// we have to account for the fact when root has only one record
@@ -368,11 +375,11 @@ void merge_subtrees_around_index(jnx_B_tree *tree, jnx_B_tree_node *node, int in
 	if ( node == root )
 	{
 		tree->root = first;
-		free(root);
+		delete_node(root);
 	}
 }
 
-void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
+record *delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 {
 	int i = find_index_for_record(tree, node, r);
 
@@ -382,18 +389,18 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 		{
 			if ( i < node->count )
 			{
-				if  ( tree->compare_function(node->records[i]->key, r->key) == 0 )
+				if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
 				{
 					record *temp = node->records[i];
 					shift_records_left_from_index(node, i + 1);
 					node->count--;
 
-					free(temp);
+					return temp;
 				}
 			}
 		}
 
-		return;
+		return NULL;
 	}
 
 	// Index 'i' returned by find_index_for_record is one of two things:
@@ -403,7 +410,7 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 	// records array upper bound which is at most node->count + 1
 	int rec_i = i < node->count ? i : node->count - 1; 
 	record *node_rec = node->records[rec_i];
-	record *temp = NULL;
+	record *temp = NULL, *retval = NULL;
 
 	if ( tree->compare_function(node_rec->key, r->key) == 0 )
 	{
@@ -421,7 +428,7 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 			node->records[rec_i]->key = temp->key;
 			node->records[rec_i]->value = temp->value;
 
-			delete_record_from_node(tree, node->children[rec_i], temp);
+			retval = delete_record_from_node(tree, node->children[rec_i], temp);
 
 			free(node_rec);
 		}
@@ -433,17 +440,17 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 			node->records[rec_i]->key = temp->key;
 			node->records[rec_i]->value = temp->value;
 
-			delete_record_from_node(tree, node->children[rec_i + 1], temp);
+			retval = delete_record_from_node(tree, node->children[rec_i + 1], temp);
 
 			free(node_rec);
 		}
 		else
 		{
 			merge_subtrees_around_index(tree, node, rec_i);
-			delete_record_from_node(tree, node->children[rec_i], r);
+			retval = delete_record_from_node(tree, node->children[rec_i], r);
 		}
 
-		return;
+		return retval;
 	}
 
 	if ( node->children[i]->count < tree->order )
@@ -497,7 +504,7 @@ void delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r)
 		}
 	}
 
-	delete_record_from_node(tree, node->children[i], r);
+	return delete_record_from_node(tree, node->children[i], r);
 }
 
 
@@ -556,19 +563,29 @@ void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
 	return find_value_for_key_in_node(tree, tree->root, key);
 }
 
-void jnx_B_tree_remove(jnx_B_tree *tree, void *key)
+void jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void** key_out, void **val_out )
 {
+	record *temp = NULL;
+
 	if ( tree == NULL || tree->root->count == 0 )
 	{
 		return;
 	}
 
 	record *r = malloc(sizeof(record));
-	r->key = key;
-	r->value = key;
+	r->key = key_in;
+	r->value = key_in;
 
-	delete_record_from_node(tree, tree->root, r);
+	temp = delete_record_from_node(tree, tree->root, r);
+	if (temp != NULL)
+	{
+		if (key_out != NULL)
+			*key_out = temp->key;
+		if (val_out != NULL)
+			*val_out = temp->value;
+	}
 
+	free(temp);	
 	free(r);
 }
 
