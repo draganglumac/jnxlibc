@@ -127,7 +127,7 @@ void *loading_loop_bar()
 	while(ISLOADING_BAR)
 	{
 		char sigil_buffer[1024];
-		strncpy(sigil_buffer,sigil,sizeof(sigil));
+		strncpy(sigil_buffer,sigil,strlen(sigil) -1);
 		int count;
 		for(count = 0; count < bar_size -1; ++count)
 		{
