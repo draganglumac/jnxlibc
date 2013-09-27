@@ -65,11 +65,28 @@ void test_list_index()
 	
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
+void test_data_removal()
+{
+	printf("- test_data_removal");
+	char *test_string = "AABBCC";
+	char *dynamic_mem_str = malloc(strlen(test_string));
+	strncpy(dynamic_mem_str,test_string,strlen(test_string));
+	jnx_list *j = jnx_list_init();
+	jnx_list_add(j,dynamic_mem_str);
+
+	char *removed_string = jnx_list_remove(j);
+
+	free(removed_string);
+	removed_string = NULL;
+	assert(removed_string == NULL);
+	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+}
 int main(int args, char **argv)
 {
 	printf("Running list tests...\n");
 	test_list_creation();
 	test_list_index();
+	test_data_removal();
 	printf("List tests completed.\n");
 	return 0;
 }
