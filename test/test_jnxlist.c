@@ -87,12 +87,31 @@ void test_data_removal()
 	assert(list == NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
+void test_list_tail()
+{
+	jnx_list *l = jnx_list_init();
+
+	int count = 3;
+	char *ar[] = { "A", "B", "C" };
+	int x;
+	for(x = 0; x < count; ++x)
+	{
+		jnx_list_add(l,ar[x]);
+	}
+	while(l->tail)
+	{
+		l->tail = l->tail->prev_node;
+	}
+
+	jnx_list_delete(&l);
+}
 int main(int args, char **argv)
 {
 	printf("Running list tests...\n");
 	test_list_creation();
 	test_data_removal();
 	test_list_index();
+	test_list_tail();
 	printf("List tests completed.\n");
 	return 0;
 }

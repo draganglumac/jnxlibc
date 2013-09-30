@@ -11,13 +11,15 @@
  */
 typedef struct node {
     void* _data;
-    struct node* next_node;
+	struct node* prev_node;
+	struct node* next_node;
 } jnx_node;
 /**
  * @brief Represents the list data structure as seen by the user
  */
 typedef struct list {
-    struct node* head;
+   	struct node* head;
+	struct node* tail;
     int counter;
 } jnx_list;
 
