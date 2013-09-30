@@ -36,15 +36,15 @@ void jnx_list_add(jnx_list* A, void* _datain);
 
 /** @fn jnx_list_remove(jnx_list *A) 
  *  @brief Removes the structure from list but returns the data for the user to handle
- *  @param A is a pointer to the list to remove the last link of
+ *  @param A is a pointer to the pointer of the list to remove the last link of
  *  @return void* to the data from the last link
  */
-void* jnx_list_remove(jnx_list* A);
+void* jnx_list_remove(jnx_list** A);
 
 /** @fn jnx_list_delete(jnx_list* A) 
  * @brief  Deletes the list node structure and list, not data inside
- * @param A is a pointer to the list to delete
+ * @param A is a pointer the pointer of list to delete
  */
-void jnx_list_delete(jnx_list* A);
+void jnx_list_delete(jnx_list** A);
 #endif
 

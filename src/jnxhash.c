@@ -28,7 +28,7 @@ void jnx_hash_delete(jnx_hashmap* hashmap)
 				free(current_element);
 				current_bucket->head = current_bucket->head->next_node;
 			}
-			jnx_list_delete(current_bucket);
+			jnx_list_delete(&current_bucket);
 		}
 	}		
 	free(hashmap);
@@ -151,7 +151,7 @@ void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key)
 		void *data = (void*)element->origin_value;
 		free(element->origin_key);
 		free(element);
-		jnx_list_delete(hashmap->data[index].bucket);
+		jnx_list_delete(&hashmap->data[index].bucket);
 		hashmap->data[index].bucket = NULL;
 		hashmap->data[index].used = 0;
 		hashmap->data[index].bucket_len = 0;
