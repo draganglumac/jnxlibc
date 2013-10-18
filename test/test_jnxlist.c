@@ -98,8 +98,11 @@ void test_list_tail()
 	{
 		jnx_list_add(l,ar[x]);
 	}
-	while(l->tail)
-	{
+	int c=count;
+	while(l->tail != NULL){
+		
+		assert(strcmp((char*)l->tail->_data,ar[c-1]) == 0);
+		--c;
 		l->tail = l->tail->prev_node;
 	}
 

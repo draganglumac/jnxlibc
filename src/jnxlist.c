@@ -34,6 +34,7 @@ void jnx_list_add(jnx_list* A, void* _datain)
 		jnx_node *node = malloc(sizeof(jnx_node));
 		node->_data = _datain; 
 		node->next_node = NULL;
+		node->prev_node = NULL;
 		A->head = node;
 		A->tail = node;
 		A->counter++;
