@@ -1,10 +1,12 @@
 #include "jnxfile.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <errno.h>
 #include <dirent.h>
 #define __USE_XOPEN_EXTENDED
 #include <ftw.h>
@@ -113,4 +115,59 @@ int jnx_file_recursive_delete(char* path, int depth)
 		return -1;
 	}	
 	return 0;
+}
+static int jnx_file_path_exists(char *path)
+{
+	size_t s = 512;
+	char buffer[s];
+	getcwd(buffer,s);
+	if(buffer == NULL)
+	{
+		printf("jnx_file_path_exists: Unable to validate cwd\n");
+		return 0;
+	}
+	if(chdir(path) != 0)
+	{
+		return 0; 
+	}
+	chdir(buffer);	
+	return 1;
+}
+static char *jnx_file_random_dir(char *basepath)
+{
+	srand(time(NULL));
+	unsigned long int n = 0;
+	do
+	{
+		n = rand() % 10; 
+	}while(n == 0);
+	int i; 
+	for(i = 1; i < 10; ++i)
+	{
+		n *= 10;
+		n += rand() %10; 
+	}
+
+	char *s = malloc(sizeof(char) * 256);
+	sprintf(s,"%s/%zu",basepath,n);
+	return s;
+}
+int jnx_file_mktempdir(char *template, char **path)
+{
+	if(jnx_file_path_exists(template))
+	{
+		char *tempdir=jnx_file_random_dir(template);	
+		if((mkdir(tempdir, S_IRWXU  | S_IRWXG | S_IROTH | S_IXOTH)) != 0)
+		{
+			printf("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
+			path = NULL;
+			free(tempdir);
+			return 1;
+		}else
+		{
+			*path = tempdir;
+			return 0;
+		}
+	}
+	return 1;
 }

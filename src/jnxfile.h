@@ -90,4 +90,12 @@ size_t jnx_file_writeb(char* path, char* data, size_t data_size);
  */
 int jnx_file_recursive_delete(char* path, int depth);
 
+/**
+ * @fn jnx_file_mktempdir(char *template, char **path) 
+ * @brief Function to create a temporary directory on the given path
+ * @param template is the path to create the directory on
+ * @param path is a pointer to the output buffer char pointer
+ * @return success on 0
+ */
+int jnx_file_mktempdir(char *template, char **path);
 #endif
