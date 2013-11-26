@@ -160,7 +160,7 @@ int jnx_file_mktempdir(char *template, char **path)
 		if((mkdir(tempdir, S_IRWXU  | S_IRWXG | S_IROTH | S_IXOTH)) != 0)
 		{
 			printf("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
-			path = NULL;
+			*path = NULL;
 			free(tempdir);
 			return 1;
 		}else
