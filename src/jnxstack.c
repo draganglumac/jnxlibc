@@ -46,13 +46,14 @@ void* jnx_stack_pop(jnx_stack* A)
     
     return retval;
 }
-void jnx_stack_delete(jnx_stack* A)
+void jnx_stack_delete(jnx_stack** A)
 {
-    while ( A->top != NULL )
+    while ( (*A)->top != NULL )
     {
-        jnx_node *temp = A->top;
-        A->top = temp->next_node;
+        jnx_node *temp = (*A)->top;
+        (*A)->top = temp->next_node;
         free(temp);
-        A->count--;
+        (*A)->count--;
     }
+	*A = NULL;
 }

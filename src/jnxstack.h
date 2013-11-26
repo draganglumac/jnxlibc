@@ -54,6 +54,6 @@ void* jnx_stack_pop(jnx_stack* A);
  * after the delete, ti will return 1 (true).
  * @param A is a pointer to the stack to delete.
  */
-void jnx_stack_delete(jnx_stack* A);
+void jnx_stack_delete(jnx_stack** A);
 #endif
 
