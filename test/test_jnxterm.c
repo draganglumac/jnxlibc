@@ -44,7 +44,7 @@ int main()
 	printf("- terminal output ");
 	printf("\n");
 	jnx_term_load_bar(1);
-	sleep(2);
+	sleep(5);
 	jnx_term_load_bar(0);
 	jnx_term_load_spinner(1);
 	sleep(2);

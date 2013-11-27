@@ -33,14 +33,26 @@
 #define JNX_TERM_REVERSE   7
 #define JNX_TERM_HIDDEN    8
 
-static int bar_size = 1;
 static int ISLOADING_BAR = 0;
 static pthread_t bar_loader_thread;
 static int ISLOADING_SPIN = 0;
 static pthread_t loader_thread;
 static int fd;
 static fpos_t pos;
+static char *loading_bar[11] = {
+	"Loading:[#          ]",
+	"Loading:[ #         ]",
+	"Loading:[  #        ]",
+	"Loading:[   #       ]",
+	"Loading:[    #      ]",
+	"Loading:[     #     ]",
+	"Loading:[      #    ]",
+	"Loading:[       #   ]",
+	"Loading:[        #  ]",
+	"Loading:[         # ]",
+	"Loading:[          #]",
 
+};
 void text_and_background_color(int attr, int fg, int bg)
 {
 	printf("%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
@@ -117,32 +129,21 @@ void *loading_loop(void *ptr)
 }
 void *loading_loop_bar()
 {
-	int width = get_width() / 4 ;
 	struct timespec _nano;
 	_nano.tv_sec = 0;
 	_nano.tv_nsec = (100 * 1000000);
-	char *sigil = "#";
-	char *loading_text = "Loading";
-	printf("\033[s%s",loading_text);
+	int c = 0;
+	printf("\033[s");
 	while(ISLOADING_BAR)
 	{
-		char sigil_buffer[1024];
-		strncpy(sigil_buffer,sigil,strlen(sigil) -1);
-		int count;
-		for(count = 0; count < bar_size -1; ++count)
+		if(c == 11)
 		{
-			strcat(sigil_buffer,sigil);
+			c = 0;
 		}
-		char msg[256];
-		sprintf(msg,"Loading %s",sigil_buffer);
-		printf("\033[u\033[2K%s",msg);
+		printf("\033[2K\033[u%s",loading_bar[c]);
 		fflush(stdout);
 		nanosleep(&_nano,NULL);
-		++bar_size;
-		if(bar_size == (width - strlen(loading_text)))
-		{
-			bar_size = 1;
-		}
+		++c;	
 	}
 	return NULL;
 }
@@ -165,7 +166,6 @@ void jnx_term_load_bar(int state)
 	if(ISLOADING_BAR == 1)
 	{
 		pthread_create(&bar_loader_thread,NULL,loading_loop_bar,NULL);
-		printf("\033[u\033[2K\n");
 	}else
 	{
 		pthread_join(bar_loader_thread,NULL);
