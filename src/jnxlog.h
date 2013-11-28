@@ -24,6 +24,11 @@
 #ifndef __JNX_LOG_H__
 #define __JNX_LOG_H__
 #include <stdarg.h>
+#define MAX_LOG_SIZE 2048
+#define MAX_ARG_SIZE 1024
+#ifdef __JNX_LOG_FORCE_SYNC___
+#define __JNX_LOG_SINGLE_THREAD__
+#endif
 /**
  * @fn jnx_log_setup(char *path)
  * 
