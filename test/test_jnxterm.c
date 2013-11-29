@@ -30,7 +30,7 @@ void test_redirect()
 	system("echo 'test'");
 	jnx_term_reset_stdout();
 	char *buffer;
-	size_t read = jnx_file_read(test_path,&buffer);
+	size_t read = jnx_file_read(test_path,&buffer,"r");
 	system("rm console_redirect.log");
 	buffer[strlen(buffer) - 1] = '\0';
 	assert(strcmp(buffer,"test") == 0);
