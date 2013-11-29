@@ -89,7 +89,12 @@ char* jnx_get_time()
 }
 void jnx_log(const char * format, ...)
 {
-    char output[MAX_LOG_SIZE];
+	if(log_path == NULL)
+	{
+		printf("jnx_log: Log path not set. See jnx_log_setup\n");
+		return;
+	}
+	char output[MAX_LOG_SIZE];
     char buffer[MAX_ARG_SIZE];
     char *_time = jnx_get_time();
     strcpy(output,_time);
