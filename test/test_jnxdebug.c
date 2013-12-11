@@ -105,10 +105,9 @@ void test_deallocation()
 	size_t st = s * 100;
 	int *A = jnx_debug_malloc(sizeof(int));
 	long int aptr = *A;
-	jnx_debug_free(&A);
+	jnx_debug_free(A);
 	assert(jnx_debug_memtrace_get_alloc() == 0);	
 	assert(jnx_debug_memtrace_get_byte_alloc() == 0);
-	assert(A == NULL);
 	for(c=0;c<x;++c)
 	{
 		int *B = jnx_debug_malloc(s);

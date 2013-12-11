@@ -186,9 +186,8 @@ void* jnx_debug_realloc(void *ptr,size_t size)
 	jnx_debug_new_alloc(p,size);
 	return p;
 }
-void jnx_debug_free(void **ptr)
+void jnx_debug_free(void *ptr)
 {
-	remove_from_list(*ptr);	
-	free(*ptr);
-	*ptr = NULL;
+	remove_from_list(ptr);	
+	free(ptr);
 }

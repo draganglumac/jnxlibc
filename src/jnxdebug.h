@@ -92,5 +92,5 @@ void* jnx_debug_calloc(size_t num,size_t size);
  *@warning Requires pointer to pointer as original ptr will be set to NULL
  *@param ptr to memory for deletion
  */
-void jnx_debug_free(void **ptr);
+void jnx_debug_free(void *ptr);
 #endif
