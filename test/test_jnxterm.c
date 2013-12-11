@@ -42,7 +42,6 @@ int main()
 	test_redirect();
 	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
 	printf("- terminal output ");
-	printf("\n");
 	jnx_term_load_bar(1);
 	sleep(5);
 	jnx_term_load_bar(0);

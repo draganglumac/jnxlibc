@@ -45,6 +45,19 @@ void jnx_debug_memtrace(char *path);
  *@warning this is obviously quite dangerous in real programs
  */
 size_t jnx_debug_memtrace_clear_memory();
+
+/**
+ *@fn jnx_debug_memtrace_get_byte_alloc
+ *@brief more of a debugging function this allows the user to get total bytes alloc
+ *@return returns size_t of total number of bytes
+ */
+size_t jnx_debug_memtrace_get_byte_alloc();
+/**
+ *@fn jnx_debug_memtrace_get_alloc
+ *@brief more of a debugging function this allows the user to get total allocs
+ *@return returns size_t of total number of allocs
+ */
+size_t jnx_debug_memtrace_get_alloc();
 /**
  *@fn jnx_debug_memtrace_get_list
  *@brief gets the current stack of memory operations
@@ -76,7 +89,8 @@ void* jnx_debug_calloc(size_t num,size_t size);
 /**
  *@fn jnx_debug_free
  *@brief overrides normal system function with a debugging version for memory leak testing
+ *@warning Requires pointer to pointer as original ptr will be set to NULL
  *@param ptr to memory for deletion
  */
-void jnx_debug_free(void *ptr);
+void jnx_debug_free(void **ptr);
 #endif
