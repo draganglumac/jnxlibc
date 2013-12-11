@@ -89,7 +89,6 @@ void* jnx_debug_calloc(size_t num,size_t size);
 /**
  *@fn jnx_debug_free
  *@brief overrides normal system function with a debugging version for memory leak testing
- *@warning Requires pointer to pointer as original ptr will be set to NULL
  *@param ptr to memory for deletion
  */
 void jnx_debug_free(void *ptr);
