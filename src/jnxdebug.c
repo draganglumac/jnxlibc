@@ -75,8 +75,8 @@ void jnx_debug_memtrace(char *path)
     time(&t);
     buf = (char*)malloc(strlen(ctime(&t)) +1);
     snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
-	char *debug ="Time:%d\nTotal allocs:%zu\nTotal bytes:%zu\n";
-	sprintf(buffer,debug,buf,total_allocs,total_bytes);
+	char *debug ="Time:%d\nTotal allocs:%zu\nTotal bytes:%zu(%zuKb)\n";
+	sprintf(buffer,debug,buf,total_allocs,total_bytes,(total_bytes / 1024));
 	free(buf);	
 	jnx_file_write(path,buffer,strlen(buffer),"a");
 }
