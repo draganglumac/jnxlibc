@@ -20,9 +20,12 @@
 #include <signal.h>
 #include "jnxlist.h"
 #define MAX_TRACE 40
+typedef enum { FREE, ALLOC }jnx_debug_memtrace_state;
 typedef struct{
 	void *ptr;
 	size_t size;
+	jnx_debug_memtrace_state state;
+	
 }jnx_debug_memtrace_item;
 /**
  *@fn jnx_debug_stacktrace
@@ -53,11 +56,17 @@ size_t jnx_debug_memtrace_clear_memory();
  */
 size_t jnx_debug_memtrace_get_byte_alloc();
 /**
- *@fn jnx_debug_memtrace_get_alloc
+ *@fn jnx_debug_memtrace_get_total_number_alloc
  *@brief more of a debugging function this allows the user to get total allocs
  *@return returns size_t of total number of allocs
  */
-size_t jnx_debug_memtrace_get_alloc();
+size_t jnx_debug_memtrace_get_total_number_alloc();
+/**
+ *@fn jnx_debug_memtrace_get_current_number_alloc
+ *@brief more of a debugging function this allows the user to get current allocs
+ *@return returns size_t of current number of allocs
+ */
+size_t jnx_debug_memtrace_get_current_number_alloc();
 /**
  *@fn jnx_debug_memtrace_get_list
  *@brief gets the current stack of memory operations

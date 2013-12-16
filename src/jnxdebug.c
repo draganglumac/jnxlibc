@@ -59,24 +59,36 @@ void jnx_debug_memtrace(char *path)
 {
 	if(memtrace == NULL) return ;
 	jnx_node *h = memtrace->head;
+	char *state_al = "[IN USE]";
+	char *state_fr = "[FREE]";
 	while(h)
 	{
 		jnx_debug_memtrace_item *m = h->_data;
 		char str[1024];
-		sprintf(str,"[%s][%p][size:%zu]\n",__FILE__,m->ptr,m->size);
-	    jnx_file_write(path,str,strlen(str),"a");
+		char *t;
+		switch(m->state)
+		{
+			case FREE:
+				t = state_fr;
+				break;
+			case ALLOC:
+				t = state_al;
+				break;
+		}	
+		sprintf(str,"[%s][%p][size:%zu] - %s\n",__FILE__,m->ptr,m->size,t);
+		jnx_file_write(path,str,strlen(str),"a");
 		h = h->next_node;
 	}
 	size_t total_bytes = jnx_debug_memtrace_get_byte_alloc();
-	size_t total_allocs = jnx_debug_memtrace_get_alloc();
+	size_t total_allocs = jnx_debug_memtrace_get_total_number_alloc();
 	char buffer[1024];
-    time_t t;
-    char *buf;
-    time(&t);
-    buf = (char*)malloc(strlen(ctime(&t)) +1);
-    snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
-	char *debug ="Time:%d\nTotal allocs:%zu\nTotal bytes:%zu(%zuKb)\n";
-	sprintf(buffer,debug,buf,total_allocs,total_bytes,(total_bytes / 1024));
+	time_t t;
+	char *buf;
+	time(&t);
+	buf = (char*)malloc(strlen(ctime(&t)) +1);
+	snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
+	char *debug ="Time:%d\nTotal allocs:%zu\nCurrent allocs:%zu\nTotal bytes:%zu(%zuKb)\n";
+	sprintf(buffer,debug,buf,total_allocs,jnx_debug_memtrace_get_current_number_alloc(),total_bytes,(total_bytes / 1024));
 	free(buf);	
 	jnx_file_write(path,buffer,strlen(buffer),"a");
 }
@@ -88,8 +100,11 @@ size_t jnx_debug_memtrace_clear_memory()
 	while(m)
 	{
 		jnx_debug_memtrace_item *mi = m->_data;
-		clear_mem += mi->size;
-		free(mi->ptr);
+		if(mi->state == ALLOC)
+		{
+			free(mi->ptr);
+			clear_mem += mi->size;
+		}
 		free(m->_data);
 		m = m->next_node;
 	}
@@ -97,7 +112,7 @@ size_t jnx_debug_memtrace_clear_memory()
 	memtrace = NULL;
 	return clear_mem;
 }
-size_t jnx_debug_memtrace_get_alloc()
+size_t jnx_debug_memtrace_get_total_number_alloc()
 {
 	if(memtrace == NULL)
 	{
@@ -108,6 +123,24 @@ size_t jnx_debug_memtrace_get_alloc()
 	while(h)
 	{
 		++ta;
+		h = h->next_node;
+	}
+	return ta;
+}
+size_t jnx_debug_memtrace_get_current_number_alloc()
+{
+	if(memtrace == NULL)
+	{
+		return 0;
+	}
+	size_t ta = 0;
+	jnx_node *h = memtrace->head;
+	while(h)
+	{
+		jnx_debug_memtrace_item *m = h->_data;
+		if(m->state == ALLOC){
+			++ta;
+		}
 		h = h->next_node;
 	}
 	return ta;
@@ -123,7 +156,9 @@ size_t jnx_debug_memtrace_get_byte_alloc()
 	while(h)
 	{
 		jnx_debug_memtrace_item *m = h->_data;
-		tb += m->size;
+		if(m->state == ALLOC){
+			tb += m->size;
+		}
 		h = h->next_node;
 	}
 	return tb;
@@ -139,8 +174,14 @@ jnx_list *jnx_debug_memtrace_get_list()
 static void jnx_debug_new_alloc(void *ptr, size_t size)
 {
 	jnx_debug_memtrace_item *m = malloc(sizeof(jnx_debug_memtrace_item));
+	if(m == NULL)
+	{
+		printf("Error with allocation\n [%zu(kb)]",(size /1024));
+		return;
+	}
 	m->ptr = ptr;
 	m->size = size;
+	m->state = ALLOC;
 	if(memtrace == NULL)
 	{
 		memtrace = jnx_list_init(); 
@@ -159,35 +200,29 @@ void* jnx_debug_calloc(size_t num,size_t size)
 	jnx_debug_new_alloc(p,size);
 	return p;
 }
-static void remove_from_list(void *ptr)
+static void adjust_state_in_list(void *ptr)
 {
 	jnx_node *h = memtrace->head;
-	jnx_list *s = jnx_list_init();
-
 	while(h)
 	{
 		jnx_debug_memtrace_item *m = h->_data;
 
 		if(m->ptr == ptr)
 		{
-			free(m);
-		}else{
-			jnx_list_add(s,m);
+			m->state = FREE;
 		}
 		h = h->next_node;
 	}
-	jnx_list_delete(&memtrace);
-	memtrace = s;
 }
 void* jnx_debug_realloc(void *ptr,size_t size)
 {
-	remove_from_list(ptr);
+	adjust_state_in_list(ptr);
 	void *p = realloc(ptr,size);
 	jnx_debug_new_alloc(p,size);
 	return p;
 }
 void jnx_debug_free(void *ptr)
 {
-	remove_from_list(ptr);	
+	adjust_state_in_list(ptr);	
 	free(ptr);
 }

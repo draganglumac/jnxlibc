@@ -86,17 +86,17 @@ void test_large()
 		
 		char *s = jnx_debug_malloc(a);
 		assert(jnx_debug_memtrace_get_byte_alloc() == ((i+1) * a));
-		assert(jnx_debug_memtrace_get_alloc() == (i + 1));
+		assert(jnx_debug_memtrace_get_total_number_alloc() == (i + 1));
 	}
 	size_t b = jnx_debug_memtrace_clear_memory();
-	assert(jnx_debug_memtrace_get_alloc() == 0);
+	assert(jnx_debug_memtrace_get_current_number_alloc() == 0);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 
 }
 void test_deallocation()
 {
 	printf("- test_deallocation ");
-	assert(jnx_debug_memtrace_get_alloc() == 0);	
+	assert(jnx_debug_memtrace_get_total_number_alloc() == 0);	
 
 	int x = 100;
 	int c;
@@ -106,7 +106,7 @@ void test_deallocation()
 	int *A = jnx_debug_malloc(sizeof(int));
 	long int aptr = *A;
 	jnx_debug_free(A);
-	assert(jnx_debug_memtrace_get_alloc() == 0);	
+	assert(jnx_debug_memtrace_get_current_number_alloc() == 0);	
 	assert(jnx_debug_memtrace_get_byte_alloc() == 0);
 	for(c=0;c<x;++c)
 	{
@@ -114,6 +114,8 @@ void test_deallocation()
 	}
 	size_t bytes = jnx_debug_memtrace_clear_memory();
 	assert(bytes == st);
+	assert(jnx_debug_memtrace_get_current_number_alloc() == 0);	
+	assert(jnx_debug_memtrace_get_byte_alloc() == 0);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv)
