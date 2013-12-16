@@ -104,6 +104,7 @@ size_t jnx_debug_memtrace_clear_memory()
 		{
 			free(mi->ptr);
 			clear_mem += mi->size;
+			mi->state = FREE;
 		}
 		free(m->_data);
 		m = m->next_node;
@@ -206,7 +207,6 @@ static void adjust_state_in_list(void *ptr)
 	while(h)
 	{
 		jnx_debug_memtrace_item *m = h->_data;
-
 		if(m->ptr == ptr)
 		{
 			m->state = FREE;
