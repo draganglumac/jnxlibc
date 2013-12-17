@@ -75,7 +75,7 @@ void jnx_debug_memtrace(char *path)
 				t = state_al;
 				break;
 		}	
-		sprintf(str,"[%s][%p][size:%zu] - %s\n",__FILE__,m->ptr,m->size,t);
+		sprintf(str,"[%s][%s:%d][%p][size:%zu] - %s\n",__FILE__,__FUNCTION__,__LINE__,m->ptr,m->size,t);
 		jnx_file_write(path,str,strlen(str),"a");
 		h = h->next_node;
 	}
