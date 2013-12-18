@@ -9,15 +9,15 @@
 /**
  * @brief Node represents an element of the stack 
  */
-typedef struct node {
+typedef struct jnx_snode{
     void* _data;
-    struct node* next_node;
+    struct jnx_snode* next_node;
 } jnx_snode;
 /**
  * @brief Represents the stack data structure as seen by the user
  */
-typedef struct stack {
-    struct node* top;
+typedef struct {
+    struct jnx_snode* top;
     int count;
 } jnx_stack;
 
