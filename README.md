@@ -5,6 +5,7 @@ jnxlibc
 C based common code library based on libjnx philosophy of general purpose & lightweight development.
 
 Key features:
+- Memory & stack tracing
 - Simple listen/send over IP/port functions (Dynamic buffers for big messages!)
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
