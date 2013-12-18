@@ -25,7 +25,7 @@ void jnx_stack_push(jnx_stack* A, void* _datain)
         // We don't accept NULL data
         return;
     }
-    jnx_node *temp = malloc(sizeof(jnx_node));
+    jnx_snode *temp = malloc(sizeof(jnx_snode));
     temp->_data = _datain;
     temp->next_node = A->top;
     A->top = temp;
@@ -38,7 +38,7 @@ void* jnx_stack_pop(jnx_stack* A)
         return NULL;
     }
     
-    jnx_node *temp = A->top;
+    jnx_snode *temp = A->top;
     void *retval = temp->_data;
     A->top = temp->next_node;
     free(temp);
@@ -50,7 +50,7 @@ void jnx_stack_delete(jnx_stack** A)
 {
     while ( (*A)->top != NULL )
     {
-        jnx_node *temp = (*A)->top;
+        jnx_snode *temp = (*A)->top;
         (*A)->top = temp->next_node;
         free(temp);
         (*A)->count--;

@@ -12,7 +12,7 @@
 typedef struct node {
     void* _data;
     struct node* next_node;
-} jnx_node;
+} jnx_snode;
 /**
  * @brief Represents the stack data structure as seen by the user
  */
