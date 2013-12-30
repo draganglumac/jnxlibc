@@ -46,6 +46,9 @@ void jnx_debug_stacktrace_cb(int s)
 }
 void jnx_debug_stacktrace(char *path, int counter,int signals[])
 {
+#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+	return;
+#endif
 	write_path = path;
 	assert(write_path);	
 	jnx_debug_internal_handler c = jnx_debug_stacktrace_cb;
@@ -57,6 +60,9 @@ void jnx_debug_stacktrace(char *path, int counter,int signals[])
 }
 void jnx_debug_memtrace(char *path)
 {
+#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+	return;
+#endif
 	if(memtrace == NULL) return ;
 	jnx_node *h = memtrace->head;
 	char *state_al = "[IN USE]";
