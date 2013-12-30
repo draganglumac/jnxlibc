@@ -192,13 +192,17 @@ static void jnx_debug_new_alloc(void *ptr, size_t size)
 void* jnx_debug_malloc(size_t size)
 {
 	void *p = malloc(size);	
+#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
 	jnx_debug_new_alloc(p,size);
+#endif
 	return p;
 }
 void* jnx_debug_calloc(size_t num,size_t size)
 {
 	void *p = calloc(num,size);
+#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
 	jnx_debug_new_alloc(p,size);
+#endif
 	return p;
 }
 static void adjust_state_in_list(void *ptr)
@@ -216,13 +220,20 @@ static void adjust_state_in_list(void *ptr)
 }
 void* jnx_debug_realloc(void *ptr,size_t size)
 {
+
+#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
 	adjust_state_in_list(ptr);
+#endif
 	void *p = realloc(ptr,size);
+#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
 	jnx_debug_new_alloc(p,size);
+#endif
 	return p;
 }
 void jnx_debug_free(void *ptr)
 {
+#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
 	adjust_state_in_list(ptr);	
+#endif
 	free(ptr);
 }

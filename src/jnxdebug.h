@@ -20,6 +20,9 @@
 #include <signal.h>
 #include "jnxlist.h"
 #define MAX_TRACE 40
+#ifdef __JNX_DEBUG_DISABLE__
+#define __JNX_DEBUG_MEMORY_UNMANAGED__
+#endif
 typedef enum { FREE, ALLOC }jnx_debug_memtrace_state;
 typedef struct{
 	void *ptr;
