@@ -17,8 +17,8 @@
  */
 #include <stdlib.h>
 #include <assert.h>
-#include "../src/jnxterm.h"
-#include "../src/jnxfile.h"
+#include "jnxterm.h"
+#include "jnxfile.h"
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>

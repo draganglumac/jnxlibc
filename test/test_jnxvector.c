@@ -16,12 +16,12 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "../src/jnxvector.h"
+#include "jnxvector.h"
 #include <stdio.h>
 #include <assert.h>
 #include <time.h>
 #include <string.h>
-#include "../src/jnxterm.h"
+#include "jnxterm.h"
 typedef struct{
     int a;
 }teststruct;

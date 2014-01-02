@@ -16,8 +16,8 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "../src/jnxnetwork.h"
-#include "../src/jnxterm.h"
+#include "jnxnetwork.h"
+#include "jnxterm.h"
 #include <pthread.h>
 #include <stdio.h>
 #include <assert.h>

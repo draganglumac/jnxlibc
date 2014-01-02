@@ -1,27 +1,19 @@
 #!/bin/bash +x
 
 ./configure
-make
-cd test
-if [ "$1" == "DEBUG" ]
-then
-	valgrind --version
-	if [  $? -ne 0 ]; then
-		echo "Please install valgrind to use library debugging"
-	else
-		./run_tests_valgrind
-	fi
-else
-	./run_tests
-fi
+make setup
+pushd test
+./run_tests
 result=$?
 if [ ! $result -eq 0 ]; then
 	echo "Error during testing: Aborting installation"
-	cd ../ 
+	popd
+	make teardown
 	exit 1
 fi
-cd ../
-
+popd
+make teardown
+make
 sudo make install
 echo "Installed succesfully"
 

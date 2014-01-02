@@ -19,8 +19,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include "../src/jnxlog.h"
-#include "../src/jnxterm.h"
+#include "jnxlog.h"
+#include "jnxterm.h"
 int main(int args, char **argv)
 {
     printf("Running test for jnxlog\n");

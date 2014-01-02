@@ -16,11 +16,11 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "../src/jnxbase64.h"
+#include "jnxbase64.h"
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
-#include "../src/jnxterm.h"
+#include "jnxterm.h"
 int main(int argc, char **argv)
 {
 	printf("Running base64 tests...");

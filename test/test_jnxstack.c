@@ -16,12 +16,12 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "../src/jnxstack.h"
+#include "jnxstack.h"
 #include <stdio.h>
 #include <assert.h>
 #include <time.h>
 #include <string.h>
-#include "../src/jnxterm.h"
+#include "jnxterm.h"
 
 char *A = "TestA";
 char *B = "TestB";
