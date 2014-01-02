@@ -18,8 +18,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-#include "../src/jnxhash.h"
-#include "../src/jnxterm.h"
+#include "jnxhash.h"
+#include "jnxterm.h"
 void test_key_deletion()
 {
 	jnx_hashmap *testhash = jnx_hash_init(1024);

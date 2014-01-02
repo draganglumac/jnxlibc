@@ -19,8 +19,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "../src/jnxlist.h"
-#include "../src/jnxterm.h"
+#include "jnxlist.h"
+#include "jnxterm.h"
 struct foo{
 	int number;
 }foo;

@@ -17,8 +17,8 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "../src/jnxterm.h"
-#include "../src/jnxdebug.h"
+#include "jnxterm.h"
+#include "jnxdebug.h"
 #include <assert.h>
 void print_mem()
 {

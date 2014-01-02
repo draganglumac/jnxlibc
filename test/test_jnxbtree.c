@@ -21,8 +21,8 @@
 #include <string.h>
 #include <time.h>
 
-#include "../src/jnxbtree.h"
-#include "../src/jnxterm.h"
+#include "jnxbtree.h"
+#include "jnxterm.h"
 
 extern jnx_B_tree_node* new_node(int, int);
 extern void delete_node(jnx_B_tree_node*);
