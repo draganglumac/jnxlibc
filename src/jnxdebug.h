@@ -27,6 +27,9 @@ typedef enum { FREE, ALLOC }jnx_debug_memtrace_state;
 typedef struct{
 	void *ptr;
 	size_t size;
+	char *file;
+	char *function;
+	int line;
 	jnx_debug_memtrace_state state;
 	
 }jnx_debug_memtrace_item;
@@ -81,7 +84,7 @@ jnx_list *jnx_debug_memtrace_get_list();
  *@brief overrides normal system function with a debugging version for memory leak testing
  *@param size is the size of bytes to malloc
  */
-void* jnx_debug_malloc(size_t size);
+void* jnx_debug_malloc(size_t size,char *file,const char *function,int line);
 /**
  *@fn jnx_debug_realloc
  *@brief overrides normal system function with a debugging version for memory leak testing
@@ -89,7 +92,7 @@ void* jnx_debug_malloc(size_t size);
  *@param size is the size of new realloc
  *@param returns a pointer to memory if the block was too large for original location
  */
-void* jnx_debug_realloc(void *ptr,size_t size);
+void* jnx_debug_realloc(void *ptr,size_t size,char *file,const char *function,int line);
 /**
  *@fn jnx_debug_calloc
  *@brief overrides normal system function with a debugging version for memory leak testing
@@ -97,11 +100,25 @@ void* jnx_debug_realloc(void *ptr,size_t size);
  *@param size is the size of memory blocks
  *@return pointer to new memory
  */
-void* jnx_debug_calloc(size_t num,size_t size);
+void* jnx_debug_calloc(size_t num,size_t size,char *file,const char *function,int line);
 /**
  *@fn jnx_debug_free
  *@brief overrides normal system function with a debugging version for memory leak testing
  *@param ptr to memory for deletion
  */
 void jnx_debug_free(void *ptr);
+
+
+#define JNX_DEBUG_MALLOC(X)\
+	jnx_debug_malloc(X,__FILE__,__FUNCTION__,__LINE__);
+#define JNX_DEBUG_CALLOC(X,Y) \
+	jnx_debug_calloc(X,Y,__FILE__,__FUNCTION__,__LINE__);
+#define JNX_DEBUG_REALLOC(X,Y)\
+	jnx_debug_realloc(X,Y,__FILE__,__FUNCTION__,__LINE__);
+#define JNX_DEBUG_FREE(X)\
+	jnx_debug_free(X);
 #endif
+
+
+
+

@@ -46,7 +46,7 @@ void jnx_debug_stacktrace_cb(int s)
 }
 void jnx_debug_stacktrace(char *path, int counter,int signals[])
 {
-#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+#ifdef __JNX_DEBUG_MEMORY_UNMANAGED__
 	return;
 #endif
 	write_path = path;
@@ -60,7 +60,7 @@ void jnx_debug_stacktrace(char *path, int counter,int signals[])
 }
 void jnx_debug_memtrace(char *path)
 {
-#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+#ifdef __JNX_DEBUG_MEMORY_UNMANAGED__
 	return;
 #endif
 	if(memtrace == NULL) return ;
@@ -81,7 +81,7 @@ void jnx_debug_memtrace(char *path)
 				t = state_al;
 				break;
 		}	
-		sprintf(str,"[%s][%s:%d][%p][size:%zu] - %s\n",__FILE__,__FUNCTION__,__LINE__,m->ptr,m->size,t);
+		sprintf(str,"[%s][%s:%d][%p][size:%zu] - %s\n",m->file,m->function,m->line,m->ptr,m->size,t);
 		jnx_file_write(path,str,strlen(str),"a");
 		h = h->next_node;
 	}
@@ -109,6 +109,8 @@ size_t jnx_debug_memtrace_clear_memory()
 		if(mi->state == ALLOC)
 		{
 			free(mi->ptr);
+			free(mi->function);
+			free(mi->file);
 			clear_mem += mi->size;
 			mi->state = FREE;
 		}
@@ -178,7 +180,7 @@ jnx_list *jnx_debug_memtrace_get_list()
 	}
 	return memtrace;
 }
-static void jnx_debug_new_alloc(void *ptr, size_t size)
+static void jnx_debug_new_alloc(void *ptr, size_t size,char* file,const char *function,int line)
 {
 	jnx_debug_memtrace_item *m = malloc(sizeof(jnx_debug_memtrace_item));
 	if(m == NULL)
@@ -189,25 +191,28 @@ static void jnx_debug_new_alloc(void *ptr, size_t size)
 	m->ptr = ptr;
 	m->size = size;
 	m->state = ALLOC;
+	m->file = strdup(file);
+	m->function = strdup(function);
+	m->line = line;
 	if(memtrace == NULL)
 	{
 		memtrace = jnx_list_init(); 
 	}
 	jnx_list_add(memtrace,m);
 }
-void* jnx_debug_malloc(size_t size)
+void* jnx_debug_malloc(size_t size,char *file,const char *function,int line)
 {
 	void *p = malloc(size);	
 #ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
-	jnx_debug_new_alloc(p,size);
+	jnx_debug_new_alloc(p,size,file,function,line);
 #endif
 	return p;
 }
-void* jnx_debug_calloc(size_t num,size_t size)
+void* jnx_debug_calloc(size_t num,size_t size,char *file,const char *function,int line)
 {
 	void *p = calloc(num,size);
 #ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
-	jnx_debug_new_alloc(p,size);
+	jnx_debug_new_alloc(p,size,file,function,line);
 #endif
 	return p;
 }
@@ -224,7 +229,7 @@ static void adjust_state_in_list(void *ptr)
 		h = h->next_node;
 	}
 }
-void* jnx_debug_realloc(void *ptr,size_t size)
+void* jnx_debug_realloc(void *ptr,size_t size,char *file,const char *function,int line)
 {
 
 #ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
@@ -232,7 +237,7 @@ void* jnx_debug_realloc(void *ptr,size_t size)
 #endif
 	void *p = realloc(ptr,size);
 #ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
-	jnx_debug_new_alloc(p,size);
+	jnx_debug_new_alloc(p,size,file,function,line);
 #endif
 	return p;
 }

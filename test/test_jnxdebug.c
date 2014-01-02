@@ -33,7 +33,7 @@ void print_mem()
 void test_allocation()
 {
 	printf("- test_allocation test  ");
-	void *d = jnx_debug_malloc(sizeof(char) *30);
+	void *d = JNX_DEBUG_MALLOC(sizeof(char) *30);
 
 	jnx_list *l = jnx_debug_memtrace_get_list();
 	jnx_debug_memtrace_item *m = jnx_list_remove(&l);
@@ -49,7 +49,7 @@ void test_allocation_long()
 	size_t total_mem = 0;
 	for(x=0;x<1000;++x)
 	{
-		char *s = jnx_debug_malloc(sizeof(char) * x);
+		char *s = JNX_DEBUG_MALLOC(sizeof(char) * x);
 		total_mem += (sizeof(char) * x);
 	}
 	jnx_node *h = jnx_debug_memtrace_get_list()->head;
@@ -69,7 +69,7 @@ void test_list()
 {
 	printf("- test_list ");
 	assert(jnx_debug_memtrace_get_list() == NULL);
-	void *p = jnx_debug_calloc(2,sizeof(char) * 3);
+	void *p = JNX_DEBUG_CALLOC(2,sizeof(char) * 3);
 	jnx_debug_memtrace_clear_memory();
 	assert(jnx_debug_memtrace_get_list() == NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
@@ -84,7 +84,7 @@ void test_large()
 	for(i=0;i<size;++i)
 	{
 
-		char *s = jnx_debug_malloc(a);
+		char *s = JNX_DEBUG_MALLOC(a);
 		assert(jnx_debug_memtrace_get_byte_alloc() == ((i+1) * a));
 		assert(jnx_debug_memtrace_get_total_number_alloc() == (i + 1));
 	}
@@ -103,14 +103,14 @@ void test_deallocation()
 	int o = 0;
 	size_t s = (sizeof(int));
 	size_t st = s * 100;
-	int *A = jnx_debug_malloc(sizeof(int));
+	int *A = JNX_DEBUG_MALLOC(sizeof(int));
 	long int aptr = *A;
 	jnx_debug_free(A);
 	assert(jnx_debug_memtrace_get_current_number_alloc() == 0);	
 	assert(jnx_debug_memtrace_get_byte_alloc() == 0);
 	for(c=0;c<x;++c)
 	{
-		int *B = jnx_debug_malloc(s);
+		int *B = JNX_DEBUG_MALLOC(s);
 	}
 	size_t bytes = jnx_debug_memtrace_clear_memory();
 	assert(bytes == st);
@@ -128,7 +128,7 @@ void test_malloc_dealloc_balance()
 	int counter = 0;
 	while(jnx_debug_memtrace_get_byte_alloc() < onegig)
 	{
-		char *d = jnx_debug_malloc(onemg);
+		char *d = JNX_DEBUG_MALLOC(onemg);
 		jnx_list_add(p,d);
 		++counter;
 	}	
