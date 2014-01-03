@@ -143,7 +143,7 @@ int jnx_network_send_message(char* host, int port, char* msg,size_t msg_len)
 		close(send_fd);
 		return -1;
 	}
-	size_t n;
+	ssize_t n;
 	n = write(send_fd, msg, strlen(msg));
 	if (n < 0) {
 		perror("jnx_network_send_message error writing to socket");
