@@ -17,8 +17,8 @@
  */
 #include <stdlib.h>
 #include <assert.h>
-#include "../src/jnxterm.h"
-#include "../src/jnxfile.h"
+#include "jnxterm.h"
+#include "jnxfile.h"
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -30,7 +30,7 @@ void test_redirect()
 	system("echo 'test'");
 	jnx_term_reset_stdout();
 	char *buffer;
-	size_t read = jnx_file_read(test_path,&buffer);
+	size_t read = jnx_file_read(test_path,&buffer,"r");
 	system("rm console_redirect.log");
 	buffer[strlen(buffer) - 1] = '\0';
 	assert(strcmp(buffer,"test") == 0);
@@ -41,10 +41,9 @@ int main()
     printf("- terminal tests ");
 	test_redirect();
 	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
-	printf("- terminal output ");
-	printf("\n");
+	printf("- terminal output \n");
 	jnx_term_load_bar(1);
-	sleep(2);
+	sleep(5);
 	jnx_term_load_bar(0);
 	jnx_term_load_spinner(1);
 	sleep(2);

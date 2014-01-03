@@ -9,15 +9,15 @@
 /**
  * @brief Node represents an element of the stack 
  */
-typedef struct node {
+typedef struct jnx_snode{
     void* _data;
-    struct node* next_node;
-} jnx_node;
+    struct jnx_snode* next_node;
+} jnx_snode;
 /**
  * @brief Represents the stack data structure as seen by the user
  */
-typedef struct stack {
-    struct node* top;
+typedef struct {
+    struct jnx_snode* top;
     int count;
 } jnx_stack;
 
@@ -54,6 +54,6 @@ void* jnx_stack_pop(jnx_stack* A);
  * after the delete, ti will return 1 (true).
  * @param A is a pointer to the stack to delete.
  */
-void jnx_stack_delete(jnx_stack* A);
+void jnx_stack_delete(jnx_stack** A);
 #endif
 

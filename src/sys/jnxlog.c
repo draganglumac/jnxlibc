@@ -30,8 +30,10 @@ char *log_path = NULL;
 
 void jnx_write_to_log(char *message)
 {
-    pthread_mutex_lock(&_locker);
-    FILE *fp = fopen(log_path,"a");
+#ifndef __JNX_LOG_SINGLE_THREAD__
+	pthread_mutex_lock(&_locker);
+#endif
+	FILE *fp = fopen(log_path,"a");
     if(fp == NULL) { 
         printf("jnx_write_to_log: Unable to open file for log writing\n");
         pthread_mutex_unlock(&_locker);
@@ -40,7 +42,9 @@ void jnx_write_to_log(char *message)
     fprintf(fp,"%s",(char*)message);
     fclose(fp);
     //free our string
+#ifndef __JNX_LOG_SINGLE_THREAD__
     pthread_mutex_unlock(&_locker);
+#endif
 }
 int jnx_log_setup(char *path)
 {
@@ -85,8 +89,13 @@ char* jnx_get_time()
 }
 void jnx_log(const char * format, ...)
 {
-    char output[2048];
-    char buffer[1024];
+	if(log_path == NULL)
+	{
+		printf("jnx_log: Log path not set. See jnx_log_setup\n");
+		return;
+	}
+	char output[MAX_LOG_SIZE];
+    char buffer[MAX_ARG_SIZE];
     char *_time = jnx_get_time();
     strcpy(output,_time);
     strcat(output, ":");
@@ -98,7 +107,11 @@ void jnx_log(const char * format, ...)
     va_end(ap);
     strcat(output,buffer);
     free(_time);
-    pthread_t _thr;
+#ifndef __JNX_LOG_SINGLE_THREAD__
+	jnx_write_to_log(output);	
+#else
+	pthread_t _thr;
     pthread_create(&_thr,NULL,(void*)jnx_write_to_log,output);    
+#endif
 }
 

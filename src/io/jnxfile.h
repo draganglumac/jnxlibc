@@ -15,33 +15,18 @@ typedef struct jnx_file_kvp_node {
     char* value;
     struct jnx_file_kvp_node* next;
 }jnx_file_kvp_node;
-
 /**
- * @fn jnx_file_readb(char* path, char **buffer)
- * @brief Function to read the contents of a binary file into the buffer.
- *
- * @param path path to the target file for reading
- * @param buffer buffer that will be filled
- *
- * @return Number of bytes read
- *
- * @warning It is the users responsibility to manage the memory of the char*
- */
-size_t jnx_file_readb(char* path, char **buffer);
-
-/**
- * @fn jnx_file_read(char* path, char **buffer)
+ * @fn jnx_file_read(char* path, char **buffer,char *flags)
  * @brief Function to read the contents of a text file into the buffer.
  *
  * @param path path to the target file for reading
  * @param buffer that will be filled
- *
+ * @param flags are the flags passed (r,rb...)
  * @return Number of bytes read
  *
  * @warning it is the users responsibility to manage the memory of the char*
  */
-size_t jnx_file_read(char* path, char **buffer);
-
+size_t jnx_file_read(char* path, char **buffer,char *flags);
 /**
  * @fn jnx_file_read_keyvaluepairs(char *path, char* delimiter)
  * @brief Function to read a file that contains key-value pairs into a linked list.
@@ -62,22 +47,10 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter);
  * @param path path to the target file for writing
  * @param data pointer to the char* for writing to the file
  * @param data_size size of data to be written
- *
+ * @param flags are the flags passed (w,r,a+ ...)
  * @return Number of bytes written on success
  */
-size_t jnx_file_write(char* path, char* data, size_t data_size);
-
-/**
- * @fn jnx_file_writeb(char *path, char* data, size_t data_size)
- * @brief Function to write the data buffer into the binary file pointed to by path.
- *
- * @param path path to the target file for writing in byte mode
- * @param data pointer to the char* for writing to the file
- * @param data_size size of data to be written
- * @return bytes written on success
- */
-size_t jnx_file_writeb(char* path, char* data, size_t data_size);
-
+size_t jnx_file_write(char* path, char* data, size_t data_size,char *flags);
 /**
  * @fn jnx_file_recursive_delete(char* path, int depth)
  * @brief Function to recursively delete a directory pointed to by path.

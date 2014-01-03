@@ -21,8 +21,8 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "../src/jnxfile.h"
-#include "../src/jnxterm.h"
+#include "jnxfile.h"
+#include "jnxterm.h"
 void test_recursive_delete()
 {
 	system("mkdir -p bob/james/frank");
@@ -42,7 +42,7 @@ void test_jnx_file()
 {
 	system("echo 'whats up' > tmp.txt");
 	char *buffer;
-	int size = jnx_file_read("tmp.txt",&buffer);
+	int size = jnx_file_read("tmp.txt",&buffer,"r");
 	char *test_string = "whats up\n";
 	while(*buffer != '\0')
 	{

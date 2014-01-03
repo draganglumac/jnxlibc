@@ -1,88 +1,67 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  main.c
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  03/16/13 11:42:57
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Alex Jones (), alexsimonjones@gmail.com
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
 #include <stdlib.h>
+#include "jnxstack.h"
 #include <stdio.h>
-#include <string.h>
 #include <assert.h>
+#include <time.h>
+#include <string.h>
+#include "jnxterm.h"
 
-#include "../src/jnxstack.h"
-#include "../src/jnxterm.h"
+char *A = "TestA";
+char *B = "TestB";
+char *C = "TestC";
+char *ar[] = { "A","B","C"};
+void test_stack_grow()
+{
+	printf("- test_stack_grow");
+	jnx_stack *s = jnx_stack_init();
+	assert(s);
+	jnx_stack_push(s,A);
+	jnx_stack_push(s,B);
+	jnx_stack_push(s,C);
+	jnx_stack_delete(&s);
+	assert(s == NULL);
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+void test_stack_pop()
+{
+	printf("- test_stack_pop");
+	jnx_stack *s = jnx_stack_init();
+	assert(s);
+	jnx_stack_push(s,ar[0]);
+	jnx_stack_push(s,ar[1]);
+	jnx_stack_push(s,ar[2]);
 
-char *data = "ASDFJKL;";
-
-void test_initialising_and_deleting_empty_stack()
-{
-    printf("- test_initialising_and_deleting_empty_stack:");
-    jnx_stack *s = jnx_stack_init();
-    assert(jnx_stack_is_empty(s));
-    jnx_stack_delete(s);
-    assert(jnx_stack_is_empty(s));
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	int c = 2;	
+	while(!jnx_stack_is_empty(s))
+	{
+		char *d = jnx_stack_pop(s);
+		assert(strcmp(ar[c],d) == 0);
+		--c;
+	}	
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-void test_push_to_empty_stack()
-{
-    printf("- test_push_to_empty_stack:");
-    jnx_stack *s = jnx_stack_init();
-    jnx_stack_push(s, (void *)(data));
-    assert(strcmp(data, (char *)(s->top->_data)) == 0);
-    assert(s->count == 1);
-    jnx_stack_delete(s);
-    assert(jnx_stack_is_empty(s));
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-}
-void test_push_null_data()
-{
-    printf("- test_push_null_data:");
-    jnx_stack *s = jnx_stack_init();
-    jnx_stack_push(s, NULL);
-    assert(jnx_stack_is_empty(s));
-    assert(s->count == 0);
-    jnx_stack_delete(s);
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-}
-void test_pop_off_empty_stack()
-{
-    printf("- test_pop_off_empty_stack:");
-    jnx_stack *s = jnx_stack_init();
-    void *data = jnx_stack_pop(s);
-    assert(data == NULL);
-    assert(jnx_stack_is_empty(s));
-    jnx_stack_delete(s);
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-}
-void test_pop_off_the_stack()
-{
-    printf("- test_pop_off_the_stack:");
-    jnx_stack *s = jnx_stack_init();
-    int i;
-    for ( i = 0; i < strlen(data); i++ )
-    {
-        jnx_stack_push(s, (void *)(data + i));
-    }
-    assert(s->count == 8);
-    char *top = (char *)jnx_stack_pop(s);
-    assert(strcmp(";", top) == 0);
-    assert(s->count == 7);
-    jnx_stack_pop(s);
-    jnx_stack_pop(s);
-    top = (char *)jnx_stack_pop(s);
-    assert(s->count == 4);
-    assert(strcmp("JKL;", top) == 0);
-    jnx_stack_pop(s);
-    jnx_stack_pop(s);
-    jnx_stack_pop(s);
-    top = (char *)jnx_stack_pop(s);
-    assert(jnx_stack_is_empty(s));
-    assert(strcmp(data, top) == 0);
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");    
-}
-int main()
+int main(int argc, char **argv)
 {
     printf("Running stack tests...\n");
-    test_initialising_and_deleting_empty_stack();
-    test_push_to_empty_stack();
-    test_push_null_data();
-    test_pop_off_empty_stack();
-    test_pop_off_the_stack();
+	test_stack_grow();
+	test_stack_pop();
     printf("Stack tests completed.\n");
-    
     return 0;
 }

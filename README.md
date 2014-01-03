@@ -5,6 +5,7 @@ jnxlibc
 C based common code library based on libjnx philosophy of general purpose & lightweight development.
 
 Key features:
+- Memory & stack tracing
 - Simple listen/send over IP/port functions (Dynamic buffers for big messages!)
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
@@ -15,6 +16,9 @@ Key features:
 
 #Installation
 
+Currently supported platforms:
+Linux distributions/OS X
+
 Arch linux users
 ````
 https://aur.archlinux.org/packages/jnxlibc/
@@ -22,8 +26,6 @@ https://aur.archlinux.org/packages/jnxlibc/
 
 Grab this repo.
 ````
-./configure
-make
-sudo make install
-link against -ljnxc -ldl
+./build_and_install.sh
+Use -ljnxc when building your project
 ````

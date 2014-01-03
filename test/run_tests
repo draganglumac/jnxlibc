@@ -1,5 +1,4 @@
 #!/bin/bash
-
 function echo_red()
 {
     tput setaf 1
@@ -15,7 +14,6 @@ function echo_green()
 }
 
 filelist=`ls | grep .c`
-
 for file in $filelist; do
     if [ "$file" == "run_tests" ] 
     then
@@ -27,7 +25,7 @@ for file in $filelist; do
         rm $current
     fi
 
-    `gcc $file ../src/*.c -o ${file:0:${#file}-2} -pthread -w`
+	`gcc $file ../build/*.c -I../build -o ${file:0:${#file}-2} -pthread -w`
     ./$current
     out=$?
     if [ ! $out -eq 0 ]; then
