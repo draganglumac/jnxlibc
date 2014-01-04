@@ -89,7 +89,7 @@ void list_delete(mem_list **m)
 }
 void jnx_mem_memtrace(char *path)
 {
-#ifdef __JNX_DEBUG_MEMORY_UNMANAGED__
+#ifdef RELEASE
 	return;
 #endif
 	if(memtrace == NULL) return ;
@@ -236,7 +236,7 @@ static inline void jnx_mem_new_alloc(void *ptr, size_t size,char* file,const cha
 void* jnx_mem_malloc(size_t size,char *file,const char *function,int line)
 {
 	void *p = malloc(size);	
-#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+#ifndef RELEASE
 	jnx_mem_new_alloc(p,size,file,function,line);
 #endif
 	return p;
@@ -244,7 +244,7 @@ void* jnx_mem_malloc(size_t size,char *file,const char *function,int line)
 void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int line)
 {
 	void *p = calloc(num,size);
-#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+#ifndef RELEASE
 	jnx_mem_new_alloc(p,size,file,function,line);
 #endif
 	return p;
@@ -264,18 +264,18 @@ static void adjust_state_in_list(void *ptr)
 }
 void* jnx_mem_realloc(void *ptr,size_t size,char *file,const char *function,int line)
 {
-#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+#ifndef RELEASE
 	adjust_state_in_list(ptr);
 #endif
 	void *p = realloc(ptr,size);
-#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+#ifndef RELEASE
 	jnx_mem_new_alloc(p,size,file,function,line);
 #endif
 	return p;
 }
 void jnx_mem_free(void *ptr)
 {
-#ifndef __JNX_DEBUG_MEMORY_UNMANAGED__
+#ifndef RELEASE
 	adjust_state_in_list(ptr);	
 #endif
 	free(ptr);
