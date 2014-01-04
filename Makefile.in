@@ -14,7 +14,7 @@ main_artifact:
 	rm *.o
 	find . -type f -name "*~" -exec rm {} \;
 main_artifact_release:
-	gcc -Wall -fPIC -DRELEASE -c $(BUILD_DIR)/*.c
+	gcc -Wno-unused-function -fPIC -DRELEASE -c $(BUILD_DIR)/*.c
 	build.shared.object
 	rm *.o
 	find . -type f -name "*~" -exec rm {} \;
