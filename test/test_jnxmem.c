@@ -18,17 +18,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "jnxterm.h"
-#include "jnxdebug.h"
+#include "jnxlist.h"
 #include "jnxmem.h"
 #include <assert.h>
+
+
+//Here we are accessing functions not publicly accessible
+typedef struct mem_node{
+	void *data;
+	struct mem_node *next;
+}mem_node;
+
+typedef struct mem_list{
+	struct mem_node *head;
+	int counter;
+}mem_list;
+
+extern mem_list *jnx_mem_memtrace_get_list();
+//
 void print_mem()
 {
-	jnx_node *h = jnx_mem_memtrace_get_list()->head;
+	mem_list *l = jnx_mem_memtrace_get_list();
+	mem_node *h = l->head;
 	while(h)
 	{
-		jnx_mem_memtrace_item *m = h->_data;
+		jnx_mem_memtrace_item *m = h->data;
 		printf("[%x][size: %d]\n",m->ptr,m->size);
-		h = h->next_node;
+		h = h->next;
 	}
 }
 void test_allocation()
@@ -36,8 +52,8 @@ void test_allocation()
 	printf("- test_allocation test  ");
 	void *d = JNX_MEM_MALLOC(sizeof(char) *30);
 
-	jnx_list *l = jnx_mem_memtrace_get_list();
-	jnx_mem_memtrace_item *m = jnx_list_remove(&l);
+	mem_list *l = jnx_mem_memtrace_get_list();
+	jnx_mem_memtrace_item *m = l->head->data;
 
 	assert(m->ptr == d);
 	jnx_mem_memtrace_clear_memory();
@@ -53,13 +69,13 @@ void test_allocation_long()
 		char *s = JNX_MEM_MALLOC(sizeof(char) * x);
 		total_mem += (sizeof(char) * x);
 	}
-	jnx_node *h = jnx_mem_memtrace_get_list()->head;
+	mem_node *h = jnx_mem_memtrace_get_list()->head;
 	size_t out_mem = 0;
 	while(h)
 	{
-		jnx_mem_memtrace_item *b = h->_data;
+		jnx_mem_memtrace_item *b = h->data;
 		out_mem += b->size;
-		h = h->next_node;
+		h = h->next;
 	}
 	assert(out_mem == total_mem);
 	size_t b = jnx_mem_memtrace_clear_memory();
@@ -136,14 +152,15 @@ void test_malloc_dealloc_balance()
 
 	while(p->head)
 	{
-		jnx_mem_free(p->head->_data);
+		JNX_MEM_FREE(p->head->_data);
 		p->head = p->head->next_node;
 	}
 
 	jnx_list_delete(&p);
 	assert(counter == 1024);
-	assert(jnx_mem_memtrace_get_current_number_alloc() == 0);
+
 	jnx_mem_memtrace_clear_memory();
+	assert(jnx_mem_memtrace_get_current_number_alloc() == 0);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv)

@@ -17,14 +17,10 @@
  */
 #ifndef __JNX_MEM_H__
 #define __JNX_MEM_H__
-#include "jnxlist.h"
 #include "jnxfile.h"
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
-#ifdef __JNX_MEM_DISABLE__
-#define __JNX_MEM_MEMORY_UNMANAGED__
-#endif
 typedef enum { FREE, ALLOC }jnx_mem_memtrace_state;
 typedef struct{
 	void *ptr;
@@ -67,12 +63,6 @@ size_t jnx_mem_memtrace_get_total_number_alloc();
  *@return returns size_t of current number of allocs
  */
 size_t jnx_mem_memtrace_get_current_number_alloc();
-/**
- *@fn jnx_mem_memtrace_get_list
- *@brief gets the current stack of memory operations
- *@param return jnx_stack pointer
- */
-jnx_list *jnx_mem_memtrace_get_list();
 /**
  *@fn jnx_mem_malloc
  *@brief overrides normal system function with a memging version for memory leak testing

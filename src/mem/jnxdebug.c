@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include "jnxdebug.h"
 #include "jnxfile.h"
+#include "jnxmem.h"
 #include <assert.h>
 #include <time.h>
 #include <stdio.h>
@@ -40,7 +41,7 @@ void jnx_debug_stacktrace_cb(int s)
 		str[i][len] = '\n';
 		jnx_file_write(write_path,str[i],strlen(str[i]),"a");
 	}
-	free(str);
+	JNX_MEM_FREE(str);
 	exit(1);
 }
 void jnx_debug_stacktrace(char *path, int counter,int signals[])

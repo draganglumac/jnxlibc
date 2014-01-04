@@ -1,3 +1,4 @@
+#include "jnxmem.h"
 #include "jnxhash.h"
 int jnx_hash_string(const char* input, int map_size)
 {
@@ -24,19 +25,19 @@ void jnx_hash_delete(jnx_hashmap* hashmap)
 			while(current_bucket->head)
 			{
 				jnx_hash_bucket_el *current_element = current_bucket->head->_data;
-				free(current_element->origin_key);
-				free(current_element);
+				JNX_MEM_FREE(current_element->origin_key);
+				JNX_MEM_FREE(current_element);
 				current_bucket->head = current_bucket->head->next_node;
 			}
 			jnx_list_delete(&current_bucket);
 		}
 	}		
-	free(hashmap);
+	JNX_MEM_FREE(hashmap);
 }
 jnx_hashmap* jnx_hash_init(unsigned int size)
 {
-	jnx_hashmap* hashmap = (jnx_hashmap*)malloc(sizeof(jnx_hashmap));
-	hashmap->data = (jnx_hash_element*)calloc(size, sizeof(jnx_hash_element));
+	jnx_hashmap* hashmap = (jnx_hashmap*)JNX_MEM_MALLOC(sizeof(jnx_hashmap));
+	hashmap->data = (jnx_hash_element*)JNX_MEM_CALLOC(size, sizeof(jnx_hash_element));
 	hashmap->size = size;
 	hashmap->used_up = 0;
 	return hashmap;
@@ -72,7 +73,7 @@ int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys)
 	int x, counter = 0;
 	int offset = 1;
 	int default_size = sizeof(char*);
-	*keys = calloc(1,default_size);
+	*keys = JNX_MEM_CALLOC(1,default_size);
 
 	for(x = 0; x < hashmap->size; ++x)
 	{
@@ -83,7 +84,7 @@ int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys)
 				jnx_hash_bucket_el *current_bucket = head_of_buckets->_data;
 				(*keys)[counter] = current_bucket->origin_key;
 				++offset;
-				*keys = realloc(*keys, (default_size * offset));
+				*keys = JNX_MEM_REALLOC(*keys, (default_size * offset));
 				head_of_buckets = head_of_buckets->next_node;
 				++counter;
 			}
@@ -99,8 +100,8 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
 		hashmap->data[index].bucket = jnx_list_init();
 		hashmap->data[index].bucket_len = 0;
 		//okay so bucket is ready to get given a KVP entry, so we'll use our bucket struct
-		jnx_hash_bucket_el* current_bucket_el = malloc(sizeof(jnx_hash_bucket_el));
-		current_bucket_el->origin_key = malloc(strlen(key) + 1);
+		jnx_hash_bucket_el* current_bucket_el = JNX_MEM_MALLOC(sizeof(jnx_hash_bucket_el));
+		current_bucket_el->origin_key = JNX_MEM_MALLOC(strlen(key) + 1);
 		strncpy(current_bucket_el->origin_key,key,strlen(key) + 1);
 		current_bucket_el->origin_value = value;//insert our bucket element...
 		jnx_list_add(hashmap->data[index].bucket, current_bucket_el);
@@ -123,8 +124,8 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
 		}
 		hashmap->data[index].bucket->head = rewind_head;
 		//If the list has been searched and the entry does not exist, we'll do a new insert
-		jnx_hash_bucket_el* current_bucket_el = malloc(sizeof(jnx_hash_bucket_el));
-		current_bucket_el->origin_key = malloc(strlen(key) + 1);
+		jnx_hash_bucket_el* current_bucket_el = JNX_MEM_MALLOC(sizeof(jnx_hash_bucket_el));
+		current_bucket_el->origin_key = JNX_MEM_MALLOC(strlen(key) + 1);
 		strncpy(current_bucket_el->origin_key,key,strlen(key) + 1);
 		current_bucket_el->origin_value = value;
 		jnx_list_add(hashmap->data[index].bucket, current_bucket_el);
@@ -149,8 +150,8 @@ void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key)
 	{
 		jnx_hash_bucket_el *element = head->_data;
 		void *data = (void*)element->origin_value;
-		free(element->origin_key);
-		free(element);
+		JNX_MEM_FREE(element->origin_key);
+		JNX_MEM_FREE(element);
 		jnx_list_delete(&hashmap->data[index].bucket);
 		hashmap->data[index].bucket = NULL;
 		hashmap->data[index].used = 0;
@@ -167,12 +168,12 @@ void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key)
 			{
 				//Start node in list
 				void *data = (void*)bucketel->origin_value;
-				free(bucketel->origin_key);
-				free(bucketel);
+				JNX_MEM_FREE(bucketel->origin_key);
+				JNX_MEM_FREE(bucketel);
 				//lets set the hashmap to point to the next element of this list
 				hashmap->data[index].bucket->head = head->next_node;
-				///free this node in the list
-				free(head);
+				///JNX_MEM_FREE this node in the list
+				JNX_MEM_FREE(head);
 				hashmap->data[index].bucket_len--;
 				return data;
 			}else
@@ -182,9 +183,9 @@ void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key)
 					///Last node in list
 					///we have a previous node which will become the last node in the list now
 					void *data = (void*)bucketel->origin_value;
-					free(bucketel->origin_key);
-					free(bucketel);
-					free(head);	
+					JNX_MEM_FREE(bucketel->origin_key);
+					JNX_MEM_FREE(bucketel);
+					JNX_MEM_FREE(head);	
 					previous_node->next_node = NULL;
 					head = rewind;
 					hashmap->data[index].bucket_len--;
@@ -194,11 +195,11 @@ void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key)
 					//Middle node in list
 					//set need to set the previous node, and the next node to link to each other
 					void *data = (void*)bucketel->origin_value;
-					free(bucketel->origin_key);
-					free(bucketel);
+					JNX_MEM_FREE(bucketel->origin_key);
+					JNX_MEM_FREE(bucketel);
 					//set the previous node to jump to the next
 					jnx_node *next_node = head->next_node;
-					free(head);	
+					JNX_MEM_FREE(head);	
 					previous_node->next_node = next_node;
 					hashmap->data[index].bucket_len--;
 					return data;

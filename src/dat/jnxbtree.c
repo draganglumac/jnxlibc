@@ -18,25 +18,26 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include "jnxmem.h"
 #include "jnxbtree.h"
 
 jnx_B_tree_node *new_node(int order, int is_leaf)
 {
-	jnx_B_tree_node *node = calloc(1, sizeof(jnx_B_tree_node));
+	jnx_B_tree_node *node = JNX_MEM_CALLOC(1, sizeof(jnx_B_tree_node));
 
-	node->count = 0; // just to be explicit, calloc will already zero the field
+	node->count = 0; // just to be explicit, JNX_MEM_CALLOC will already zero the field
 	node->is_leaf = is_leaf;
-	node->records = calloc(2 * order, sizeof(record*));
-	node->children = calloc(2 * order + 1, sizeof(jnx_B_tree_node*)); 
+	node->records = JNX_MEM_CALLOC(2 * order, sizeof(record*));
+	node->children = JNX_MEM_CALLOC(2 * order + 1, sizeof(jnx_B_tree_node*)); 
 
 	return node;
 }
 
 void delete_node(jnx_B_tree_node *node)
 {
-	free(node->records);
-	free(node->children);
-	free(node);
+	JNX_MEM_FREE(node->records);
+	JNX_MEM_FREE(node->children);
+	JNX_MEM_FREE(node);
 }
 
 void move_contents_from_index(jnx_B_tree_node *source, jnx_B_tree_node *target, int index)
@@ -194,7 +195,7 @@ void add_record_to_non_full_leaf(jnx_B_tree *tree, jnx_B_tree_node *node, record
 		if ( tree->compare_function(key, r->key) == 0 )
 		{
 			// Replace the value only scenario
-			free(node->records[i]);
+			JNX_MEM_FREE(node->records[i]);
 			node->records[i] = r;
 		}
 		else
@@ -229,7 +230,7 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
 		if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
 		{
 			// Same key so just replace the old record with the new one
-			free(node->records[i]);
+			JNX_MEM_FREE(node->records[i]);
 			node->records[i] = r;
 			return;
 		}
@@ -242,7 +243,7 @@ void insert_into_tree_at_node(jnx_B_tree *tree, jnx_B_tree_node *node, record *r
 		if ( tree->compare_function(node->records[i]->key, r->key) == 0 )
 		{
 			// Case when the node that moved up is actually the node we want to insert
-			free(node->records[i]);
+			JNX_MEM_FREE(node->records[i]);
 			node->records[i] = r;
 			return;
 		}
@@ -280,11 +281,11 @@ void delete_node_and_subtrees(jnx_B_tree_node *node)
 	{
 		if ( node->records[i] != NULL )
 		{
-			free(node->records[i]);
+			JNX_MEM_FREE(node->records[i]);
 		}
 	}
 
-	// Finally, free the node itself
+	// Finally, JNX_MEM_FREE the node itself
 	delete_node(node);
 }
 
@@ -365,7 +366,7 @@ void merge_subtrees_around_index(jnx_B_tree *tree, jnx_B_tree_node *node, int in
 	// Removed the record from node so adjust the count
 	node->count--;
 
-	// Delete the second node, i.e. free its memory on the heap
+	// Delete the second node, i.e. JNX_MEM_FREE its memory on the heap
 	delete_node(second);
 
 	// Since root is the only node that can have less than t-1 records
@@ -424,25 +425,25 @@ record *delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record 
 		{
 			temp = find_rightmost_record_in_subtree_at_node(node->children[rec_i]);
 
-			node->records[rec_i] = malloc(sizeof(record));
+			node->records[rec_i] = JNX_MEM_MALLOC(sizeof(record));
 			node->records[rec_i]->key = temp->key;
 			node->records[rec_i]->value = temp->value;
 
 			retval = delete_record_from_node(tree, node->children[rec_i], temp);
 
-			free(node_rec);
+			JNX_MEM_FREE(node_rec);
 		}
 		else if ( node->children[rec_i + 1]->count >= tree->order )
 		{
 			temp = find_leftmost_record_in_subtree_at_node(node->children[rec_i + 1]);
 
-			node->records[rec_i] = malloc(sizeof(record));
+			node->records[rec_i] = JNX_MEM_MALLOC(sizeof(record));
 			node->records[rec_i]->key = temp->key;
 			node->records[rec_i]->value = temp->value;
 
 			retval = delete_record_from_node(tree, node->children[rec_i + 1], temp);
 
-			free(node_rec);
+			JNX_MEM_FREE(node_rec);
 		}
 		else
 		{
@@ -521,7 +522,7 @@ jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
 		return NULL;
 	}
 
-	jnx_B_tree *tree = calloc(1, sizeof(jnx_B_tree));
+	jnx_B_tree *tree = JNX_MEM_CALLOC(1, sizeof(jnx_B_tree));
 
 	tree->order = order;
 	tree->compare_function = callback;
@@ -537,7 +538,7 @@ void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value)
 		return;
 	}
 
-	record *r = malloc(sizeof(record));
+	record *r = JNX_MEM_MALLOC(sizeof(record));
 	r->key = key;
 	r->value = value;
 
@@ -572,7 +573,7 @@ void jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void** key_out, void **va
 		return;
 	}
 
-	record *r = malloc(sizeof(record));
+	record *r = JNX_MEM_MALLOC(sizeof(record));
 	r->key = key_in;
 	r->value = key_in;
 
@@ -585,8 +586,8 @@ void jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void** key_out, void **va
 			*val_out = temp->value;
 	}
 
-	free(temp);	
-	free(r);
+	JNX_MEM_FREE(temp);	
+	JNX_MEM_FREE(r);
 }
 
 void jnx_B_tree_delete(jnx_B_tree* tree)
@@ -598,5 +599,5 @@ void jnx_B_tree_delete(jnx_B_tree* tree)
 
 	delete_node_and_subtrees(tree->root);
 
-	free(tree);
+	JNX_MEM_FREE(tree);
 }

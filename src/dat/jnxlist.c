@@ -17,11 +17,12 @@
  */
 #include <stdlib.h>
 #include "jnxlist.h"
+#include "jnxmem.h"
 #include <stdio.h>
 
 jnx_list* jnx_list_init(void)
 {
-	jnx_list *list = malloc(sizeof(jnx_list));
+	jnx_list *list = JNX_MEM_MALLOC(sizeof(jnx_list));
 	list->head = NULL;
 	list->tail = NULL;
 	list->counter = 0;
@@ -31,7 +32,7 @@ void jnx_list_add(jnx_list* A, void* _datain)
 {
 	if(A->head == NULL)
 	{
-		jnx_node *node = malloc(sizeof(jnx_node));
+		jnx_node *node = JNX_MEM_MALLOC(sizeof(jnx_node));
 		node->_data = _datain; 
 		node->next_node = NULL;
 		node->prev_node = NULL;
@@ -46,7 +47,7 @@ void jnx_list_add(jnx_list* A, void* _datain)
 		jnx_node *current_node = A->head;
 		if(!A->head->next_node)
 		{	
-			jnx_node *node = malloc(sizeof(jnx_node));
+			jnx_node *node = JNX_MEM_MALLOC(sizeof(jnx_node));
 			node->_data = _datain;
 			node->next_node = NULL;
 			node->prev_node = current_node;	
@@ -69,7 +70,7 @@ void* jnx_list_remove(jnx_list** A)
 	if((*A)->head->next_node == NULL)
 	{
 		void *data = (*A)->head->_data;
-		free((*A)->head);
+		JNX_MEM_FREE((*A)->head);
 		(*A)->head = NULL;
 		(*A)->counter--;
 		return data;
@@ -81,7 +82,7 @@ void* jnx_list_remove(jnx_list** A)
 		if(next->next_node == NULL)
 		{
 			void *data = next->_data;
-			free(next);
+			JNX_MEM_FREE(next);
 			(*A)->head->next_node = NULL;
 			(*A)->head = origin_head; 
 			(*A)->counter--;
@@ -107,18 +108,18 @@ void jnx_list_delete(jnx_list** A)
 	jnx_node *current = (*A)->head;
 	if(!current->next_node){ 
 
-		free(current);
-		free(*A);
+		JNX_MEM_FREE(current);
+		JNX_MEM_FREE(*A);
 		(*A) = NULL;
 		return;
 	}
 	while(current)
 	{
 		jnx_node *current_node = current;
-		free(current_node);
+		JNX_MEM_FREE(current_node);
 		current = current->next_node; 
 	}
-	free(*A);
+	JNX_MEM_FREE(*A);
 	(*A) = NULL;
 }
 
