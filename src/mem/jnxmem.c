@@ -129,6 +129,9 @@ void jnx_mem_memtrace(char *path)
 }
 size_t jnx_mem_memtrace_clear_memory()
 {
+#ifdef RELEASE
+	return 0;
+#endif
 	if(!memtrace)
 	{
 		printf("Warning memtrace list is empty\n");
@@ -156,6 +159,9 @@ size_t jnx_mem_memtrace_clear_memory()
 }
 size_t jnx_mem_memtrace_get_total_number_alloc()
 {
+#ifdef RELEASE
+	return 0;
+#endif
 	if(memtrace == NULL)
 	{
 		return 0;
@@ -171,6 +177,9 @@ size_t jnx_mem_memtrace_get_total_number_alloc()
 }
 size_t jnx_mem_memtrace_get_current_number_alloc()
 {
+#ifdef RELEASE
+	return 0;
+#endif
 	if(memtrace == NULL)
 	{
 		return 0;
@@ -189,6 +198,9 @@ size_t jnx_mem_memtrace_get_current_number_alloc()
 }
 size_t jnx_mem_memtrace_get_byte_alloc()
 {
+#ifdef RELEASE
+	return 0;
+#endif
 	if(memtrace == NULL)
 	{
 		return 0;
@@ -207,6 +219,9 @@ size_t jnx_mem_memtrace_get_byte_alloc()
 }
 mem_list *jnx_mem_memtrace_get_list()
 {
+#ifdef RELEASE
+	return NULL;
+#endif
 	if(memtrace == NULL)
 	{
 		return NULL;
