@@ -23,14 +23,14 @@ typedef struct mem_node{
 	struct mem_node *next;
 }mem_node;
 
-typedef struct mem_list{
+typedef struct memlist{
 	struct mem_node *head;
 	int counter;
 }mem_list;
 
-static mem_list *memtrace = NULL;
+static mem_list *memlist = NULL;
 
-void add_link(mem_list *m,void *in)
+static inline void add_link(mem_list *m,void *in)
 {
 	if(m->head == NULL)
 	{
@@ -87,18 +87,18 @@ void list_delete(mem_list **m)
 	free(*m);
 	(m) = NULL;
 }
-void jnx_mem_memtrace(char *path)
+void jnx_mem_trace(char *path)
 {
 #ifdef RELEASE
 	return;
 #endif
-	if(memtrace == NULL) return ;
-	mem_node *h = memtrace->head;
+	if(memlist == NULL) return ;
+	mem_node *h = memlist->head;
 	char *state_al = "[IN USE]";
 	char *state_fr = "[FREE]";
 	while(h)
 	{
-		jnx_mem_memtrace_item *m = h->data;
+		jnx_mem_item *m = h->data;
 		char str[1024];
 		char *t;
 		switch(m->state)
@@ -114,8 +114,8 @@ void jnx_mem_memtrace(char *path)
 		jnx_file_write(path,str,strlen(str),"a");
 		h = h->next;
 	}
-	size_t total_bytes = jnx_mem_memtrace_get_byte_alloc();
-	size_t total_allocs = jnx_mem_memtrace_get_total_number_alloc();
+	size_t total_bytes = jnx_mem_get_byte_alloc();
+	size_t total_allocs = jnx_mem_get_total_number_alloc();
 	char buffer[1024];
 	time_t t;
 	char *buf;
@@ -123,25 +123,25 @@ void jnx_mem_memtrace(char *path)
 	buf = (char*)malloc(strlen(ctime(&t)) +1);
 	snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
 	char *debug ="Time:%d\nTotal allocs:%zu\nCurrent allocs:%zu\nTotal bytes:%zu(%zuKb)\n";
-	sprintf(buffer,debug,buf,total_allocs,jnx_mem_memtrace_get_current_number_alloc(),total_bytes,(total_bytes / 1024));
+	sprintf(buffer,debug,buf,total_allocs,jnx_mem_get_current_number_alloc(),total_bytes,(total_bytes / 1024));
 	free(buf);	
 	jnx_file_write(path,buffer,strlen(buffer),"a");
 }
-size_t jnx_mem_memtrace_clear_memory()
+size_t jnx_mem_clear()
 {
 #ifdef RELEASE
 	return 0;
 #endif
-	if(!memtrace)
+	if(!memlist)
 	{
-		printf("Warning memtrace list is empty\n");
+		printf("Warning memlist list is empty\n");
 		return 0;
 	}
 	size_t clear_mem = 0;
-	mem_node *m = memtrace->head;
+	mem_node *m = memlist->head;
 	while(m)
 	{
-		jnx_mem_memtrace_item *mi = m->data;
+		jnx_mem_item *mi = m->data;
 		if(mi->state == ALLOC)
 		{
 			free(mi->ptr);
@@ -153,21 +153,21 @@ size_t jnx_mem_memtrace_clear_memory()
 		free(m->data);
 		m = m->next;
 	}
-	list_delete(&memtrace);
-	memtrace = NULL;
+	list_delete(&memlist);
+	memlist = NULL;
 	return clear_mem;
 }
-size_t jnx_mem_memtrace_get_total_number_alloc()
+size_t jnx_mem_get_total_number_alloc()
 {
 #ifdef RELEASE
 	return 0;
 #endif
-	if(memtrace == NULL)
+	if(memlist == NULL)
 	{
 		return 0;
 	}
 	size_t ta = 0;
-	mem_node *h = memtrace->head;
+	mem_node *h = memlist->head;
 	while(h)
 	{
 		++ta;
@@ -175,20 +175,20 @@ size_t jnx_mem_memtrace_get_total_number_alloc()
 	}
 	return ta;
 }
-size_t jnx_mem_memtrace_get_current_number_alloc()
+size_t jnx_mem_get_current_number_alloc()
 {
 #ifdef RELEASE
 	return 0;
 #endif
-	if(memtrace == NULL)
+	if(memlist == NULL)
 	{
 		return 0;
 	}
 	size_t ta = 0;
-	mem_node *h = memtrace->head;
+	mem_node *h = memlist->head;
 	while(h)
 	{
-		jnx_mem_memtrace_item *m = h->data;
+		jnx_mem_item *m = h->data;
 		if(m->state == ALLOC){
 			++ta;
 		}
@@ -196,20 +196,20 @@ size_t jnx_mem_memtrace_get_current_number_alloc()
 	}
 	return ta;
 }
-size_t jnx_mem_memtrace_get_byte_alloc()
+size_t jnx_mem_get_byte_alloc()
 {
 #ifdef RELEASE
 	return 0;
 #endif
-	if(memtrace == NULL)
+	if(memlist == NULL)
 	{
 		return 0;
 	}
 	size_t tb = 0;
-	mem_node *h = memtrace->head;
+	mem_node *h = memlist->head;
 	while(h)
 	{
-		jnx_mem_memtrace_item *m = h->data;
+		jnx_mem_item *m = h->data;
 		if(m->state == ALLOC){
 			tb += m->size;
 		}
@@ -217,20 +217,20 @@ size_t jnx_mem_memtrace_get_byte_alloc()
 	}
 	return tb;
 }
-mem_list *jnx_mem_memtrace_get_list()
+mem_list *jnx_mem_get_list()
 {
 #ifdef RELEASE
 	return NULL;
 #endif
-	if(memtrace == NULL)
+	if(memlist == NULL)
 	{
 		return NULL;
 	}
-	return memtrace; 
+	return memlist; 
 }
 static inline void jnx_mem_new_alloc(void *ptr, size_t size,char* file,const char *function,int line)
 {
-	jnx_mem_memtrace_item *m = malloc(sizeof(jnx_mem_memtrace_item));
+	jnx_mem_item *m = malloc(sizeof(jnx_mem_item));
 	if(m == NULL)
 	{
 		printf("Error with allocation\n [%zu(kb)]",(size /1024));
@@ -242,11 +242,11 @@ static inline void jnx_mem_new_alloc(void *ptr, size_t size,char* file,const cha
 	m->file = strdup(file);
 	m->function = strdup(function);
 	m->line = line;
-	if(memtrace == NULL)
+	if(memlist == NULL)
 	{
-		memtrace = init_mem_list(); 
+		memlist = init_mem_list(); 
 	}
-	add_link(memtrace,m);
+	add_link(memlist,m);
 }
 void* jnx_mem_malloc(size_t size,char *file,const char *function,int line)
 {
@@ -266,10 +266,10 @@ void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int 
 }
 static void adjust_state_in_list(void *ptr)
 {
-	mem_node *h = memtrace->head;
+	mem_node *h = memlist->head;
 	while(h)
 	{
-		jnx_mem_memtrace_item *m = h->data;
+		jnx_mem_item *m = h->data;
 		if(m->ptr == ptr)
 		{
 			m->state = FREE;

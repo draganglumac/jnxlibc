@@ -30,39 +30,39 @@ typedef struct{
 	int line;
 	jnx_mem_memtrace_state state;
 	
-}jnx_mem_memtrace_item;
+}jnx_mem_item;
 
 /** 
  *@fn jnx_mem_memtrace
  *@brief Prints the current memtrace to file
  *@param path is the path to the save file, if this file is not valid it will print
  */
-void jnx_mem_memtrace(char *path);
+void jnx_mem_trace(char *path);
 /**
  *@fn jnx_mem_memtrace_clear_memory
  *@brief frees all memory and resets tracking stack
  *@warning this is obviously quite dangerous in real programs
  */
-size_t jnx_mem_memtrace_clear_memory();
+size_t jnx_mem_clear();
 
 /**
  *@fn jnx_mem_memtrace_get_byte_alloc
  *@brief more of a memging function this allows the user to get total bytes alloc
  *@return returns size_t of total number of bytes
  */
-size_t jnx_mem_memtrace_get_byte_alloc();
+size_t jnx_mem_get_byte_alloc();
 /**
  *@fn jnx_mem_memtrace_get_total_number_alloc
  *@brief more of a memging function this allows the user to get total allocs
  *@return returns size_t of total number of allocs
  */
-size_t jnx_mem_memtrace_get_total_number_alloc();
+size_t jnx_mem_get_total_number_alloc();
 /**
  *@fn jnx_mem_memtrace_get_current_number_alloc
  *@brief more of a memging function this allows the user to get current allocs
  *@return returns size_t of current number of allocs
  */
-size_t jnx_mem_memtrace_get_current_number_alloc();
+size_t jnx_mem_get_current_number_alloc();
 /**
  *@fn jnx_mem_malloc
  *@brief overrides normal system function with a memging version for memory leak testing

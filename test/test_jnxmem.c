@@ -34,15 +34,15 @@ typedef struct mem_list{
 	int counter;
 }mem_list;
 
-extern mem_list *jnx_mem_memtrace_get_list();
+extern mem_list *jnx_mem_get_list();
 //
 void print_mem()
 {
-	mem_list *l = jnx_mem_memtrace_get_list();
+	mem_list *l = jnx_mem_get_list();
 	mem_node *h = l->head;
 	while(h)
 	{
-		jnx_mem_memtrace_item *m = h->data;
+		jnx_mem_item *m = h->data;
 		printf("[%x][size: %d]\n",m->ptr,m->size);
 		h = h->next;
 	}
@@ -52,11 +52,11 @@ void test_allocation()
 	printf("- test_allocation test  ");
 	void *d = JNX_MEM_MALLOC(sizeof(char) *30);
 
-	mem_list *l = jnx_mem_memtrace_get_list();
-	jnx_mem_memtrace_item *m = l->head->data;
+	mem_list *l = jnx_mem_get_list();
+	jnx_mem_item *m = l->head->data;
 
 	assert(m->ptr == d);
-	jnx_mem_memtrace_clear_memory();
+	jnx_mem_clear();
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_allocation_long()
@@ -69,26 +69,26 @@ void test_allocation_long()
 		char *s = JNX_MEM_MALLOC(sizeof(char) * x);
 		total_mem += (sizeof(char) * x);
 	}
-	mem_node *h = jnx_mem_memtrace_get_list()->head;
+	mem_node *h = jnx_mem_get_list()->head;
 	size_t out_mem = 0;
 	while(h)
 	{
-		jnx_mem_memtrace_item *b = h->data;
+		jnx_mem_item *b = h->data;
 		out_mem += b->size;
 		h = h->next;
 	}
 	assert(out_mem == total_mem);
-	size_t b = jnx_mem_memtrace_clear_memory();
+	size_t b = jnx_mem_clear();
 	assert(b == out_mem);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_list()
 {
 	printf("- test_list ");
-	assert(jnx_mem_memtrace_get_list() == NULL);
+	assert(jnx_mem_get_list() == NULL);
 	void *p = JNX_MEM_CALLOC(2,sizeof(char) * 3);
-	jnx_mem_memtrace_clear_memory();
-	assert(jnx_mem_memtrace_get_list() == NULL);
+	jnx_mem_clear();
+	assert(jnx_mem_get_list() == NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_large()
@@ -102,18 +102,18 @@ void test_large()
 	{
 
 		char *s = JNX_MEM_MALLOC(a);
-		assert(jnx_mem_memtrace_get_byte_alloc() == ((i+1) * a));
-		assert(jnx_mem_memtrace_get_total_number_alloc() == (i + 1));
+		assert(jnx_mem_get_byte_alloc() == ((i+1) * a));
+		assert(jnx_mem_get_total_number_alloc() == (i + 1));
 	}
-	size_t b = jnx_mem_memtrace_clear_memory();
-	assert(jnx_mem_memtrace_get_current_number_alloc() == 0);
+	size_t b = jnx_mem_clear();
+	assert(jnx_mem_get_current_number_alloc() == 0);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 
 }
 void test_deallocation()
 {
 	printf("- test_deallocation ");
-	assert(jnx_mem_memtrace_get_total_number_alloc() == 0);	
+	assert(jnx_mem_get_total_number_alloc() == 0);	
 
 	int x = 100;
 	int c;
@@ -123,16 +123,16 @@ void test_deallocation()
 	int *A = JNX_MEM_MALLOC(sizeof(int));
 	long int aptr = *A;
 	jnx_mem_free(A);
-	assert(jnx_mem_memtrace_get_current_number_alloc() == 0);	
-	assert(jnx_mem_memtrace_get_byte_alloc() == 0);
+	assert(jnx_mem_get_current_number_alloc() == 0);	
+	assert(jnx_mem_get_byte_alloc() == 0);
 	for(c=0;c<x;++c)
 	{
 		int *B = JNX_MEM_MALLOC(s);
 	}
-	size_t bytes = jnx_mem_memtrace_clear_memory();
+	size_t bytes = jnx_mem_clear();
 	assert(bytes == st);
-	assert(jnx_mem_memtrace_get_current_number_alloc() == 0);	
-	assert(jnx_mem_memtrace_get_byte_alloc() == 0);
+	assert(jnx_mem_get_current_number_alloc() == 0);	
+	assert(jnx_mem_get_byte_alloc() == 0);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 
 }
@@ -143,7 +143,7 @@ void test_malloc_dealloc_balance()
 	size_t onegig = (onemg * 1024);
 	jnx_list *p = jnx_list_init();
 	int counter = 0;
-	while(jnx_mem_memtrace_get_byte_alloc() < onegig)
+	while(jnx_mem_get_byte_alloc() < onegig)
 	{
 		char *d = JNX_MEM_MALLOC(onemg);
 		jnx_list_add(p,d);
@@ -159,8 +159,8 @@ void test_malloc_dealloc_balance()
 	jnx_list_delete(&p);
 	assert(counter == 1024);
 
-	jnx_mem_memtrace_clear_memory();
-	assert(jnx_mem_memtrace_get_current_number_alloc() == 0);
+	jnx_mem_clear();
+	assert(jnx_mem_get_current_number_alloc() == 0);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv)
