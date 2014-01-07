@@ -59,14 +59,14 @@ static inline void add_link(mem_list *m,void *in)
 	}	
 	m->head = org_head;
 }
-mem_list *init_mem_list()
+static mem_list *init_mem_list()
 {
 	mem_list *m = malloc(sizeof(mem_list));
 	m->counter = 0;
 	m->head = NULL;
 	return m;
 }
-void list_delete(mem_list **m)
+static void list_delete(mem_list **m)
 {
 	if((*m) == NULL) { return; }
 	if((*m)->head == NULL){ return; }
