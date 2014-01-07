@@ -72,6 +72,15 @@ void test_hash_deletion()
 	jnx_hash_put(testhash,key_one,test_data);
 	jnx_hash_put(testhash,key_two,test_data);
 
+	const char **keys;
+	int num = jnx_hash_get_keys(testhash,&keys);
+	int i;
+	for(i=0;i<num;++i)
+	{
+		char *value = jnx_hash_delete_value(testhash,keys[i]);
+	}
+	num = jnx_hash_get_keys(testhash,&keys);
+	assert(num == 0);
 	jnx_hash_delete(testhash);
 }
 int main(int argc, char **argv)

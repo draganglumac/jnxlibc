@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "jnxmem.h"
 #include "jnxbase64.h"
 void build_decoding_table();
 void base64_cleanup();
@@ -22,7 +23,7 @@ char *jnx_base64_encode(const unsigned char *data,
 		size_t *output_length) {
 
 	*output_length = 4 * ((input_length + 2) / 3);
-	char *encoded_data = malloc(((*output_length) +1) * sizeof (char));
+	char *encoded_data = JNX_MEM_MALLOC(((*output_length) +1) * sizeof (char));
 	if (encoded_data == NULL) return NULL;
 
 	int i,j;
@@ -65,7 +66,7 @@ unsigned char *jnx_base64_decode(const char *data,
 	if (data[input_length - 1] == '=') (*output_length)--;
 	if (data[input_length - 2] == '=') (*output_length)--;
 
-	unsigned char *decoded_data = calloc(*output_length, sizeof(unsigned char));
+	unsigned char *decoded_data = JNX_MEM_CALLOC(*output_length, sizeof(unsigned char));
 	bzero(decoded_data,*output_length);
 	if (decoded_data == NULL) return NULL;
 
@@ -92,7 +93,7 @@ unsigned char *jnx_base64_decode(const char *data,
 
 void build_decoding_table() {
 
-	decoding_table = malloc(256 * sizeof(char));
+	decoding_table = JNX_MEM_MALLOC(256 * sizeof(char));
 
 	int z;
 	for(z = 0; z < 256;++z)
@@ -106,5 +107,5 @@ void build_decoding_table() {
 
 
 void jnx_base64_cleanup() {
-	free(decoding_table);
+	JNX_MEM_FREE(decoding_table);
 }

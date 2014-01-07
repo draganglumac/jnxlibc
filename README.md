@@ -26,6 +26,11 @@ https://aur.archlinux.org/packages/jnxlibc/
 
 Grab this repo.
 ````
+//Test, Compile and install as DEBUG
 ./build_and_install.sh
+or
+//Test, Compile and install as RELEASE
+./build_and_install.sh RELEASE
+
 Use -ljnxc when building your project
 ````

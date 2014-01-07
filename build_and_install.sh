@@ -1,6 +1,8 @@
 #!/bin/bash +x
 
 ./configure
+
+if [ "$1" != "SKIP" ]; then
 make setup
 pushd test
 ./run_tests
@@ -13,7 +15,14 @@ if [ ! $result -eq 0 ]; then
 fi
 popd
 make teardown
-make
+fi
+if [ $1 = "RELEASE" ]; then
+	echo "Building release library"
+	make release
+else
+	echo "Building debug library"
+	make
+fi
 sudo make install
 echo "Installed succesfully"
 

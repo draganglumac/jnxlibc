@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include "jnxmem.h"
 #include "jnxstring.h"
 #include "jnxterm.h"
 int main(int args, char **argv)
@@ -26,7 +27,7 @@ int main(int args, char **argv)
     printf("Running test for jnxstring\n");
   
     printf("- test_string_join"); 
-    char *temp = malloc(256);
+    char *temp = JNX_MEM_MALLOC(256);
     strcpy(temp,"foo"); 
     jnx_string_join(&temp,"bar");
     assert(strcmp(temp,"foobar") == 0);
