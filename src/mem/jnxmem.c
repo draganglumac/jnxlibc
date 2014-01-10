@@ -266,6 +266,11 @@ void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int 
 }
 static void adjust_state_in_list(void *ptr)
 {
+	if(!memlist)
+	{
+		printf("Warning memlist list is empty\n");
+		return;
+	}
 	mem_node *h = memlist->head;
 	while(h)
 	{
