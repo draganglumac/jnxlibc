@@ -6,7 +6,7 @@
 
 #ifndef __JNX_B_TREE__
 #define __JNX_B_TREE__
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 
