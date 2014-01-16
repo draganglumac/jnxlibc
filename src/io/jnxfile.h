@@ -6,7 +6,7 @@
 #ifndef __JNXFILE_H__
 #define __JNXFILE_H__
 #include <stddef.h>
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 /**
@@ -74,7 +74,7 @@ int jnx_file_recursive_delete(char* path, int depth);
  * @return success on 0
  */
 int jnx_file_mktempdir(char *dirtemplate, char **path);
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif
