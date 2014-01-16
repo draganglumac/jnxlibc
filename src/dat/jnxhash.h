@@ -1,3 +1,9 @@
+/** @file jnxhash.h
+ *  @brief API for jnxlibc's implementation of hashmap
+ *
+ *  #include <jnxc_headers/jnxhash.h>
+ */
+
 #ifndef __JNX_HASH_H__
 #define __JNX_HASH_H__
 #include <string.h>
@@ -7,12 +13,6 @@
 #ifdef __cspluplus
 	extern "C" {
 #endif
-/** @file jnxhash.h
- *  @brief API for jnxlibc's implementation of hashmap
- *
- *  #include <jnxc_headers/jnxhash.h>
- */
-
 /**
  * @brief Internal container for a key value pair
  */

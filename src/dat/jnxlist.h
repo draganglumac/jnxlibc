@@ -1,14 +1,13 @@
-#ifndef __JNXLIST_H__
-#define __JNXLIST_H__
-#ifdef __cspluplus
-	extern "C" {
-#endif
 /** @file jnxlist.h
  *  @brief API for jnxlibc implementation of list
  *
  *  #include <jnxc_headers/jnxlist.h>
  */
-
+#ifndef __JNXLIST_H__
+#define __JNXLIST_H__
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /**
  * @brief Node represents a link in the list 
  */

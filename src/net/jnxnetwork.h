@@ -1,15 +1,14 @@
+/** @file jnxnetwork.h
+ *  @brief The API for jnxlibc networking (includes TCP, UDP )
+ *
+ *  #include <jnxc_headers/jnxnetwork.h>
+ */
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
 #include <stddef.h>
 #ifdef __cspluplus
 	extern "C" {
 #endif
-/** @file jnxnetwork.h
- *  @brief The API for jnxlibc networking (includes TCP, UDP )
- *
- *  #include <jnxc_headers/jnxnetwork.h>
- */
-
 /**
  * @brief Maximum buffer size allowed 
  */

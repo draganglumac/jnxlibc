@@ -1,20 +1,10 @@
-/*
- * =====================================================================================
+/** @file jnxmem.h
+ * @brief The API for jnxlibc's implementation of simple memory management for DEBUG mode
  *
- *       Filename:  jnxmem.h
- *
- *    Description:  Memory management
- *
- *        Version:  1.0
- *        Created:  01/03/14 18:14:52
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  jonesax (), 
- *   Organization:  
- *
- * =====================================================================================
+ * #include <jnxc_headers/jnxmem.h>
  */
+
+
 #ifndef __JNX_MEM_H__
 #define __JNX_MEM_H__
 #include "jnxfile.h"

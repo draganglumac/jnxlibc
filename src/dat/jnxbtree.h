@@ -1,21 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  jnxbtree.h
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  03/05/2013 06:28:01 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Dragan Glumac (dragan.glumac@gmail.com), 
- *   Organization:  
- *
- * =====================================================================================
- */
-
 /** @file jnxbtree.h
  * @brief The API for jnxlibc's implementation of B-trees.
  *

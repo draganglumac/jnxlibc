@@ -1,20 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  jnxbtree.c
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  03/05/2013 06:28:01 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author: Dragan Glumac 
- *   Organization:  
- *
- * =====================================================================================
- */
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>

@@ -1,20 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  jnx_log.c
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  02/20/13 10:17:02
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Alex Jones (alexsimonjones@gmail.com), 
- *
- * =====================================================================================
- */
-
 /**
  * @file jnxlog.h
  * @brief Simple logger that allows program output to be captured to file. It allows one log file per process only.

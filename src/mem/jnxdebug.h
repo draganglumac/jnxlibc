@@ -1,20 +1,9 @@
-/*
- * =====================================================================================
+/** @file jnxdebug.h
+ * @brief The API for jnxlibc's debugging tools
  *
- *       Filename:  jnxdebug.h
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  11/27/13 18:58:38
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (), 
- *   Organization:  
- *
- * =====================================================================================
+ * #include <jnxc_headers/jnxdebug.h>
  */
+
 #ifndef __JNX_DEBUG_H__
 #define __JNX_DEBUG_H__
 #include <signal.h>

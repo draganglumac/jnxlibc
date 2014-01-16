@@ -1,14 +1,13 @@
-#ifndef __JNXSTACK_H__
-#define __JNXSTACK_H__
-#ifdef __cspluplus
-	extern "C" {
-#endif
 /** @file jnxstack.h
  *  @brief API for jnxlibc implementation of stack data structure
  *
  *  #include <jnxc_headers/jnxstack.h>
  */
-
+#ifndef __JNXSTACK_H__
+#define __JNXSTACK_H__
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /**
  * @brief Node represents an element of the stack 
  */
