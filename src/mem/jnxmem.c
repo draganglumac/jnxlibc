@@ -89,9 +89,6 @@ static void list_delete(mem_list **m)
 }
 void jnx_mem_trace(char *path)
 {
-#ifdef RELEASE
-	return;
-#endif
 	if(memlist == NULL) return ;
 	mem_node *h = memlist->head;
 	char *state_al = "[IN USE]";
@@ -129,12 +126,8 @@ void jnx_mem_trace(char *path)
 }
 size_t jnx_mem_clear()
 {
-#ifdef RELEASE
-	return 0;
-#endif
 	if(!memlist)
 	{
-		printf("Warning memlist list is empty\n");
 		return 0;
 	}
 	size_t clear_mem = 0;
@@ -159,9 +152,6 @@ size_t jnx_mem_clear()
 }
 size_t jnx_mem_get_total_number_alloc()
 {
-#ifdef RELEASE
-	return 0;
-#endif
 	if(memlist == NULL)
 	{
 		return 0;
@@ -177,9 +167,6 @@ size_t jnx_mem_get_total_number_alloc()
 }
 size_t jnx_mem_get_current_number_alloc()
 {
-#ifdef RELEASE
-	return 0;
-#endif
 	if(memlist == NULL)
 	{
 		return 0;
@@ -198,9 +185,6 @@ size_t jnx_mem_get_current_number_alloc()
 }
 size_t jnx_mem_get_byte_alloc()
 {
-#ifdef RELEASE
-	return 0;
-#endif
 	if(memlist == NULL)
 	{
 		return 0;
@@ -219,9 +203,6 @@ size_t jnx_mem_get_byte_alloc()
 }
 mem_list *jnx_mem_get_list()
 {
-#ifdef RELEASE
-	return NULL;
-#endif
 	if(memlist == NULL)
 	{
 		return NULL;
@@ -251,17 +232,13 @@ static inline void jnx_mem_new_alloc(void *ptr, size_t size,char* file,const cha
 void* jnx_mem_malloc(size_t size,char *file,const char *function,int line)
 {
 	void *p = malloc(size);	
-#ifndef RELEASE
 	jnx_mem_new_alloc(p,size,file,function,line);
-#endif
 	return p;
 }
 void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int line)
 {
 	void *p = calloc(num,size);
-#ifndef RELEASE
 	jnx_mem_new_alloc(p,size,file,function,line);
-#endif
 	return p;
 }
 static void adjust_state_in_list(void *ptr)
@@ -284,19 +261,13 @@ static void adjust_state_in_list(void *ptr)
 }
 void* jnx_mem_realloc(void *ptr,size_t size,char *file,const char *function,int line)
 {
-#ifndef RELEASE
 	adjust_state_in_list(ptr);
-#endif
 	void *p = realloc(ptr,size);
-#ifndef RELEASE
 	jnx_mem_new_alloc(p,size,file,function,line);
-#endif
 	return p;
 }
 void jnx_mem_free(void *ptr)
 {
-#ifndef RELEASE
 	adjust_state_in_list(ptr);	
-#endif
 	free(ptr);
 }

@@ -1,7 +1,6 @@
 #!/bin/bash +x
 
 ./configure
-
 if [ "$1" != "SKIP" ]; then
 make setup
 pushd test
@@ -16,16 +15,9 @@ fi
 popd
 make teardown
 fi
-if [ "$1" == "RELEASE" ]; then
-	echo "Building release library"
-	make release
-else
-	echo "Building debug library"
-	make
-fi
+make
 sudo make install
 echo "Installed succesfully"
-
 which doxygen
 HAS_DOXYGEN=$?
 

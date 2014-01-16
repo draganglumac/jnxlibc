@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "jnxterm.h"
+#include "jnxfile.h"
 #include "jnxlist.h"
 #include "jnxmem.h"
 #include <assert.h>
@@ -53,6 +54,7 @@ void test_allocation()
 	void *d = JNX_MEM_MALLOC(sizeof(char) *30);
 
 	mem_list *l = jnx_mem_get_list();
+	assert(l);
 	jnx_mem_item *m = l->head->data;
 
 	assert(m->ptr == d);
@@ -163,8 +165,24 @@ void test_malloc_dealloc_balance()
 	assert(jnx_mem_get_current_number_alloc() == 0);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
+void test_release_disabled_manager()
+{
+	printf("- test memory management disabled in release");
+	char *s = JNX_MEM_MALLOC(256);
+	assert(jnx_mem_get_total_number_alloc() == 0);
+	assert(jnx_mem_get_current_number_alloc() == 0);
+	assert(jnx_mem_get_list() == NULL);
+	assert(jnx_mem_get_byte_alloc() == 0);
+	assert(jnx_mem_clear() == 0);
+	jnx_mem_trace("memtrace.file");
+	assert(jnx_file_exists("memtrace.file") == 0);
+
+	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
 int main(int argc, char **argv)
 {
+
+#if defined(DEBUG) || defined(Debug)
 	printf("Running memory management tests...\n");
 	test_allocation();
 	test_allocation_long();
@@ -172,5 +190,8 @@ int main(int argc, char **argv)
 	test_large();
 	test_deallocation();
 	test_malloc_dealloc_balance();
+#else
+	test_release_disabled_manager();
+#endif
 	return 0;
 }

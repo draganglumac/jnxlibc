@@ -85,7 +85,7 @@ void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int 
  */
 void jnx_mem_free(void *ptr);
 
-
+#if defined(DEBUG) || defined(Debug)
 #define JNX_MEM_MALLOC(X)\
 	jnx_mem_malloc(X,__FILE__,__FUNCTION__,__LINE__);
 #define JNX_MEM_CALLOC(X,Y) \
@@ -94,7 +94,16 @@ void jnx_mem_free(void *ptr);
 	jnx_mem_realloc(X,Y,__FILE__,__FUNCTION__,__LINE__);
 #define JNX_MEM_FREE(X)\
 	jnx_mem_free(X);
-
+#else
+#define JNX_MEM_MALLOC(X)\
+	malloc(X);
+#define JNX_MEM_CALLOC(X,Y) \
+	calloc(X,Y);
+#define JNX_MEM_REALLOC(X,Y)\
+	realloc(X,Y);
+#define JNX_MEM_FREE(X)\
+	free(X);
+#endif
 #ifdef __cplusplus
 	}
 #endif

@@ -26,11 +26,18 @@ https://aur.archlinux.org/packages/jnxlibc/
 
 Grab this repo.
 ````
-//Test, Compile and install as DEBUG
+//Test, Compile and install
 ./build_and_install.sh
 or
-//Test, Compile and install as RELEASE
-./build_and_install.sh RELEASE
+Compile and install
+./build_and_install.sh SKIP
 
 Use -ljnxc when building your project
+
+DEBUG flags will enable memory management.
+
+````
+gcc main.c -o -ljnxc -DDEBUG
+```
+
 ````
