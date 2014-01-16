@@ -14,7 +14,7 @@ C based common code library based on libjnx philosophy of general purpose & ligh
 - Several useful data structures (hash, list, vector, btree)
 - Auto generated documentation and logical API
 
-##Installation
+#Installation
 
 Currently supported platforms:
 Linux distributions/OS X
@@ -35,7 +35,7 @@ Compile and install
 Use -ljnxc when building your project
 
 ````
-#Flags
+###Flags
 
 DEBUG will enable memory management
 RELEASE or undefined will optimise the library for production
