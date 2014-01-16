@@ -6,7 +6,7 @@
  */
 #ifndef __JNXSTRING_H__
 #define __JNXSTRING_H__
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 /**
@@ -37,7 +37,7 @@ void jnx_string_join(char** destination, char* buf);
  * @return returns a string on the stack which is the converted input. NULL is returned on failure
  */
 char* jnx_string_itos(int input);
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif
