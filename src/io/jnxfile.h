@@ -74,6 +74,14 @@ int jnx_file_recursive_delete(char* path, int depth);
  * @return success on 0
  */
 int jnx_file_mktempdir(char *dirtemplate, char **path);
+
+/**
+ * @fn jnx_file_exists(char *file)
+ * @brief checks if a file exists
+ * @param filepath to check 
+ * @returns 1 on file existance
+ */
+int jnx_file_exists(char *file);
 #ifdef __cspluplus
 	}
 #endif

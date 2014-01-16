@@ -141,3 +141,8 @@ int jnx_file_mktempdir(char *dirtemplate, char **path)
 	}
 	return 1;
 }
+int jnx_file_exists(char *file)
+{
+	struct stat st;
+	return (stat(file,&st) == 0);
+}

@@ -1,29 +1,8 @@
-/*
- * =====================================================================================
- *
- *       Filename:  base64.h
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  06/25/13 16:52:30
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Alex Jones, 
- *   Organization:  
- *
- * =====================================================================================
- */
-
 /** @file jnxbase64.h
  * @brief The API for jnxlibc's implementation of Base-64 encoder and decoder.
  *
  * #include <jnxc_headers/jnxbase64.h>
  */
-
-
-
 #ifndef __JNXBASE64_H__
 #define __JNXBASE64_H__
 #ifdef __cspluplus
