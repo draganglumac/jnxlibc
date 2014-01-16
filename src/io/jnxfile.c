@@ -122,11 +122,11 @@ static char *jnx_file_random_dir(char *basepath)
 	sprintf(s,"%s/%zu",basepath,n);
 	return s;
 }
-int jnx_file_mktempdir(char *template, char **path)
+int jnx_file_mktempdir(char *dirtemplate, char **path)
 {
-	if(jnx_file_path_exists(template))
+	if(jnx_file_path_exists(dirtemplate))
 	{
-		char *tempdir=jnx_file_random_dir(template);	
+		char *tempdir=jnx_file_random_dir(dirtemplate);	
 		if((mkdir(tempdir, S_IRWXU  | S_IRWXG | S_IROTH | S_IXOTH)) != 0)
 		{
 			printf("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));

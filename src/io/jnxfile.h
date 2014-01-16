@@ -73,7 +73,7 @@ int jnx_file_recursive_delete(char* path, int depth);
  * @param path is a pointer to the output buffer char pointer
  * @return success on 0
  */
-int jnx_file_mktempdir(char *template, char **path);
+int jnx_file_mktempdir(char *dirtemplate, char **path);
 #ifdef __cspluplus
 	}
 #endif
