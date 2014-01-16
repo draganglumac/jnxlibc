@@ -8,7 +8,7 @@
 #define __JNX_DEBUG_H__
 #include <signal.h>
 #include "jnxlist.h"
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 #define MAX_TRACE 40
@@ -20,7 +20,7 @@
  *@param signals is an array of signals to listen for e.g. [SIGKILL,SIGSEGV]
  */
 void jnx_debug_stacktrace(char *path, int counter,int signals[]);
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif
