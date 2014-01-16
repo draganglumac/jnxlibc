@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "jnxlist.h"
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 /**
@@ -92,7 +92,7 @@ int jnx_hash_get_keys(jnx_hashmap* hashmap,const char ***keys);
  *  @return hash value of the input string
  */
 int jnx_hash_string(const char* input, int map_size);
-#ifdef _cplusplus
+#ifdef __cplusplus
 	}
 #endif
 #endif
