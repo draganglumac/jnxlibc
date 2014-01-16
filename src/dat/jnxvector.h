@@ -6,7 +6,7 @@
  */
 #ifndef __JNX_VECTOR_H__
 #define __JNX_VECTOR_H__
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 /** 
