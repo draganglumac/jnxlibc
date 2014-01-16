@@ -6,6 +6,9 @@
 #ifndef __JNXFILE_H__
 #define __JNXFILE_H__
 #include <stddef.h>
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /**
  * @brief An internal representation of the kvp node populated when 
  *			used in key value pair retrieval from a file
@@ -71,4 +74,7 @@ int jnx_file_recursive_delete(char* path, int depth);
  * @return success on 0
  */
 int jnx_file_mktempdir(char *template, char **path);
+#ifdef __cspluplus
+	}
+#endif
 #endif

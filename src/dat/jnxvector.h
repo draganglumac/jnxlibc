@@ -6,6 +6,9 @@
  */
 #ifndef __JNX_VECTOR_H__
 #define __JNX_VECTOR_H__
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /** 
  * @brief An internal implementation of record data
  */
@@ -72,4 +75,7 @@ void *jnx_vector_last(jnx_vector *vector);
  * @return returns the value, returns NULL on error 
  */
 void* jnx_vector_remove_at(jnx_vector *vector,int position);
+#ifdef __cplusplus
+	}
+#endif
 #endif 

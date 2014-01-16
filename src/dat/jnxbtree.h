@@ -24,7 +24,9 @@
 
 #ifndef __JNX_B_TREE__
 #define __JNX_B_TREE__
-
+#ifdef __cspluplus
+	extern "C" {
+#endif
 
 /**
  * @brief Internal representation of a (key, value) pair.
@@ -157,5 +159,7 @@ void jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void **key_out, void **va
  * @param tree The B-tree to delete.
  */
 void jnx_B_tree_delete(jnx_B_tree* tree);
-
+#ifdef __cplusplus
+	}
+#endif	
 #endif // __JNX_B_TREE__

@@ -6,6 +6,9 @@
  */
 #ifndef __JNXSTRING_H__
 #define __JNXSTRING_H__
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /**
  * @fn jnx_string_joincreate(char *destination, char *buf)
  * @brief Function that joins destination and buf and returns the new string.
@@ -34,4 +37,7 @@ void jnx_string_join(char** destination, char* buf);
  * @return returns a string on the stack which is the converted input. NULL is returned on failure
  */
 char* jnx_string_itos(int input);
+#ifdef __cspluplus
+	}
+#endif
 #endif

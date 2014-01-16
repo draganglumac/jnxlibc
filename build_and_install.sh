@@ -16,7 +16,7 @@ fi
 popd
 make teardown
 fi
-if [ $1 = "RELEASE" ]; then
+if [ "$1" == "RELEASE" ]; then
 	echo "Building release library"
 	make release
 else

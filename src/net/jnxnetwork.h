@@ -1,6 +1,9 @@
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
 #include <stddef.h>
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /** @file jnxnetwork.h
  *  @brief The API for jnxlibc networking (includes TCP, UDP )
  *
@@ -81,4 +84,7 @@ void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*callbac
  * @return a char* of ip address or NULL if not found
  */
 char* jnx_network_local_ip(char* interface);
+#ifdef __cspluplus
+	}
+#endif
 #endif

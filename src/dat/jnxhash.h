@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "jnxlist.h"
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /** @file jnxhash.h
  *  @brief API for jnxlibc's implementation of hashmap
  *
@@ -89,5 +92,7 @@ int jnx_hash_get_keys(jnx_hashmap* hashmap,const char ***keys);
  *  @return hash value of the input string
  */
 int jnx_hash_string(const char* input, int map_size);
-
+#ifdef _cplusplus
+	}
+#endif
 #endif

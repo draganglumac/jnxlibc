@@ -26,7 +26,9 @@
 
 #ifndef __JNXBASE64_H__
 #define __JNXBASE64_H__
-
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /** 
  * @fn jnx_base64_encode(const unsigned char *data, size_t input_length, size_t *output_length)
  * @brief The function Base-64 encodes a byte array.
@@ -60,4 +62,7 @@ unsigned char *jnx_base64_decode(const char *data,
  *
  */
 void jnx_base64_cleanup(void);
+#ifdef __cplusplus
+	}
+#endif
 #endif

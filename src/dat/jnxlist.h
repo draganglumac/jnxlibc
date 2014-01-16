@@ -1,5 +1,8 @@
 #ifndef __JNXLIST_H__
 #define __JNXLIST_H__
+#ifdef __cspluplus
+	extern "C" {
+#endif
 /** @file jnxlist.h
  *  @brief API for jnxlibc implementation of list
  *
@@ -48,5 +51,8 @@ void* jnx_list_remove(jnx_list** A);
  * @param A is a pointer the pointer of list to delete
  */
 void jnx_list_delete(jnx_list** A);
+#ifdef __cspluplus
+	}
+#endif
 #endif
 
