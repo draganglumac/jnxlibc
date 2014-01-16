@@ -4,7 +4,7 @@ jnxlibc
 
 C based common code library based on libjnx philosophy of general purpose & lightweight development.
 
-Key features:
+##Key features:
 - Memory & stack tracing
 - Simple listen/send over IP/port functions (Dynamic buffers for big messages!)
 - Easy to use file read/write functions
@@ -14,7 +14,7 @@ Key features:
 - Several useful data structures (hash, list, vector, btree)
 - Auto generated documentation and logical API
 
-#Installation
+##Installation
 
 Currently supported platforms:
 Linux distributions/OS X
@@ -34,10 +34,11 @@ Compile and install
 
 Use -ljnxc when building your project
 
-DEBUG flags will enable memory management.
-
 ````
-gcc main.c -o -ljnxc -DDEBUG
-```
+#Flags
 
+DEBUG will enable memory management
+RELEASE or undefined will optimise the library for production
+```
+gcc main.c -o -ljnxc -DDEBUG
 ````
