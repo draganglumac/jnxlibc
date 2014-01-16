@@ -11,7 +11,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 typedef enum { FREE, ALLOC }jnx_mem_memtrace_state;
@@ -95,7 +95,7 @@ void jnx_mem_free(void *ptr);
 #define JNX_MEM_FREE(X)\
 	jnx_mem_free(X);
 
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif
