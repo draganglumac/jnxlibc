@@ -5,7 +5,7 @@
  */
 #ifndef __JNXBASE64_H__
 #define __JNXBASE64_H__
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 /** 

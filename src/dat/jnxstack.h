@@ -5,7 +5,7 @@
  */
 #ifndef __JNXSTACK_H__
 #define __JNXSTACK_H__
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 /**
@@ -57,7 +57,7 @@ void* jnx_stack_pop(jnx_stack* A);
  * @param A is a pointer to the stack to delete.
  */
 void jnx_stack_delete(jnx_stack** A);
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif

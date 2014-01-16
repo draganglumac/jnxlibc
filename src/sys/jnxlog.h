@@ -7,7 +7,7 @@
 #ifndef __JNX_LOG_H__
 #define __JNX_LOG_H__
 #include <stdarg.h>
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 #define MAX_LOG_SIZE 2048
@@ -39,7 +39,7 @@ int jnx_log_setup(char *path);
  * @param ... optional arguments for insertion into formatted string
  */
 void jnx_log(const char * format, ...);
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif

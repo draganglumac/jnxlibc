@@ -6,7 +6,7 @@
 #ifndef __JNXFILE_H__
 #define __JNXFILE_H__
 #include <stddef.h>
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 /**
@@ -74,7 +74,6 @@ int jnx_file_recursive_delete(char* path, int depth);
  * @return success on 0
  */
 int jnx_file_mktempdir(char *dirtemplate, char **path);
-
 /**
  * @fn jnx_file_exists(char *file)
  * @brief checks if a file exists
@@ -82,7 +81,7 @@ int jnx_file_mktempdir(char *dirtemplate, char **path);
  * @returns 1 on file existance
  */
 int jnx_file_exists(char *file);
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif

@@ -6,7 +6,7 @@
  */
 #ifndef __JNX_TERM_H__
 #define __JNX_TERM_H__
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 #define JNX_COL_BLACK   0
@@ -62,7 +62,7 @@ void jnx_term_override_stdout(char *path);
  * @brief resets the stdout back to the current terminal
  */
 void jnx_term_reset_stdout(void);
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif

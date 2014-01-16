@@ -5,7 +5,7 @@
  */
 #ifndef __JNXLIST_H__
 #define __JNXLIST_H__
-#ifdef __cspluplus
+#ifdef __cplusplus
 	extern "C" {
 #endif
 /**
@@ -50,7 +50,7 @@ void* jnx_list_remove(jnx_list** A);
  * @param A is a pointer the pointer of list to delete
  */
 void jnx_list_delete(jnx_list** A);
-#ifdef __cspluplus
+#ifdef __cplusplus
 	}
 #endif
 #endif
