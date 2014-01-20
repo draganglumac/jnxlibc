@@ -1,7 +1,6 @@
 BUILD_DIR=build
 
 all: setup main_artifact shipping teardown
-release: setup main_artifact_release shipping teardown
 setup:
 	mkdir -p build
 	cp src/**/*.c build
