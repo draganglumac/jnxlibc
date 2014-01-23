@@ -23,11 +23,11 @@ typedef struct {
     int count;
 } jnx_stack;
 
-/** @fn jnx_stack_init(void)
+/** @fn jnx_stack_create(void)
  *  @brief Returns the newly created stack.
  *  @return jnx_stack* to a newly created stack of 0 length.
  */
-jnx_stack* jnx_stack_init(void);
+jnx_stack* jnx_stack_create(void);
 
 /** @fn jnx_stack_is_empty(jnx_stack *A)
  *  @brief Returns 1 (true) if the stack is empty, and 0 otherwise.
@@ -50,13 +50,13 @@ void jnx_stack_push(jnx_stack* A, void* _datain);
  */
 void* jnx_stack_pop(jnx_stack* A);
 
-/** @fn jnx_stack_delete(jnx_stack* A) 
+/** @fn jnx_stack_destroy(jnx_stack* A) 
  * @brief  Deletes the stack's internal representation, but it doesn't try to
- * delete the _datain void pointers passed in. If you call jnx_stack_is_empty
- * after the delete, ti will return 1 (true).
- * @param A is a pointer to the stack to delete.
+ * destroy the _datain void pointers passed in. If you call jnx_stack_is_empty
+ * after the destroy, ti will return 1 (true).
+ * @param A is a pointer to the stack to destroy.
  */
-void jnx_stack_delete(jnx_stack** A);
+void jnx_stack_destroy(jnx_stack** A);
 #ifdef __cplusplus
 	}
 #endif

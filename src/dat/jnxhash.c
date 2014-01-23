@@ -10,7 +10,7 @@ int jnx_hash_string(const char* input, int map_size)
 	}
 	return h % map_size;
 }
-void jnx_hash_delete(jnx_hashmap* hashmap)
+void jnx_hash_destroy(jnx_hashmap* hashmap)
 {
 	int len = hashmap->size;
 	int count;
@@ -29,12 +29,12 @@ void jnx_hash_delete(jnx_hashmap* hashmap)
 				JNX_MEM_FREE(current_element);
 				current_bucket->head = current_bucket->head->next_node;
 			}
-			jnx_list_delete(&current_bucket);
+			jnx_list_destroy(&current_bucket);
 		}
 	}		
 	JNX_MEM_FREE(hashmap);
 }
-jnx_hashmap* jnx_hash_init(unsigned int size)
+jnx_hashmap* jnx_hash_create(unsigned int size)
 {
 	jnx_hashmap* hashmap = (jnx_hashmap*)JNX_MEM_MALLOC(sizeof(jnx_hashmap));
 	hashmap->data = (jnx_hash_element*)JNX_MEM_CALLOC(size, sizeof(jnx_hash_element));
@@ -97,7 +97,7 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value)
 	int index = jnx_hash_string(key, hashmap->size);
 	if (hashmap->data[index].used == 0) {
 		// we need to setup the bucket
-		hashmap->data[index].bucket = jnx_list_init();
+		hashmap->data[index].bucket = jnx_list_create();
 		hashmap->data[index].bucket_len = 0;
 		//okay so bucket is ready to get given a KVP entry, so we'll use our bucket struct
 		jnx_hash_bucket_el* current_bucket_el = JNX_MEM_MALLOC(sizeof(jnx_hash_bucket_el));
@@ -152,7 +152,7 @@ void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key)
 		void *data = (void*)element->origin_value;
 		JNX_MEM_FREE(element->origin_key);
 		JNX_MEM_FREE(element);
-		jnx_list_delete(&hashmap->data[index].bucket);
+		jnx_list_destroy(&hashmap->data[index].bucket);
 		hashmap->data[index].bucket = NULL;
 		hashmap->data[index].used = 0;
 		hashmap->data[index].bucket_len = 0;

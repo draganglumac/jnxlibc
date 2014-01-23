@@ -30,19 +30,19 @@ char *ar[] = { "A","B","C"};
 void test_stack_grow()
 {
 	printf("- test_stack_grow");
-	jnx_stack *s = jnx_stack_init();
+	jnx_stack *s = jnx_stack_create();
 	assert(s);
 	jnx_stack_push(s,A);
 	jnx_stack_push(s,B);
 	jnx_stack_push(s,C);
-	jnx_stack_delete(&s);
+	jnx_stack_destroy(&s);
 	assert(s == NULL);
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_stack_pop()
 {
 	printf("- test_stack_pop");
-	jnx_stack *s = jnx_stack_init();
+	jnx_stack *s = jnx_stack_create();
 	assert(s);
 	jnx_stack_push(s,ar[0]);
 	jnx_stack_push(s,ar[1]);

@@ -498,7 +498,7 @@ record *delete_record_from_node(jnx_B_tree *tree, jnx_B_tree_node *node, record 
  * ===========================================
  */
 
-jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
+jnx_B_tree* jnx_B_tree_create(int order, compare_keys callback)
 {
 	if ( order <= 1 )
 	{
@@ -573,7 +573,7 @@ void jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void** key_out, void **va
 	JNX_MEM_FREE(r);
 }
 
-void jnx_B_tree_delete(jnx_B_tree* tree)
+void jnx_B_tree_destroy(jnx_B_tree* tree)
 {
 	if ( tree == NULL )
 	{

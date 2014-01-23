@@ -22,7 +22,7 @@
 #include "jnxterm.h"
 void test_key_deletion()
 {
-	jnx_hashmap *testhash = jnx_hash_init(1024);
+	jnx_hashmap *testhash = jnx_hash_create(1024);
 	
 	//push static test data
 	jnx_hash_put(testhash,"Alex","Jones");
@@ -31,7 +31,7 @@ void test_key_deletion()
 	strcpy(value_data,"Testi");
 	//push dynamic test data
 	jnx_hash_put(testhash,"Bob",value_data);
-	//delete statid value
+	//destroy statid value
 	jnx_hash_delete_value(testhash,"Alex");
 	//return pointer to dynamic data
 	char *data_to_free = jnx_hash_delete_value(testhash,"Bob");
@@ -47,11 +47,11 @@ void test_key_deletion()
 	int num_keys = jnx_hash_get_keys(testhash,&buffer);
 	assert(num_keys == 0);
 	free(buffer);
-	jnx_hash_delete(testhash);
+	jnx_hash_destroy(testhash);
 }
 void test_hash_get_keys()
 {
-	jnx_hashmap *testhash = jnx_hash_init(1024);
+	jnx_hashmap *testhash = jnx_hash_create(1024);
 	jnx_hash_put(testhash,"1","Data");
 	jnx_hash_put(testhash,"2","Data");
 	jnx_hash_put(testhash,"3","Data");
@@ -61,11 +61,11 @@ void test_hash_get_keys()
 	int num_keys = jnx_hash_get_keys(testhash,&buffer);
 	free(buffer);
 	assert(num_keys == 4);
-	jnx_hash_delete(testhash);
+	jnx_hash_destroy(testhash);
 }
 void test_hash_deletion()
 {
-	jnx_hashmap *testhash = jnx_hash_init(1024);
+	jnx_hashmap *testhash = jnx_hash_create(1024);
 	char *key_one = "ABC";
 	char *key_two = "DEF";
 	char *test_data = "Void";
@@ -81,7 +81,7 @@ void test_hash_deletion()
 	}
 	num = jnx_hash_get_keys(testhash,&keys);
 	assert(num == 0);
-	jnx_hash_delete(testhash);
+	jnx_hash_destroy(testhash);
 }
 int main(int argc, char **argv)
 {

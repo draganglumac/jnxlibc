@@ -28,7 +28,7 @@ struct foo{
 void test_list_creation()
 {
 	printf("- test_list_creation");
-	jnx_list *secondlist = jnx_list_init();
+	jnx_list *secondlist = jnx_list_create();
 	assert(secondlist != NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 	struct foo *f = malloc(sizeof(foo));
@@ -42,13 +42,13 @@ void test_list_creation()
 	free(output);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 	printf("- test_list_deletion"); 
-	jnx_list_delete(&secondlist);
+	jnx_list_destroy(&secondlist);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_list_index()
 {
 	printf("- test_list_sequence");
-	jnx_list *j = jnx_list_init();
+	jnx_list *j = jnx_list_create();
 	int count = 6;
 	char *ar[] = { "A", "B", "C", "D", "E", "F" };
 	int y;
@@ -63,14 +63,14 @@ void test_list_index()
 		assert(strcmp(current,ar[x]) == 0);	
 	}	
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-	jnx_list_delete(&j);
+	jnx_list_destroy(&j);
 	assert(j == NULL);
 }
 void test_data_removal()
 {
 	printf("- test_data_removal");
 	char *test_string = "AABBCC";
-	jnx_list *list = jnx_list_init();
+	jnx_list *list = jnx_list_create();
 	int count = 10;
 	int x;
 	for(x = 0; x < count; ++x)
@@ -83,13 +83,13 @@ void test_data_removal()
 	{
 		free(ret);
 	}
-	jnx_list_delete(&list);
+	jnx_list_destroy(&list);
 	assert(list == NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_list_tail()
 {
-	jnx_list *l = jnx_list_init();
+	jnx_list *l = jnx_list_create();
 
 	int count = 3;
 	char *ar[] = { "A", "B", "C" };
@@ -106,7 +106,7 @@ void test_list_tail()
 		l->tail = l->tail->prev_node;
 	}
 
-	jnx_list_delete(&l);
+	jnx_list_destroy(&l);
 }
 int main(int args, char **argv)
 {

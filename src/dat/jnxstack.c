@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "jnxstack.h"
 #include "jnxmem.h"
-jnx_stack* jnx_stack_init(void)
+jnx_stack* jnx_stack_create(void)
 {
     jnx_stack *s = JNX_MEM_MALLOC(sizeof(jnx_stack));
     s->count = 0;
@@ -46,7 +46,7 @@ void* jnx_stack_pop(jnx_stack* A)
     
     return retval;
 }
-void jnx_stack_delete(jnx_stack** A)
+void jnx_stack_destroy(jnx_stack** A)
 {
     while ( (*A)->top != NULL )
     {

@@ -20,7 +20,7 @@
 #include "jnxmem.h"
 #include <stdio.h>
 
-jnx_list* jnx_list_init(void)
+jnx_list* jnx_list_create(void)
 {
 	jnx_list *list = JNX_MEM_MALLOC(sizeof(jnx_list));
 	list->head = NULL;
@@ -93,11 +93,11 @@ void* jnx_list_remove(jnx_list** A)
 	(*A)->head = origin_head;
 	return NULL;
 }
-void jnx_list_delete(jnx_list** A)
+void jnx_list_destroy(jnx_list** A)
 {
 	if((*A) == NULL)
 	{
-		printf("jnx_list_delete: No list\n");
+		printf("jnx_list_destroy: No list\n");
 		return;
 	}
 	if((*A)->head == NULL)

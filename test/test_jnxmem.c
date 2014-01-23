@@ -143,7 +143,7 @@ void test_malloc_dealloc_balance()
 	printf("- test malloc dealloc balance");
 	size_t onemg = 1024 *1024 * 1024;
 	size_t onegig = (onemg * 1024);
-	jnx_list *p = jnx_list_init();
+	jnx_list *p = jnx_list_create();
 	int counter = 0;
 	while(jnx_mem_get_byte_alloc() < onegig)
 	{
@@ -158,7 +158,7 @@ void test_malloc_dealloc_balance()
 		p->head = p->head->next_node;
 	}
 
-	jnx_list_delete(&p);
+	jnx_list_destroy(&p);
 	assert(counter == 1024);
 
 	jnx_mem_clear();

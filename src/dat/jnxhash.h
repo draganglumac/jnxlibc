@@ -39,12 +39,12 @@ typedef struct hashmap {
     unsigned int used_up;
 } jnx_hashmap;
 
-/** @fn jnx_hash_delete(jnx_hashmap* hashmap)
+/** @fn jnx_hash_destroy(jnx_hashmap* hashmap)
  *  @brief Deletes the keys and the hashmap 
  *  @warning Does not remove values 
  *  @param hashmap pointer to the map to be deleted
  */
-void jnx_hash_delete(jnx_hashmap* hashmap);
+void jnx_hash_destroy(jnx_hashmap* hashmap);
 
 /** @fn jnx_hash_delete_value(jnx_hashmap *hashmap, char *key)
  *  @brief removes the key and returns the value for an entry
@@ -54,12 +54,12 @@ void jnx_hash_delete(jnx_hashmap* hashmap);
  */
 void* jnx_hash_delete_value(jnx_hashmap* hashmap, char *key);
 
-/** @fn jnx_hash_init(unsigned int size)
+/** @fn jnx_hash_create(unsigned int size)
  *  @brief Returns a newly created hashmap
- *  @param size initial size for the hashmap, unsigned int i.e 1024
+ *  @param size createial size for the hashmap, unsigned int i.e 1024
  *  @return newly created hashmap with size
  */
-jnx_hashmap* jnx_hash_init(unsigned int size);
+jnx_hashmap* jnx_hash_create(unsigned int size);
 
 /** @fn jnx_hash_put(jnx_hashmap* hashmap, const char *key, void *value)
  *  @brief Given a key and value this hashs and stores

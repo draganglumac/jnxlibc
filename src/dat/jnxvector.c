@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include "jnxvector.h"
 #include "jnxmem.h"
-jnx_vector *jnx_vector_init(void)
+jnx_vector *jnx_vector_create(void)
 {
     jnx_vector *vector = JNX_MEM_MALLOC(sizeof(jnx_vector));
     vector->count = 0;
@@ -43,7 +43,7 @@ jnx_vector_record *jnx_vector_record_create_empty()
 }
 //One of the primary reasons not to JNX_MEM_FREE data here is we don't know where it belongs too
 //and it may cause a segfault if its on the stack
-void jnx_vector_delete(jnx_vector* vector)
+void jnx_vector_destroy(jnx_vector* vector)
 {
     int x = 0;
     for ( x = 0; x < vector->count; ++x )

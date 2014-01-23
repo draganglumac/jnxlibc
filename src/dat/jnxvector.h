@@ -26,20 +26,20 @@ typedef struct{
 
 
 /**
- * @fn jnx_vector_init(void)
- * @brief Function that initialises internal vector structures. Call this function
+ * @fn jnx_vector_create(void)
+ * @brief Function that createialises internal vector structures. Call this function
  *			before you call any other function from the API.
  */
-jnx_vector *jnx_vector_init(void);
+jnx_vector *jnx_vector_create(void);
 
 /**
- * @fn jnx_vector_delete(jnx_vector* vector)
+ * @fn jnx_vector_destroy(jnx_vector* vector)
  * @brief Deletes the vector and its data structures
- * @param vector points to the vector to delete
+ * @param vector points to the vector to destroy
  *
  * @warning User assumes responsibility for deleting all data entries first
  */
-void jnx_vector_delete(jnx_vector* vector);
+void jnx_vector_destroy(jnx_vector* vector);
 
 /**
  * @fn jnx_vector_insert(jnx_vector *vector, void *value)
