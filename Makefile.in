@@ -1,7 +1,6 @@
 BUILD_DIR=build
-
+FLAGS=-Wall -fPIC -c
 all: setup main_artifact shipping teardown
-release: setup main_artifact_release shipping teardown
 setup:
 	mkdir -p build
 	cp src/**/*.c build
@@ -9,7 +8,7 @@ setup:
 teardown:
 	rm -rf build
 main_artifact:
-	gcc -Wall -fPIC -c $(BUILD_DIR)/*.c
+	gcc ${FLAGS} $(BUILD_DIR)/*.c
 	build.shared.object
 	rm *.o
 	find . -type f -name "*~" -exec rm {} \;

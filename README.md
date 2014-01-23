@@ -37,8 +37,8 @@ Use -ljnxc when building your project
 ````
 ###Flags
 
-DEBUG will enable memory management
-RELEASE or undefined will optimise the library for production
+DEBUG will enable memory management.
+RELEASE or undefined will optimise the library for production.
 ```
 gcc main.c -o -ljnxc -DDEBUG
 ````
