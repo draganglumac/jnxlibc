@@ -74,7 +74,7 @@ typedef struct B_tree {
  *
  * @return The function returns a pointer to the new empty B-tree.
  */
-jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback);
+jnx_B_tree* jnx_B_tree_create(int order, compare_keys callback);
 
 
 /** @fn void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value)
@@ -140,7 +140,7 @@ void jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void **key_out, void **va
  *
  * @param tree The B-tree to delete.
  */
-void jnx_B_tree_delete(jnx_B_tree* tree);
+void jnx_B_tree_destroy(jnx_B_tree* tree);
 #ifdef __cplusplus
 	}
 #endif	

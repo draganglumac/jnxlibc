@@ -25,11 +25,11 @@ typedef struct list {
     int counter;
 } jnx_list;
 
-/** @fn jnx_list_init(void)
+/** @fn jnx_list_create(void)
  *  @brief Returns newly created list
  *  @return jnx_list* to a newly created list of 0 length
  */
-jnx_list* jnx_list_init(void);
+jnx_list* jnx_list_create(void);
 
 /** @fn jnx_list_add(jnx_list *A, void *_datain)
  *  @brief  Accepts a void pointer for input with list
@@ -45,11 +45,11 @@ void jnx_list_add(jnx_list* A, void* _datain);
  */
 void* jnx_list_remove(jnx_list** A);
 
-/** @fn jnx_list_delete(jnx_list* A) 
+/** @fn jnx_list_destroy(jnx_list* A) 
  * @brief  Deletes the list node structure and list, not data inside
- * @param A is a pointer the pointer of list to delete
+ * @param A is a pointer the pointer of list to destroy
  */
-void jnx_list_delete(jnx_list** A);
+void jnx_list_destroy(jnx_list** A);
 #ifdef __cplusplus
 	}
 #endif
