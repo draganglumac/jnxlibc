@@ -52,7 +52,7 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
 		strcpy(node->key,key);
 		strcpy(node->value,value);
 		if(node->value[strlen(node->value)] == '\n' || node->value[strlen(node->value)] == '\0'){
-			node->value[strlen(node->value) -1] = '\0';
+			node->value[strlen(node->value)] = '\0';
 		}
 		node->next = NULL;
 		*nextp = node;
