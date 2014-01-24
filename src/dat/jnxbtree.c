@@ -584,3 +584,8 @@ void jnx_B_tree_destroy(jnx_B_tree* tree)
 
 	JNX_MEM_FREE(tree);
 }
+
+void jnx_B_tree_keys(jnx_B_tree *tree, jnx_list *keys)
+{
+
+}
