@@ -40,5 +40,5 @@ Use -ljnxc when building your project
 DEBUG will enable memory management.
 RELEASE or undefined will optimise the library for production.
 ```
-gcc main.c -o -ljnxc -DDEBUG
+gcc ${YOUR_PROGRAM_FILES} -ljnxc -DDEBUG
 ````
