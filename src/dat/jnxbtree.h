@@ -10,6 +10,8 @@
 	extern "C" {
 #endif
 
+#include "jnxlist.h"
+
 /**
  * @brief Internal representation of a (key, value) pair.
  */
@@ -156,7 +158,7 @@ void jnx_B_tree_destroy(jnx_B_tree* tree);
  * @warning Do not free key pointers from @a keys list, otherwise you'll corrupt
  * the B-tree. If you want the key removed use @a jnx_B_tree_remove function.
  */
-void jnx_B_tree_keys(jnx_B_tree *tree, jnx_list *keys)
+void jnx_B_tree_keys(jnx_B_tree *tree, jnx_list *keys);
 
 #ifdef __cplusplus
 	}

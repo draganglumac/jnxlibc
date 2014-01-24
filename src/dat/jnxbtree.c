@@ -585,7 +585,28 @@ void jnx_B_tree_destroy(jnx_B_tree* tree)
 	JNX_MEM_FREE(tree);
 }
 
+static void append_keys_from_node(jnx_B_tree_node *node, jnx_list *keys)
+{
+    for (int i = 0; i < node->count; i++ )
+		jnx_list_add(keys, node->records[i]->key);
+}
+
+static void collect_keys_from_node(jnx_B_tree_node *node, jnx_list *keys)
+{
+	if (node == NULL)
+		return;
+
+	append_keys_from_node(node, keys);
+    
+	if ( node->is_leaf )
+        return;
+
+    for (int i = 0; i <= node->count; i++ )
+		collect_keys_from_node(node->children[i], keys);
+
+}
+
 void jnx_B_tree_keys(jnx_B_tree *tree, jnx_list *keys)
 {
-
+	collect_keys_from_node(tree->root, keys);
 }
