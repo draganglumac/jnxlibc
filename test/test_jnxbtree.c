@@ -23,6 +23,7 @@
 
 #include "jnxbtree.h"
 #include "jnxterm.h"
+#include "jnxlist.h"
 
 extern jnx_B_tree_node* new_node(int, int);
 extern void delete_node(jnx_B_tree_node*);
@@ -869,26 +870,41 @@ void test_alphabet_tree()
 {
     printf("- test_alphabet_tree: \n");
 
-    jnx_B_tree *tree = build_alphabet_tree(0, 0);
-
-    printf("\n    Tree order: 3\n");
+	printf("\n    Tree order: 3\n");
 
     // Try in order insertion
-    printf("\n    Sorted Alphabet Insertion\n");
-    printf("    -------------------------\n");
+	printf("\n    Sorted Alphabet Insertion\n");
+	printf("    -------------------------\n");
+   
+	jnx_node *n;	
+	jnx_B_tree *tree = build_alphabet_tree(0, 0);
+	jnx_list *keys = jnx_list_create();
+	jnx_B_tree_keys(tree, keys);
 
-    print_char_tree_at_node(tree->root, char_node_contents, 1);
+	printf("Keys are:\n");
+	printf("size = %d\n", keys->counter);
+	for ( n = keys->head; n != NULL; n = n->next_node )
+		printf("%c, ", (char)(*((char *)(n->_data))));
+	printf("\n");
 
-    jnx_B_tree_destroy(tree);
+	// jnx_list_destroy(keys);
+	jnx_B_tree_destroy(tree);
 
-    // Try reverse order insertion
+	// Try midway insertion
     printf("\n    Midway Alphabet Insertion\n");
-    printf("    -------------------------\n");
+	printf("    -------------------------\n");
 
     tree = build_alphabet_tree(0, 1);
+	keys = jnx_list_create();
+	jnx_B_tree_keys(tree, keys);
+    
+	printf("Keys are:\n");
+	printf("size = %d\n", keys->counter);
+	for ( n = keys->head; n != NULL; n = n->next_node )
+		printf("%c, ", (char)(*((char *)(n->_data))));
+	printf("\n");
 
-    print_char_tree_at_node(tree->root, char_node_contents, 1);
-
+	// jnx_list_destroy(keys);
     jnx_B_tree_destroy(tree);
 
     // Try random insertion
@@ -896,10 +912,16 @@ void test_alphabet_tree()
     printf("    -----------------------------\n"); 
 
     tree = build_alphabet_tree(1, 0); 
+	keys = jnx_list_create();
+	jnx_B_tree_keys(tree, keys);
+    
+	printf("Keys are:\n");
+	printf("size = %d\n", keys->counter);
+	for ( n = keys->head; n != NULL; n = n->next_node )
+		printf("%c, ", (char)(*((char *)(n->_data))));
+	printf("\n");
 
-    print_char_tree_at_node(tree->root, char_node_contents, 1);
-    printf("\n");
-
+	// jnx_list_destroy(keys);
     jnx_B_tree_destroy(tree);
 
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n"); 
@@ -1187,7 +1209,7 @@ int main()
     test_spliting_a_leaf_node_that_is_not_root();
     test_growing_to_depth_of_3();
     test_splitting_inner_node();
-//    test_alphabet_tree();
+    test_alphabet_tree();
 
     // Lookup tests
     test_lookup_in_empty_tree();
