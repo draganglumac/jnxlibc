@@ -887,7 +887,7 @@ void test_alphabet_tree()
 		printf("%c, ", (char)(*((char *)(n->_data))));
 	printf("\n");
 
-	// jnx_list_destroy(keys);
+//	jnx_list_destroy(keys);
 	jnx_B_tree_destroy(tree);
 
 	// Try midway insertion
