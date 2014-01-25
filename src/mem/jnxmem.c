@@ -789,6 +789,7 @@ size_t jnx_mem_get_total_number_allocations()
 	__internal_list *l = __internal_list_create();
 	__internal_btree_keys(memtree,l);
 	c = l->counter;
+	__internal_list_destroy(&l);
 	return c;
 }
 int __internal_compare_callback(void *A, void *B)
