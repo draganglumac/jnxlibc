@@ -14,7 +14,7 @@ jnx_B_tree_keys \- Put all the keys currently in the tree into the keys list.
 .fi
 .SH DESCRIPTION
 .PP 
-void jnx_B_tree_keys(jnx_B_tree *tree, jnx_list *keys) The function traverses the tree and puts all of the keys into the supplied jnx_list keys. The keys list must not be NULL, otherwise the function won't traverse the tree.
+void jnx_B_tree_keys(jnx_B_tree *tree, jnx_list *keys) The function traverses the tree and puts all of the keys into the supplied jnx_list keys. The keys list is ordered in the ascending order. The keys list must not be NULL, otherwise the function won't traverse the tree.
 .PP 
 Do not free key pointers from keys list, otherwise you'll corrupt the B-tree. If you want the key removed use jnx_B_tree_remove function. 
 .SH PARAMETERS
