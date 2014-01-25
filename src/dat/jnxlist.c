@@ -116,8 +116,8 @@ void jnx_list_destroy(jnx_list** A)
 	while(current)
 	{
 		jnx_node *current_node = current;
-		JNX_MEM_FREE(current_node);
 		current = current->next_node; 
+		JNX_MEM_FREE(current_node);
 	}
 	JNX_MEM_FREE(*A);
 	(*A) = NULL;

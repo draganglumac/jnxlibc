@@ -881,13 +881,13 @@ void test_alphabet_tree()
 	jnx_list *keys = jnx_list_create();
 	jnx_B_tree_keys(tree, keys);
 
-	printf("Keys are:\n");
-	printf("size = %d\n", keys->counter);
+	printf("    Keys are:\n");
+	printf("    size = %d\n    ", keys->counter);
 	for ( n = keys->head; n != NULL; n = n->next_node )
 		printf("%c, ", (char)(*((char *)(n->_data))));
 	printf("\n");
 
-//	jnx_list_destroy(keys);
+	jnx_list_destroy(&keys);
 	jnx_B_tree_destroy(tree);
 
 	// Try midway insertion
@@ -898,13 +898,13 @@ void test_alphabet_tree()
 	keys = jnx_list_create();
 	jnx_B_tree_keys(tree, keys);
     
-	printf("Keys are:\n");
-	printf("size = %d\n", keys->counter);
+	printf("    Keys are:\n");
+	printf("    size = %d\n    ", keys->counter);
 	for ( n = keys->head; n != NULL; n = n->next_node )
 		printf("%c, ", (char)(*((char *)(n->_data))));
 	printf("\n");
 
-	// jnx_list_destroy(keys);
+	jnx_list_destroy(&keys);
     jnx_B_tree_destroy(tree);
 
     // Try random insertion
@@ -915,13 +915,13 @@ void test_alphabet_tree()
 	keys = jnx_list_create();
 	jnx_B_tree_keys(tree, keys);
     
-	printf("Keys are:\n");
-	printf("size = %d\n", keys->counter);
+	printf("    Keys are:\n");
+	printf("    size = %d\n    ", keys->counter);
 	for ( n = keys->head; n != NULL; n = n->next_node )
 		printf("%c, ", (char)(*((char *)(n->_data))));
 	printf("\n");
 
-	// jnx_list_destroy(keys);
+	jnx_list_destroy(&keys);
     jnx_B_tree_destroy(tree);
 
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n"); 
