@@ -149,8 +149,8 @@ void jnx_B_tree_destroy(jnx_B_tree* tree);
  * @brief Put all the keys currently in the tree into the keys list.
  *
  * The function traverses the tree and puts all of the keys into the supplied
- * jnx_list @a keys. The @a keys list must not be NULL, otherwise the function
- * won't traverse the tree.
+ * jnx_list @a keys. The @a keys list is ordered in the ascending order.
+ * The @a keys list must not be NULL, otherwise the function won't traverse the tree. 
  *
  * @param tree The B-tree to traverse.
  * @param keys The jnx_list into which to put all of the @a tree keys.

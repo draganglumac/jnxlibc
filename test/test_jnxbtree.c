@@ -868,58 +868,39 @@ void test_mixed_tree()
 
 void test_alphabet_tree()
 {
-    printf("- test_alphabet_tree: \n");
-
-	printf("\n    Tree order: 3\n");
+    printf("- test_alphabet_tree:");
 
     // Try in order insertion
-	printf("\n    Sorted Alphabet Insertion\n");
-	printf("    -------------------------\n");
-   
-	jnx_node *n;	
+	jnx_node *n;
+	char c;	
 	jnx_B_tree *tree = build_alphabet_tree(0, 0);
 	jnx_list *keys = jnx_list_create();
 	jnx_B_tree_keys(tree, keys);
 
-	printf("    Keys are:\n");
-	printf("    size = %d\n    ", keys->counter);
-	for ( n = keys->head; n != NULL; n = n->next_node )
-		printf("%c, ", (char)(*((char *)(n->_data))));
-	printf("\n");
+	for ( n = keys->head, c = 'A'; n != NULL; n = n->next_node, c++ )
+		assert(c == (char)(*((char *)(n->_data))));
 
 	jnx_list_destroy(&keys);
 	jnx_B_tree_destroy(tree);
 
 	// Try midway insertion
-    printf("\n    Midway Alphabet Insertion\n");
-	printf("    -------------------------\n");
-
     tree = build_alphabet_tree(0, 1);
 	keys = jnx_list_create();
 	jnx_B_tree_keys(tree, keys);
     
-	printf("    Keys are:\n");
-	printf("    size = %d\n    ", keys->counter);
-	for ( n = keys->head; n != NULL; n = n->next_node )
-		printf("%c, ", (char)(*((char *)(n->_data))));
-	printf("\n");
+	for ( n = keys->head, c = 'A'; n != NULL; n = n->next_node, c++ )
+		assert(c == (char)(*((char *)(n->_data))));
 
 	jnx_list_destroy(&keys);
     jnx_B_tree_destroy(tree);
 
     // Try random insertion
-    printf("\n    Randomised Alphabet Insertion\n");
-    printf("    -----------------------------\n"); 
-
     tree = build_alphabet_tree(1, 0); 
 	keys = jnx_list_create();
 	jnx_B_tree_keys(tree, keys);
     
-	printf("    Keys are:\n");
-	printf("    size = %d\n    ", keys->counter);
-	for ( n = keys->head; n != NULL; n = n->next_node )
-		printf("%c, ", (char)(*((char *)(n->_data))));
-	printf("\n");
+	for ( n = keys->head, c = 'A'; n != NULL; n = n->next_node, c++ )
+		assert(c == (char)(*((char *)(n->_data))));
 
 	jnx_list_destroy(&keys);
     jnx_B_tree_destroy(tree);
