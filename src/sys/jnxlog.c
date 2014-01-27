@@ -42,7 +42,7 @@ void jnx_write_to_log(char *message)
     };
     fprintf(fp,"%s",(char*)message);
     fclose(fp);
-    //JNX_MEM_FREE our string
+    //free our string
 #ifndef __JNX_LOG_SINGLE_THREAD__
     pthread_mutex_unlock(&_locker);
 #endif
@@ -84,7 +84,7 @@ char* jnx_get_time()
     time_t t;
     char *buf;
     time(&t);
-    buf = (char*)JNX_MEM_MALLOC(strlen(ctime(&t)) +1);
+    buf = (char*)malloc(strlen(ctime(&t)) +1);
     snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
     return buf;
 }
@@ -107,7 +107,7 @@ void jnx_log(const char * format, ...)
     vsprintf(buffer,format,ap);
     va_end(ap);
     strcat(output,buffer);
-    JNX_MEM_FREE(_time);
+    free(_time);
 #ifndef __JNX_LOG_SINGLE_THREAD__
 	jnx_write_to_log(output);	
 #else

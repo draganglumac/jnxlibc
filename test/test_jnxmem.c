@@ -25,9 +25,6 @@
 void test_basic()
 {
 	printf("- test_basic");
-    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-
-
 	int x;
 	int y = 10;
 	char *ar[y];
@@ -37,20 +34,53 @@ void test_basic()
 		assert(jnx_mem_get_total_number_allocations() == x + 1);	
 		ar[x] = s;
 	}
-    for(x=0;x<y;++x)
+	assert(jnx_mem_get_total_size_allocations() == (sizeof(char) * 10));
+	assert(jnx_mem_get_current_number_allocations() == 10);
+	assert(jnx_mem_get_current_size_allocations() == (sizeof(char) *10));	
+	for(x=0;x<y;++x)
 	{
 		JNX_MEM_FREE(ar[x]);
 	}
-	
+	assert(jnx_mem_get_current_number_allocations() == 0);
+	assert(jnx_mem_get_current_size_allocations() == 0);	
+
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+void test_allocation_times()
+{
+	printf("- test_allocation_times\n");
+
+	int l = 3;
+	int ar[3] = { 100, 1000, 10000 };
+	int c,d=0;
+
+	for(d=0; d < l; ++d)
+	{	
+		clock_t start = clock();
+		for(c=0;c<ar[d]; ++c)
+		{
+			char *s = JNX_MEM_MALLOC(sizeof(char));
+		}
+		clock_t end = clock();
+		printf("- Allocated %d blocks of %d in %zu\n",ar[d],sizeof(char),(end - start));
+		assert(jnx_mem_get_current_number_allocations() == ar[d]);
+			
+		jnx_mem_clear();
+		assert(jnx_mem_get_total_number_allocations() == 0);
+		assert(jnx_mem_get_current_number_allocations() == 0);
+		assert(jnx_mem_get_total_size_allocations() == 0);
+		assert(jnx_mem_get_current_size_allocations() == 0);
+	}
 }
 int main(int argc, char **argv)
 {
+#if defined(JNX_MEMORY_MANAGEMENT)
 	printf("Running memory tests...\n");
-#if defined(DEBUG) || defined(Debug)
 	test_basic();
-#else
-#endif
+	test_allocation_times();
 	printf("Memory tests completed\n");
+#else
+	printf("JNX_MEMORY_MANAGEMENT not defined - skipping tests\n");
+#endif
 	return 0;
 }

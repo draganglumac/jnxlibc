@@ -15,6 +15,54 @@
 	extern "C" {
 #endif
 
+
+/*@macro JNX_MEMORY_MANAGEMENT
+ *@brief If this macro is not enabled memory management will default to system memory func 
+ */
+#if defined(JNX_MEMORY_MANAGEMENT)
+#define JNX_MEM_MALLOC(X)\
+	jnx_mem_malloc(X,__FILE__,__FUNCTION__,__LINE__)
+#define JNX_MEM_CALLOC(X,Y) \
+	jnx_mem_calloc(X,Y,__FILE__,__FUNCTION__,__LINE__)
+#define JNX_MEM_REALLOC(X,Y)\
+	jnx_mem_realloc(X,Y,__FILE__,__FUNCTION__,__LINE__)
+#define JNX_MEM_FREE(X)\
+	jnx_mem_free(X)
+#else
+#define JNX_MEM_MALLOC(X)\
+	malloc(X)
+#define JNX_MEM_CALLOC(X,Y) \
+	calloc(X,Y)
+#define JNX_MEM_REALLOC(X,Y)\
+	realloc(X,Y)
+#define JNX_MEM_FREE(X)\
+	free(X)
+#endif
+
+/**
+ *@fn jnx_mem_clear()
+ *@brief clears all program memory registered through JNX_MEM 
+ *@warning use with caution will free memory 
+ */
+void jnx_mem_clear();		
+/**
+ *@fn size_t jnx_mem_get_current_number_allocations
+ *@brief gives the current size of allocated memory in your program using jnx_mem
+ *@return size_t of memory allocated currently
+ */
+size_t jnx_mem_get_current_size_allocations();
+/**
+ *@fn size_t jnx_mem_get_current_number_allocations
+ *@brief gives the current number of allocated memory in your program using jnx_mem
+ *@return size_t number of memory allocated currently
+ */
+size_t jnx_mem_get_current_number_allocations();
+/**
+ *@fn size_t jnx_mem_get_total_number_allocations
+ *@brief gives the total size of allocated memory in your program using jnx_mem
+ *@return size_t of memory allocated
+ */
+size_t jnx_mem_get_total_size_allocations();		
 /**
  *@fn jnx_mem_get_total_number_allocations()
  *@return size_t of number of allocations in program 
@@ -49,25 +97,6 @@ void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int 
  */
 void jnx_mem_free(void *ptr);
 
-#if defined(DEBUG) || defined(Debug)
-#define JNX_MEM_MALLOC(X)\
-	jnx_mem_malloc(X,__FILE__,__FUNCTION__,__LINE__);
-#define JNX_MEM_CALLOC(X,Y) \
-	jnx_mem_calloc(X,Y,__FILE__,__FUNCTION__,__LINE__);
-#define JNX_MEM_REALLOC(X,Y)\
-	jnx_mem_realloc(X,Y,__FILE__,__FUNCTION__,__LINE__);
-#define JNX_MEM_FREE(X)\
-	jnx_mem_free(X);
-#else
-#define JNX_MEM_MALLOC(X)\
-	malloc(X);
-#define JNX_MEM_CALLOC(X,Y) \
-	calloc(X,Y);
-#define JNX_MEM_REALLOC(X,Y)\
-	realloc(X,Y);
-#define JNX_MEM_FREE(X)\
-	free(X);
-#endif
 #ifdef __cplusplus
 	}
 #endif

@@ -37,8 +37,8 @@ Use -ljnxc when building your project
 ````
 ###Flags
 
-DEBUG will enable memory management.
-RELEASE or undefined will optimise the library for production.
+-DJNX_MEMORY_MANAGEMENT (Enables jnx memory management if JNX_MEM macros are being used)
+-DRELEASE (Sets library for release mode optimisations) 
 ```
-gcc ${YOUR_PROGRAM_FILES} -ljnxc -DDEBUG
+gcc ${YOUR_PROGRAM_FILES} -ljnxc 
 ````

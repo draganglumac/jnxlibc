@@ -46,7 +46,7 @@ typedef struct B_tree_node {
     int is_leaf; /**< Is it a leaf node (set to 1) or an internal node (set to 0). */
     record **records; /**< The records contained in the node. */
     struct B_tree_node **children; /**< The subtrees of the node. A leaf node has each of its subtrees set to NULL. */
-} jnx_B_tree_node;
+} jnx_btree_node;
 
 
 /**
@@ -55,11 +55,11 @@ typedef struct B_tree_node {
 typedef struct B_tree {
     int order; /**< The order of the tree, i.e. the minimum number of records a non-root node can have. */
     compare_keys compare_function; /**< Callback function to compare keys. @see compare_keys */
-    jnx_B_tree_node *root; /**< The root node of the B-tree. */
-} jnx_B_tree;
+    jnx_btree_node *root; /**< The root node of the B-tree. */
+} jnx_btree;
 
 
-/** @fn jnx_B_tree* jnx_B_tree_init(int order, compare_keys callback)
+/** @fn jnx_btree* jnx_btree_init(int order, compare_keys callback)
  * @brief Create and initialise a new B-tree. This function must be called first, and once
  * per tree, before any other tree operations are called.
  *
@@ -76,10 +76,10 @@ typedef struct B_tree {
  *
  * @return The function returns a pointer to the new empty B-tree.
  */
-jnx_B_tree* jnx_B_tree_create(int order, compare_keys callback);
+jnx_btree* jnx_btree_create(int order, compare_keys callback);
 
 
-/** @fn void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value)
+/** @fn void jnx_btree_add(jnx_btree *tree, void *key, void *value)
  * @brief Add a record (key, value) to the B-tree.
  *
  * This function takes a key and a value for the record, creates the appropriate record
@@ -93,10 +93,10 @@ jnx_B_tree* jnx_B_tree_create(int order, compare_keys callback);
  * @warning The key and value are not copied they are just used as pointer assignments,
  * so it's important to think about the lifecycle of keys and values you pass to the function.
  */
-void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value);
+void jnx_btree_add(jnx_btree *tree, void *key, void *value);
 
 
-/** @fn void jnx_B_tree_lookup(jnx_B_tree *tree, void *key)
+/** @fn void jnx_btree_lookup(jnx_btree *tree, void *key)
  * @brief Retreive the value for key from the B-tree.
  *
  * The function returns the pointer to the value, or NULL if the key is not in the B-tree.
@@ -109,10 +109,10 @@ void jnx_B_tree_add(jnx_B_tree *tree, void *key, void *value);
  * @warning The value is just a pointer to, not a copy of the actual value so it is very important
  * to think carefully before you free its memory as it'll be freed from the B-tree record also.
  */
-void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key);
+void *jnx_btree_lookup(jnx_btree *tree, void *key);
 
 
-/** @fn void* jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void **key_out, void **val_out)
+/** @fn void* jnx_btree_remove(jnx_btree *tree, void *key_in, void **key_out, void **val_out)
  * @brief Remove from the B-tree the record which matches the passed in key.
  *
  * If the record with @a key is in the @a tree, the record is removed and
@@ -132,20 +132,20 @@ void *jnx_B_tree_lookup(jnx_B_tree *tree, void *key);
  * the memory for the key and value of the deleted record. It's worth bearing this in mind to
  * avoid memory leaks.
  */
-void jnx_B_tree_remove(jnx_B_tree *tree, void *key_in, void **key_out, void **val_out);
+void jnx_btree_remove(jnx_btree *tree, void *key_in, void **key_out, void **val_out);
 
 
-/** @fn void jnx_B_tree_delete(jnx_B_tree *tree)
+/** @fn void jnx_btree_delete(jnx_btree *tree)
  * @brief Delete the B-tree.
  *
  * Delete all the nodes and records of the B-tree. Upon function return the tree will be empty.
  *
  * @param tree The B-tree to delete.
  */
-void jnx_B_tree_destroy(jnx_B_tree* tree);
+void jnx_btree_destroy(jnx_btree* tree);
 
 
-/** @fh void jnx_B_tree_keys(jnx_B_tree *tree, jnx_list *keys)
+/** @fh void jnx_btree_keys(jnx_btree *tree, jnx_list *keys)
  * @brief Put all the keys currently in the tree into the keys list.
  *
  * The function traverses the tree and puts all of the keys into the supplied
@@ -156,9 +156,9 @@ void jnx_B_tree_destroy(jnx_B_tree* tree);
  * @param keys The jnx_list into which to put all of the @a tree keys.
  *
  * @warning Do not free key pointers from @a keys list, otherwise you'll corrupt
- * the B-tree. If you want the key removed use @a jnx_B_tree_remove function.
+ * the B-tree. If you want the key removed use @a jnx_btree_remove function.
  */
-void jnx_B_tree_keys(jnx_B_tree *tree, jnx_list *keys);
+void jnx_btree_keys(jnx_btree *tree, jnx_list *keys);
 
 #ifdef __cplusplus
 	}

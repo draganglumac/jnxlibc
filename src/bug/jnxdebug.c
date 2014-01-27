@@ -41,7 +41,7 @@ void jnx_debug_stacktrace_cb(int s)
 		str[i][len] = '\n';
 		jnx_file_write(write_path,str[i],strlen(str[i]),"a");
 	}
-	JNX_MEM_FREE(str);
+	free(str);
 	exit(1);
 }
 void jnx_debug_stacktrace(char *path, int counter,int signals[])

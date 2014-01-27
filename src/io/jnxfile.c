@@ -27,7 +27,7 @@ size_t jnx_file_read(char* path, char **buffer,char *flags)
 	}
 	size_t size = ftell(fp);
 	rewind(fp);
-	(*buffer) = JNX_MEM_CALLOC(size, sizeof(char));
+	(*buffer) = calloc(size, sizeof(char));
 	fread((*buffer), 1, size, fp);
 	fclose(fp);
 	return size;
@@ -46,9 +46,9 @@ jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
 		char *value = strtok(NULL,delimiter);
 		if(value == NULL) { continue; }
 		jnx_file_kvp_node* node;
-		node = JNX_MEM_MALLOC(sizeof(jnx_file_kvp_node));
-		node->key = JNX_MEM_MALLOC(strlen(key) + 1);
-		node->value = JNX_MEM_MALLOC(strlen(value) +1);
+		node = malloc(sizeof(jnx_file_kvp_node));
+		node->key = malloc(strlen(key) + 1);
+		node->value = malloc(strlen(value) +1);
 		strcpy(node->key,key);
 		strcpy(node->value,value);
 		if(node->value[strlen(node->value)] == '\n' || node->value[strlen(node->value)] == '\0'){
@@ -118,7 +118,7 @@ static char *jnx_file_random_dir(char *basepath)
 		n += rand() %10; 
 	}
 
-	char *s = JNX_MEM_MALLOC(sizeof(char) * 256);
+	char *s = malloc(sizeof(char) * 256);
 	sprintf(s,"%s/%zu",basepath,n);
 	return s;
 }
@@ -131,7 +131,7 @@ int jnx_file_mktempdir(char *dirtemplate, char **path)
 		{
 			printf("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
 			*path = NULL;
-			JNX_MEM_FREE(tempdir);
+			free(tempdir);
 			return 1;
 		}else
 		{

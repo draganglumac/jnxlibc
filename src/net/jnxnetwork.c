@@ -95,7 +95,7 @@ int jnx_network_setup_listener(int port,int max_connections, void (*jnx_network_
 		}
 		int len = ftell(temp_file);
 		rewind(temp_file);
-		char *outbuffer = JNX_MEM_CALLOC(len + 1, sizeof(char));	
+		char *outbuffer = calloc(len + 1, sizeof(char));	
 		fread(outbuffer,1,len,temp_file);
 		fclose(temp_file);	
 
@@ -235,12 +235,12 @@ char* jnx_network_local_ip(char* interface)
         if (ifa ->ifa_addr->sa_family==AF_INET)
         {   // check it is IP4
             tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
-            char *addressBuffer = JNX_MEM_MALLOC(sizeof(char) *INET_ADDRSTRLEN);
+            char *addressBuffer = malloc(sizeof(char) *INET_ADDRSTRLEN);
             inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
 
             if(strcmp(ifa->ifa_name,interface) == 0)
 			{
-				JNX_MEM_FREE(ifAddrStruct);
+				free(ifAddrStruct);
 				return addressBuffer;
             }
 
