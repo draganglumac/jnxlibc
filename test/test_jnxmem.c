@@ -72,12 +72,16 @@ void test_allocation_times()
 		assert(jnx_mem_get_current_size_allocations() == 0);
 	}
 }
+void test_deallocation_times()
+{
+}
 int main(int argc, char **argv)
 {
 #if defined(JNX_MEMORY_MANAGEMENT)
 	printf("Running memory tests...\n");
 	test_basic();
 	test_allocation_times();
+	test_deallocation_times();
 	printf("Memory tests completed\n");
 #else
 	printf("JNX_MEMORY_MANAGEMENT not defined - skipping tests\n");
