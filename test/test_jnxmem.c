@@ -74,6 +74,37 @@ void test_allocation_times()
 }
 void test_deallocation_times()
 {
+	printf("- test_deallocation_times\n");
+	int l = 3;
+	int ar[3] = { 100, 1000, 10000};
+	int c,d;
+	char **h = calloc(3, sizeof(char));
+	for(c=0;c<l;++c)
+	{
+		h[c] = calloc(ar[c],sizeof(char));
+	}
+
+	for(c=0;c<l;++c)
+	{
+		for(d=0;d<ar[l];++d)
+		{
+			char *s = JNX_MEM_MALLOC(sizeof(char));
+			h[c][d] = s;
+		}
+	}
+	for(c=0;c<l;++c)
+	{
+		clock_t start = clock();
+		for(d=0;d<ar[c];++d)
+		{
+			JNX_MEM_FREE(h[c][d]);
+		}
+		clock_t end = clock();
+		printf("- Deallocated %d blocks of %d in %zu\n",ar[c],sizeof(char),(end - start));
+		assert(jnx_mem_get_current_number_allocations() == 0);
+		assert(jnx_mem_get_current_size_allocations() == 0);
+		jnx_mem_clear();	
+	}
 }
 int main(int argc, char **argv)
 {

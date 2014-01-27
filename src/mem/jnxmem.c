@@ -46,6 +46,10 @@ int internal_compare_callback(void *A, void *B)
 static jnx_btree *memtree = NULL;
 void jnx_mem_clear()
 {
+	if(memtree == NULL)
+	{
+		return;
+	}
 	jnx_list *l = jnx_list_create();
 	jnx_btree_keys(memtree,l);	
 	while(l->head)
@@ -57,7 +61,7 @@ void jnx_mem_clear()
 				free(m->file);
 			if(m->state == ALLOC)
 			{
-				free(l->head->_data);
+				free(m->ptr);
 			}
 			free(m);
 			l->head = l->head->next_node;
