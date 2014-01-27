@@ -30,7 +30,6 @@ typedef struct{
 
 }jnx_mem_item;
 
-
 int internal_compare_callback(void *A, void *B)
 {
 	if(A > B)
@@ -44,6 +43,64 @@ int internal_compare_callback(void *A, void *B)
 	return 0;
 }
 static jnx_btree *memtree = NULL;
+
+void jnx_mem_print()
+{
+	if(memtree == NULL)
+	{
+		return;
+	}
+	jnx_list *l = jnx_list_create();
+	jnx_btree_keys(memtree,l);	
+	while(l->head)
+	{
+		jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
+		if(m)
+		{
+			char *state;
+			if(m->state == ALLOC)
+			{
+				state = "ALLOC";
+			}
+			else{
+				state = "FREE";
+			}
+			printf("[%s][%s:%d][%s - %zu]\n",m->file,m->function,m->line,state,m->size);
+			l->head = l->head->next_node;
+		}
+	}
+	jnx_list_destroy(&l);
+}
+void jnx_mem_print_to_file(char *path)
+{
+	if(memtree == NULL)
+	{
+		return;
+	}
+	jnx_list *l = jnx_list_create();
+	jnx_btree_keys(memtree,l);	
+	while(l->head)
+	{
+		jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
+		if(m)
+		{
+			char *state;
+			if(m->state == ALLOC)
+			{
+				state = "ALLOC";
+			}
+			else{
+				state = "FREE";
+			}
+
+			char buffer[1024];
+			sprintf(buffer,"[%s][%s:%d][%s - %zu]\n",m->file,m->function,m->line,state,m->size);
+			jnx_file_write(path,buffer,strlen(buffer),"a+");
+			l->head = l->head->next_node;
+		}
+	}
+	jnx_list_destroy(&l);
+}
 void jnx_mem_clear()
 {
 	if(memtree == NULL)
@@ -57,8 +114,8 @@ void jnx_mem_clear()
 		jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
 		if(m)
 		{
-				free(m->function);
-				free(m->file);
+			free(m->function);
+			free(m->file);
 			if(m->state == ALLOC)
 			{
 				free(m->ptr);

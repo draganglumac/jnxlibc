@@ -38,7 +38,16 @@
 #define JNX_MEM_FREE(X)\
 	free(X)
 #endif
-
+/**
+ *@fn void jnx_mem_print()
+ *@brief prints memory tree to file
+ */
+void jnx_mem_print();
+/**
+ *@fn void jnx_mem_print_to_file(char *path)
+ *@brief prints current memory tree to file
+ */
+void jnx_mem_print_to_file(char *path);
 /**
  *@fn jnx_mem_clear()
  *@brief clears all program memory registered through JNX_MEM 

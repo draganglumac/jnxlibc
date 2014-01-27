@@ -64,7 +64,6 @@ void test_allocation_times()
 		clock_t end = clock();
 		printf("- Allocated %d blocks of %d in %zu\n",ar[d],sizeof(char),(end - start));
 		assert(jnx_mem_get_current_number_allocations() == ar[d]);
-			
 		jnx_mem_clear();
 		assert(jnx_mem_get_total_number_allocations() == 0);
 		assert(jnx_mem_get_current_number_allocations() == 0);
@@ -83,7 +82,6 @@ void test_deallocation_times()
 	{
 		h[c] = calloc(ar[c],sizeof(char));
 	}
-
 	for(c=0;c<l;++c)
 	{
 		for(d=0;d<ar[l];++d)
