@@ -101,12 +101,13 @@ void jnx_mem_print_to_file(char *path)
 	}
 	jnx_list_destroy(&l);
 }
-void jnx_mem_clear()
+size_t jnx_mem_clear()
 {
 	if(memtree == NULL)
 	{
-		return;
+		return 0;
 	}
+	size_t c = 0;
 	jnx_list *l = jnx_list_create();
 	jnx_btree_keys(memtree,l);	
 	while(l->head)
@@ -119,6 +120,7 @@ void jnx_mem_clear()
 			if(m->state == ALLOC)
 			{
 				free(m->ptr);
+				c = c + m->size;
 			}
 			free(m);
 			l->head = l->head->next_node;
@@ -126,6 +128,7 @@ void jnx_mem_clear()
 	}
 	jnx_btree_destroy(memtree);
 	memtree = NULL;
+	return c;
 }	
 size_t jnx_mem_get_current_size_allocations()
 {

@@ -52,8 +52,9 @@ void jnx_mem_print_to_file(char *path);
  *@fn jnx_mem_clear()
  *@brief clears all program memory registered through JNX_MEM 
  *@warning use with caution will free memory 
+ *@return size_t of memory cleared
  */
-void jnx_mem_clear();		
+size_t jnx_mem_clear();		
 /**
  *@fn size_t jnx_mem_get_current_number_allocations
  *@brief gives the current size of allocated memory in your program using jnx_mem

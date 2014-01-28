@@ -34,6 +34,7 @@ void test_basic()
 		assert(jnx_mem_get_total_number_allocations() == x + 1);	
 		ar[x] = s;
 	}
+
 	assert(jnx_mem_get_total_size_allocations() == (sizeof(char) * 10));
 	assert(jnx_mem_get_current_number_allocations() == 10);
 	assert(jnx_mem_get_current_size_allocations() == (sizeof(char) *10));	
@@ -64,7 +65,9 @@ void test_allocation_times()
 		clock_t end = clock();
 		printf("- Allocated %d blocks of %d in %zu\n",ar[d],sizeof(char),(end - start));
 		assert(jnx_mem_get_current_number_allocations() == ar[d]);
-		jnx_mem_clear();
+		size_t rb = jnx_mem_clear();
+		printf("- Cleared %d blocks\n",rb);
+		assert(rb == (ar[d] * sizeof(char)));
 		assert(jnx_mem_get_total_number_allocations() == 0);
 		assert(jnx_mem_get_current_number_allocations() == 0);
 		assert(jnx_mem_get_total_size_allocations() == 0);
@@ -101,7 +104,6 @@ void test_deallocation_times()
 		printf("- Deallocated %d blocks of %d in %zu\n",ar[c],sizeof(char),(end - start));
 		assert(jnx_mem_get_current_number_allocations() == 0);
 		assert(jnx_mem_get_current_size_allocations() == 0);
-		jnx_mem_clear();	
 	}
 }
 int main(int argc, char **argv)
