@@ -48,7 +48,6 @@ int main()
 	jnx_term_load_spinner(1);
 	sleep(2);
 	jnx_term_load_spinner(0);
-	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
 	printf("Terminal tests completed.\n");
     return 0;
 }

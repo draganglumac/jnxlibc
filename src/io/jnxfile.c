@@ -32,34 +32,30 @@ size_t jnx_file_read(char* path, char **buffer,char *flags)
 	fclose(fp);
 	return size;
 }
-jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
-	FILE* file;
+jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer, char *delimiter)
+{
+	FILE *file; 
 	if((file = fopen(path, "r+")) == NULL)
 	{
-		printf("Could not open file for KVP matching\n");
 		return NULL;
 	}
-	jnx_file_kvp_node* list = NULL, ** nextp = &list;
-	char buffer[1024];
-	while (fgets(buffer, sizeof buffer, file) != NULL) {
+	char buffer[max_buffer];
+	jnx_hashmap *map = jnx_hash_create(64);
+	while(fgets(buffer, sizeof(buffer), file) != NULL)
+	{
 		char *key = strtok(buffer,delimiter);
 		char *value = strtok(NULL,delimiter);
 		if(value == NULL) { continue; }
-		jnx_file_kvp_node* node;
-		node = malloc(sizeof(jnx_file_kvp_node));
-		node->key = malloc(strlen(key) + 1);
-		node->value = malloc(strlen(value) +1);
-		strcpy(node->key,key);
-		strcpy(node->value,value);
-		if(node->value[strlen(node->value)] == '\n' || node->value[strlen(node->value)] == '\0'){
-			node->value[strlen(node->value)] = '\0';
-		}
-		node->next = NULL;
-		*nextp = node;
-		nextp = &node->next;
+		char *st = malloc(strlen(key));
+		char *sv = malloc(strlen(value));
+		bzero(st,strlen(key));
+		bzero(sv,strlen(value));
+		strncpy(st,key,strlen(key));
+		strncpy(sv,value,strlen(value));
+		jnx_hash_put(map,st,sv);
 	}
 	fclose(file);
-	return list;
+	return map;
 }
 size_t jnx_file_write(char* path, char* data, size_t data_size,char *flags)
 {
