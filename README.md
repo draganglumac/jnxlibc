@@ -42,3 +42,22 @@ Use -ljnxc when building your project
 ```
 gcc ${YOUR_PROGRAM_FILES} -ljnxc 
 ````
+
+###Examples
+
+Creating a linkedlist
+```
+jnx_list *exampleList = jnx_list_create(); 
+jnx_list_add(exampleList,"A");
+```
+Reading from a file
+```
+char *buffer;
+size_t readBytes = jnx_file_read("example.txt",&buffer,"r");
+```
+Sending TCP message over network
+```
+int ret = jnx_network_send_message("10.0.0.1","9090","Message",strlen("Message"));
+//Actually lets just broadcast that
+int jnx_network_broadcast("9090","255.255.255.0","Message");
+```
