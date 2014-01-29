@@ -59,5 +59,12 @@ Sending TCP message over network
 ```C
 int ret = jnx_network_send_message("10.0.0.1","9090","Message",strlen("Message"));
 //Actually lets just broadcast that
-int jnx_network_broadcast("9090","255.255.255.0","Message");
+int ret = jnx_network_broadcast("9090","255.255.255.0","Message");
 ```
+Using memory management
+```C
+char *str = JNX_MEM_MALLOC(sizeof(char*));
+size_t s = jnx_mem_get_current_size_allocations();
+size_t cleared = jnx_mem_clear();
+```
+
