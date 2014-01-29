@@ -52,6 +52,10 @@ jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer, char *delimiter)
 		bzero(sv,strlen(value));
 		strncpy(st,key,strlen(key));
 		strncpy(sv,value,strlen(value));
+		if(sv[strlen(sv) -1] == '\n')
+		{
+			sv[strlen(sv) - 1] = '\0';
+		}	
 		jnx_hash_put(map,st,sv);
 	}
 	fclose(file);
