@@ -17,10 +17,10 @@
  */
 #include <sys/file.h>
 #include <string.h>
-#include <pthread.h>
 #include <stdlib.h>
 #include "jnxlog.h"
 #include "jnxmem.h"
+#include "jnxthread.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -113,6 +113,7 @@ void jnx_log(const char * format, ...)
 #else
 	pthread_t _thr;
     pthread_create(&_thr,NULL,(void*)jnx_write_to_log,output);    
+
 #endif
 }
 
