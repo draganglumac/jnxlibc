@@ -17,6 +17,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include "jnxlog.h"
 #include "jnxterm.h"
 #include "jnxfile.h"
 #include "jnxlist.h"
@@ -24,7 +25,7 @@
 #include <assert.h>
 void test_basic()
 {
-	printf("- test_basic");
+	JNX_LOGC("- test_basic");
 	int x;
 	int y = 10;
 	char *ar[y];
@@ -49,7 +50,7 @@ void test_basic()
 }
 void test_allocation_times()
 {
-	printf("- test_allocation_times\n");
+	JNX_LOGC("- test_allocation_times\n");
 
 	int l = 3;
 	int ar[3] = { 100, 1000, 10000 };
@@ -63,10 +64,10 @@ void test_allocation_times()
 			char *s = JNX_MEM_MALLOC(sizeof(char));
 		}
 		clock_t end = clock();
-		printf("- Allocated %d blocks of %d in %zu\n",ar[d],sizeof(char),(end - start));
+		JNX_LOGC("- Allocated %d blocks of %d in %zu\n",ar[d],sizeof(char),(end - start));
 		assert(jnx_mem_get_current_number_allocations() == ar[d]);
 		size_t rb = jnx_mem_clear();
-		printf("- Cleared %d blocks\n",rb);
+		JNX_LOGC("- Cleared %d blocks\n",rb);
 		assert(rb == (ar[d] * sizeof(char)));
 		assert(jnx_mem_get_total_number_allocations() == 0);
 		assert(jnx_mem_get_current_number_allocations() == 0);
@@ -76,7 +77,7 @@ void test_allocation_times()
 }
 void test_deallocation_times()
 {
-	printf("- test_deallocation_times\n");
+	JNX_LOGC("- test_deallocation_times\n");
 	int l = 3;
 	int ar[3] = { 100, 1000, 10000};
 	int c,d;
@@ -101,7 +102,7 @@ void test_deallocation_times()
 			JNX_MEM_FREE(h[c][d]);
 		}
 		clock_t end = clock();
-		printf("- Deallocated %d blocks of %d in %zu\n",ar[c],sizeof(char),(end - start));
+		JNX_LOGC("- Deallocated %d blocks of %d in %zu\n",ar[c],sizeof(char),(end - start));
 		assert(jnx_mem_get_current_number_allocations() == 0);
 		assert(jnx_mem_get_current_size_allocations() == 0);
 	}
@@ -109,13 +110,13 @@ void test_deallocation_times()
 int main(int argc, char **argv)
 {
 #if defined(JNX_MEMORY_MANAGEMENT)
-	printf("Running memory tests...\n");
+	JNX_LOGC("Running memory tests...\n");
 	test_basic();
 	test_allocation_times();
 	test_deallocation_times();
-	printf("Memory tests completed\n");
+	JNX_LOGC("Memory tests completed\n");
 #else
-	printf("JNX_MEMORY_MANAGEMENT not defined - skipping tests\n");
+	JNX_LOGC("JNX_MEMORY_MANAGEMENT not defined - skipping tests\n");
 #endif
 	return 0;
 }

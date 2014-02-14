@@ -21,6 +21,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "jnxlog.h"
 #include "jnxfile.h"
 #include "jnxterm.h"
 void test_recursive_delete()
@@ -69,14 +70,14 @@ void test_jnx_dir()
 }
 int main(int args, char **argv)
 {
-	printf("Running file tests...\n");
-	printf("- test recursive delete");	
+	JNX_LOGC("Running file tests...\n");
+	JNX_LOGC("- test recursive delete");	
 	test_recursive_delete();
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-	printf("- test file read");
+	JNX_LOGC("- test file read");
 	test_jnx_file();
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-	printf("- test temp directory");
+	JNX_LOGC("- test temp directory");
 	test_jnx_dir();	
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 	return 0;

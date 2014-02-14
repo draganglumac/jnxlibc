@@ -21,33 +21,34 @@
 #include <assert.h>
 #include "jnxlist.h"
 #include "jnxterm.h"
+#include "jnxlog.h"
 struct foo{
 	int number;
 }foo;
 
 void test_list_creation()
 {
-	printf("- test_list_creation");
+	JNX_LOGC("- test_list_creation");
 	jnx_list *secondlist = jnx_list_create();
 	assert(secondlist != NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 	struct foo *f = malloc(sizeof(foo));
 	f->number = 10;
-	printf("- test_list_insertion"); 
+	JNX_LOGC("- test_list_insertion"); 
 	jnx_list_add(secondlist,(void*)f); 
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-	printf("- test_list_removal");
+	JNX_LOGC("- test_list_removal");
 	struct foo *output = (struct foo*)jnx_list_remove(&secondlist);
 	assert(output->number == 10);
 	free(output);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-	printf("- test_list_deletion"); 
+	JNX_LOGC("- test_list_deletion"); 
 	jnx_list_destroy(&secondlist);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_list_index()
 {
-	printf("- test_list_sequence");
+	JNX_LOGC("- test_list_sequence");
 	jnx_list *j = jnx_list_create();
 	int count = 6;
 	char *ar[] = { "A", "B", "C", "D", "E", "F" };
@@ -68,7 +69,7 @@ void test_list_index()
 }
 void test_data_removal()
 {
-	printf("- test_data_removal");
+	JNX_LOGC("- test_data_removal");
 	char *test_string = "AABBCC";
 	jnx_list *list = jnx_list_create();
 	int count = 10;
@@ -110,11 +111,11 @@ void test_list_tail()
 }
 int main(int args, char **argv)
 {
-	printf("Running list tests...\n");
+	JNX_LOGC("Running list tests...\n");
 	test_list_creation();
 	test_data_removal();
 	test_list_index();
 	test_list_tail();
-	printf("List tests completed.\n");
+	JNX_LOGC("List tests completed.\n");
 	return 0;
 }

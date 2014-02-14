@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <jnxc_headers/jnxterm.h>
 #include "jnxthread.h"
+#include "jnxlog.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
@@ -32,7 +33,7 @@ void *worker(void *args)
 }
 void test_thread_add()
 {
-	printf("Running test_thread_add test: ");
+	JNX_LOGC("Running test_thread_add test: ");
 	jnxthread_poolflush();
 	jnxthread *t = jnxthread_create(worker,NULL);
 	assert(jnxthread_poolcount() == 1);
@@ -42,7 +43,7 @@ void test_thread_add()
 }
 void test_thread_join()
 {
-	printf("Running test_thread_join test: ");
+	JNX_LOGC("Running test_thread_join test: ");
 	jnxthread_poolflush();
 	
 	time_t s,e;
@@ -60,7 +61,7 @@ void test_thread_join()
 }
 void test_threadpool_flush()
 {
-	printf("Running test_threadpool_flush test: ");
+	JNX_LOGC("Running test_threadpool_flush test: ");
 	jnxthread_poolflush();
 	assert(jnxthread_poolcount() == 0);
 	int x;
@@ -82,7 +83,7 @@ void *work_target(void *args)
 }
 void test_thread_mutex()
 {
-	printf("Running test_thread_mutex: ");
+	JNX_LOGC("Running test_thread_mutex: ");
 	jnxthread *a = jnxthread_create(work_target,"Thread One\n");
    	void *data;
 	jnxthread_join(a,&data);
@@ -96,7 +97,7 @@ void test_thread_mutex()
 }
 int main(int argc, char **argv)
 {
-	printf("Running jnxthreading tests\n");
+	JNX_LOGC("Running jnxthreading tests\n");
 	test_thread_mutex();
 	test_thread_add();
 	test_threadpool_flush();

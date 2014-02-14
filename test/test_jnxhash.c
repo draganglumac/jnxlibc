@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include "jnxlog.h"
 #include "jnxhash.h"
 #include "jnxterm.h"
 void test_key_deletion()
@@ -85,14 +86,14 @@ void test_hash_deletion()
 }
 int main(int argc, char **argv)
 {
- 	printf("Running test for jnxhash\n");
-	printf("- test_key_deletion: ");
+ 	JNX_LOGC("Running test for jnxhash\n");
+	JNX_LOGC("- test_key_deletion: ");
 	test_key_deletion();
 	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
-	printf("- test_hash_deletion: ");
+	JNX_LOGC("- test_hash_deletion: ");
 	test_hash_deletion();
 	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
-	printf("- test_hash_get_keys: ");
+	JNX_LOGC("- test_hash_get_keys: ");
 	test_hash_get_keys();
 	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
 	return 0;

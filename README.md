@@ -3,13 +3,15 @@ jnxlibc
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
 
 C based common code library based on libjnx philosophy of general purpose & lightweight development.
+Built in TDD with all code built with test first principles.
 
 ##Key features:
+- THreading
 - Memory & stack tracing
 - Simple listen/send over IP/port functions (Dynamic buffers for big messages!)
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
-- Simple logger system
+- Robust logger system
 - Terminal loading spinners and fancy colors done easily.
 - Several useful data structures (hash, list, vector, btree)
 - Auto generated documentation and logical API

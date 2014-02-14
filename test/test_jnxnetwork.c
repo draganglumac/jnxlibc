@@ -27,7 +27,7 @@
 void network_listener_callback(char *message)
 {
     assert(strcmp(message,"Hello there") == 0);
-    jnx_term_JNX_LOGC_in_color(JNX_COL_GREEN, "  OK\n");
+    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
     exit(0);
 }
 void *worker_thread(void*args)
