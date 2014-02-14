@@ -1,5 +1,6 @@
 #!/bin/bash +x
 
+pushd platform/linux
 ./configure
 if [ "$1" != "SKIP" ]; then
 make setup
@@ -18,6 +19,7 @@ fi
 make
 sudo make install
 echo "Installed succesfully"
+popd
 #which doxygen
 #HAS_DOXYGEN=$?
 
