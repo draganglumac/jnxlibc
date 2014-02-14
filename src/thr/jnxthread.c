@@ -17,7 +17,7 @@
  */
 #include <stdlib.h>
 #include "jnxthread.h"
-#include <jnxc_headers/jnxbtree.h>
+#include "jnxbtree.h"
 
 static jnx_btree *pooltree = NULL;
 static int threadcount  = 1;
