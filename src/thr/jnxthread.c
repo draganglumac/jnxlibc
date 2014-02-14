@@ -130,8 +130,24 @@ jnxthread* jnxthread_create(entry_point e,void *args)
 	pthread_create(&thr->system_thread,default_attr,e,args);
 #endif
 	//platform specific zone//
-	int ret = jnxthread_addpool(thr);
+	jnxthread_addpool(thr);
 	return thr;
+}
+int jnxthread_create_disposable(entry_point e,void *args)
+{
+	int ret = 0;
+#if defined(WIN32)
+	printf("Not implemented\n");
+	return NULL;
+#endif
+	//platform specific zone//
+#if !defined(WIN32)
+	pthread_t disposable_thr;
+	pthread_attr_t *default_attr = NULL;
+	ret = pthread_create(&disposable_thr,default_attr,e,args);
+#endif
+	//platform specific zone//
+	return ret;
 }
 int jnxthread_join(jnxthread *thr, void **data)
 {

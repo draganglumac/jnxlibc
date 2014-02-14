@@ -94,6 +94,14 @@ size_t jnxthread_poolcount();
  */
 jnxthread* jnxthread_create(entry_point e,void *args);
 /**
+ *@fn int jnxthread_create_disposable(entry_point e,void *args)
+ *@param entry_point is the function pointer the thread starts with
+ *@param args are the arguments to pass the function pointer
+ *@brief jnxthread_create will create and start a new thread but does not add to pool
+ *@return error code if any
+ */
+int jnxthread_create_disposable(entry_point e,void *args);
+/**
  *@fn void jnxthread_destroy(jnxthread *thr)
  *@brief Destroy the thread data structure and pool listing
  *@warning Destroy will not ensure thread is killed
