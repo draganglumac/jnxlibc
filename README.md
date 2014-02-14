@@ -6,7 +6,7 @@ C based common code library based on libjnx philosophy of general purpose & ligh
 Built in the spirit of TDD.
 
 ##Key features:
-- THreading
+- Threading
 - Memory & stack tracing
 - Simple listen/send over IP/port functions (Dynamic buffers for big messages!)
 - Easy to use file read/write functions
