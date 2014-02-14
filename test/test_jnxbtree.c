@@ -20,7 +20,7 @@
 #include <assert.h>
 #include <string.h>
 #include <time.h>
-
+#include "jnxlog.h"
 #include "jnxbtree.h"
 #include "jnxterm.h"
 #include "jnxlist.h"
@@ -74,7 +74,7 @@ char *int_node_contents(jnx_btree_node *node)
     for ( i = 0; i < node->count; i++ )
     {
         char next[16];
-        sJNX_LOGC(next, "%d ", *((int *) node->records[i]->key));
+        sprintf(next, "%d ", *((int *) node->records[i]->key));
         strcat(contents, next);
     }
 
@@ -89,7 +89,7 @@ char *char_node_contents(jnx_btree_node *node)
     for ( i = 0; i < node->count; i++ )
     {
         char next[2];
-        sJNX_LOGC(next, "%c", *((char *) node->records[i]->key));
+        sprintf(next, "%c", *((char *) node->records[i]->key));
         strcat(contents, next);
     }
 

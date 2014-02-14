@@ -26,7 +26,7 @@ int main(int args, char **argv)
 {
     printf("Running test for jnxlog\n");
 	JNX_LOG_PATH("temp.log");
-	bytesw = JNX_LOGF("Write to file\n");
+	size_t bytesw = JNX_LOGF("Write to file\n");
 
 	char *buffer;
 	size_t fbytesr = jnx_file_read("temp.log",&buffer,"r");
