@@ -19,6 +19,7 @@
 #include <assert.h>
 #include "jnxterm.h"
 #include "jnxfile.h"
+#include "jnxlog.h"
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -37,17 +38,17 @@ void test_redirect()
 }
 int main()
 {
-    printf("Running jnx_term tests\n");
-    printf("- terminal tests ");
+    JNX_LOGC("Running jnx_term tests\n");
+    JNX_LOGC("- terminal tests ");
 	test_redirect();
 	jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
-	printf("- terminal output \n");
+	JNX_LOGC("- terminal output \n");
 	jnx_term_load_bar(1);
 	sleep(5);
 	jnx_term_load_bar(0);
 	jnx_term_load_spinner(1);
 	sleep(2);
 	jnx_term_load_spinner(0);
-	printf("Terminal tests completed.\n");
+	JNX_LOGC("Terminal tests completed.\n");
     return 0;
 }

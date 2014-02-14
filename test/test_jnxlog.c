@@ -24,7 +24,7 @@
 #include "jnxterm.h"
 int main(int args, char **argv)
 {
-    printf("Running test for jnxlog\n");
+    JNX_LOGC("Running test for jnxlog\n");
 	JNX_LOG_PATH("temp.log");
 	size_t bytesw = JNX_LOGF("Write to file\n");
 
