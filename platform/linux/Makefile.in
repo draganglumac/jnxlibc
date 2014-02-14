@@ -1,10 +1,11 @@
+SRC_DIR=../../src
 BUILD_DIR=build
 FLAGS=-Wall -fPIC -c
 all: setup main_artifact shipping teardown
 setup:
 	mkdir -p build
-	cp src/**/*.c build
-	cp src/**/*.h build
+	cp ${SRC_DIR}/**/*.c build
+	cp ${SRC_DIR}/**/*.h build
 teardown:
 	rm -rf build
 main_artifact:
