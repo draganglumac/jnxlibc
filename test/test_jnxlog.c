@@ -19,16 +19,21 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include "jnxfile.h"
 #include "jnxlog.h"
 #include "jnxterm.h"
 int main(int args, char **argv)
 {
     printf("Running test for jnxlog\n");
-    printf("- test_log_insertion");
-    assert(jnx_log_setup("test.log") == 0);
-    jnx_log("Hello from log!\n");
-    jnx_log("Hello from log with %s %s formatted args %d\n","lots","of",3);
-    system("rm test.log");
-    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNX_LOG_PATH("temp.log");
+	bytesw = JNX_LOGF("Write to file\n");
+
+	char *buffer;
+	size_t fbytesr = jnx_file_read("temp.log",&buffer,"r");
+	system("rm temp.log");
+	assert(fbytesr == bytesw);
+
+	
+	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
     return 0;
 }

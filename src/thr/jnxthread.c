@@ -126,6 +126,7 @@ jnxthread* jnxthread_create(entry_point e,void *args)
 	thr->id = threadcount++;  
 	//platform specific zone//
 #if !defined(WIN32)
+	//Will later give the user conrol of this via the attributes wrapper e.g. jnxthread_create_with_custom_attr
 	pthread_attr_t *default_attr = NULL;
 	pthread_create(&thr->system_thread,default_attr,e,args);
 #endif

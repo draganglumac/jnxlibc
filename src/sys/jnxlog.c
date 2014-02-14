@@ -35,84 +35,104 @@ void *jnx_write_to_log(void *message)
 	jnxthread_lock(&locker);
 #endif
 	FILE *fp = fopen(log_path,"a");
-    if(fp == NULL) { 
-        printf("jnx_write_to_log: Unable to open file for log writing\n");
+	if(fp == NULL) { 
+		printf("jnx_write_to_log: Unable to open file for log writing\n");
 		jnxthread_unlock(&locker);
-        return (void*)1;
-    };
-    fprintf(fp,"%s",(char*)message);
-    fclose(fp);
-    //free our string
+		return (void*)1;
+	};
+	fprintf(fp,"%s",(char*)message);
+	fclose(fp);
+	//free our string
 #if !defined( __JNX_LOG_SINGLE_THREAD__)
 	jnxthread_unlock(&locker);
 #endif
 	return 0;
 }
-int jnx_log_setup(char *path)
+int jnx_log_file_setup(char *path)
 {
-    struct stat s;
-    int err = stat(path,&s);
-    if(-1 == err)
-    {
-        FILE *fp = fopen(path,"w+");
-        if(fp == NULL)
-        {
-            printf("jnx_log_setup: Error creating log file\n");
-            return 1;
-        }
-        else
-        {
-            fclose(fp);
-            //after our successful log creation, we'll assign the log_path
-            log_path = path;
-        } 
+	struct stat s;
+	int err = stat(path,&s);
+	if(-1 == err)
+	{
+		FILE *fp = fopen(path,"w+");
+		if(fp == NULL)
+		{
+			printf("jnx_log_setup: Error creating log file\n");
+			return 1;
+		}
+		else
+		{
+			fclose(fp);
+			//after our successful log creation, we'll assign the log_path
+			log_path = path;
+		} 
 
-    }else
-    {
-        if(S_ISDIR(s.st_mode))
-        {
-            printf("jnx_log_setup: Exists but is a directory\n");
-            return 1;
-        }
-        printf("jnx_log_setup: Found existing log, will continue logging\n");
-        //assigning to our global log path
-        log_path = path;
-    } 
-    return 0;
+	}else
+	{
+		if(S_ISDIR(s.st_mode))
+		{
+			printf("jnx_log_setup: Exists but is a directory\n");
+			return 1;
+		}
+		printf("jnx_log_setup: Found existing log, will continue logging\n");
+		//assigning to our global log path
+		log_path = path;
+	} 
+	return 0;
 }
 char* jnx_get_time()
 {
-    time_t t;
-    char *buf;
-    time(&t);
-    buf = (char*)malloc(strlen(ctime(&t)) +1);
-    snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
-    return buf;
+	time_t t;
+	char *buf;
+	time(&t);
+	buf = (char*)malloc(strlen(ctime(&t)) +1);
+	snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
+	return buf;
 }
-void jnx_log(const char * format, ...)
+size_t jnx_log(logtype l, const char *file, const char *function, int line, char *format,...)
 {
-	if(log_path == NULL)
-	{
-		printf("jnx_log: Log path not set. See jnx_log_setup\n");
-		return;
-	}
 	char output[MAX_LOG_SIZE];
-    char buffer[MAX_ARG_SIZE];
-    char *_time = jnx_get_time();
-    strcpy(output,_time);
-    strcat(output, ":");
-    strcat(output, __FILE__);
-    strcat(output, ": ");
-    va_list ap;
-    va_start(ap,format);
-    vsprintf(buffer,format,ap);
-    va_end(ap);
-    strcat(output,buffer);
-    free(_time);
+	char buffer[MAX_ARG_SIZE];
+	char *_time = jnx_get_time();
+
+	char lineconv[256];
+	sprintf(lineconv,"%d",line);
+	strcpy(output,"[");
+	strncat(output,_time,strlen(_time));
+	strncat(output,"]",1);
+	strncat(output,"[",1);
+	strncat(output,file,strlen(file));
+	strncat(output, ":",1);
+	strncat(output,function,strlen(function));
+	strncat(output, ": ",1);
+	strncat(output,lineconv,strlen(lineconv));
+	strncat(output,"] ",2);
+	va_list ap;
+	va_start(ap,format);
+	vsprintf(buffer,format,ap);
+	va_end(ap);
+	strcat(output,buffer);
+	free(_time);
+	size_t bytec = 0;
+	bytec = strlen(output);
+	switch(l){
+		case LOG_FILE:
+			if(log_path == NULL)
+			{
+				printf("jnx_log: Log path not set. See jnx_log_setup\n");
+				return 0;
+			}
 #if defined( __JNX_LOG_SINGLE_THREAD__)
-	jnx_write_to_log(output);	
+			jnx_write_to_log(output);	
 #else
- 	jnxthread_create_disposable(&jnx_write_to_log,output);
+			jnxthread_create_disposable(&jnx_write_to_log,output);
 #endif
+			break;
+		case LOG_CONSOLE:
+			printf(output);
+			return bytec;
+			break;
+	}
+	return 0;
 }
 
