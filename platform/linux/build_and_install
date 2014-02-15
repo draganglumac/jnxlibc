@@ -2,7 +2,6 @@
 
 pushd platform/linux
 ./configure
-if [ "$1" != "SKIP" ]; then
 make setup
 pushd test
 ./run_tests
@@ -15,9 +14,10 @@ if [ ! $result -eq 0 ]; then
 fi
 popd
 make teardown
-fi
 make
+if [ "$1" != "SKIP" ]; then
 sudo make install
+fi
 echo "Installed succesfully"
 popd
 #which doxygen
