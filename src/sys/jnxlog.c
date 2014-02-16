@@ -37,7 +37,9 @@ void *jnx_write_to_log(void *message)
 	FILE *fp = fopen(log_path,"a");
 	if(fp == NULL) { 
 		printf("jnx_write_to_log: Unable to open file for log writing\n");
+#if !defined( __JNX_LOG_SINGLE_THREAD__)
 		jnxthread_unlock(&locker);
+#endif
 		return (void*)1;
 	};
 	fprintf(fp,"%s",(char*)message);
