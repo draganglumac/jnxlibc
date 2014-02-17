@@ -91,7 +91,7 @@ char* jnx_get_time()
 	snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
 	return buf;
 }
-size_t jnx_log(logtype l, const char *file, const char *function, int line, char *format,...)
+size_t jnx_log(const logtype l, const char *file, const char *function,const int line,const char *format,...)
 {
 	char output[MAX_LOG_SIZE];
 	char buffer[MAX_ARG_SIZE];

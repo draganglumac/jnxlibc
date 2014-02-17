@@ -61,7 +61,7 @@ int jnx_log_file_setup(char *path);
  * @return size_t of byte length of log entry
  */
 typedef enum logtype { LOG_FILE, LOG_CONSOLE }logtype;
-size_t jnx_log(logtype l, const char *file, const char *function, int line, char *format,...);
+size_t jnx_log(const logtype l, const char *file, const char *function,const int line,const char *format,...);
 
 #ifdef __cplusplus
 	}
