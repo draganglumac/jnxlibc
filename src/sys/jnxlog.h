@@ -34,7 +34,7 @@
  *@macro JNX_LOGF
  *@brief log to file
  */
-#define JNX_LOGF(X) jnx_log(LOG_FILE,__FILE__,__FUNCTION__,__LINE__,X)
+#define JNX_LOGF(X, ...) jnx_log(LOG_FILE,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)
 		
 /**
  * @fn jnx_log_setup(char *path)
