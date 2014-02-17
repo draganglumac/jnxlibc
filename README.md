@@ -5,6 +5,7 @@ jnxlibc
 C based common code library based on libjnx philosophy of general purpose & lightweight development.
 Built in the spirit of TDD ( [See Here](http://showterm.io/3dd2883f32e0e385be055#fast) )
 
+
 ##Key features:
 - Threading
 - Memory & stack tracing
@@ -15,6 +16,11 @@ Built in the spirit of TDD ( [See Here](http://showterm.io/3dd2883f32e0e385be055
 - Terminal loading spinners and fancy colors done easily.
 - Several useful data structures (hash, list, vector, btree)
 - Auto generated documentation and logical API
+
+#Documentation
+
+HTML documentation can be viewed ([Here](docs/html/index.html))
+
 
 #Installation
 
