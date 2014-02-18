@@ -19,8 +19,9 @@ Built in the spirit of TDD ( [See Here](http://showterm.io/3dd2883f32e0e385be055
 
 #Documentation
 
-HTML documentation can be viewed ([Here](docs/html/index.html))
-
+HTML docs/html
+XML  docs/xml
+MAN  docs/man
 
 #Installation
 
