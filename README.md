@@ -19,9 +19,8 @@ Built in the spirit of TDD ( [See Here](http://showterm.io/3dd2883f32e0e385be055
 
 #Documentation
 
-XML  docs/xml
-MAN  docs/man
-HTML docs/html ([Here](http://htmlpreview.github.io/?https://raw.github.com/AlexsJones/jnxlibc/master/docs/html/files.html))
+- MAN  docs/man
+- HTML docs/html ([Here](http://htmlpreview.github.io/?https://raw.github.com/AlexsJones/jnxlibc/master/docs/html/files.html))
 
 
 #Installation
