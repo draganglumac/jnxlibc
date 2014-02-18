@@ -75,7 +75,7 @@ int jnxthread_addpool(jnxthread *thr)
 int jnxthread_unlock(jnxthread_mutex *m)
 {
 	int ret = 0;
-#if defined(WIN32)
+#if !defined(WIN32)
 	ret = pthread_mutex_unlock(&m->system_mutex);
 #endif
 	return ret;
