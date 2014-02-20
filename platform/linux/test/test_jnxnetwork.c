@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include "jnxnetwork.h"
 #include "jnxthread.h"
+#include "jnxlog.h"
 #include <stdio.h>
 #include <assert.h>
 #include <unistd.h>
@@ -29,11 +30,11 @@ static jnx_socket *server_socket;
 static jnx_socket *write_socket;
 void test_create()
 {
-	printf("Test create:");
+	JNX_LOGC("Test create:");
 	jnx_socket *s = jnx_network_socket_create(FAMILY,SOCK_STREAM);
 	assert(s != NULL);
 	jnx_network_socket_destroy(s);
-	printf("Ok\n");
+	JNX_LOGC(" Ok\n");
 }
 void cb(char *msg, size_t bytes, char *ip)
 {
@@ -53,13 +54,13 @@ void *server_loop(void *args)
 void test_write()
 {
 
-	printf("Test write[%u]:",FAMILY);
+	JNX_LOGC("Test write[%u]:",FAMILY);
 	//set up our server component
 	jnxthread_create_disposable(server_loop,NULL);		
 	write_socket = jnx_network_socket_create(FAMILY,SOCK_STREAM);
 	assert(write_socket != NULL);
 	size_t sent = jnx_network_send(write_socket,HOST,PORT,"Hello!",strlen("Hello!"));
-	printf("Ok\n");
+	JNX_LOGC(" Ok\n");
 }
 void test_sequence()
 {
@@ -81,9 +82,9 @@ void test_sequence()
 }
 int main(int argc, char **argv)
 {
-	printf("Starting networking tests...\n");
+	JNX_LOGC("Starting networking tests...\n");
 	/*  */
-	printf("IPV4 tests...\n");
+	JNX_LOGC("IPV4 tests...\n");
 
 	FAMILY = AF_INET;
 	PORT = 2501;	
@@ -93,7 +94,7 @@ int main(int argc, char **argv)
 	jnx_network_socket_destroy(server_socket);
 	jnx_network_socket_destroy(write_socket);
 
-	printf("IPV6 tests...\n");
+	JNX_LOGC("IPV6 tests...\n");
 	
 	iscompleted = 0;	
 	FAMILY = AF_INET6;

@@ -30,7 +30,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include "jnxnetwork.h"
-
+#include "jnxlog.h"
 #define MAXBUFFER 1024
 void jnx_network_socket_destroy(jnx_socket *s)
 {
@@ -43,12 +43,12 @@ jnx_socket *jnx_network_socket_create(unsigned int addrfamily,ssize_t stype)
 	int optval = 1;
 	if(socket < 0)
 	{
-		printf("Could not create socket\n");
+		JNX_LOGC("Could not create socket\n");
 		return NULL;
 	}
 	if(setsockopt(sockfd,SOL_SOCKET,SO_REUSEADDR, &optval, sizeof optval) > 0)
 	{
-		printf("Could not set socket options\n");
+		JNX_LOGC("Could not set socket options\n");
 		close(sockfd);
 		return NULL;
 	}
@@ -72,7 +72,7 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 	struct hostent *conn = gethostbyname(host);
 	if(conn < 0)
 	{
-		printf("Failed to get host by name\n");
+		JNX_LOGC("Failed to get host by name\n");
 		return -1;
 	}
 	//IPV4
@@ -91,21 +91,21 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 		case AF_INET6:
 			if(connect(s->socket,(struct sockaddr*) &conn_addr6, sizeof(conn_addr6)) < 0)
 			{
-				printf("Failed to connect IPV6 %s",strerror(errno));
+				JNX_LOGC("Failed to connect IPV6 %s",strerror(errno));
 				return -1;
 			}
 			break;
 		default:
 			if(connect(s->socket,(struct sockaddr*) &conn_addr, sizeof(conn_addr)) < 0)
 			{
-				printf("Failed to connect IPV4 %s",strerror(errno));
+				JNX_LOGC("Failed to connect IPV4 %s",strerror(errno));
 				return -1;
 			}
 	}
 	ssize_t n = write(s->socket,msg,strlen(msg));
 	if(n < 0)
 	{
-		printf("Could not write successfully\n");
+		JNX_LOGC("Could not write successfully\n");
 		return -1;
 	}
 	return n;
@@ -135,14 +135,14 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 		case AF_INET6:
 			if(bind(s->socket,(struct sockaddr*) &conn_addr6, sizeof(conn_addr6)) < 0)
 			{
-				printf("Error binding IPV6 socket - %s\n",strerror(errno));
+				JNX_LOGC("Error binding IPV6 socket - %s\n",strerror(errno));
 				return -1;
 			}
 			break;
 		default:
 			if(bind(s->socket,(struct sockaddr*) &conn_addr, sizeof(conn_addr)) < 0)
 			{
-				printf("Error binding IPV4 socket - %s\n",strerror(errno));
+				JNX_LOGC("Error binding IPV4 socket - %s\n",strerror(errno));
 				return -1;
 			}
 			break;
@@ -165,7 +165,7 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 				clilen = sizeof(cli_addr6);
 				clisock = accept(s->socket,(struct sockaddr*)&cli_addr6,(socklen_t*)&clilen);
 				if(clisock < 0){
-					printf("Error on IPV6 accept\n");
+					JNX_LOGC("Error on IPV6 accept\n");
 					return -1;
 				}
 				break;
@@ -173,7 +173,7 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 				clilen = sizeof(cli_addr);
 				clisock = accept(s->socket,(struct sockaddr*)&cli_addr,(socklen_t*)&clilen);
 				if(clisock < 0){
-					printf("Error on IPV4 accept\n");
+					JNX_LOGC("Error on IPV4 accept\n");
 					return -1;
 				}
 				break;
@@ -225,7 +225,7 @@ size_t jnx_network_broadcast(jnx_socket *s, ssize_t port, char *group, char *msg
 
 	if(sendto(s->socket,msg,msg_len,0,(struct sockaddr*)&cli_addr,sizeof(cli_addr)) < 0)
 	{
-		printf("Error on broadcast\n");
+		JNX_LOGC("Error on broadcast\n");
 		return -1;
 	}
 	return 0;
@@ -240,7 +240,7 @@ size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, br
 	cli_addr.sin_port = htons(port);
 	if(bind(s->socket,(struct sockaddr*)&cli_addr,sizeof(cli_addr)) < 0)
 	{
-		printf("Error on broadcast listen\n");
+		JNX_LOGC("Error on broadcast listen\n");
 		return -1;
 	}
 	mreq.imr_multiaddr.s_addr = inet_addr(group);
@@ -248,7 +248,7 @@ size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, br
 
 	if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq)) < 0)
 	{
-		printf("Unable to setup broadcast options\n");
+		JNX_LOGC("Unable to setup broadcast options\n");
 		return -1;
 	}
 	char buffer[MAXBUFFER];
@@ -259,7 +259,7 @@ size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, br
 		size_t nbytes = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr*)&cli_addr,(socklen_t*)&addrlen);
 		if(nbytes < 0)
 		{
-			printf("Error receiving data from broadcast\n");
+			JNX_LOGC("Error receiving data from broadcast\n");
 			return -1;
 		}
 		c(buffer,nbytes);
