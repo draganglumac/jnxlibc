@@ -32,8 +32,6 @@
 	extern "C" {
 #endif
 
-typedef enum { IPV4 , IPV6 } jnx_address_family;
-
 typedef struct 
 {
 	int socket;
