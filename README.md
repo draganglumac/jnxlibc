@@ -9,7 +9,7 @@ Built in the spirit of TDD ( [See Here](http://showterm.io/3dd2883f32e0e385be055
 ##Key features:
 - Threading
 - Memory & stack tracing
-- Simple listen/send over IP/port functions (Dynamic buffers for big messages!)
+- Network sockets for TCP/UDP send/listen
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
 - Robust logger system
