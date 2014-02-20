@@ -19,6 +19,7 @@
 #include "jnxnetwork.h"
 #include "jnxthread.h"
 #include "jnxlog.h"
+#include "jnxterm.h"
 #include <stdio.h>
 #include <assert.h>
 #include <unistd.h>
@@ -30,17 +31,18 @@ static jnx_socket *server_socket;
 static jnx_socket *write_socket;
 void test_create()
 {
-	JNX_LOGC("Test create:");
+	printf("Test creation - ");
 	jnx_socket *s = jnx_network_socket_create(FAMILY,SOCK_STREAM);
 	assert(s != NULL);
 	jnx_network_socket_destroy(s);
-	JNX_LOGC(" Ok\n");
+	jnx_term_printf_in_color(JNX_COL_GREEN," OK\n");
 }
 void cb(char *msg, size_t bytes, char *ip)
 {
+	printf("Test Read - ");
 	iscompleted = 1;
 	assert(strcmp("Hello!",msg) == 0);
-
+	jnx_term_printf_in_color(JNX_COL_GREEN," OK\n");
 	free(msg);
 	exit(0);
 }
@@ -53,14 +55,13 @@ void *server_loop(void *args)
 }
 void test_write()
 {
-
-	JNX_LOGC("Test write[%u]:",FAMILY);
+	printf("Test write - ");
 	//set up our server component
 	jnxthread_create_disposable(server_loop,NULL);		
 	write_socket = jnx_network_socket_create(FAMILY,SOCK_STREAM);
 	assert(write_socket != NULL);
 	size_t sent = jnx_network_send(write_socket,HOST,PORT,"Hello!",strlen("Hello!"));
-	JNX_LOGC(" Ok\n");
+	jnx_term_printf_in_color(JNX_COL_GREEN," OK\n");
 }
 void test_sequence()
 {
@@ -84,7 +85,7 @@ int main(int argc, char **argv)
 {
 	JNX_LOGC("Starting networking tests...\n");
 	/*  */
-	JNX_LOGC("IPV4 tests...\n");
+	printf("IPV4 tests...\n");
 
 	FAMILY = AF_INET;
 	PORT = 2501;	
@@ -94,7 +95,7 @@ int main(int argc, char **argv)
 	jnx_network_socket_destroy(server_socket);
 	jnx_network_socket_destroy(write_socket);
 
-	JNX_LOGC("IPV6 tests...\n");
+	printf("IPV6 tests...\n");
 	
 	iscompleted = 0;	
 	FAMILY = AF_INET6;
@@ -105,6 +106,6 @@ int main(int argc, char **argv)
 	jnx_network_socket_destroy(server_socket);
 	jnx_network_socket_destroy(write_socket);
 
-
+	jnx_term_printf_in_color(JNX_COL_GREEN,"Test passed\n");
 	return 0;
 }
