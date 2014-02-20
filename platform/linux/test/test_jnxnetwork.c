@@ -6,45 +6,104 @@
  *    Description:  
  *
  *        Version:  1.0
- *        Created:  03/23/13 16:06:18
+ *        Created:  02/20/14 12:57:51
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  Alex Jones (), alexsimonjones@gmail.com
+ *         Author:  jonesax (), 
  *   Organization:  
  *
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "jnxlog.h"
 #include "jnxnetwork.h"
-#include "jnxterm.h"
-#include <pthread.h>
+#include "jnxthread.h"
 #include <stdio.h>
 #include <assert.h>
-#include <string.h>
 #include <unistd.h>
-void network_listener_callback(char *message)
+static int PORT = 9030;
+static char* HOST = "localhost";
+unsigned int FAMILY = AF_INET6;
+static int iscompleted = 0;
+static jnx_socket *server_socket;
+static jnx_socket *write_socket;
+void test_create()
 {
-    assert(strcmp(message,"Hello there") == 0);
-    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-    exit(0);
+	printf("Test create:");
+	jnx_socket *s = jnx_network_socket_create(FAMILY,SOCK_STREAM);
+	assert(s != NULL);
+	jnx_network_socket_destroy(s);
+	printf("Ok\n");
 }
-void *worker_thread(void*args)
+void cb(char *msg, size_t bytes, char *ip)
 {
-    jnx_network_broadcast_listener_callback c = &network_listener_callback;
-    jnx_network_broadcast_listener(12345,"225.0.0.37",c);    
+	iscompleted = 1;
+	assert(strcmp("Hello!",msg) == 0);
+
+	free(msg);
+	exit(0);
+}
+void *server_loop(void *args)
+{
+	listen_callback c = cb;
+	server_socket = jnx_network_socket_create(FAMILY,SOCK_STREAM);
+	jnx_network_listen(server_socket,PORT,4,c);
+	
+}
+void test_write()
+{
+
+	printf("Test write[%u]:",FAMILY);
+	//set up our server component
+	jnxthread_create_disposable(server_loop,NULL);		
+	write_socket = jnx_network_socket_create(FAMILY,SOCK_STREAM);
+	assert(write_socket != NULL);
+	size_t sent = jnx_network_send(write_socket,HOST,PORT,"Hello!",strlen("Hello!"));
+	printf("Ok\n");
+}
+void test_sequence()
+{
+	test_create();
+	test_write();
+
+	int elapsed = 0;
+	time_t s;
+	time(&s);	
+	while(iscompleted != 1 && elapsed < 5)
+	{
+		sleep(1);
+		time_t e;
+		time(&e);
+		elapsed = e - s;
+	}
+	assert(elapsed <= 5);
+
 }
 int main(int argc, char **argv)
 {
-    JNX_LOGC("Running tests for jnxnetwork\n");
-    pthread_t threadone;
-    JNX_LOGC("- test multicast");
-    pthread_create(&threadone, NULL, &worker_thread, NULL); 
-    sleep(1);
-    jnx_network_send_broadcast(12345,"225.0.0.37","Hello there");
-    sleep(2);
+	printf("Starting networking tests...\n");
+	/*  */
+	printf("IPV4 tests...\n");
 
-    JNX_LOGC("Network tests completed.\n");
-    return 0;
+	FAMILY = AF_INET;
+	PORT = 2501;	
+
+	test_sequence();
+
+	jnx_network_socket_destroy(server_socket);
+	jnx_network_socket_destroy(write_socket);
+
+	printf("IPV6 tests...\n");
+	
+	iscompleted = 0;	
+	FAMILY = AF_INET6;
+	PORT = 6903;	
+
+	test_sequence();
+
+	jnx_network_socket_destroy(server_socket);
+	jnx_network_socket_destroy(write_socket);
+
+
+	return 0;
 }
