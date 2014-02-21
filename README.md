@@ -9,7 +9,7 @@ Built in the spirit of TDD ( [See Here](http://showterm.io/3dd2883f32e0e385be055
 ##Key features:
 - Threading
 - Memory & stack tracing
-- Simple listen/send over IP/port functions (Dynamic buffers for big messages!)
+- Network sockets for TCP/UDP send/listen
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
 - Robust logger system
@@ -64,9 +64,8 @@ size_t readBytes = jnx_file_read("example.txt",&buffer,"r");
 ```
 Sending TCP message over network
 ```C
-int ret = jnx_network_send_message("10.0.0.1","9090","Message",strlen("Message"));
-//Actually lets just broadcast that
-int ret = jnx_network_broadcast("9090","255.255.255.0","Message");
+jnx_socket *write_socket = jnx_network_socket_create(AF_INET,SOCK_STREAM);
+size_t sent = jnx_network_send(write_socket,HOST,PORT,"Hello!",strlen("Hello!"));
 ```
 Using memory management
 ```C

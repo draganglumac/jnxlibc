@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include "jnxthread.h"
 #include "jnxbtree.h"
-
+#include "jnxlog.h"
 static jnx_btree *pooltree = NULL;
 static int threadcount  = 1;
 
@@ -97,7 +97,7 @@ void jnxthread_lock(jnxthread_mutex *m)
 void jnxthread_destroy(jnxthread *thr)
 {
 #if defined(WIN32)
-	printf("Not implemented\n");
+	JNX_LOGC("Not implemented\n");
 	return NULL;
 #endif
 	if(thr == NULL)
@@ -116,7 +116,7 @@ void jnxthread_destroy(jnxthread *thr)
 jnxthread* jnxthread_create(entry_point e,void *args)
 {
 #if defined(WIN32)
-	printf("Not implemented\n");
+	JNX_LOGC("Not implemented\n");
 	return NULL;
 #endif
 	jnxthread *thr = malloc(sizeof(jnxthread));
@@ -138,7 +138,7 @@ int jnxthread_create_disposable(entry_point e,void *args)
 {
 	int ret = 0;
 #if defined(WIN32)
-	printf("Not implemented\n");
+	JNX_LOGC("Not implemented\n");
 	return NULL;
 #endif
 	//platform specific zone//
@@ -153,7 +153,7 @@ int jnxthread_create_disposable(entry_point e,void *args)
 int jnxthread_join(jnxthread *thr, void **data)
 {
 #if defined(WIN32)
-	printf("Not implemented\n");
+	JNX_LOGC("Not implemented\n");
 	return NULL;
 #endif
 	int ret = 0;

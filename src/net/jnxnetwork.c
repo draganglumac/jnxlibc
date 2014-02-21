@@ -32,9 +32,17 @@
 #include "jnxnetwork.h"
 #include "jnxlog.h"
 #define MAXBUFFER 1024
+void jnx_network_socket_close(jnx_socket *s)
+{
+	if(!s->isclosed)
+	{
+		close(s->socket);
+	}
+}
 void jnx_network_socket_destroy(jnx_socket *s)
 {
 	close(s->socket);
+	s->isclosed = 1;
 	free(s);
 }
 jnx_socket *jnx_network_socket_create(unsigned int addrfamily,ssize_t stype)
@@ -56,6 +64,7 @@ jnx_socket *jnx_network_socket_create(unsigned int addrfamily,ssize_t stype)
 	s->addrfamily = addrfamily;
 	s->stype = stype;
 	s->socket = sockfd;
+	s->isclosed = 0;
 	return s;
 }
 size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssize_t msg_len)
@@ -215,15 +224,41 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 	return 0;
 }
 
-size_t jnx_network_broadcast(jnx_socket *s, ssize_t port, char *group, char *msg,ssize_t msg_len)
+size_t jnx_network_broadcast(jnx_socket *s,ssize_t port, char *group, char *msg,ssize_t msg_len)
 {
-	struct sockaddr_in cli_addr;
-	memset(&cli_addr,0,sizeof(cli_addr));
-	cli_addr.sin_family = s->addrfamily;
-	cli_addr.sin_addr.s_addr = inet_addr(group);
-	cli_addr.sin_port = htons(port);
+	if(!s->isclosed)
+	{
+		jnx_network_socket_close(s);
+	}
+	int rv;
+	struct addrinfo hints, *servinfo, *p;
+	memset(&hints,0,sizeof hints);
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_DGRAM;
 
-	if(sendto(s->socket,msg,msg_len,0,(struct sockaddr*)&cli_addr,sizeof(cli_addr)) < 0)
+	char buffer[128];
+	sprintf(buffer,"%zu",port);
+	if((rv = getaddrinfo(group,buffer,&hints,&servinfo)) != 0){
+		JNX_LOGC("Error with getaddrinfo - %s\n",strerror(errno));
+		return -1;
+	}
+	for(p = servinfo; p != NULL; p = p->ai_next){
+		if((s->socket= socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1)
+		{
+			JNX_LOGC("Socket error - %s\n",strerror(errno));
+			continue;
+		}
+		break;
+	}
+	int broadcast = 1;
+	if(setsockopt(s->socket,SOL_SOCKET,SO_BROADCAST,&broadcast, sizeof broadcast) == -1)
+	{
+		JNX_LOGC("Broadcast could not set sock opts\n");
+		return -1;;
+	}
+
+	freeaddrinfo(servinfo);
+	if((sendto(s->socket,msg,msg_len,0,p->ai_addr,p->ai_addrlen)) == -1)
 	{
 		JNX_LOGC("Error on broadcast\n");
 		return -1;
@@ -232,38 +267,57 @@ size_t jnx_network_broadcast(jnx_socket *s, ssize_t port, char *group, char *msg
 }
 size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, broadcast_listen_callback c)
 {
-	struct ip_mreq mreq;
-	struct sockaddr_in cli_addr;
-	memset(&cli_addr,0,sizeof(cli_addr));
-	cli_addr.sin_family = s->addrfamily;
-	cli_addr.sin_addr.s_addr = inet_addr(INADDR_ANY);
-	cli_addr.sin_port = htons(port);
-	if(bind(s->socket,(struct sockaddr*)&cli_addr,sizeof(cli_addr)) < 0)
+	if(!s->isclosed)
 	{
-		JNX_LOGC("Error on broadcast listen\n");
-		return -1;
+		jnx_network_socket_close(s);
 	}
-	mreq.imr_multiaddr.s_addr = inet_addr(group);
-	mreq.imr_interface.s_addr = htons(INADDR_ANY);
+	struct addrinfo hints, *servinfo, *p;
+	size_t nbytes;
+	int rv;
+	memset(&hints,0,sizeof hints);
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_DGRAM;
+	hints.ai_flags = AI_PASSIVE;
 
-	if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq)) < 0)
-	{
-		JNX_LOGC("Unable to setup broadcast options\n");
+	char buffer[128];
+	sprintf(buffer,"%zu",port);
+	if((rv = getaddrinfo(group,buffer,&hints,&servinfo)) != 0){
+		JNX_LOGC("Error with getaddrinfo - %s",strerror(errno));
 		return -1;
 	}
-	char buffer[MAXBUFFER];
+	for(p = servinfo; p != NULL; p = p->ai_next){
+		if((s->socket= socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1)
+		{
+			JNX_LOGC("Socket error - %s",strerror(errno));
+			continue;
+		}
+		break;
+	}
+	if(bind(s->socket, p->ai_addr,p->ai_addrlen) == -1)
+	{
+		JNX_LOGC("Error with binding broadcast listener - %s",strerror(errno));
+		return -1;
+	}	
+
+	freeaddrinfo(servinfo);
+
+	struct sockaddr_storage their_addr;
+	socklen_t addr_len = sizeof their_addr;
+	char obuffer[MAXBUFFER];
+	
 	while(1)
 	{
-		bzero(buffer,MAXBUFFER);
-		int addrlen = sizeof(cli_addr);
-		size_t nbytes = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr*)&cli_addr,(socklen_t*)&addrlen);
-		if(nbytes < 0)
+		bzero(obuffer,MAXBUFFER);
+		if((nbytes = recvfrom(s->socket,obuffer,MAXBUFFER,0,
+						(struct sockaddr *)&their_addr,&addr_len)) == -1)
 		{
-			JNX_LOGC("Error receiving data from broadcast\n");
+			JNX_LOGC("Error with recvfrom - %s",strerror(errno));
 			return -1;
-		}
-		c(buffer,nbytes);
+		}	
+		c(strdup(obuffer),nbytes);
 	}
+
+	return 0;
 }
 
 

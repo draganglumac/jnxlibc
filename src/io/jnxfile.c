@@ -12,7 +12,7 @@
 #include <ftw.h>
 #include <libgen.h>
 #include <assert.h>
-#include "jnxmem.h"
+#include "jnxlog.h"
 size_t jnx_file_read(char* path, char **buffer,char *flags)
 {
 	FILE* fp;
@@ -93,7 +93,7 @@ static int jnx_file_path_exists(char *path)
 	getcwd(buffer,s);
 	if(buffer == NULL)
 	{
-		printf("jnx_file_path_exists: Unable to validate cwd\n");
+		JNX_LOGC("jnx_file_path_exists: Unable to validate cwd\n");
 		return 0;
 	}
 	if(chdir(path) != 0)
@@ -129,7 +129,7 @@ int jnx_file_mktempdir(char *dirtemplate, char **path)
 		char *tempdir=jnx_file_random_dir(dirtemplate);	
 		if((mkdir(tempdir, S_IRWXU  | S_IRWXG | S_IROTH | S_IXOTH)) != 0)
 		{
-			printf("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
+			JNX_LOGC("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
 			*path = NULL;
 			free(tempdir);
 			return 1;

@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include "jnxlist.h"
+#include "jnxlog.h"
 #include "jnxmem.h"
 #include <stdio.h>
 
@@ -97,7 +98,7 @@ void jnx_list_destroy(jnx_list** A)
 {
 	if((*A) == NULL)
 	{
-		printf("jnx_list_destroy: No list\n");
+		JNX_LOGC("jnx_list_destroy: No list\n");
 		return;
 	}
 	if((*A)->head == NULL)
