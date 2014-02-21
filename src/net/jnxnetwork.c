@@ -85,6 +85,8 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 		return -1;
 	}
 
+
+	///TCP or UDP 
 	switch(s->addrfamily)
 	{
 		case AF_INET6:
@@ -92,10 +94,13 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 			conn_addr6.sin6_family = s->addrfamily;
 			conn_addr6.sin6_addr = in6addr_loopback;
 			conn_addr6.sin6_port = htons(port);
-			if(connect(s->socket,(struct sockaddr*) &conn_addr6, sizeof(conn_addr6)) < 0)
-			{
-				JNX_LOGC("Failed to connect IPV6 %s",strerror(errno));
-				return -1;
+
+			if(s->stype != SOCK_DGRAM){	
+				if(connect(s->socket,(struct sockaddr*) &conn_addr6, sizeof(conn_addr6)) < 0)
+				{
+					JNX_LOGC("Failed to connect IPV6 %s",strerror(errno));
+					return -1;
+				}
 			}
 			break;
 		default:
@@ -103,13 +108,34 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 			conn_addr.sin_family = s->addrfamily;
 			bcopy((char*)conn->h_addr, (char*) &conn_addr.sin_addr.s_addr,conn->h_length);
 			conn_addr.sin_port = htons(port);
-			if(connect(s->socket,(struct sockaddr*) &conn_addr, sizeof(conn_addr)) < 0)
-			{
-				JNX_LOGC("Failed to connect IPV4 %s",strerror(errno));
-				return -1;
+
+			if(s->stype != SOCK_DGRAM){	
+				if(connect(s->socket,(struct sockaddr*) &conn_addr, sizeof(conn_addr)) < 0)
+				{
+					JNX_LOGC("Failed to connect IPV4 %s",strerror(errno));
+					return -1;
+				}
 			}
 	}
-	ssize_t n = write(s->socket,msg,strlen(msg));
+	ssize_t n = 0;
+
+	switch(s->stype)
+	{
+		case SOCK_STREAM:
+			n= write(s->socket,msg,strlen(msg));
+			break;
+		case SOCK_DGRAM:
+			switch(s->addrfamily)
+			{
+				case AF_INET6:
+					n=sendto(s->socket,msg,strlen(msg),0,(struct sockaddr*)&conn_addr, sizeof(conn_addr));
+					break;
+				case AF_INET:
+					n=sendto(s->socket,msg,strlen(msg),0,(struct sockaddr*)&conn_addr6, sizeof(conn_addr6));
+					break;
+			}
+			break;
+	}
 	if(n < 0)
 	{
 		JNX_LOGC("Could not write successfully\n");
@@ -123,9 +149,9 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 	assert(max_connections);
 
 	struct sockaddr_in conn_addr;
-
 	struct sockaddr_in6 conn_addr6;
 
+	///TCP or UDP 
 	switch(s->addrfamily)
 	{
 		case AF_INET6:
@@ -152,70 +178,104 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 			break;
 	}
 
-	listen(s->socket,max_connections);
 	//IPV4
 	struct sockaddr_in cli_addr;
 	///IPV6
 	struct sockaddr_in6 cli_addr6;
 
-	int n = -1;
-	while(1)
+	int clilen = 0;
+	int clisock;
+	char buffer[MAXBUFFER];
+	switch(s->stype)
 	{
-		int clilen = 0;
-		int clisock;
-		switch(s->addrfamily)
-		{
-			case AF_INET6:
-				clilen = sizeof(cli_addr6);
-				clisock = accept(s->socket,(struct sockaddr*)&cli_addr6,(socklen_t*)&clilen);
-				if(clisock < 0){
-					JNX_LOGC("Error on IPV6 accept\n");
-					return -1;
+		case SOCK_STREAM:
+			listen(s->socket,max_connections);
+			int n = -1;
+			while(1)
+			{
+				switch(s->addrfamily)
+				{
+					case AF_INET6:
+						clilen = sizeof(cli_addr6);
+						clisock = accept(s->socket,(struct sockaddr*)&cli_addr6,(socklen_t*)&clilen);
+						if(clisock < 0){
+							JNX_LOGC("Error on IPV6 accept\n");
+							return -1;
+						}
+						break;
+					default:
+						clilen = sizeof(cli_addr);
+						clisock = accept(s->socket,(struct sockaddr*)&cli_addr,(socklen_t*)&clilen);
+						if(clisock < 0){
+							JNX_LOGC("Error on IPV4 accept\n");
+							return -1;
+						}
+						break;
 				}
-				break;
-			default:
-				clilen = sizeof(cli_addr);
-				clisock = accept(s->socket,(struct sockaddr*)&cli_addr,(socklen_t*)&clilen);
-				if(clisock < 0){
-					JNX_LOGC("Error on IPV4 accept\n");
-					return -1;
+				FILE *tmp_file = tmpfile();
+				assert(tmp_file);
+				size_t bytes = 0;
+				while(n != 0)
+				{
+					bzero(buffer,MAXBUFFER);
+					n = read(clisock,buffer,MAXBUFFER);
+					bytes += n;
+					fwrite(buffer,1,n,tmp_file);
 				}
-				break;
-		}
-		FILE *tmp_file = tmpfile();
-		assert(tmp_file);
-		size_t bytes = 0;
-		while(n != 0)
-		{
-			char buffer[MAXBUFFER];
-			n = read(clisock,buffer,MAXBUFFER);
-			bytes += n;
-			fwrite(buffer,1,n,tmp_file);
-		}
-		int l = ftell(tmp_file);
-		rewind(tmp_file);
-		char *out = calloc(l +1, sizeof(char));
-		fread(out,1,l,tmp_file);
-		fclose(tmp_file);
+				int l = ftell(tmp_file);
+				rewind(tmp_file);
+				char *out = calloc(l +1, sizeof(char));
+				fread(out,1,l,tmp_file);
+				fclose(tmp_file);
 
-		if(s->addrfamily == AF_INET)
-		{
-			char ip4[INET_ADDRSTRLEN];
-			struct sockaddr_in sa;
-			inet_ntop(AF_INET,&(sa.sin_addr),ip4,INET_ADDRSTRLEN);
-			c(out,l,ip4);
-		}else if(s->addrfamily == AF_INET6)
-		{
-			char ip6[INET6_ADDRSTRLEN];
-			struct sockaddr_in6 sa6;
-			inet_ntop(AF_INET6,&(sa6.sin6_addr),ip6,INET6_ADDRSTRLEN);
-			c(out,l,ip6);
-		}else
-		{
-			c(out,n,"UNKNOWN");
-		}
-		n = -1;
+				if(s->addrfamily == AF_INET)
+				{
+					char ip4[INET_ADDRSTRLEN];
+					struct sockaddr_in sa;
+					inet_ntop(AF_INET,&(sa.sin_addr),ip4,INET_ADDRSTRLEN);
+					c(out,l,ip4);
+				}else if(s->addrfamily == AF_INET6)
+				{
+					char ip6[INET6_ADDRSTRLEN];
+					struct sockaddr_in6 sa6;
+					inet_ntop(AF_INET6,&(sa6.sin6_addr),ip6,INET6_ADDRSTRLEN);
+					c(out,l,ip6);
+				}else
+				{
+					c(out,n,"UNKNOWN");
+				}
+				n = -1;
+			}
+			break;
+		case SOCK_DGRAM:	
+
+			while(1)
+			{
+				switch(s->addrfamily)
+				{
+					case AF_INET6:
+						bzero(buffer,MAXBUFFER);
+						clilen = sizeof(cli_addr6);
+						n = recvfrom(s->socket, buffer,MAXBUFFER,0,(struct sockaddr*)&cli_addr6,(socklen_t*)&clilen);
+						printf("Printing from DGRAM IPV6 - %s\n",buffer);
+						break;
+					case AF_INET:
+						bzero(buffer,MAXBUFFER);
+						clilen = sizeof(cli_addr);	
+						n = recvfrom(s->socket, buffer,MAXBUFFER,0,(struct sockaddr*)&cli_addr,(socklen_t*)&clilen);
+						printf("Printing from DGRAM IPV4 - %s\n",buffer);
+						break;
+
+				}		
+		
+
+			}
+			break;
+		default:
+			JNX_LOGC("Unsupported transport protocol\n");
+			return -1;
 	}
+
 	return 0;
 }
 
