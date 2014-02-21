@@ -84,20 +84,14 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 		JNX_LOGC("Failed to get host by name\n");
 		return -1;
 	}
-	//IPV4
-	bzero((char*) &conn_addr, sizeof(conn_addr));
-	conn_addr.sin_family = s->addrfamily;
-	bcopy((char*)conn->h_addr, (char*) &conn_addr.sin_addr.s_addr,conn->h_length);
-	conn_addr.sin_port = htons(port);
-	//IPV6
-	bzero((char*) &conn_addr6, sizeof(conn_addr6));
-	conn_addr6.sin6_family = s->addrfamily;
-	conn_addr6.sin6_addr = in6addr_loopback;
-	conn_addr6.sin6_port = htons(port);
 
 	switch(s->addrfamily)
 	{
 		case AF_INET6:
+			bzero((char*) &conn_addr6, sizeof(conn_addr6));
+			conn_addr6.sin6_family = s->addrfamily;
+			conn_addr6.sin6_addr = in6addr_loopback;
+			conn_addr6.sin6_port = htons(port);
 			if(connect(s->socket,(struct sockaddr*) &conn_addr6, sizeof(conn_addr6)) < 0)
 			{
 				JNX_LOGC("Failed to connect IPV6 %s",strerror(errno));
@@ -105,6 +99,10 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 			}
 			break;
 		default:
+			bzero((char*) &conn_addr, sizeof(conn_addr));
+			conn_addr.sin_family = s->addrfamily;
+			bcopy((char*)conn->h_addr, (char*) &conn_addr.sin_addr.s_addr,conn->h_length);
+			conn_addr.sin_port = htons(port);
 			if(connect(s->socket,(struct sockaddr*) &conn_addr, sizeof(conn_addr)) < 0)
 			{
 				JNX_LOGC("Failed to connect IPV4 %s",strerror(errno));
@@ -124,24 +122,17 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 	assert(port);
 	assert(max_connections);
 
-	///IPV4
 	struct sockaddr_in conn_addr;
-	bzero((char*)&conn_addr,sizeof(conn_addr));
-	conn_addr.sin_addr.s_addr = INADDR_ANY;
-	conn_addr.sin_family = s->addrfamily;
-	conn_addr.sin_port = htons(port);
 
-
-	///IPV6
 	struct sockaddr_in6 conn_addr6;
-	bzero((char*)&conn_addr6,sizeof(conn_addr6));
-	conn_addr6.sin6_addr = in6addr_any;	
-	conn_addr6.sin6_family = s->addrfamily;
-	conn_addr6.sin6_port = htons(port);	
 
 	switch(s->addrfamily)
 	{
 		case AF_INET6:
+			bzero((char*)&conn_addr6,sizeof(conn_addr6));
+			conn_addr6.sin6_addr = in6addr_any;	
+			conn_addr6.sin6_family = s->addrfamily;
+			conn_addr6.sin6_port = htons(port);	
 			if(bind(s->socket,(struct sockaddr*) &conn_addr6, sizeof(conn_addr6)) < 0)
 			{
 				JNX_LOGC("Error binding IPV6 socket - %s\n",strerror(errno));
@@ -149,6 +140,10 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 			}
 			break;
 		default:
+			bzero((char*)&conn_addr,sizeof(conn_addr));
+			conn_addr.sin_addr.s_addr = INADDR_ANY;
+			conn_addr.sin_family = s->addrfamily;
+			conn_addr.sin_port = htons(port);
 			if(bind(s->socket,(struct sockaddr*) &conn_addr, sizeof(conn_addr)) < 0)
 			{
 				JNX_LOGC("Error binding IPV4 socket - %s\n",strerror(errno));
@@ -304,7 +299,7 @@ size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, br
 	struct sockaddr_storage their_addr;
 	socklen_t addr_len = sizeof their_addr;
 	char obuffer[MAXBUFFER];
-	
+
 	while(1)
 	{
 		bzero(obuffer,MAXBUFFER);
