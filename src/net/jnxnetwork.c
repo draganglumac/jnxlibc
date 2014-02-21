@@ -84,9 +84,6 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 		JNX_LOGC("Failed to get host by name\n");
 		return -1;
 	}
-
-
-	///TCP or UDP 
 	switch(s->addrfamily)
 	{
 		case AF_INET6:
@@ -118,7 +115,6 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 			}
 	}
 	ssize_t n = 0;
-
 	switch(s->stype)
 	{
 		case SOCK_STREAM:
@@ -151,7 +147,6 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 	struct sockaddr_in conn_addr;
 	struct sockaddr_in6 conn_addr6;
 
-	///TCP or UDP 
 	switch(s->addrfamily)
 	{
 		case AF_INET6:
@@ -265,17 +260,13 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
 						n = recvfrom(s->socket, buffer,MAXBUFFER,0,(struct sockaddr*)&cli_addr,(socklen_t*)&clilen);
 						printf("Printing from DGRAM IPV4 - %s\n",buffer);
 						break;
-
 				}		
-		
-
 			}
 			break;
 		default:
 			JNX_LOGC("Unsupported transport protocol\n");
 			return -1;
 	}
-
 	return 0;
 }
 
