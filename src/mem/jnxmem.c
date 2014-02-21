@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include "jnxmem.h"
+#include "jnxlog.h"
 #include "jnxbtree.h"
 #include "jnxlist.h"
 typedef enum { FREE, ALLOC }jnx_mem_memtrace_state;
@@ -69,14 +70,14 @@ void jnx_mem_print()
 				state = "FREE";
 				totalbytes_free += m->size;
 			}
-			printf("[%s][%s:%d][%s - %zu]\n",m->file,m->function,m->line,state,m->size);
+			JNX_LOGC("[%s][%s:%d][%s - %zu]\n",m->file,m->function,m->line,state,m->size);
 			l->head = l->head->next_node;
 		}
 	}
 	char buffer[1024];
 	sprintf(buffer,"TOTAL ALLOC IN USE: %zukb [exact:%zu]\nTOTAL ALLOC FREE: %zu kb[exact:%zu]\n",(totalbytes_alloc / 1024 ),totalbytes_alloc
 			,(totalbytes_free / 1024),totalbytes_free);
-	printf(buffer);
+	JNX_LOGC(buffer);
 	jnx_list_destroy(&l);
 }
 void jnx_mem_print_to_file(char *path)
@@ -233,7 +234,7 @@ static inline void jnx_mem_new(void *ptr, size_t size,char* file,const char *fun
 	jnx_mem_item *m = malloc(sizeof(jnx_mem_item));
 	if(m == NULL)
 	{
-		printf("Error with allocation\n [%zu(kb)]",(size /1024));
+		JNX_LOGC("Error with allocation\n [%zu(kb)]",(size /1024));
 		return;
 	}
 	m->ptr = ptr;

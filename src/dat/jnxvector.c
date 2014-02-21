@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+#include "jnxlog.h"
 #include "jnxvector.h"
 #include "jnxmem.h"
 jnx_vector *jnx_vector_create(void)
@@ -59,7 +60,7 @@ void jnx_vector_grow(jnx_vector **vector, int increment)
     jnx_vector_record **temp = realloc((*vector)->vector,resize * sizeof(jnx_vector_record));
     if(temp == NULL) 
     {
-        printf("Error with reallocing\n");
+        JNX_LOGC("Error with reallocing\n");
         exit(0);
     }
     else{
@@ -114,7 +115,7 @@ void *jnx_vector_last(jnx_vector *vector)
 {
     if(vector->count == 0) 
     {
-        printf("Cannot pop from an empty vector\n");
+        JNX_LOGC("Cannot pop from an empty vector\n");
         return NULL;
     }
     void *data = vector->vector[vector->count -1 ]->data;
