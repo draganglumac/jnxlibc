@@ -14,48 +14,70 @@
 #ifdef __cplusplus
 	extern "C" {
 #endif
-typedef enum { FREE, ALLOC }jnx_mem_memtrace_state;
-typedef struct{
-	void *ptr;
-	size_t size;
-	char *file;
-	char *function;
-	int line;
-	jnx_mem_memtrace_state state;
-	
-}jnx_mem_item;
 
-/** 
- *@fn jnx_mem_memtrace
- *@brief Prints the current memtrace to file
- *@param path is the path to the save file, if this file is not valid it will print
- */
-void jnx_mem_trace(char *path);
-/**
- *@fn jnx_mem_memtrace_clear_memory
- *@brief frees all memory and resets tracking stack
- *@warning this is obviously quite dangerous in real programs
- */
-size_t jnx_mem_clear();
 
-/**
- *@fn jnx_mem_memtrace_get_byte_alloc
- *@brief more of a memging function this allows the user to get total bytes alloc
- *@return returns size_t of total number of bytes
+/*@macro JNX_MEMORY_MANAGEMENT
+ *@brief If this macro is not enabled memory management will default to system memory func 
  */
-size_t jnx_mem_get_byte_alloc();
+#if defined(JNX_MEMORY_MANAGEMENT)
+#define JNX_MEM_MALLOC(X)\
+	jnx_mem_malloc(X,__FILE__,__FUNCTION__,__LINE__)
+#define JNX_MEM_CALLOC(X,Y) \
+	jnx_mem_calloc(X,Y,__FILE__,__FUNCTION__,__LINE__)
+#define JNX_MEM_REALLOC(X,Y)\
+	jnx_mem_realloc(X,Y,__FILE__,__FUNCTION__,__LINE__)
+#define JNX_MEM_FREE(X)\
+	jnx_mem_free(X)
+#else
+#define JNX_MEM_MALLOC(X)\
+	malloc(X)
+#define JNX_MEM_CALLOC(X,Y) \
+	calloc(X,Y)
+#define JNX_MEM_REALLOC(X,Y)\
+	realloc(X,Y)
+#define JNX_MEM_FREE(X)\
+	free(X)
+#endif
 /**
- *@fn jnx_mem_memtrace_get_total_number_alloc
- *@brief more of a memging function this allows the user to get total allocs
- *@return returns size_t of total number of allocs
+ *@fn void jnx_mem_print()
+ *@brief prints memory tree to file
  */
-size_t jnx_mem_get_total_number_alloc();
+void jnx_mem_print();
 /**
- *@fn jnx_mem_memtrace_get_current_number_alloc
- *@brief more of a memging function this allows the user to get current allocs
- *@return returns size_t of current number of allocs
+ *@fn void jnx_mem_print_to_file(char *path)
+ *@brief prints current memory tree to file
  */
-size_t jnx_mem_get_current_number_alloc();
+void jnx_mem_print_to_file(char *path);
+/**
+ *@fn jnx_mem_clear()
+ *@brief clears all program memory registered through JNX_MEM 
+ *@warning use with caution will free memory 
+ *@return size_t of memory cleared
+ */
+size_t jnx_mem_clear();		
+/**
+ *@fn size_t jnx_mem_get_current_number_allocations
+ *@brief gives the current size of allocated memory in your program using jnx_mem
+ *@return size_t of memory allocated currently
+ */
+size_t jnx_mem_get_current_size_allocations();
+/**
+ *@fn size_t jnx_mem_get_current_number_allocations
+ *@brief gives the current number of allocated memory in your program using jnx_mem
+ *@return size_t number of memory allocated currently
+ */
+size_t jnx_mem_get_current_number_allocations();
+/**
+ *@fn size_t jnx_mem_get_total_number_allocations
+ *@brief gives the total size of allocated memory in your program using jnx_mem
+ *@return size_t of memory allocated
+ */
+size_t jnx_mem_get_total_size_allocations();		
+/**
+ *@fn jnx_mem_get_total_number_allocations()
+ *@return size_t of number of allocations in program 
+ */
+size_t jnx_mem_get_total_number_allocations();
 /**
  *@fn jnx_mem_malloc
  *@brief overrides normal system function with a memging version for memory leak testing
@@ -85,25 +107,6 @@ void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int 
  */
 void jnx_mem_free(void *ptr);
 
-#if defined(DEBUG) || defined(Debug)
-#define JNX_MEM_MALLOC(X)\
-	jnx_mem_malloc(X,__FILE__,__FUNCTION__,__LINE__);
-#define JNX_MEM_CALLOC(X,Y) \
-	jnx_mem_calloc(X,Y,__FILE__,__FUNCTION__,__LINE__);
-#define JNX_MEM_REALLOC(X,Y)\
-	jnx_mem_realloc(X,Y,__FILE__,__FUNCTION__,__LINE__);
-#define JNX_MEM_FREE(X)\
-	jnx_mem_free(X);
-#else
-#define JNX_MEM_MALLOC(X)\
-	malloc(X);
-#define JNX_MEM_CALLOC(X,Y) \
-	calloc(X,Y);
-#define JNX_MEM_REALLOC(X,Y)\
-	realloc(X,Y);
-#define JNX_MEM_FREE(X)\
-	free(X);
-#endif
 #ifdef __cplusplus
 	}
 #endif

@@ -17,14 +17,13 @@
  */
 #include <stdlib.h>
 #include <unistd.h>
-#include <pthread.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/ioctl.h>
 #include <string.h>
 #include "jnxterm.h"
-
+#include "jnxthread.h"
 #define JNX_TERM_RESET     0
 #define JNX_TERM_BRIGHT    1
 #define JNX_TERM_DIM       2
@@ -34,9 +33,9 @@
 #define JNX_TERM_HIDDEN    8
 
 static int ISLOADING_BAR = 0;
-static pthread_t bar_loader_thread;
+static jnxthread* bar_loader_thread;
 static int ISLOADING_SPIN = 0;
-static pthread_t loader_thread;
+static jnxthread* loader_thread;
 static int fd;
 static fpos_t pos;
 static char *loading_bar[11] = {
@@ -152,11 +151,12 @@ void jnx_term_load_spinner(int state)
 	ISLOADING_SPIN = state;
 	if(ISLOADING_SPIN == 1)
 	{
-		pthread_create(&loader_thread,NULL,loading_loop,NULL);
+		loader_thread = jnxthread_create(loading_loop,NULL);
 	}
 	else
 	{
-		pthread_join(loader_thread,NULL);
+		void *data;
+		jnxthread_join(loader_thread,&data);
 		printf("\033[u\033[2K\n");
 	}
 }
@@ -165,10 +165,11 @@ void jnx_term_load_bar(int state)
 	ISLOADING_BAR = state;
 	if(ISLOADING_BAR == 1)
 	{
-		pthread_create(&bar_loader_thread,NULL,loading_loop_bar,NULL);
+		bar_loader_thread = jnxthread_create(loading_loop_bar,NULL);
 	}else
 	{
-		pthread_join(bar_loader_thread,NULL);
+		void *data;
+		jnxthread_join(bar_loader_thread,&data);
 		printf("\033[u\033[2K\n");
 	}
 }

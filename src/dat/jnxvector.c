@@ -21,14 +21,14 @@
 #include "jnxmem.h"
 jnx_vector *jnx_vector_create(void)
 {
-    jnx_vector *vector = JNX_MEM_MALLOC(sizeof(jnx_vector));
+    jnx_vector *vector = malloc(sizeof(jnx_vector));
     vector->count = 0;
     vector->vector = NULL;
     return vector;
 }
 jnx_vector_record *jnx_vector_record_create(void *value)
 {
-    jnx_vector_record *record = JNX_MEM_MALLOC(sizeof(record));
+    jnx_vector_record *record = malloc(sizeof(record));
     record->data = value;
     record->used = 1;
 
@@ -36,22 +36,22 @@ jnx_vector_record *jnx_vector_record_create(void *value)
 }
 jnx_vector_record *jnx_vector_record_create_empty()
 {
-    jnx_vector_record *record = JNX_MEM_MALLOC(sizeof(record));
+    jnx_vector_record *record = malloc(sizeof(record));
     record->data = NULL;
     record->used = 0;
     return record;
 }
-//One of the primary reasons not to JNX_MEM_FREE data here is we don't know where it belongs too
+//One of the primary reasons not to free data here is we don't know where it belongs too
 //and it may cause a segfault if its on the stack
 void jnx_vector_destroy(jnx_vector* vector)
 {
     int x = 0;
     for ( x = 0; x < vector->count; ++x )
     {
-        JNX_MEM_FREE(vector->vector[x]);
+        free(vector->vector[x]);
     }
-    JNX_MEM_FREE(vector->vector);
-    JNX_MEM_FREE(vector);
+    free(vector->vector);
+    free(vector);
 }
 void jnx_vector_grow(jnx_vector **vector, int increment)
 {
@@ -118,7 +118,7 @@ void *jnx_vector_last(jnx_vector *vector)
         return NULL;
     }
     void *data = vector->vector[vector->count -1 ]->data;
-    JNX_MEM_FREE(vector->vector[vector->count -1]);
+    free(vector->vector[vector->count -1]);
     vector->count--;
     vector->vector = realloc(vector->vector, (vector->count) * sizeof(void*));
     return data;
