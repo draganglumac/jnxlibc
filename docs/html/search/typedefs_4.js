@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['record',['record',['../jnxbtree_8h.html#a61cff5d8b9ca7f09ea7b091fc16bbc90',1,'jnxbtree.h']]]
+  ['listen_5fcallback',['listen_callback',['../jnxnetwork_8h.html#a8269c113c9faca950ba1bdcddb4b173f',1,'jnxnetwork.h']]],
+  ['logtype',['logtype',['../jnxlog_8h.html#af838bdf05a3012d829363e7915dd4bba',1,'jnxlog.h']]]
 ];

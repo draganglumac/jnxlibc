@@ -111,9 +111,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a9c7e8d9cf272961e3cb3a9b2ad689f54"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a9c7e8d9cf272961e3cb3a9b2ad689f54">JNX_LOGC</a>(X,...)&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ab0ee2c9d64b0018f1e90d15361762578">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa3fa0174e1fc703e47d00fb1627556206">LOG_CONSOLE</a>,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)</td></tr>
 <tr class="memdesc:a9c7e8d9cf272961e3cb3a9b2ad689f54"><td class="mdescLeft">&#160;</td><td class="mdescRight">log to console  <a href="#a9c7e8d9cf272961e3cb3a9b2ad689f54">More...</a><br/></td></tr>
 <tr class="separator:a9c7e8d9cf272961e3cb3a9b2ad689f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2df0826e29dbbf8af36dd7142a7602fe"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a2df0826e29dbbf8af36dd7142a7602fe">JNX_LOGF</a>(X)&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ab0ee2c9d64b0018f1e90d15361762578">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa05a425919d86aebc82762bd79990df56">LOG_FILE</a>,__FILE__,__FUNCTION__,__LINE__,X)</td></tr>
-<tr class="memdesc:a2df0826e29dbbf8af36dd7142a7602fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">log to file  <a href="#a2df0826e29dbbf8af36dd7142a7602fe">More...</a><br/></td></tr>
-<tr class="separator:a2df0826e29dbbf8af36dd7142a7602fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a587b63c4200969ede4a68abb268a43ed"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a587b63c4200969ede4a68abb268a43ed">JNX_LOGF</a>(X,...)&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ab0ee2c9d64b0018f1e90d15361762578">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa05a425919d86aebc82762bd79990df56">LOG_FILE</a>,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)</td></tr>
+<tr class="memdesc:a587b63c4200969ede4a68abb268a43ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">log to file  <a href="#a587b63c4200969ede4a68abb268a43ed">More...</a><br/></td></tr>
+<tr class="separator:a587b63c4200969ede4a68abb268a43ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -186,7 +186,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a2df0826e29dbbf8af36dd7142a7602fe"></a>
+<a class="anchor" id="a587b63c4200969ede4a68abb268a43ed"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -194,8 +194,18 @@ Functions</h2></td></tr>
           <td class="memname">#define JNX_LOGF</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">X</td><td>)</td>
-          <td>&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ab0ee2c9d64b0018f1e90d15361762578">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa05a425919d86aebc82762bd79990df56">LOG_FILE</a>,__FILE__,__FUNCTION__,__LINE__,X)</td>
+          <td class="paramname">X, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ab0ee2c9d64b0018f1e90d15361762578">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa05a425919d86aebc82762bd79990df56">LOG_FILE</a>,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -331,7 +341,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 17 2014 18:28:33 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Feb 21 2014 16:01:44 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

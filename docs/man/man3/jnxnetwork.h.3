@@ -1,4 +1,4 @@
-.TH "jnxnetwork.h" 3 "Mon Feb 17 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxnetwork.h" 3 "Fri Feb 21 2014" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -11,178 +11,173 @@ The API for jnxlibc networking (includes TCP, UDP )
 .PP
 \fC#include <stddef\&.h>\fP
 .br
+\fC#include <sys/types\&.h>\fP
+.br
+\fC#include <sys/stat\&.h>\fP
+.br
+\fC#include <sys/socket\&.h>\fP
+.br
+\fC#include <sys/un\&.h>\fP
+.br
+\fC#include <netinet/in\&.h>\fP
+.br
 
-.SS "Macros"
+.SS "Classes"
 
 .in +1c
 .ti -1c
-.RI "#define \fBMAXBUFFER\fP   4028"
-.br
-.RI "\fIMaximum buffer size allowed\&. \fP"
-.ti -1c
-.RI "#define \fBADDRESSFAMILY\fP   AF_INET"
+.RI "struct \fBjnx_socket\fP"
 .br
 .in -1c
 .SS "Typedefs"
 
 .in +1c
 .ti -1c
-.RI "typedef void(* \fBjnx_network_listener_callback\fP )(char *msg, size_t bytes, char *client_ip_addr)"
+.RI "typedef void(* \fBlisten_callback\fP )(char *, size_t, char *)"
 .br
-.RI "\fIThis is the callback for the received buffer from the network listener\&. \fP"
 .ti -1c
-.RI "typedef void(* \fBjnx_network_broadcast_listener_callback\fP )(char *msg)"
+.RI "typedef void(* \fBbroadcast_listen_callback\fP )(char *, size_t)"
 .br
 .in -1c
 .SS "Functions"
 
 .in +1c
 .ti -1c
-.RI "int \fBjnx_network_setup_listener\fP (int port, int max_connections, void(*Callback)(char *, size_t, char *))"
+.RI "\fBjnx_socket\fP * \fBjnx_network_socket_create\fP (unsigned int addrfamily, ssize_t stype)"
 .br
-.RI "\fIUsing port and a function pointer callback it will create a listener\&. \fP"
+.RI "\fIcreates a jnx socket \fP"
 .ti -1c
-.RI "void \fBjnx_network_cancel_listener\fP (void)"
+.RI "void \fBjnx_network_socket_close\fP (\fBjnx_socket\fP *s)"
 .br
-.RI "\fICancels the last set listener\&. \fP"
+.RI "\fIclose the socket but maintain the socket object  s the socket object to close \fP"
 .ti -1c
-.RI "int \fBjnx_network_send_message\fP (char *host, int port, char *msg, size_t msg_len)"
+.RI "void \fBjnx_network_socket_destroy\fP (\fBjnx_socket\fP *s)"
 .br
-.RI "\fIThis sends a message via selected port to host\&. \fP"
 .ti -1c
-.RI "int \fBjnx_network_send_broadcast\fP (int port, char *broadcastgroup, char *message)"
+.RI "size_t \fBjnx_network_send\fP (\fBjnx_socket\fP *s, char *host, ssize_t port, char *msg, ssize_t msg_len)"
 .br
-.RI "\fISends a UDP datagram across the selected group range\&. \fP"
 .ti -1c
-.RI "void \fBjnx_network_broadcast_listener\fP (int port, char *broadcastgroup, void(*callback_function)(char *))"
+.RI "size_t \fBjnx_network_listen\fP (\fBjnx_socket\fP *s, ssize_t port, ssize_t max_connections, \fBlisten_callback\fP c)"
 .br
-.RI "\fIsets up a listener for udp datagram broadcasts \fP"
 .ti -1c
-.RI "char * \fBjnx_network_local_ip\fP (char *interface)"
+.RI "size_t \fBjnx_network_broadcast\fP (\fBjnx_socket\fP *s, ssize_t port, char *group, char *msg, ssize_t msg_len)"
 .br
-.RI "\fIfinds the current machine ip address for given interface \fP"
+.ti -1c
+.RI "size_t \fBjnx_network_broadcast_listen\fP (\fBjnx_socket\fP *s, ssize_t port, char *group, \fBbroadcast_listen_callback\fP c)"
+.br
 .in -1c
 .SH "Detailed Description"
 .PP 
 The API for jnxlibc networking (includes TCP, UDP ) 
 
 #include <jnxc_headers/jnxnetwork\&.h> 
-.SH "Macro Definition Documentation"
-.PP 
-.SS "#define ADDRESSFAMILY   AF_INET"
-
-.SS "#define MAXBUFFER   4028"
-
-.PP
-Maximum buffer size allowed\&. 
 .SH "Typedef Documentation"
 .PP 
-.SS "typedef void(* jnx_network_broadcast_listener_callback)(char *msg)"
+.SS "typedef void(* broadcast_listen_callback)(char *, size_t)"
 
-.SS "typedef void(* jnx_network_listener_callback)(char *msg, size_t bytes, char *client_ip_addr)"
-
-.PP
-This is the callback for the received buffer from the network listener\&. 
-.PP
-\fBWarning:\fP
-.RS 4
-User must free the msg as it has been malloced for fread purposes 
-.PP
-User does not need to free client_ip_addr 
-.RE
-.PP
+.SS "typedef void(* listen_callback)(char *, size_t,char *)"
 
 .SH "Function Documentation"
 .PP 
-.SS "jnx_network_broadcast_listener (intport, char *broadcastgroup, void(*)(char *)callback_function)"
+.SS "size_t jnx_network_broadcast (\fBjnx_socket\fP *S, ssize_tport, char *group, char *msg, ssize_tmsg_len)"
 
 .PP
-sets up a listener for udp datagram broadcasts 
-.PP
-\fBParameters:\fP
+\fBWarning:\fP
 .RS 4
-\fIport\fP target port to listen on 
-.br
-\fIbroadcastgroup\fP target group to register to 
-.br
-\fIcallback_function\fP pointer to the callback with received buffer 
+not supported by IPV6 
 .RE
 .PP
-
-.SS "jnx_network_cancel_listener (void)"
-
-.PP
-Cancels the last set listener\&. 
-.SS "jnx_network_local_ip (char *interface)"
-
-.PP
-finds the current machine ip address for given interface 
-.PP
 \fBParameters:\fP
 .RS 4
-\fIinterface\fP the target interface e\&.g\&. 'wlan0'
+\fIs\fP is the socket to use to send 
+.br
+\fIport\fP is the target port 
+.br
+\fIgroup\fP is the broadcast group (e\&.g\&. 255\&.0\&.0\&.25) 
+.br
+\fImsg\fP is the payload to send 
+.br
+\fImsg_len\fP is the size of payload 
 .RE
 .PP
 \fBReturns:\fP
 .RS 4
-a char* of ip address or NULL if not found 
+-1 on error 
 .RE
 .PP
 
-.SS "jnx_network_send_broadcast (intport, char *broadcastgroup, char *message)"
+.SS "size_t jnx_network_broadcast_listen (\fBjnx_socket\fP *s, ssize_tport, char *group, \fBbroadcast_listen_callback\fPc)"
 
-.PP
-Sends a UDP datagram across the selected group range\&. 
+.SS "size_t jnx_network_listen (\fBjnx_socket\fP *s, ssize_tport, ssize_tmax_connections, \fBlisten_callback\fPc)"
+
 .PP
 \fBParameters:\fP
 .RS 4
-\fIport\fP select the port for transmission 
+\fIs\fP is the socket to use to send 
 .br
-\fIbroadcastgroup\fP this group can be set to these standards http://www.tldp.org/HOWTO/Multicast-HOWTO-2.html 
+\fIport\fP is the target port 
 .br
-\fImessage\fP the message to transmit to the broadcast group 
-.RE
-.PP
-
-.SS "jnx_network_send_message (char *host, intport, char *msg, size_tmsg_len)"
-
-.PP
-This sends a message via selected port to host\&. 
-.PP
-\fBParameters:\fP
-.RS 4
-\fIhost\fP the ip address of the host you wish to connect to 
+\fImax_connections\fP are the number of connetions in the queue 
 .br
-\fIport\fP port number to connect to 
-.br
-\fImsg\fP message to be sent 
-.br
-\fImsg_len\fP length of message 
+\fIc\fP is the function pointer callback for received messages 
 .RE
 .PP
 \fBReturns:\fP
 .RS 4
-returns number of bytes sent success, -1 on failure 
+-1 on error 
 .RE
 .PP
 
-.SS "jnx_network_setup_listener (intport, intmax_connections, void(*)(char *, size_t, char *)Callback)"
+.SS "jnx_network_send (\fBjnx_socket\fP *s, char *host, ssize_tport, char *msg, ssize_tmsg_len)"
 
-.PP
-Using port and a function pointer callback it will create a listener\&. 
 .PP
 \fBParameters:\fP
 .RS 4
-\fIport\fP selet target listener port 
+\fIs\fP is the socket to use to send 
 .br
-\fImax_connections\fP is the size of the backlog queue 
+\fIhost\fP is the target destination 
 .br
-\fICallback\fP this is a function pointer to your jnx_network_listener_callback 
+\fIport\fP is the target port 
+.br
+\fImsg\fP is the payload to send 
+.br
+\fImsg_len\fP is the size of payload 
 .RE
 .PP
 \fBReturns:\fP
 .RS 4
-status code 0 success 
+size_t of bytes sent, -1 for failure 
+.RE
+.PP
+
+.SS "jnx_network_socket_close (\fBjnx_socket\fP *s)"
+
+.PP
+close the socket but maintain the socket object  s the socket object to close 
+.SS "\fBjnx_socket\fP * jnx_network_socket_create (unsigned intaddrfamily, ssize_tstype)"
+
+.PP
+creates a jnx socket 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIaddrfamily\fP this is the address family to use (e\&.g\&. AF_UNIX) 
+.br
+\fIstypes\fP this is the socket type to use (e\&.g\&. SOCK_STREAM) 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+\fBjnx_socket\fP 
+.RE
+.PP
+
+.SS "void jnx_network_socket_destroy (\fBjnx_socket\fP *s)"
+
+.PP
+\fBParameters:\fP
+.RS 4
+\fIs\fP is the socket to destroy 
 .RE
 .PP
 
