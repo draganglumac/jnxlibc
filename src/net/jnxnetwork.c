@@ -37,12 +37,12 @@ void jnx_network_socket_close(jnx_socket *s)
 	if(!s->isclosed)
 	{
 		close(s->socket);
+		s->isclosed =1;
 	}
 }
 void jnx_network_socket_destroy(jnx_socket *s)
 {
-	close(s->socket);
-	s->isclosed = 1;
+	jnx_network_socket_close(s);
 	free(s);
 }
 jnx_socket *jnx_network_socket_create(unsigned int addrfamily,ssize_t stype)
