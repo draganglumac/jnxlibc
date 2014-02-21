@@ -84,6 +84,7 @@ size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssiz
 size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, listen_callback c);
 /**
  * @fn size_t jnx_network_broadcast(jnx_socket *S, ssize_t port, char *group, char *msg, ssize_t msg_len)
+ * @warning not supported by IPV6
  * @param s is the socket to use to send
  * @param port is the target port
  * @param group is the broadcast group (e.g. 255.0.0.25)
@@ -93,7 +94,8 @@ size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, 
  */
 size_t jnx_network_broadcast(jnx_socket *s, ssize_t port, char *group, char *msg,ssize_t msg_len);
 /**
- * @param size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, broadcast_callback c)
+ * @fn size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, broadcast_callback c)
+ * @warning not supported by IPV6
  * @param s is the socket to use to send
  * @param port is the target port
  * @param group is the broadcast group (e.g. 255.0.0.25)
