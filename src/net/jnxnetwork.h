@@ -1,3 +1,20 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  jnxnetwork.h
+ *
+ *    Description:  Networking API 
+ *
+ *        Version:  1.0
+ *        Created:  02/20/14 12:50:15
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  jonesax (), 
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
 /** @file jnxnetwork.h
  *  @brief The API for jnxlibc networking (includes TCP, UDP )
  *
@@ -6,83 +23,87 @@
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
 #include <stddef.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <netinet/in.h>
 #ifdef __cplusplus
 	extern "C" {
 #endif
+
+typedef struct 
+{
+	int isclosed;
+	int socket;
+	unsigned int addrfamily;
+	ssize_t stype;
+} jnx_socket;
+
+typedef void (*listen_callback)(char *, size_t ,char *);
+typedef void (*broadcast_listen_callback)(char *, size_t);
+
 /**
- * @brief Maximum buffer size allowed 
+ * @fn jnx_socket *jnx_network_socket_create(unsigned int addrfamily,ssize_t stype)
+ * @brief creates a jnx socket
+ * @param addrfamily this is the address family to use (e.g. AF_UNIX)
+ * @param stypes this is the socket type to use (e.g. SOCK_STREAM)
+ * @return jnx_socket
  */
-#define MAXBUFFER 4028
+jnx_socket *jnx_network_socket_create(unsigned int addrfamily,ssize_t stype);
 
-/*-----------------------------------------------------------------------------
- * Currently the library defaults to the use of IPv4, this can be overriden with USEIPV6 
- *-----------------------------------------------------------------------------*/
-#ifndef JNXNETWORK_USEIPV6
-#define ADDRESSFAMILY AF_INET
-#else
-#define ADDRESSFAMILY AF_INET6
-#endif
+/** 
+ *@fn jnx_network_socket_close(jnx_socket *s)
+ *@brief close the socket but maintain the socket object
+ *@params s the socket object to close
+ */
+void jnx_network_socket_close(jnx_socket *s);
 /**
- *  @brief This is the callback for the received buffer from the network listener
- *  @warning User must free the msg as it has been malloced for fread purposes
- *  @warning User does not need to free client_ip_addr
+ * @fn void jnx_network_socket_destroy(jnx_socket *s)
+ * @param s is the socket to destroy
  */
-typedef void (*jnx_network_listener_callback)(char* msg,size_t bytes,char*client_ip_addr);
-
-typedef void (*jnx_network_broadcast_listener_callback)(char* msg);
-
-/** @fn jnx_network_setup_listener(int port, int max_connections, void (*Callback)(char*,size_t,char*))
- *  @brief Using port and a function pointer callback it will create a listener
- *  @param port selet target listener port
- *  @param max_connections is the size of the backlog queue
- *  @param Callback this is a function pointer to your jnx_network_listener_callback
- *  @return status code 0 success
+void jnx_network_socket_destroy(jnx_socket *s);
+/**
+ * @fn jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssize_t msg_len)
+ * @param s is the socket to use to send
+ * @param host is the target destination
+ * @param port is the target port
+ * @param msg is the payload to send
+ * @param msg_len is the size of payload
+ * @return size_t of bytes sent, -1 for failure
  */
-int jnx_network_setup_listener(int port,int max_connections, void (*Callback)(char*,size_t,char*));
-
-/** @fn jnx_network_cancel_listener(void)
- * @brief Cancels the last set listener
+size_t jnx_network_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssize_t msg_len);
+/**
+ * @fn size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, listen_callback c)
+ * @param s is the socket to use to send
+ * @param port is the target port
+ * @param max_connections are the number of connetions in the queue
+ * @param c is the function pointer callback for received messages
+ * @return -1 on error
  */
-void jnx_network_cancel_listener(void);
-
-/** @fn jnx_network_send_message(char* host, int port, char* msg, size_t msg_len)
- * @brief This sends a message via selected port to host
- *
- * @param host the ip address of the host you wish to connect to
- * @param port port number to connect to
- * @param msg message to be sent
- * @param msg_len length of message
- * @return returns number of bytes sent success, -1 on failure
+size_t jnx_network_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, listen_callback c);
+/**
+ * @fn size_t jnx_network_broadcast(jnx_socket *S, ssize_t port, char *group, char *msg, ssize_t msg_len)
+ * @warning not supported by IPV6
+ * @param s is the socket to use to send
+ * @param port is the target port
+ * @param group is the broadcast group (e.g. 255.0.0.25)
+ * @param msg is the payload to send
+ * @param msg_len is the size of payload
+ * @return -1 on error 
  */
-int jnx_network_send_message(char* host, int port, char* msg, size_t msg_len);
-
-/** @fn jnx_network_send_broadcast(int port, char *broadcastgroup,char *message)
- * @brief Sends a UDP datagram across the selected group range 
- *
- * @param port select the port for transmission
- * @param broadcastgroup this group can be set to these standards 
- * http://www.tldp.org/HOWTO/Multicast-HOWTO-2.html
- * @param message the message to transmit to the broadcast group
+size_t jnx_network_broadcast(jnx_socket *s, ssize_t port, char *group, char *msg,ssize_t msg_len);
+/**
+ * @fn size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, broadcast_callback c)
+ * @warning not supported by IPV6
+ * @param s is the socket to use to send
+ * @param port is the target port
+ * @param group is the broadcast group (e.g. 255.0.0.25)
+ * @param c is the function pointer callback for received messages
+ * @return -1 on error
  */
-int jnx_network_send_broadcast(int port,char *broadcastgroup,char *message);
+size_t jnx_network_broadcast_listen(jnx_socket *s, ssize_t port, char *group, broadcast_listen_callback c);
 
-/**@fn jnx_network_broadcast_listener(int port, char *broadcastgroup, void(*callback_function)(char*))
- * @brief sets up a listener for udp datagram broadcasts
- *
- * @param port target port to listen on
- * @param broadcastgroup target group to register to
- * @param callback_function pointer to the callback with received buffer
- */
-void jnx_network_broadcast_listener(int port,char *broadcastgroup, void(*callback_function)(char*));
-
-/** @fn jnx_network_local_ip(char *interface) 
- * @brief finds the current machine ip address for given interface
- *
- * @param interface the target interface e.g. 'wlan0'
- *
- * @return a char* of ip address or NULL if not found
- */
-char* jnx_network_local_ip(char* interface);
 #ifdef __cplusplus
 	}
 #endif

@@ -6,6 +6,7 @@
 #ifndef __JNXFILE_H__
 #define __JNXFILE_H__
 #include <stddef.h>
+#include "jnxhash.h"
 #ifdef __cplusplus
 	extern "C" {
 #endif
@@ -31,17 +32,17 @@ typedef struct jnx_file_kvp_node {
  */
 size_t jnx_file_read(char* path, char **buffer,char *flags);
 /**
- * @fn jnx_file_read_keyvaluepairs(char *path, char* delimiter)
+ * @fn jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer,char *flags)
  * @brief Function to read a file that contains key-value pairs into a linked list.
  *
  * @param path path to the target file for reading
  * @param delimiter the token to break the key value pairs on e.g. '='
- *
+ * @param max_buffer is maximum line size buffer
  * @return returns a linkedlist of jnx_file_kvp_nodes, i.e. key-value pairs.
  *
  * @warning user is responsible for linked list deletion and its node/data
  */
-jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter);
+jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer, char *delimiter);
 
 /**
  * @fn jnx_file_write(char *path, char* data, size_t data_size)

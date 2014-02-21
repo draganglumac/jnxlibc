@@ -1,0 +1,183 @@
+.TH "jnxthread.h" 3 "Mon Feb 17 2014" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jnxthread.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <pthread\&.h>\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBjnxthread_attributes\fP"
+.br
+.ti -1c
+.RI "struct \fBjnxthread\fP"
+.br
+.ti -1c
+.RI "union \fBjnxthread_mutex\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBjnxthread_attributes\fP \fBjnxthread_attributes\fP"
+.br
+.ti -1c
+.RI "typedef void *( \fBentry_point\fP )(void *)"
+.br
+.ti -1c
+.RI "typedef struct \fBjnxthread\fP \fBjnxthread\fP"
+.br
+.ti -1c
+.RI "typedef union \fBjnxthread_mutex\fP \fBjnxthread_mutex\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBjnxthread_unlock\fP (\fBjnxthread_mutex\fP *m)"
+.br
+.ti -1c
+.RI "void \fBjnxthread_lock\fP (\fBjnxthread_mutex\fP *m)"
+.br
+.RI "\fIblocking function that will wait for the mutex to unlock \fP"
+.ti -1c
+.RI "int \fBjnxthread_trylock\fP (\fBjnxthread_mutex\fP *m)"
+.br
+.ti -1c
+.RI "void \fBjnxthread_poolflush\fP ()"
+.br
+.RI "\fIresets the pool and removes thread data \fP"
+.ti -1c
+.RI "size_t \fBjnxthread_poolcount\fP ()"
+.br
+.RI "\fIcounts the current number of threads in the pool \fP"
+.ti -1c
+.RI "\fBjnxthread\fP * \fBjnxthread_create\fP (\fBentry_point\fP e, void *args)"
+.br
+.RI "\fIjnxthread_create will create and start a new thread, adding to the pool \fP"
+.ti -1c
+.RI "int \fBjnxthread_create_disposable\fP (\fBentry_point\fP e, void *args)"
+.br
+.RI "\fIjnxthread_create will create and start a new thread but does not add to pool \fP"
+.ti -1c
+.RI "void \fBjnxthread_destroy\fP (\fBjnxthread\fP *thr)"
+.br
+.RI "\fIDestroy the thread data structure and pool listing\&. \fP"
+.ti -1c
+.RI "int \fBjnxthread_join\fP (\fBjnxthread\fP *thr, void **data)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef void*( entry_point)(void *)"
+
+.SS "typedef struct \fBjnxthread\fP \fBjnxthread\fP"
+
+.SS "typedef struct \fBjnxthread_attributes\fP \fBjnxthread_attributes\fP"
+
+.SS "typedef union \fBjnxthread_mutex\fP \fBjnxthread_mutex\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "\fBjnxthread\fP * jnxthread_create (\fBentry_point\fPe, void *args)"
+
+.PP
+jnxthread_create will create and start a new thread, adding to the pool 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIentry_point\fP is the function pointer the thread starts with 
+.br
+\fIargs\fP are the arguments to pass the function pointer 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+jnxthread object 
+.RE
+.PP
+
+.SS "int jnxthread_create_disposable (\fBentry_point\fPe, void *args)"
+
+.PP
+jnxthread_create will create and start a new thread but does not add to pool 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIentry_point\fP is the function pointer the thread starts with 
+.br
+\fIargs\fP are the arguments to pass the function pointer 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+error code if any 
+.RE
+.PP
+
+.SS "void jnxthread_destroy (\fBjnxthread\fP *thr)"
+
+.PP
+Destroy the thread data structure and pool listing\&. 
+.PP
+\fBWarning:\fP
+.RS 4
+Destroy will not ensure thread is killed 
+.RE
+.PP
+
+.SS "int jnxthread_join (\fBjnxthread\fP *thr, void **data)"
+
+.SS "jnxthread_lock (\fBjnxthread_mutex\fP *m)"
+
+.PP
+blocking function that will wait for the mutex to unlock 
+.PP
+\fBParameters:\fP
+.RS 4
+\fI\fBjnxthread_mutex\fP\fP to lock 
+.RE
+.PP
+
+.SS "size_t jnxthread_poolcount ()"
+
+.PP
+counts the current number of threads in the pool 
+.PP
+\fBWarning:\fP
+.RS 4
+does not give thread status active/inactive 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+size_t of thread count 
+.RE
+.PP
+
+.SS "void jnxthread_poolflush ()"
+
+.PP
+resets the pool and removes thread data 
+.PP
+\fBWarning:\fP
+.RS 4
+Does not ensure threads have terminated 
+.RE
+.PP
+
+.SS "int jnxthread_trylock (\fBjnxthread_mutex\fP *m)"
+
+.SS "int jnxthread_unlock (\fBjnxthread_mutex\fP *m)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

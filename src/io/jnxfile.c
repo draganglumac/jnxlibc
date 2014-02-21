@@ -12,7 +12,7 @@
 #include <ftw.h>
 #include <libgen.h>
 #include <assert.h>
-#include "jnxmem.h"
+#include "jnxlog.h"
 size_t jnx_file_read(char* path, char **buffer,char *flags)
 {
 	FILE* fp;
@@ -27,39 +27,39 @@ size_t jnx_file_read(char* path, char **buffer,char *flags)
 	}
 	size_t size = ftell(fp);
 	rewind(fp);
-	(*buffer) = JNX_MEM_CALLOC(size, sizeof(char));
+	(*buffer) = calloc(size, sizeof(char));
 	fread((*buffer), 1, size, fp);
 	fclose(fp);
 	return size;
 }
-jnx_file_kvp_node* jnx_file_read_keyvaluepairs(char* path, char* delimiter) {
-	FILE* file;
+jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer, char *delimiter)
+{
+	FILE *file; 
 	if((file = fopen(path, "r+")) == NULL)
 	{
-		printf("Could not open file for KVP matching\n");
 		return NULL;
 	}
-	jnx_file_kvp_node* list = NULL, ** nextp = &list;
-	char buffer[1024];
-	while (fgets(buffer, sizeof buffer, file) != NULL) {
+	char buffer[max_buffer];
+	jnx_hashmap *map = jnx_hash_create(64);
+	while(fgets(buffer, sizeof(buffer), file) != NULL)
+	{
 		char *key = strtok(buffer,delimiter);
 		char *value = strtok(NULL,delimiter);
 		if(value == NULL) { continue; }
-		jnx_file_kvp_node* node;
-		node = JNX_MEM_MALLOC(sizeof(jnx_file_kvp_node));
-		node->key = JNX_MEM_MALLOC(strlen(key) + 1);
-		node->value = JNX_MEM_MALLOC(strlen(value) +1);
-		strcpy(node->key,key);
-		strcpy(node->value,value);
-		if(node->value[strlen(node->value)] == '\n' || node->value[strlen(node->value)] == '\0'){
-			node->value[strlen(node->value)] = '\0';
-		}
-		node->next = NULL;
-		*nextp = node;
-		nextp = &node->next;
+		char *st = malloc(strlen(key));
+		char *sv = malloc(strlen(value));
+		bzero(st,strlen(key));
+		bzero(sv,strlen(value));
+		strncpy(st,key,strlen(key));
+		strncpy(sv,value,strlen(value));
+		if(sv[strlen(sv) -1] == '\n')
+		{
+			sv[strlen(sv) - 1] = '\0';
+		}	
+		jnx_hash_put(map,st,sv);
 	}
 	fclose(file);
-	return list;
+	return map;
 }
 size_t jnx_file_write(char* path, char* data, size_t data_size,char *flags)
 {
@@ -93,7 +93,7 @@ static int jnx_file_path_exists(char *path)
 	getcwd(buffer,s);
 	if(buffer == NULL)
 	{
-		printf("jnx_file_path_exists: Unable to validate cwd\n");
+		JNX_LOGC("jnx_file_path_exists: Unable to validate cwd\n");
 		return 0;
 	}
 	if(chdir(path) != 0)
@@ -118,7 +118,7 @@ static char *jnx_file_random_dir(char *basepath)
 		n += rand() %10; 
 	}
 
-	char *s = JNX_MEM_MALLOC(sizeof(char) * 256);
+	char *s = malloc(sizeof(char) * 256);
 	sprintf(s,"%s/%zu",basepath,n);
 	return s;
 }
@@ -129,9 +129,9 @@ int jnx_file_mktempdir(char *dirtemplate, char **path)
 		char *tempdir=jnx_file_random_dir(dirtemplate);	
 		if((mkdir(tempdir, S_IRWXU  | S_IRWXG | S_IROTH | S_IXOTH)) != 0)
 		{
-			printf("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
+			JNX_LOGC("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
 			*path = NULL;
-			JNX_MEM_FREE(tempdir);
+			free(tempdir);
 			return 1;
 		}else
 		{
