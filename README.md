@@ -64,9 +64,8 @@ size_t readBytes = jnx_file_read("example.txt",&buffer,"r");
 ```
 Sending TCP message over network
 ```C
-int ret = jnx_network_send_message("10.0.0.1","9090","Message",strlen("Message"));
-//Actually lets just broadcast that
-int ret = jnx_network_broadcast("9090","255.255.255.0","Message");
+jnx_socket *write_socket = jnx_network_socket_create(AF_INET,SOCK_STREAM);
+size_t sent = jnx_network_send(write_socket,HOST,PORT,"Hello!",strlen("Hello!"));
 ```
 Using memory management
 ```C
