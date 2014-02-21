@@ -1,4 +1,4 @@
-.TH "jnxlog.h" 3 "Mon Feb 17 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxlog.h" 3 "Fri Feb 21 2014" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -30,7 +30,7 @@ Simple logger that allows program output to be captured to file\&. It allows one
 .br
 .RI "\fIlog to console \fP"
 .ti -1c
-.RI "#define \fBJNX_LOGF\fP(X)   \fBjnx_log\fP(\fBLOG_FILE\fP,__FILE__,__FUNCTION__,__LINE__,X)"
+.RI "#define \fBJNX_LOGF\fP(X,\&.\&.\&.)   \fBjnx_log\fP(\fBLOG_FILE\fP,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)"
 .br
 .RI "\fIlog to file \fP"
 .in -1c
@@ -73,7 +73,7 @@ set the log path JNX_LOG_PATH
 
 .PP
 log to console JNX_LOGC 
-.SS "#define JNX_LOGF(X)   \fBjnx_log\fP(\fBLOG_FILE\fP,__FILE__,__FUNCTION__,__LINE__,X)"
+.SS "#define JNX_LOGF(X, \&.\&.\&.)   \fBjnx_log\fP(\fBLOG_FILE\fP,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)"
 
 .PP
 log to file JNX_LOGF 

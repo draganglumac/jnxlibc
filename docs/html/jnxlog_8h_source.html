@@ -104,7 +104,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="jnxlog_8h.html#a9c7e8d9cf272961e3cb3a9b2ad689f54">   31</a></span>&#160;<span class="preprocessor">#define JNX_LOGC(X, ...) jnx_log(LOG_CONSOLE,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)          </span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="jnxlog_8h.html#a2df0826e29dbbf8af36dd7142a7602fe">   37</a></span>&#160;<span class="preprocessor">#define JNX_LOGF(X) jnx_log(LOG_FILE,__FILE__,__FUNCTION__,__LINE__,X)</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="jnxlog_8h.html#a587b63c4200969ede4a68abb268a43ed">   37</a></span>&#160;<span class="preprocessor">#define JNX_LOGF(X, ...) jnx_log(LOG_FILE,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor"></span>                </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keywordtype">int</span> <a class="code" href="jnxlog_8h.html#a9365f58d80ae132847c51a5224367832">jnx_log_file_setup</a>(<span class="keywordtype">char</span> *path);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
@@ -123,7 +123,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 17 2014 18:28:33 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Feb 21 2014 16:01:44 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

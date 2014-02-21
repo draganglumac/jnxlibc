@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['entry_5fpoint',['entry_point',['../jnxthread_8h.html#a97655d8aac67af4743aedaaedde54c61',1,'jnxthread.h']]]
+  ['compare_5fkeys',['compare_keys',['../jnxbtree_8h.html#adc0b76183341f497727f9a0509f62c2b',1,'jnxbtree.h']]]
 ];
