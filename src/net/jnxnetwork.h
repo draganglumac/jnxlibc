@@ -34,6 +34,7 @@
 
 typedef struct 
 {
+	int isclosed;
 	int socket;
 	unsigned int addrfamily;
 	ssize_t stype;
@@ -50,6 +51,13 @@ typedef void (*broadcast_listen_callback)(char *, size_t);
  * @return jnx_socket
  */
 jnx_socket *jnx_network_socket_create(unsigned int addrfamily,ssize_t stype);
+
+/** 
+ *@fn jnx_network_socket_close(jnx_socket *s)
+ *@brief close the socket but maintain the socket object
+ *@params s the socket object to close
+ */
+void jnx_network_socket_close(jnx_socket *s);
 /**
  * @fn void jnx_network_socket_destroy(jnx_socket *s)
  * @param s is the socket to destroy
