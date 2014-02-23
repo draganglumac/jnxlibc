@@ -40,8 +40,6 @@ typedef struct
 } jnx_socket;
 
 typedef void (*listen_callback)(char *, size_t ,jnx_socket *);
-typedef void (*broadcast_listen_callback)(char *, size_t,jnx_socket *);
-
 /**
  * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
  * @brief creates a jnx tcp socket
