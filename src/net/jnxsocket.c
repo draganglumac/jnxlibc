@@ -113,7 +113,6 @@ size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
 		}
 		tbytes +=n;
 		rbytes = msg_len - tbytes;
-		JNX_LOGC("Sent [%zu/%zubytes]\n",tbytes,msg_len);
 	}	
 	return tbytes;
 }
@@ -133,6 +132,7 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
 	hints.ai_flags =0;
 	hints.ai_protocol = IPPROTO_UDP;
 	hints.ai_next = NULL;	
+
 	getaddrinfo(host,port,&hints,&res);
 
 	size_t tbytes = 0;
@@ -148,7 +148,6 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
 		}
 		tbytes +=n;
 		rbytes = msg_len - tbytes;
-		JNX_LOGC("Sent [%zu/%zubytes]\n",tbytes,msg_len);
 	}	
 	return tbytes;
 }
@@ -164,8 +163,11 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 	memset(&hints,0,sizeof(hints));
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
+
 	getaddrinfo(NULL,port,&hints,&res);
-	for(p=res;p != NULL;p->ai_next)
+
+	p = res;
+	while(p != NULL)
 	{
 		if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1)
 		{
@@ -182,6 +184,8 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 			continue;
 		}
 		break;
+
+		p = p->ai_next;
 	}
 	freeaddrinfo(res);
 	listen(s->socket,max_connections);
@@ -239,8 +243,11 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
 	hints.ai_flags = AI_PASSIVE;
+
 	getaddrinfo(NULL,port,&hints,&res);
-	for(p=res;p != NULL;p->ai_next)
+
+	p = res;
+	while(p != NULL)
 	{
 		if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1)
 		{
@@ -257,6 +264,7 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 			continue;
 		}
 		break;
+		p= p->ai_next;
 	}
 	freeaddrinfo(res);
 

@@ -52,6 +52,7 @@ static jnx_socket *tcp_ipv6_listener;
 ///////////////////TCP IPV4 /////////////////////////////
 void tcplistenipv4_callback(char *msg, size_t size,jnx_socket *s)
 {
+	assert(strcmp(msg,"hi") == 0);
 	tcp_ip4_complete = 1;
 }
 void *test_tcp_listen_ipv4(void *args)
@@ -71,7 +72,6 @@ void setup_tcp_listen_ipv4_test()
 	//listener setup lets send a message
 	jnx_socket *s = jnx_socket_tcp_create(AF_INET);
 	size_t bytes = jnx_socket_tcp_send(s,"localhost","8831","hi",strlen("hi"));	
-	JNX_LOGC("sent %dbytes\n",bytes);
 	jnx_socket_destroy(&s);
 	time_t st;
 	time(&st);
@@ -90,6 +90,7 @@ void setup_tcp_listen_ipv4_test()
 ///////////////////TCP IPV6 /////////////////////////////
 void tcplistenipv6_callback(char *msg, size_t size,jnx_socket *s)
 {
+	assert(strcmp(msg,"hi") == 0);
 	tcp_ip6_complete = 1;
 }
 void *test_tcp_listen_ipv6(void *args)
@@ -109,7 +110,6 @@ void setup_tcp_listen_ipv6_test()
 	//listener setup lets send a message
 	jnx_socket *s = jnx_socket_tcp_create(AF_INET6);
 	size_t bytes = jnx_socket_tcp_send(s,"localhost","8831","hi",strlen("hi"));	
-	JNX_LOGC("sent %dbytes\n",bytes);
 	jnx_socket_destroy(&s);
 	time_t st;
 	time(&st);
@@ -133,6 +133,7 @@ jnx_socket *udp_ipv6_listener;
 /////////////////////UDP IPV4 /////////////////////////////
 void udplistenipv4_callback(char *msg, size_t size,jnx_socket *s)
 {
+	assert(strcmp(msg,"hi") == 0);
 	udp_ip4_complete = 1;
 }
 void *test_udp_listen_ipv4(void *args)
@@ -152,7 +153,6 @@ void setup_udp_listen_ipv4_test()
 	//listener setup lets send a message
 	jnx_socket *s = jnx_socket_udp_create(AF_INET);
 	size_t bytes = jnx_socket_udp_send(s,"localhost","8831","hi",strlen("hi"));	
-	JNX_LOGC("sent %dbytes\n",bytes);
 	jnx_socket_destroy(&s);
 	time_t st;
 	time(&st);
@@ -170,6 +170,7 @@ void setup_udp_listen_ipv4_test()
 /////////////////////UDP IPV6 /////////////////////////////
 void udplistenipv6_callback(char *msg, size_t size,jnx_socket *s)
 {
+	assert(strcmp(msg,"hi") == 0);
 	udp_ip6_complete = 1;
 }
 void *test_udp_listen_ipv6(void *args)
@@ -189,7 +190,6 @@ void setup_udp_listen_ipv6_test()
 	//listener setup lets send a message
 	jnx_socket *s = jnx_socket_udp_create(AF_INET6);
 	size_t bytes = jnx_socket_udp_send(s,"localhost","8831","hi",strlen("hi"));	
-	JNX_LOGC("sent %dbytes\n",bytes);
 	jnx_socket_destroy(&s);
 	
 	time_t st;
