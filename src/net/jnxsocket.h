@@ -43,18 +43,16 @@ typedef void (*listen_callback)(char *, size_t ,jnx_socket *);
 typedef void (*broadcast_listen_callback)(char *, size_t,jnx_socket *);
 
 /**
- * @fn jnx_socket *jnx_socket_tcp_socket_create(unsigned int addrfamily,ssize_t stype)
- * @brief creates a jnx socket
+ * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
+ * @brief creates a jnx tcp socket
  * @param addrfamily this is the address family to use (e.g. AF_UNIX)
- * @param stypes this is the socket type to use (e.g. SOCK_STREAM)
  * @return jnx_socket
  */
 jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily);
 /**
- * @fn jnx_socket *jnx_socket_udp_socket_create(unsigned int addrfamily,ssize_t stype)
- * @brief creates a jnx socket
+ * @fn jnx_socket *jnx_socket_udp_create(unsigned int addrfamily)
+ * @brief creates a jnx udp socket
  * @param addrfamily this is the address family to use (e.g. AF_UNIX)
- * @param stypes this is the socket type to use (e.g. SOCK_STREAM)
  * @return jnx_socket
  */
 jnx_socket *jnx_socket_udp_create(unsigned int addrfamily);
@@ -70,7 +68,7 @@ void jnx_socket_close(jnx_socket *s);
  */
 void jnx_socket_destroy(jnx_socket **s);
 /**
- * @fn jnx_socket_tcp_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssize_t msg_len)
+ * @fn jnx_socket_tcp_send((jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param host is the target destination
  * @param port is the target port
@@ -80,7 +78,7 @@ void jnx_socket_destroy(jnx_socket **s);
  */
 size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
 /**
- * @fn jnx_socket_udp_send(jnx_socket *s, char *host, ssize_t port, char *msg, ssize_t msg_len)
+ * @fn jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param host is the target destination
  * @param port is the target port
@@ -90,7 +88,7 @@ size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
  */
 size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
 /**
- * @fn size_t jnx_socket_tpc_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, listen_callback c)
+ * @fn size_t jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c)
  * @param s is the socket to use to send
  * @param port is the target port
  * @param max_connections are the number of connetions in the queue
@@ -99,7 +97,7 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
  */
 size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c);
 /**
- * @fn size_t jnx_socket_udp_listen(jnx_socket *s, ssize_t port, ssize_t max_connections, listen_callback c)
+ * @fn size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c)
  * @param s is the socket to use to send
  * @param port is the target port
  * @param max_connections are the number of connetions in the queue
