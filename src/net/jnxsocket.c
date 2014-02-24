@@ -290,7 +290,7 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 			perror("recvfrom:");
 			return -1;
 		}
-		c(buffer,tbytes,s);
+		c(strndup(buffer,tbytes),tbytes,s);
 	}
 	return -1;
 }
