@@ -96,7 +96,7 @@ char *jnx_resolve_ipaddress(int socket)
 	len = sizeof(addr);
 	getpeername(socket,(struct sockaddr*)&addr,&len);
 
-	if(addr.ss_family != AF_INET || addr.ss_family != AF_INET6)
+	if(addr.ss_family != AF_INET && addr.ss_family != AF_INET6)
 	{
 		return NULL;
 	}
