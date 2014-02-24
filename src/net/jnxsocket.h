@@ -71,7 +71,7 @@ void jnx_socket_destroy(jnx_socket **s);
  *@param s is the socket object to enable broadcasting
  *@return 0 on success, -1 on error
  */
-size_t jnx_socket_udp_enable_broadcast(socket *s);
+size_t jnx_socket_udp_enable_broadcast(jnx_socket *s);
 /**
  * @fn jnx_socket_tcp_send((jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
  * @param s is the socket to use to send

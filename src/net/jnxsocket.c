@@ -76,7 +76,7 @@ void jnx_socket_destroy(jnx_socket **s)
 	free(*s);
 	*s = NULL;	
 }
-size_t jnx_socket_udp_enable_broadcast(socket *s)
+size_t jnx_socket_udp_enable_broadcast(jnx_socket *s)
 {
 	assert(s->stype == SOCK_DGRAM);
 	assert(s->addrfamily == AF_INET);
