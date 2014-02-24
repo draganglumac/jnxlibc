@@ -209,14 +209,11 @@ int main(int argc, char **argv)
 {
 	JNX_LOGC("Starting network tests\n");
 	test_create();
-	sleep(1);
 	setup_tcp_listen_ipv4_test();
-	sleep(1);
-	setup_tcp_listen_ipv6_test();
-	sleep(1);
-	setup_udp_listen_ipv4_test();
-	sleep(1);
-	setup_udp_listen_ipv6_test();
+//	setup_tcp_listen_ipv6_test();
+	
+//	setup_udp_listen_ipv4_test();
+//	setup_udp_listen_ipv6_test();
 	
 	return 0;
 }
