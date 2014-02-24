@@ -280,9 +280,17 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 		p= p->ai_next;
 	}
 	freeaddrinfo(res);
-	bzero(buffer,MAXBUFFER);
+
+	while(1){
+		bzero(buffer,MAXBUFFER);
 		size_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
 
+		if(bytesread == -1)
+		{
+			perror("recvcfrom:");
+			return -1;
+		}
 		c(strndup(buffer,bytesread),bytesread,s);
+	}
 	return -1;
 }
