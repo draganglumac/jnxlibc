@@ -88,7 +88,7 @@ size_t jnx_socket_udp_enable_broadcast(jnx_socket *s)
 	}
 	return 0;
 }
-char *jnx_resolve_ipaddress(int socket)
+char *jnx_socket_tcp_resolve_ipaddress(int socket)
 { 
 	char ipstr[INET6_ADDRSTRLEN];
 	socklen_t len;
@@ -114,6 +114,24 @@ char *jnx_resolve_ipaddress(int socket)
 	}
 
 	return strdup(ipstr);
+}
+char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa)
+{
+	char str[INET6_ADDRSTRLEN];
+	bzero(str,INET6_ADDRSTRLEN);
+	switch (((struct sockaddr*)&sa)->sa_family)
+	{
+		case AF_INET:
+			inet_ntop(AF_INET, &(((struct sockaddr_in*)&sa)->sin_addr),str,INET_ADDRSTRLEN);
+			return strndup(str,strlen(str));
+			break;
+		case AF_INET6:
+			inet_ntop(AF_INET6, &(((struct sockaddr_in6*)&sa)->sin6_addr),str,INET6_ADDRSTRLEN);
+			return strndup(str,strlen(str));
+			break;
+	}
+
+	return NULL;
 }
 size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
 {
@@ -198,6 +216,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 	assert(s->stype == SOCK_STREAM);
 	int optval = 1;
 	struct addrinfo hints, *res, *p;
+	struct sockaddr_storage their_addr;
 	char buffer[MAXBUFFER];
 	memset(&hints,0,sizeof(hints));
 	hints.ai_family = s->addrfamily;
@@ -230,7 +249,6 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 	listen(s->socket,max_connections);
 	while(1)
 	{
-		struct sockaddr_storage their_addr;
 		socklen_t addr_size = sizeof(their_addr);
 		int recfd = accept(s->socket,(struct sockaddr*)&their_addr,&addr_size);
 		if(recfd < 0)
@@ -264,7 +282,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 		fread(out,1,len,fp);
 		fclose(fp);
 
-		c(out,len,jnx_resolve_ipaddress(recfd));
+		c(out,len,jnx_socket_tcp_resolve_ipaddress(recfd));
 	}
 	return 0;
 }
@@ -317,7 +335,8 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 			perror("recvcfrom:");
 			return -1;
 		}
-		c(strndup(buffer,bytesread),bytesread);
+
+		c(strndup(buffer,bytesread),bytesread,jnx_socket_udp_resolve_ipaddress(their_addr));
 	}
 	return -1;
 }
