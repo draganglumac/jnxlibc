@@ -76,6 +76,18 @@ void jnx_socket_destroy(jnx_socket **s)
 	free(*s);
 	*s = NULL;	
 }
+size_t jnx_socket_udp_enable_broadcast(socket *s)
+{
+	assert(s->stype == SOCK_DGRAM);
+	assert(s->addrfamily == AF_INET);
+	int optval = 1;
+	if(setsockopt(s->socket,SOL_SOCKET,SO_BROADCAST,&optval, sizeof(optval)) != 0)
+	{
+		perror("setsockopt:");
+		return -1;
+	}
+	return 0;
+}
 size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
 {
 	assert(s);

@@ -66,6 +66,13 @@ void jnx_socket_close(jnx_socket *s);
  */
 void jnx_socket_destroy(jnx_socket **s);
 /**
+ *@fn size_t jnx_socket_udp_enable_broadcast(socket *s)
+ *@brief this IPV4 option will enable udp broadcasting
+ *@param s is the socket object to enable broadcasting
+ *@return 0 on success, -1 on error
+ */
+size_t jnx_socket_udp_enable_broadcast(socket *s);
+/**
  * @fn jnx_socket_tcp_send((jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param host is the target destination
