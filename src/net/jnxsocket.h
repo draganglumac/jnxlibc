@@ -50,7 +50,7 @@ jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily);
 /**
  * @fn jnx_socket *jnx_socket_udp_create(unsigned int addrfamily)
  * @brief creates a jnx udp socket
- * @param addrfamily this is the address family to use (e.g. AF_UNIX)
+ * @param addrfamily this is the address family to use (e.g. AF_INET)
  * @return jnx_socket
  */
 jnx_socket *jnx_socket_udp_create(unsigned int addrfamily);
