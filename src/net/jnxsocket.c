@@ -88,6 +88,29 @@ size_t jnx_socket_udp_enable_broadcast(jnx_socket *s)
 	}
 	return 0;
 }
+char *jnx_resolve_ipaddress(int socket)
+{ 
+	char ipstr[INET6_ADDRSTRLEN];
+	socklen_t len;
+	struct sockaddr_storage addr;
+	len = sizeof(addr);
+	getpeername(socket,(struct sockaddr*)&addr,&len);
+
+	if(addr.ss_family != AF_INET || addr.ss_family != AF_INET6)
+	{
+		return NULL;
+	}
+	if(addr.ss_family == AF_INET)
+	{
+		struct sockaddr_in *s = (struct sockaddr_in*)&addr;
+		inet_ntop(AF_INET,&s->sin_addr,ipstr,sizeof(ipstr));
+	}else{
+		struct sockaddr_in6 *s = (struct sockaddr_in6*)&addr;
+		inet_ntop(AF_INET6,&s->sin6_addr,ipstr,sizeof(ipstr));
+	}
+
+	return strdup(ipstr);
+}
 size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
 {
 	assert(s);
@@ -237,7 +260,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 		fread(out,1,len,fp);
 		fclose(fp);
 
-		c(out,len,s);
+		c(out,len,jnx_resolve_ipaddress(recfd));
 	}
 	return 0;
 }
@@ -290,7 +313,7 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 			perror("recvcfrom:");
 			return -1;
 		}
-		c(strndup(buffer,bytesread),bytesread,s);
+		c(strndup(buffer,bytesread),bytesread,jnx_resolve_ipaddress(s->socket));
 	}
 	return -1;
 }

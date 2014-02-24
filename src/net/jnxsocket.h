@@ -39,7 +39,7 @@ typedef struct
 	ssize_t stype;
 } jnx_socket;
 
-typedef void (*socket_listener_callback)(char *, size_t ,jnx_socket *s);
+typedef void (*socket_listener_callback)(char *, size_t ,char *ipaddress);
 /**
  * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
  * @brief creates a jnx tcp socket
