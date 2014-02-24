@@ -236,6 +236,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 		char *out = calloc(len + 1, sizeof(char));
 		fread(out,1,len,fp);
 		fclose(fp);
+
 		c(out,len,s);
 	}
 	return 0;
@@ -249,7 +250,6 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 	int optval = 1;
 	struct addrinfo hints, *res, *p;
 	struct sockaddr_storage their_addr;
-	socklen_t addr_len;
 	char buffer[MAXBUFFER];
 	memset(&hints,0,sizeof(hints));
 	hints.ai_family = s->addrfamily;
@@ -279,18 +279,36 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 		p= p->ai_next;
 	}
 	freeaddrinfo(res);
-
+	socklen_t their_len = sizeof(their_addr);
 	while(1){
-		addr_len = sizeof(their_addr);
 		bzero(buffer,MAXBUFFER);
-		size_t tbytes = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,
-				&addr_len);
-		if(tbytes == -1)
+		FILE *fp = tmpfile();
+		size_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
+		fwrite(buffer,sizeof(char),bytesread,fp);
+
+		while(bytesread > 0)
 		{
-			perror("recvfrom:");
-			return -1;
+			bzero(buffer,MAXBUFFER);
+			bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
+			bytesread = read(s->socket,buffer,MAXBUFFER);
+			if(bytesread == -1)
+			{
+				perror("read:");
+				fclose(fp);
+				return -1;
+			}
+			if(bytesread > 0)
+			{
+				fwrite(buffer,sizeof(char),bytesread,fp);
+			}
 		}
-		c(buffer,tbytes,s);
+		int len = ftell(fp);
+		rewind(fp);
+		char *out = calloc(len + 1, sizeof(char));
+		fread(out,1,len,fp);
+		fclose(fp);
+
+		c(buffer,len,s);
 	}
 	return -1;
 }
