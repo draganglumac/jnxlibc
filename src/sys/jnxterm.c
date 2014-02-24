@@ -33,9 +33,9 @@
 #define JNX_TERM_HIDDEN    8
 
 static int ISLOADING_BAR = 0;
-static jnxthread* bar_loader_thread;
+static jnx_thread* bar_loader_thread;
 static int ISLOADING_SPIN = 0;
-static jnxthread* loader_thread;
+static jnx_thread* loader_thread;
 static int fd;
 static fpos_t pos;
 static char *loading_bar[11] = {
@@ -151,12 +151,12 @@ void jnx_term_load_spinner(int state)
 	ISLOADING_SPIN = state;
 	if(ISLOADING_SPIN == 1)
 	{
-		loader_thread = jnxthread_create(loading_loop,NULL);
+		loader_thread = jnx_thread_create(loading_loop,NULL);
 	}
 	else
 	{
 		void *data;
-		jnxthread_join(loader_thread,&data);
+		jnx_thread_join(loader_thread,&data);
 		printf("\033[u\033[2K\n");
 	}
 }
@@ -165,11 +165,11 @@ void jnx_term_load_bar(int state)
 	ISLOADING_BAR = state;
 	if(ISLOADING_BAR == 1)
 	{
-		bar_loader_thread = jnxthread_create(loading_loop_bar,NULL);
+		bar_loader_thread = jnx_thread_create(loading_loop_bar,NULL);
 	}else
 	{
 		void *data;
-		jnxthread_join(bar_loader_thread,&data);
+		jnx_thread_join(bar_loader_thread,&data);
 		printf("\033[u\033[2K\n");
 	}
 }

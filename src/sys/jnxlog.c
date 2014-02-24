@@ -26,19 +26,19 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
-jnxthread_mutex locker;
+jnx_thread_mutex locker;
 static char *log_path = NULL;
 
 void *jnx_write_to_log(void *message)
 {
 #if !defined( __JNX_LOG_SINGLE_THREAD__)
-	jnxthread_lock(&locker);
+	jnx_thread_lock(&locker);
 #endif
 	FILE *fp = fopen(log_path,"a");
 	if(fp == NULL) { 
 		printf("jnx_write_to_log: Unable to open file for log writing\n");
 #if !defined( __JNX_LOG_SINGLE_THREAD__)
-		jnxthread_unlock(&locker);
+		jnx_thread_unlock(&locker);
 #endif
 		return (void*)1;
 	};
@@ -46,7 +46,7 @@ void *jnx_write_to_log(void *message)
 	fclose(fp);
 	//free our string
 #if !defined( __JNX_LOG_SINGLE_THREAD__)
-	jnxthread_unlock(&locker);
+	jnx_thread_unlock(&locker);
 #endif
 	return 0;
 }
@@ -127,7 +127,7 @@ size_t jnx_log(const logtype l, const char *file, const char *function,const int
 #if defined( __JNX_LOG_SINGLE_THREAD__)
 			jnx_write_to_log(output);	
 #else
-			jnxthread_create_disposable(&jnx_write_to_log,output);
+			jnx_thread_create_disposable(&jnx_write_to_log,output);
 #endif
 			break;
 		case LOG_CONSOLE:

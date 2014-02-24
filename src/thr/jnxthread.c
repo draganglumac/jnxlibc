@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  jnxthread.c
+ *       Filename:  jnx_thread.c
  *
  *    Description:  
  *
@@ -28,7 +28,7 @@ int thread_id_comparison(void *A, void *B)
 	if(B > A) { return 1; }
 	return 0;	
 }
-void jnxthread_poolflush()
+void jnx_thread_poolflush()
 {
 	if(!pooltree)
 	{
@@ -39,8 +39,8 @@ void jnxthread_poolflush()
 	jnx_btree_keys(pooltree,keys);
 	while(keys->head)
 	{
-		jnxthread *thr = keys->head->_data;
-		jnxthread_destroy(thr);
+		jnx_thread *thr = keys->head->_data;
+		jnx_thread_destroy(thr);
 
 		keys->head = keys->head->next_node;
 	}
@@ -48,7 +48,7 @@ void jnxthread_poolflush()
 	jnx_btree_destroy(pooltree);
 	pooltree = NULL;
 }
-size_t jnxthread_poolcount()
+size_t jnx_thread_poolcount()
 {
 	if(!pooltree)
 	{
@@ -61,7 +61,7 @@ size_t jnxthread_poolcount()
 	jnx_list_destroy(&keys);
 	return s;
 }
-int jnxthread_addpool(jnxthread *thr)
+int jnx_thread_addpool(jnx_thread *thr)
 {
 	if(!pooltree)
 	{ 
@@ -72,7 +72,7 @@ int jnxthread_addpool(jnxthread *thr)
 
 	return 0;
 }
-int jnxthread_unlock(jnxthread_mutex *m)
+int jnx_thread_unlock(jnx_thread_mutex *m)
 {
 	int ret = 0;
 #if !defined(WIN32)
@@ -80,7 +80,7 @@ int jnxthread_unlock(jnxthread_mutex *m)
 #endif
 	return ret;
 }
-int jnxthread_trylock(jnxthread_mutex *m)
+int jnx_thread_trylock(jnx_thread_mutex *m)
 {
 	int ret = 0;
 #if !defined(WIN32)
@@ -88,13 +88,13 @@ int jnxthread_trylock(jnxthread_mutex *m)
 #endif
 	return ret;
 }
-void jnxthread_lock(jnxthread_mutex *m)
+void jnx_thread_lock(jnx_thread_mutex *m)
 {
 #if !defined(WIN32)
 	pthread_mutex_lock(&m->system_mutex);
 #endif
 }
-void jnxthread_destroy(jnxthread *thr)
+void jnx_thread_destroy(jnx_thread *thr)
 {
 #if defined(WIN32)
 	JNX_LOGC("Not implemented\n");
@@ -113,28 +113,28 @@ void jnxthread_destroy(jnxthread *thr)
 	free(thr->attributes);
 	free(thr);
 }
-jnxthread* jnxthread_create(entry_point e,void *args)
+jnx_thread* jnx_thread_create(entry_point e,void *args)
 {
 #if defined(WIN32)
 	JNX_LOGC("Not implemented\n");
 	return NULL;
 #endif
-	jnxthread *thr = malloc(sizeof(jnxthread));
-	jnxthread_attributes *attr = malloc(sizeof(jnxthread_attributes));
+	jnx_thread *thr = malloc(sizeof(jnx_thread));
+	jnx_thread_attributes *attr = malloc(sizeof(jnx_thread_attributes));
 	attr->has_custom_attr = 0;
 	thr->attributes = attr;
 	thr->id = threadcount++;  
 	//platform specific zone//
 #if !defined(WIN32)
-	//Will later give the user conrol of this via the attributes wrapper e.g. jnxthread_create_with_custom_attr
+	//Will later give the user conrol of this via the attributes wrapper e.g. jnx_thread_create_with_custom_attr
 	pthread_attr_t *default_attr = NULL;
 	pthread_create(&thr->system_thread,default_attr,e,args);
 #endif
 	//platform specific zone//
-	jnxthread_addpool(thr);
+	jnx_thread_addpool(thr);
 	return thr;
 }
-int jnxthread_create_disposable(entry_point e,void *args)
+int jnx_thread_create_disposable(entry_point e,void *args)
 {
 	int ret = 0;
 #if defined(WIN32)
@@ -150,7 +150,7 @@ int jnxthread_create_disposable(entry_point e,void *args)
 	//platform specific zone//
 	return ret;
 }
-int jnxthread_join(jnxthread *thr, void **data)
+int jnx_thread_join(jnx_thread *thr, void **data)
 {
 #if defined(WIN32)
 	JNX_LOGC("Not implemented\n");
