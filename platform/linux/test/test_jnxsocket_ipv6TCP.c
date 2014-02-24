@@ -57,7 +57,7 @@ void tcplistenipv4_callback(char *msg, size_t size,jnx_socket *s)
 }
 void *test_tcp_listen_ipv4(void *args)
 {
-	listen_callback c = tcplistenipv4_callback;
+	socket_listener_callback c = tcplistenipv4_callback;
 	tcp_ipv4_listener = jnx_socket_tcp_create(AF_INET);
 	jnx_socket_tcp_listen(tcp_ipv4_listener,"8831",100,c);
 	return 0;
@@ -95,7 +95,7 @@ void tcplistenipv6_callback(char *msg, size_t size,jnx_socket *s)
 }
 void *test_tcp_listen_ipv6(void *args)
 {
-	listen_callback c = tcplistenipv6_callback;
+	socket_listener_callback c = tcplistenipv6_callback;
 	tcp_ipv6_listener = jnx_socket_tcp_create(AF_INET6);
 	jnx_socket_tcp_listen(tcp_ipv6_listener,"8831",100,c);
 	return 0;
@@ -138,7 +138,7 @@ void udplistenipv4_callback(char *msg, size_t size,jnx_socket *s)
 }
 void *test_udp_listen_ipv4(void *args)
 {
-	listen_callback c = udplistenipv4_callback;
+	socket_listener_callback c = udplistenipv4_callback;
 	udp_ipv4_listener = jnx_socket_udp_create(AF_INET);
 	jnx_socket_udp_listen(udp_ipv4_listener,"8831",100,c);
 	return 0;
@@ -175,7 +175,7 @@ void udplistenipv6_callback(char *msg, size_t size,jnx_socket *s)
 }
 void *test_udp_listen_ipv6(void *args)
 {
-	listen_callback c = udplistenipv6_callback;
+	socket_listener_callback c = udplistenipv6_callback;
 	udp_ipv6_listener = jnx_socket_udp_create(AF_INET6);
 	jnx_socket_udp_listen(udp_ipv6_listener,"8831",100,c);
 	return 0;
