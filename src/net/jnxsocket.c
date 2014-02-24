@@ -94,8 +94,12 @@ char *jnx_resolve_ipaddress(int socket)
 	socklen_t len;
 	struct sockaddr_storage addr;
 	len = sizeof(addr);
-	getpeername(socket,(struct sockaddr*)&addr,&len);
 
+	if(getpeername(socket,(struct sockaddr*)&addr,&len) == -1)
+	{
+		perror("getpeername:");
+		return NULL;
+	}
 	if(addr.ss_family != AF_INET && addr.ss_family != AF_INET6)
 	{
 		return NULL;
@@ -186,7 +190,7 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
 	}	
 	return tbytes;
 }
-size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
+size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c)
 {
 	assert(s);
 	assert(port);
@@ -264,7 +268,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 	}
 	return 0;
 }
-size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
+size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c)
 {
 	assert(s);
 	assert(port);
@@ -313,7 +317,7 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 			perror("recvcfrom:");
 			return -1;
 		}
-		c(strndup(buffer,bytesread),bytesread,jnx_resolve_ipaddress(s->socket));
+		c(strndup(buffer,bytesread),bytesread);
 	}
 	return -1;
 }
