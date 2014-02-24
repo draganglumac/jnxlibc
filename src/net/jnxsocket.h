@@ -39,7 +39,7 @@ typedef struct
 	ssize_t stype;
 } jnx_socket;
 
-typedef void (*listen_callback)(char *, size_t ,jnx_socket *);
+typedef void (*socket_listener_callback)(char *, size_t ,jnx_socket *s);
 /**
  * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
  * @brief creates a jnx tcp socket
@@ -93,23 +93,23 @@ size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
  */
 size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
 /**
- * @fn size_t jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c)
+ * @fn size_t jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
  * @param s is the socket to use to send
  * @param port is the target port
  * @param max_connections are the number of connetions in the queue
  * @param c is the function pointer callback for received messages
  * @return -1 on error
  */
-size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c);
+size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c);
 /**
- * @fn size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c)
+ * @fn size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
  * @param s is the socket to use to send
  * @param port is the target port
  * @param max_connections are the number of connetions in the queue
  * @param c is the function pointer callback for received messages
  * @return -1 on error
  */
-size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c);
+size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c);
 #ifdef __cplusplus
 	}
 #endif

@@ -163,7 +163,7 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
 	}	
 	return tbytes;
 }
-size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c)
+size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
 {
 	assert(s);
 	assert(port);
@@ -240,7 +240,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 	}
 	return 0;
 }
-size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, listen_callback c)
+size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
 {
 	assert(s);
 	assert(port);
