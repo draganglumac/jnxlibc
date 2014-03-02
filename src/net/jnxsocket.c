@@ -88,6 +88,47 @@ size_t jnx_socket_udp_enable_broadcast(jnx_socket *s)
 	}
 	return 0;
 }
+size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local)
+{
+	assert(interface);
+	assert(s->stype == SOCK_DGRAM);
+	int optval = 0;
+	struct in_addr localinterface;
+	if(ignore_local)
+	{
+		if(setsockopt(s->socket,IPPROTO_IP,IP_MULTICAST_LOOP,&optval, sizeof(optval)) != 0)
+		{
+			perror("setsockopt:");
+			return -1;
+		}
+	}
+	localinterface.s_addr = inet_addr(interface);
+	if(setsockopt(s->socket,IPPROTO_IP,IP_MULTICAST_IF,(char*)&localinterface,
+				sizeof(localinterface)) < 0)
+	{
+		perror("setsockopt:");
+		return -1;
+	}
+	//Note: This is due to bug in getaddrinfo
+	s->addrfamily = AF_UNSPEC;
+	return 0;
+}
+size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, char *group)
+{
+	assert(interface);
+	assert(group);
+	assert(s->stype == SOCK_DGRAM);
+	struct ip_mreq bgroup;
+	bgroup.imr_multiaddr.s_addr = inet_addr(group);
+	bgroup.imr_interface.s_addr = inet_addr(interface);
+	if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(char*)&bgroup,
+				sizeof(bgroup)) < 0)
+	{
+		perror("setsockopt:");
+		return -1;
+	}
+	return 0;
+}
 char *jnx_socket_tcp_resolve_ipaddress(int socket)
 { 
 	char ipstr[INET6_ADDRSTRLEN];
@@ -190,8 +231,12 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
 	hints.ai_protocol = IPPROTO_UDP;
 	hints.ai_next = NULL;	
 
-	getaddrinfo(host,port,&hints,&res);
-
+	int rg = 0;
+	if((rg = getaddrinfo(host,port,&hints,&res)) != 0)
+	{
+		printf("%s\n",gai_strerror(rg));
+		return -1;
+	}
 	size_t tbytes = 0;
 	size_t rbytes = msg_len;
 
@@ -200,12 +245,14 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
 		size_t n = sendto(s->socket,msg,msg_len,0,res->ai_addr,res->ai_addrlen);
 		if(n == -1)
 		{
+			freeaddrinfo(res);
 			perror("send:");
 			return -1;
 		}
 		tbytes +=n;
 		rbytes = msg_len - tbytes;
 	}	
+	freeaddrinfo(res);
 	return tbytes;
 }
 size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c)
@@ -335,7 +382,6 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
 			perror("recvcfrom:");
 			return -1;
 		}
-
 		c(strndup(buffer,bytesread),bytesread,jnx_socket_udp_resolve_ipaddress(their_addr));
 	}
 	return -1;
