@@ -127,6 +127,8 @@ size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, ch
 		perror("setsockopt:");
 		return -1;
 	}
+	//Note: This is due to bug in getaddrinfo
+	s->addrfamily = AF_UNSPEC;
 	return 0;
 }
 char *jnx_socket_tcp_resolve_ipaddress(int socket)
