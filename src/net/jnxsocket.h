@@ -20,8 +20,8 @@
  *
  *  #include <jnxc_headers/jnxsocket.h>
  */
-#ifndef __JNXNETWORK_H__
-#define __JNXNETWORK_H__
+#ifndef __JNXSOCKET_H__
+#define __JNXNSOCKET_H__
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/stat.h>
