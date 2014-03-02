@@ -214,6 +214,5 @@ int main(int argc, char **argv)
 	
 	setup_udp_listen_ipv4_test();
 	setup_udp_listen_ipv6_test();
-	
 	return 0;
 }
