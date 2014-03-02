@@ -74,6 +74,24 @@ void jnx_socket_destroy(jnx_socket **s);
  */
 size_t jnx_socket_udp_enable_broadcast(jnx_socket *s);
 /**
+ *@fn size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local)
+ *@brief This is function will enable the given socket to transmit multicast packets over domain
+ *@param s is the socket to enable multicast sending on
+ *@param interface is the IP address of the interface to use on the local machine
+ *@param ignore_local is a flag to either disable local multicast loopback
+ *@param returns 0 on success
+ */
+size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local);
+/**
+ *@fn size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface,char *group)
+ *@brief This function will enable the given socket to recieve multicast packets on the given interface for the subscribed group
+ *@param s is the socket to enable multicast listening on
+ *@param interface is the IP address of the interface to use on the local machine
+ *@param group is the multicast group to subscribe too
+ *@return returns 0 on success
+ */
+size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, char *group);
+/**
  * @fn jnx_socket_tcp_send((jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param host is the target destination
