@@ -21,7 +21,7 @@
  *  #include <jnxc_headers/jnxsocket.h>
  */
 #ifndef __JNXSOCKET_H__
-#define __JNXNSOCKET_H__
+#define __JNXSOCKET_H__
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/stat.h>

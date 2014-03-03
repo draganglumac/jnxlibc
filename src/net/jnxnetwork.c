@@ -34,8 +34,8 @@
 char *jnx_network_get_ip(char *interface,unsigned int addrfamily)
 {
 	struct ifaddrs *ifaddr, *ifa;
-	char host[NI_MAXSERV];
-	bzero(host,NI_MAXSERV);
+	char host[NI_MAXHOST];
+	bzero(host,NI_MAXHOST);
 	int n,s,family;
 	if(getifaddrs(&ifaddr) != 0)
 	{
@@ -57,7 +57,7 @@ char *jnx_network_get_ip(char *interface,unsigned int addrfamily)
 						sizeof(struct sockaddr_in) : 
 						sizeof(struct sockaddr_in6), 
 						host, 
-						NI_MAXSERV,
+						NI_MAXHOST,
 						NULL,
 						0,
 						NI_NUMERICHOST | NI_NUMERICSERV);
