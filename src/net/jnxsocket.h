@@ -72,7 +72,7 @@ void jnx_socket_destroy(jnx_socket **s);
  *@param s is the socket object to enable broadcasting
  *@return 0 on success, -1 on error
  */
-size_t jnx_socket_udp_enable_broadcast(jnx_socket *s);
+size_t jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s);
 /**
  *@fn size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local)
  *@brief This is function will enable the given socket to transmit multicast packets over domain
