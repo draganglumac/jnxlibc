@@ -16,7 +16,12 @@
  * =====================================================================================
  */
 #define _GNU_SOURCE
+#if defined(WIN32)
+
+#else
 #include <arpa/inet.h>
+#endif
+
 #include <sys/socket.h>
 #include <netdb.h>
 #include <ifaddrs.h>
@@ -29,7 +34,8 @@
 char *jnx_network_get_ip(char *interface,unsigned int addrfamily)
 {
 	struct ifaddrs *ifaddr, *ifa;
-	char host[NI_MAXHOST];
+	char host[NI_MAXSERV];
+	bzero(host,NI_MAXSERV);
 	int n,s,family;
 	if(getifaddrs(&ifaddr) != 0)
 	{
@@ -51,10 +57,10 @@ char *jnx_network_get_ip(char *interface,unsigned int addrfamily)
 						sizeof(struct sockaddr_in) : 
 						sizeof(struct sockaddr_in6), 
 						host, 
-						NI_MAXHOST,
+						NI_MAXSERV,
 						NULL,
 						0,
-						NI_NUMERICHOST);
+						NI_NUMERICHOST | NI_NUMERICSERV);
 				if(s != 0)
 				{
 					perror("getnameinfo:");

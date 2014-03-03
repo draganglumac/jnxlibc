@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BD780DC7-3557-480F-B996-22ADA306C8EF}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>jnxlibcwin32</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\alg\jnxbase64.c" />
+    <ClCompile Include="..\..\..\..\src\bug\jnxdebug.c" />
+    <ClCompile Include="..\..\..\..\src\dat\jnxbtree.c" />
+    <ClCompile Include="..\..\..\..\src\dat\jnxhash.c" />
+    <ClCompile Include="..\..\..\..\src\dat\jnxlist.c" />
+    <ClCompile Include="..\..\..\..\src\dat\jnxstack.c" />
+    <ClCompile Include="..\..\..\..\src\dat\jnxvector.c" />
+    <ClCompile Include="..\..\..\..\src\io\jnxfile.c" />
+    <ClCompile Include="..\..\..\..\src\mem\jnxmem.c" />
+    <ClCompile Include="..\..\..\..\src\net\jnxnetwork.c" />
+    <ClCompile Include="..\..\..\..\src\net\jnxsocket.c" />
+    <ClCompile Include="..\..\..\..\src\sys\jnxlog.c" />
+    <ClCompile Include="..\..\..\..\src\sys\jnxstring.c" />
+    <ClCompile Include="..\..\..\..\src\sys\jnxterm.c" />
+    <ClCompile Include="..\..\..\..\src\thr\jnxthread.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\alg\jnxbase64.h" />
+    <ClInclude Include="..\..\..\..\src\bug\jnxdebug.h" />
+    <ClInclude Include="..\..\..\..\src\dat\jnxbtree.h" />
+    <ClInclude Include="..\..\..\..\src\dat\jnxhash.h" />
+    <ClInclude Include="..\..\..\..\src\dat\jnxlist.h" />
+    <ClInclude Include="..\..\..\..\src\dat\jnxstack.h" />
+    <ClInclude Include="..\..\..\..\src\dat\jnxvector.h" />
+    <ClInclude Include="..\..\..\..\src\io\jnxfile.h" />
+    <ClInclude Include="..\..\..\..\src\mem\jnxmem.h" />
+    <ClInclude Include="..\..\..\..\src\net\jnxnetwork.h" />
+    <ClInclude Include="..\..\..\..\src\net\jnxsocket.h" />
+    <ClInclude Include="..\..\..\..\src\sys\jnxlog.h" />
+    <ClInclude Include="..\..\..\..\src\sys\jnxstring.h" />
+    <ClInclude Include="..\..\..\..\src\sys\jnxterm.h" />
+    <ClInclude Include="..\..\..\..\src\thr\jnxthread.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -15,7 +15,11 @@
  *
  * =====================================================================================
  */
+#if defined(WIN32)
+
+#else
 #include <arpa/inet.h>
+#endif
 #include <assert.h>
 #include <netdb.h>
 #include <stdio.h>
