@@ -3,7 +3,7 @@
  *
  *       Filename:  test_jnxhash.c
  *
- *    Description:  
+ *    Description:
  *
  *        Version:  1.0
  *        Created:  02/27/13 16:20:01
@@ -11,7 +11,7 @@
  *       Compiler:  gcc
  *
  *         Author:  Alex Jones (), alexsimonjones@gmail.com
- *   Organization:  
+ *   Organization:
  *
  * =====================================================================================
  */
@@ -22,100 +22,90 @@
 #include "jnxlist.h"
 #include "jnxterm.h"
 #include "jnxlog.h"
-struct foo{
-	int number;
-}foo;
+struct foo {
+    int number;
+} foo;
 
-void test_list_creation()
-{
-	JNX_LOGC("- test_list_creation");
-	jnx_list *secondlist = jnx_list_create();
-	assert(secondlist != NULL);
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-	struct foo *f = malloc(sizeof(foo));
-	f->number = 10;
-	JNX_LOGC("- test_list_insertion"); 
-	jnx_list_add(secondlist,(void*)f); 
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-	JNX_LOGC("- test_list_removal");
-	struct foo *output = (struct foo*)jnx_list_remove(&secondlist);
-	assert(output->number == 10);
-	free(output);
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-	JNX_LOGC("- test_list_deletion"); 
-	jnx_list_destroy(&secondlist);
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+void test_list_creation() {
+    JNX_LOGC("- test_list_creation");
+    jnx_list *secondlist = jnx_list_create();
+    assert(secondlist != NULL);
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+    struct foo *f = malloc(sizeof(foo));
+    f->number = 10;
+    JNX_LOGC("- test_list_insertion");
+    jnx_list_add(secondlist,(void*)f);
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+    JNX_LOGC("- test_list_removal");
+    struct foo *output = (struct foo*)jnx_list_remove(&secondlist);
+    assert(output->number == 10);
+    free(output);
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+    JNX_LOGC("- test_list_deletion");
+    jnx_list_destroy(&secondlist);
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
-void test_list_index()
-{
-	JNX_LOGC("- test_list_sequence");
-	jnx_list *j = jnx_list_create();
-	int count = 6;
-	char *ar[] = { "A", "B", "C", "D", "E", "F" };
-	int y;
-	for(y = 0; y < count; ++y)
-	{
-		jnx_list_add(j,ar[y]);
-	}
-	int x; 
-	for(x = count - 1; x != 0; --x)
-	{
-		char *current = jnx_list_remove(&j);
-		assert(strcmp(current,ar[x]) == 0);	
-	}	
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-	jnx_list_destroy(&j);
-	assert(j == NULL);
+void test_list_index() {
+    JNX_LOGC("- test_list_sequence");
+    jnx_list *j = jnx_list_create();
+    int count = 6;
+    char *ar[] = { "A", "B", "C", "D", "E", "F" };
+    int y;
+    for(y = 0; y < count; ++y) {
+        jnx_list_add(j,ar[y]);
+    }
+    int x;
+    for(x = count - 1; x != 0; --x) {
+        char *current = jnx_list_remove(&j);
+        assert(strcmp(current,ar[x]) == 0);
+    }
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+    jnx_list_destroy(&j);
+    assert(j == NULL);
 }
-void test_data_removal()
-{
-	JNX_LOGC("- test_data_removal");
-	char *test_string = "AABBCC";
-	jnx_list *list = jnx_list_create();
-	int count = 10;
-	int x;
-	for(x = 0; x < count; ++x)
-	{
-		char *dynamic_string = malloc(strlen(test_string));
-		jnx_list_add(list,dynamic_string);
-	}
-	char *ret;
-	while((ret = jnx_list_remove(&list)) != NULL)
-	{
-		free(ret);
-	}
-	jnx_list_destroy(&list);
-	assert(list == NULL);
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+void test_data_removal() {
+    JNX_LOGC("- test_data_removal");
+    char *test_string = "AABBCC";
+    jnx_list *list = jnx_list_create();
+    int count = 10;
+    int x;
+    for(x = 0; x < count; ++x) {
+        char *dynamic_string = malloc(strlen(test_string));
+        jnx_list_add(list,dynamic_string);
+    }
+    char *ret;
+    while((ret = jnx_list_remove(&list)) != NULL) {
+        free(ret);
+    }
+    jnx_list_destroy(&list);
+    assert(list == NULL);
+    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
-void test_list_tail()
-{
-	jnx_list *l = jnx_list_create();
+void test_list_tail() {
+    jnx_list *l = jnx_list_create();
 
-	int count = 3;
-	char *ar[] = { "A", "B", "C" };
-	int x;
-	for(x = 0; x < count; ++x)
-	{
-		jnx_list_add(l,ar[x]);
-	}
-	int c=count;
-	while(l->tail != NULL){
-		
-		assert(strcmp((char*)l->tail->_data,ar[c-1]) == 0);
-		--c;
-		l->tail = l->tail->prev_node;
-	}
+    int count = 3;
+    char *ar[] = { "A", "B", "C" };
+    int x;
+    for(x = 0; x < count; ++x) {
+        jnx_list_add(l,ar[x]);
+    }
+    int c=count;
+    while(l->tail != NULL) {
 
-	jnx_list_destroy(&l);
+        assert(strcmp((char*)l->tail->_data,ar[c-1]) == 0);
+        --c;
+        l->tail = l->tail->prev_node;
+    }
+
+    jnx_list_destroy(&l);
 }
-int main(int args, char **argv)
-{
-	JNX_LOGC("Running list tests...\n");
-	test_list_creation();
-	test_data_removal();
-	test_list_index();
-	test_list_tail();
-	JNX_LOGC("List tests completed.\n");
-	return 0;
+int main(int args, char **argv) {
+    JNX_LOGC("Running list tests...\n");
+    test_list_creation();
+    test_data_removal();
+    test_list_index();
+    test_list_tail();
+    JNX_LOGC("List tests completed.\n");
+    return 0;
 }
