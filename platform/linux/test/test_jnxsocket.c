@@ -49,9 +49,10 @@ static int tcp_ip6_complete = 0;
 static jnx_socket *tcp_ipv6_listener;
 
 ///////////////////TCP IPV4 /////////////////////////////
-void tcplistenipv4_callback(char *msg, size_t size,char *ip) {
+int tcplistenipv4_callback(char *msg, size_t size,char *ip) {
     assert(strcmp(msg,"hi") == 0);
     tcp_ip4_complete = 1;
+	return 1;
 }
 void *test_tcp_listen_ipv4(void *args) {
     tcp_socket_listener_callback c = tcplistenipv4_callback;
@@ -83,9 +84,10 @@ void setup_tcp_listen_ipv4_test() {
 }
 
 ///////////////////TCP IPV6 /////////////////////////////
-void tcplistenipv6_callback(char *msg, size_t size,char* ip) {
+int tcplistenipv6_callback(char *msg, size_t size,char* ip) {
     assert(strcmp(msg,"hi") == 0);
     tcp_ip6_complete = 1;
+	return 1;
 }
 void *test_tcp_listen_ipv6(void *args) {
     tcp_socket_listener_callback c = tcplistenipv6_callback;
@@ -122,9 +124,10 @@ jnx_socket *udp_ipv4_listener;
 static int udp_ip6_complete = 0;
 jnx_socket *udp_ipv6_listener;
 /////////////////////UDP IPV4 /////////////////////////////
-void udplistenipv4_callback(char *msg, size_t size,char *ip) {
+int udplistenipv4_callback(char *msg, size_t size,char *ip) {
     assert(strcmp(msg,"hi") == 0);
     udp_ip4_complete = 1;
+	return 1;
 }
 void *test_udp_listen_ipv4(void *args) {
     udp_socket_listener_callback c = udplistenipv4_callback;
@@ -155,9 +158,10 @@ void setup_udp_listen_ipv4_test() {
     jnx_socket_destroy(&udp_ipv4_listener);
 }
 /////////////////////UDP IPV6 /////////////////////////////
-void udplistenipv6_callback(char *msg, size_t size,char *ip) {
+int  udplistenipv6_callback(char *msg, size_t size,char *ip) {
     assert(strcmp(msg,"hi") == 0);
     udp_ip6_complete = 1;
+	return 1;
 }
 void *test_udp_listen_ipv6(void *args) {
     udp_socket_listener_callback c = udplistenipv6_callback;

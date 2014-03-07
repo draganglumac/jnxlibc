@@ -297,7 +297,11 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
         fread(out,1,len,fp);
         fclose(fp);
 
-        c(out,len,jnx_socket_tcp_resolve_ipaddress(recfd));
+		int ret = 0;
+        if((ret = c(out,len,jnx_socket_tcp_resolve_ipaddress(recfd))) != 0) {
+			printf("Exiting tcp listener with %d\n",ret);
+			return 0;
+		}
     }
     return 0;
 }
@@ -346,7 +350,11 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
             perror("recvcfrom:");
             return -1;
         }
-        c(strndup(buffer,bytesread),bytesread,jnx_socket_udp_resolve_ipaddress(their_addr));
+		int ret = 0;
+        if((ret = c(strndup(buffer,bytesread),bytesread,jnx_socket_udp_resolve_ipaddress(their_addr))) != 0) {
+			printf("Exiting udp listener with %d",ret);
+			return 0;
+		}
     }
     return -1;
 }
