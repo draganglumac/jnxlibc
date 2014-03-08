@@ -8,7 +8,7 @@ var searchData=
   ['jnxlist_2eh',['jnxlist.h',['../jnxlist_8h.html',1,'']]],
   ['jnxlog_2eh',['jnxlog.h',['../jnxlog_8h.html',1,'']]],
   ['jnxmem_2eh',['jnxmem.h',['../jnxmem_8h.html',1,'']]],
-  ['jnxnetwork_2eh',['jnxnetwork.h',['../jnxnetwork_8h.html',1,'']]],
+  ['jnxsocket_2eh',['jnxsocket.h',['../jnxsocket_8h.html',1,'']]],
   ['jnxstack_2eh',['jnxstack.h',['../jnxstack_8h.html',1,'']]],
   ['jnxstring_2eh',['jnxstring.h',['../jnxstring_8h.html',1,'']]],
   ['jnxterm_2eh',['jnxterm.h',['../jnxterm_8h.html',1,'']]],

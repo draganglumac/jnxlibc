@@ -1,0 +1,201 @@
+.TH "jnxsocket.h" 3 "Sun Mar 2 2014" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jnxsocket.h \- 
+.PP
+The API for jnxlibc networking (includes TCP, UDP )  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stddef\&.h>\fP
+.br
+\fC#include <sys/types\&.h>\fP
+.br
+\fC#include <sys/stat\&.h>\fP
+.br
+\fC#include <sys/socket\&.h>\fP
+.br
+\fC#include <sys/un\&.h>\fP
+.br
+\fC#include <netinet/in\&.h>\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBjnx_socket\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef void(* \fBtcp_socket_listener_callback\fP )(char *payload, size_t bytesread, char *ipaddress)"
+.br
+.ti -1c
+.RI "typedef void(* \fBudp_socket_listener_callback\fP )(char *payload, size_t bytesread, char *ipaddress)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBjnx_socket\fP * \fBjnx_socket_tcp_create\fP (unsigned int addrfamily)"
+.br
+.RI "\fIcreates a jnx tcp socket \fP"
+.ti -1c
+.RI "\fBjnx_socket\fP * \fBjnx_socket_udp_create\fP (unsigned int addrfamily)"
+.br
+.RI "\fIcreates a jnx udp socket \fP"
+.ti -1c
+.RI "void \fBjnx_socket_close\fP (\fBjnx_socket\fP *s)"
+.br
+.ti -1c
+.RI "void \fBjnx_socket_destroy\fP (\fBjnx_socket\fP **s)"
+.br
+.ti -1c
+.RI "size_t \fBjnx_socket_udp_enable_broadcast\fP (\fBjnx_socket\fP *s)"
+.br
+.ti -1c
+.RI "size_t \fBjnx_socket_udp_enable_multicast_send\fP (\fBjnx_socket\fP *s, char *interface, int ignore_local)"
+.br
+.RI "\fIThis is function will enable the given socket to transmit multicast packets over domain\&. \fP"
+.ti -1c
+.RI "size_t \fBjnx_socket_udp_enable_multicast_listen\fP (\fBjnx_socket\fP *s, char *interface, char *group)"
+.br
+.RI "\fIThis function will enable the given socket to recieve multicast packets on the given interface for the subscribed group\&. \fP"
+.ti -1c
+.RI "size_t \fBjnx_socket_tcp_send\fP (\fBjnx_socket\fP *s, char *host, char *port, char *msg, ssize_t msg_len)"
+.br
+.ti -1c
+.RI "size_t \fBjnx_socket_udp_send\fP (\fBjnx_socket\fP *s, char *host, char *port, char *msg, ssize_t msg_len)"
+.br
+.ti -1c
+.RI "size_t \fBjnx_socket_tcp_listen\fP (\fBjnx_socket\fP *s, char *port, ssize_t max_connections, \fBtcp_socket_listener_callback\fP c)"
+.br
+.ti -1c
+.RI "size_t \fBjnx_socket_udp_listen\fP (\fBjnx_socket\fP *s, char *port, ssize_t max_connections, \fBudp_socket_listener_callback\fP c)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+The API for jnxlibc networking (includes TCP, UDP ) 
+
+#include <jnxc_headers/jnxsocket\&.h> 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef void(* tcp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress)"
+
+.SS "typedef void(* udp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress)"
+
+.SH "Function Documentation"
+.PP 
+.SS "void jnx_socket_close (\fBjnx_socket\fP *s)"
+
+.SS "void jnx_socket_destroy (\fBjnx_socket\fP **s)"
+
+.SS "\fBjnx_socket\fP * jnx_socket_tcp_create (unsigned intaddrfamily)"
+
+.PP
+creates a jnx tcp socket 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIaddrfamily\fP this is the address family to use (e\&.g\&. AF_INET) 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+\fBjnx_socket\fP 
+.RE
+.PP
+
+.SS "size_t jnx_socket_tcp_listen (\fBjnx_socket\fP *s, char *port, ssize_tmax_connections, \fBtcp_socket_listener_callback\fPc)"
+
+.SS "size_t jnx_socket_tcp_send (\fBjnx_socket\fP *s, char *host, char *port, char *msg, ssize_tmsg_len)"
+
+.SS "\fBjnx_socket\fP * jnx_socket_udp_create (unsigned intaddrfamily)"
+
+.PP
+creates a jnx udp socket 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIaddrfamily\fP this is the address family to use (e\&.g\&. AF_INET) 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+\fBjnx_socket\fP 
+.RE
+.PP
+
+.SS "size_t jnx_socket_udp_enable_broadcast (\fBjnx_socket\fP *s)"
+
+.SS "size_t jnx_socket_udp_enable_multicast_listen (\fBjnx_socket\fP *s, char *interface, char *group)"
+
+.PP
+This function will enable the given socket to recieve multicast packets on the given interface for the subscribed group\&. 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIs\fP is the socket to enable multicast listening on 
+.br
+\fIinterface\fP is the IP address of the interface to use on the local machine 
+.br
+\fIgroup\fP is the multicast group to subscribe too 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+returns 0 on success 
+.RE
+.PP
+
+.SS "size_t jnx_socket_udp_enable_multicast_send (\fBjnx_socket\fP *s, char *interface, intignore_local)"
+
+.PP
+This is function will enable the given socket to transmit multicast packets over domain\&. 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIs\fP is the socket to enable multicast sending on 
+.br
+\fIinterface\fP is the IP address of the interface to use on the local machine 
+.br
+\fIignore_local\fP is a flag to either disable local multicast loopback 
+.br
+\fIreturns\fP 0 on success 
+.RE
+.PP
+
+.SS "size_t jnx_socket_udp_listen (\fBjnx_socket\fP *s, char *port, ssize_tmax_connections, \fBudp_socket_listener_callback\fPc)"
+
+.SS "jnx_socket_udp_send (\fBjnx_socket\fP *s, char *host, char *port, char *msg, ssize_tmsg_len)"
+
+.PP
+\fBParameters:\fP
+.RS 4
+\fIs\fP is the socket to use to send 
+.br
+\fIhost\fP is the target destination 
+.br
+\fIport\fP is the target port 
+.br
+\fImsg\fP is the payload to send 
+.br
+\fImsg_len\fP is the size of payload 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+size_t of bytes sent, -1 for failure 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

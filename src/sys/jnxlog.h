@@ -25,11 +25,7 @@
  *@macro JNX_LOGC
  *@brief log to console
  */
-
-
-
 #define JNX_LOGC(X, ...) jnx_log(LOG_CONSOLE,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)		
-
 /**
  *@macro JNX_LOGF
  *@brief log to file

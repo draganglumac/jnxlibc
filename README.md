@@ -62,10 +62,16 @@ Reading from a file
 char *buffer;
 size_t readBytes = jnx_file_read("example.txt",&buffer,"r");
 ```
-Sending TCP message over network
+Sending message over network
 ```C
-jnx_socket *write_socket = jnx_network_socket_create(AF_INET,SOCK_STREAM);
-size_t sent = jnx_network_send(write_socket,HOST,PORT,"Hello!",strlen("Hello!"));
+jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
+jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
+jnx_socket_close(tcp_sock);
+
+jnx_socket *tcp_sock = jnx_socket_tcp_create(AF_INET6);
+jnx_socket_tcp_send(tcp_sock,"host","port","message",strlen("message"));
+jnx_socket_close(udp_sock);
+
 ```
 Using memory management
 ```C
