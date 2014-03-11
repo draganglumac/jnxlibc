@@ -297,11 +297,11 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
         fread(out,1,len,fp);
         fclose(fp);
 
-		int ret = 0;
+        int ret = 0;
         if((ret = c(out,len,jnx_socket_tcp_resolve_ipaddress(recfd))) != 0) {
-			printf("Exiting tcp listener with %d\n",ret);
-			return 0;
-		}
+            printf("Exiting tcp listener with %d\n",ret);
+            return 0;
+        }
     }
     return 0;
 }
@@ -350,11 +350,80 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
             perror("recvcfrom:");
             return -1;
         }
-		int ret = 0;
+        int ret = 0;
         if((ret = c(strndup(buffer,bytesread),bytesread,jnx_socket_udp_resolve_ipaddress(their_addr))) != 0) {
-			printf("Exiting udp listener with %d",ret);
-			return 0;
-		}
+            printf("Exiting udp listener with %d",ret);
+            return 0;
+        }
     }
     return -1;
 }
+size_t jnx_socket_tcp_listen_await(jnx_socket *s, char *port, char **outbuffer) {
+    size_t len = 0;
+    assert(s);
+    assert(port);
+    assert(s->isclosed == 0);
+    assert(s->stype == SOCK_STREAM);
+    int optval = 1;
+    struct addrinfo hints, *res, *p;
+    struct sockaddr_storage their_addr;
+    char buffer[MAXBUFFER];
+    memset(&hints,0,sizeof(hints));
+    hints.ai_family = s->addrfamily;
+    hints.ai_socktype = s->stype;
+
+    getaddrinfo(NULL,port,&hints,&res);
+
+    p = res;
+    while(p != NULL) {
+        if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1) {
+            perror("server: socket");
+            continue;
+        }
+        if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,
+                       sizeof(int)) == -1) {
+            perror("setsockopt");
+            exit(1);
+        }
+        if (bind(s->socket, p->ai_addr, p->ai_addrlen) == -1) {
+            perror("server: bind");
+            continue;
+        }
+        break;
+
+        p = p->ai_next;
+    }
+    freeaddrinfo(res);
+    listen(s->socket,1);
+    socklen_t addr_size = sizeof(their_addr);
+    int recfd = accept(s->socket,(struct sockaddr*)&their_addr,&addr_size);
+    if(recfd < 0) {
+        JNX_LOGC("accept: %s",strerror(errno));
+        return -1;
+    }
+    bzero(buffer,MAXBUFFER);
+    FILE *fp = tmpfile();
+    size_t bytesread = read(recfd,buffer,MAXBUFFER);
+    fwrite(buffer,sizeof(char),bytesread,fp);
+
+    while(bytesread > 0) {
+        bzero(buffer,MAXBUFFER);
+        bytesread = read(recfd,buffer,MAXBUFFER);
+        if(bytesread == -1) {
+            perror("read:");
+            fclose(fp);
+            return -1;
+        }
+        if(bytesread > 0) {
+            fwrite(buffer,sizeof(char),bytesread,fp);
+        }
+    }
+    len = ftell(fp);
+    rewind(fp);
+    char *out = calloc(len + 1, sizeof(char));
+    fread(out,1,len,fp);
+    fclose(fp);
+    *outbuffer = out;
+    return len;
+}
+
