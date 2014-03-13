@@ -3,271 +3,234 @@
  *
  *       Filename:  jnxmem.c
  *
- *    Description:  
+ *    Description: Memory manager that uses internal datastructures for tracking
  *
  *        Version:  1.0
  *        Created:  01/03/14 18:16:23
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  jonesax (), 
- *   Organization:  
+ *         Author:  jonesax (),
+ *   Organization:
  *
  * =====================================================================================
  */
 #include <stdlib.h>
 #include "jnxmem.h"
+#include "jnxlog.h"
+#include "jnxbtree.h"
+#include "jnxlist.h"
+typedef enum { FREE, ALLOC } jnx_mem_memtrace_state;
+typedef struct {
+    void *ptr;
+    size_t size;
+    char *file;
+    char *function;
+    int line;
+    jnx_mem_memtrace_state state;
 
-typedef struct mem_node{
-	void *data;
-	struct mem_node *next;
-}mem_node;
+} jnx_mem_item;
 
-typedef struct memlist{
-	struct mem_node *head;
-	int counter;
-}mem_list;
+int internal_compare_callback(void *A, void *B) {
+    if(A > B) {
+        return -1;
+    }
+    if(B > A) {
+        return 1;
+    }
+    return 0;
+}
+static jnx_btree *memtree = NULL;
 
-static mem_list *memlist = NULL;
+void jnx_mem_print() {
+    if(memtree == NULL) {
+        return;
+    }
+    jnx_list *l = jnx_list_create();
+    jnx_btree_keys(memtree,l);
+    size_t totalbytes_alloc = 0;
+    size_t totalbytes_free = 0;
+    while(l->head) {
+        jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
+        if(m) {
+            char *state;
+            if(m->state == ALLOC) {
+                state = "ALLOC";
+                totalbytes_alloc += m->size;
+            } else {
+                state = "FREE";
+                totalbytes_free += m->size;
+            }
+            JNX_LOGC("[%s][%s:%d][%s - %zu]\n",m->file,m->function,m->line,state,m->size);
+            l->head = l->head->next_node;
+        }
+    }
+    char buffer[1024];
+    sprintf(buffer,"TOTAL ALLOC IN USE: %zukb [exact:%zu]\nTOTAL ALLOC FREE: %zu kb[exact:%zu]\n",(totalbytes_alloc / 1024 ),totalbytes_alloc
+            ,(totalbytes_free / 1024),totalbytes_free);
+    JNX_LOGC(buffer);
+    jnx_list_destroy(&l);
+}
+void jnx_mem_print_to_file(char *path) {
+    if(memtree == NULL) {
+        return;
+    }
+    jnx_list *l = jnx_list_create();
+    jnx_btree_keys(memtree,l);
+    size_t totalbytes_alloc = 0;
+    size_t totalbytes_free = 0;
+    while(l->head) {
+        jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
+        if(m) {
+            char *state;
+            if(m->state == ALLOC) {
+                state = "ALLOC";
+                totalbytes_alloc += m->size;
+            } else {
+                state = "FREE";
+                totalbytes_free += m->size;
+            }
 
-static inline void add_link(mem_list *m,void *in)
-{
-	if(m->head == NULL)
-	{
-		mem_node *n = malloc(sizeof(mem_node));
-		n->data = in;
-		n->next = NULL;
-		m->head = n;
-		m->counter++;
-		return;
-	}
-	mem_node *org_head = m->head;
-	while(m->head)
-	{
-		mem_node *current = m->head;
-		if(!m->head->next)
-		{
-			mem_node *n = malloc(sizeof(mem_node));
-			n->data = in;
-			n->next = NULL;
-			current->next = n;
-			m->counter++;
-			m->head = org_head;
-			return;
-		}
-		m->head = m->head->next;
-	}	
-	m->head = org_head;
+            char buffer[1024];
+            sprintf(buffer,"[%s][%s:%d][%s - %zu]\n",m->file,m->function,m->line,state,m->size);
+            jnx_file_write(path,buffer,strlen(buffer),"a+");
+            l->head = l->head->next_node;
+        }
+    }
+    char buffer[1024];
+    sprintf(buffer,"TOTAL ALLOC IN USE: %zukb [exact:%zu]\nTOTAL ALLOC FREE: %zu kb[exact:%zu]\n",(totalbytes_alloc / 1024 ),totalbytes_alloc
+            ,(totalbytes_free / 1024),totalbytes_free);
+    jnx_file_write(path,buffer,strlen(buffer),"a+");
+    jnx_list_destroy(&l);
 }
-static mem_list *init_mem_list()
-{
-	mem_list *m = malloc(sizeof(mem_list));
-	m->counter = 0;
-	m->head = NULL;
-	return m;
+size_t jnx_mem_clear() {
+    if(memtree == NULL) {
+        return 0;
+    }
+    size_t c = 0;
+    jnx_list *l = jnx_list_create();
+    jnx_btree_keys(memtree,l);
+    while(l->head) {
+        jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
+        if(m) {
+            free(m->function);
+            free(m->file);
+            if(m->state == ALLOC) {
+                free(m->ptr);
+                c = c + m->size;
+            }
+            free(m);
+            l->head = l->head->next_node;
+        }
+    }
+    jnx_btree_destroy(memtree);
+    memtree = NULL;
+    return c;
 }
-static void list_delete(mem_list **m)
-{
-	if((*m) == NULL) { return; }
-	if((*m)->head == NULL){ return; }
-	mem_node *current = (*m)->head;
-	if(!current->next)
-	{
-		free(current);
-		free(*m);
-		(*m) = NULL;
-		return;
-	}
-	while(current)
-	{
-		mem_node *cn = current;
-		free(cn);
-		current = current->next;
-	}
-	free(*m);
-	(m) = NULL;
+size_t jnx_mem_get_current_size_allocations() {
+    if(memtree == NULL) {
+        return 0;
+    }
+    jnx_list *l = jnx_list_create();
+    jnx_btree_keys(memtree,l);
+    size_t n = 0;
+    while(l->head) {
+        jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
+        if(m) {
+            if(m->state == ALLOC) {
+                n = n + m->size;
+            }
+            l->head = l->head->next_node;
+        }
+    }
+    jnx_list_destroy(&l);
+    return n;
 }
-void jnx_mem_trace(char *path)
-{
-	if(memlist == NULL) return ;
-	mem_node *h = memlist->head;
-	char *state_al = "[IN USE]";
-	char *state_fr = "[FREE]";
-	while(h)
-	{
-		jnx_mem_item *m = h->data;
-		char str[1024];
-		char *t;
-		switch(m->state)
-		{
-			case FREE:
-				t = state_fr;
-				break;
-			case ALLOC:
-				t = state_al;
-				break;
-		}	
-		sprintf(str,"[%s][%s:%d][%p][size:%zu] - %s\n",m->file,m->function,m->line,m->ptr,m->size,t);
-		jnx_file_write(path,str,strlen(str),"a");
-		h = h->next;
-	}
-	size_t total_bytes = jnx_mem_get_byte_alloc();
-	size_t total_allocs = jnx_mem_get_total_number_alloc();
-	char buffer[1024];
-	time_t t;
-	char *buf;
-	time(&t);
-	buf = (char*)malloc(strlen(ctime(&t)) +1);
-	snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
-	char *debug ="Time:%d\nTotal allocs:%zu\nCurrent allocs:%zu\nTotal bytes:%zu(%zuKb)\n";
-	sprintf(buffer,debug,buf,total_allocs,jnx_mem_get_current_number_alloc(),total_bytes,(total_bytes / 1024));
-	free(buf);	
-	jnx_file_write(path,buffer,strlen(buffer),"a");
+size_t jnx_mem_get_current_number_allocations() {
+    if(memtree == NULL) {
+        return 0;
+    }
+    jnx_list *l = jnx_list_create();
+    jnx_btree_keys(memtree,l);
+    size_t n = 0;
+    while(l->head) {
+        jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
+        if(m) {
+            if(m->state == ALLOC) {
+                ++n;
+            }
+            l->head = l->head->next_node;
+        }
+    }
+    jnx_list_destroy(&l);
+    return n;
 }
-size_t jnx_mem_clear()
-{
-	if(!memlist)
-	{
-		return 0;
-	}
-	size_t clear_mem = 0;
-	mem_node *m = memlist->head;
-	while(m)
-	{
-		jnx_mem_item *mi = m->data;
-		if(mi->state == ALLOC)
-		{
-			free(mi->ptr);
-			free(mi->function);
-			free(mi->file);
-			clear_mem = clear_mem + mi->size;
-			mi->state = FREE;
-		}
-		free(m->data);
-		m = m->next;
-	}
-	list_delete(&memlist);
-	memlist = NULL;
-	return clear_mem;
+size_t jnx_mem_get_total_size_allocations() {
+    if(memtree == NULL) {
+        return 0;
+    }
+    jnx_list *l = jnx_list_create();
+    jnx_btree_keys(memtree,l);
+    size_t n = 0;
+    while(l->head) {
+        jnx_mem_item *m = jnx_btree_lookup(memtree,l->head->_data);
+        if(m) {
+            n = n + m->size;
+            l->head = l->head->next_node;
+        }
+    }
+    jnx_list_destroy(&l);
+    return n;
 }
-size_t jnx_mem_get_total_number_alloc()
-{
-	if(memlist == NULL)
-	{
-		return 0;
-	}
-	size_t ta = 0;
-	mem_node *h = memlist->head;
-	while(h)
-	{
-		++ta;
-		h = h->next;
-	}
-	return ta;
+size_t jnx_mem_get_total_number_allocations() {
+    if(memtree == NULL) {
+        return 0;
+    }
+    jnx_list *l = jnx_list_create();
+    jnx_btree_keys(memtree,l);
+    size_t n = 0;
+    n = l->counter;
+    jnx_list_destroy(&l);
+    return n;
 }
-size_t jnx_mem_get_current_number_alloc()
-{
-	if(memlist == NULL)
-	{
-		return 0;
-	}
-	size_t ta = 0;
-	mem_node *h = memlist->head;
-	while(h)
-	{
-		jnx_mem_item *m = h->data;
-		if(m->state == ALLOC){
-			++ta;
-		}
-		h = h->next;
-	}
-	return ta;
+static inline void jnx_mem_new(void *ptr, size_t size,char* file,const char *function,int line) {
+    jnx_mem_item *m = malloc(sizeof(jnx_mem_item));
+    if(m == NULL) {
+        JNX_LOGC("Error with allocation\n [%zu(kb)]",(size /1024));
+        return;
+    }
+    m->ptr = ptr;
+    m->size = size;
+    m->state = ALLOC;
+    m->file = strdup(file);
+    m->function = strdup(function);
+    m->line = line;
+
+    if(memtree == NULL) {
+        compare_keys c = internal_compare_callback;
+        memtree = jnx_btree_create(sizeof(int),c);
+    }
+    jnx_btree_add(memtree,ptr,m);
 }
-size_t jnx_mem_get_byte_alloc()
-{
-	if(memlist == NULL)
-	{
-		return 0;
-	}
-	size_t tb = 0;
-	mem_node *h = memlist->head;
-	while(h)
-	{
-		jnx_mem_item *m = h->data;
-		if(m->state == ALLOC){
-			tb += m->size;
-		}
-		h = h->next;
-	}
-	return tb;
+void* jnx_mem_malloc(size_t size,char *file,const char *function,int line) {
+    void *p = malloc(size);
+    jnx_mem_new(p,size,file,function,line);
+    return p;
 }
-mem_list *jnx_mem_get_list()
-{
-	if(memlist == NULL)
-	{
-		return NULL;
-	}
-	return memlist; 
+void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int line) {
+    void *p = calloc(num,size);
+    jnx_mem_new(p,size,file,function,line);
+    return p;
 }
-static inline void jnx_mem_new_alloc(void *ptr, size_t size,char* file,const char *function,int line)
-{
-	jnx_mem_item *m = malloc(sizeof(jnx_mem_item));
-	if(m == NULL)
-	{
-		printf("Error with allocation\n [%zu(kb)]",(size /1024));
-		return;
-	}
-	m->ptr = ptr;
-	m->size = size;
-	m->state = ALLOC;
-	m->file = strdup(file);
-	m->function = strdup(function);
-	m->line = line;
-	if(memlist == NULL)
-	{
-		memlist = init_mem_list(); 
-	}
-	add_link(memlist,m);
+void* jnx_mem_realloc(void *ptr,size_t size,char *file,const char *function,int line) {
+    void *p = realloc(ptr,size);
+    jnx_mem_new(p,size,file,function,line);
+    return p;
 }
-void* jnx_mem_malloc(size_t size,char *file,const char *function,int line)
-{
-	void *p = malloc(size);	
-	jnx_mem_new_alloc(p,size,file,function,line);
-	return p;
-}
-void* jnx_mem_calloc(size_t num,size_t size,char *file,const char *function,int line)
-{
-	void *p = calloc(num,size);
-	jnx_mem_new_alloc(p,size,file,function,line);
-	return p;
-}
-static void adjust_state_in_list(void *ptr)
-{
-	if(!memlist)
-	{
-		printf("Warning memlist list is empty\n");
-		return;
-	}
-	mem_node *h = memlist->head;
-	while(h)
-	{
-		jnx_mem_item *m = h->data;
-		if(m->ptr == ptr)
-		{
-			m->state = FREE;
-		}
-		h = h->next;
-	}
-}
-void* jnx_mem_realloc(void *ptr,size_t size,char *file,const char *function,int line)
-{
-	adjust_state_in_list(ptr);
-	void *p = realloc(ptr,size);
-	jnx_mem_new_alloc(p,size,file,function,line);
-	return p;
-}
-void jnx_mem_free(void *ptr)
-{
-	adjust_state_in_list(ptr);	
-	free(ptr);
+void jnx_mem_free(void *ptr) {
+    jnx_mem_item *m = jnx_btree_lookup(memtree,ptr);
+    if(m) {
+        m->state = FREE;
+    }
+    free(ptr);
 }

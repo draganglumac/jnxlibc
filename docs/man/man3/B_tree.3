@@ -1,4 +1,4 @@
-.TH "B_tree" 3 "Sat Jan 25 2014" "jnxlibc" \" -*- nroff -*-
+.TH "B_tree" 3 "Sun Mar 2 2014" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -21,7 +21,7 @@ Internal representation of the whole B-tree\&.
 .RI "\fBcompare_keys\fP \fBcompare_function\fP"
 .br
 .ti -1c
-.RI "\fBjnx_B_tree_node\fP * \fBroot\fP"
+.RI "\fBjnx_btree_node\fP * \fBroot\fP"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -40,7 +40,7 @@ Callback function to compare keys\&.
 
 .SS "int B_tree::order"
 The order of the tree, i\&.e\&. the minimum number of records a non-root node can have\&. 
-.SS "\fBjnx_B_tree_node\fP* B_tree::root"
+.SS "\fBjnx_btree_node\fP* B_tree::root"
 The root node of the B-tree\&. 
 
 .SH "Author"
