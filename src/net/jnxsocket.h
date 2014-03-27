@@ -136,15 +136,6 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
  * @return -1 on error
  */
 size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c);
-
-/**
- * @fn size_t jnx_socket_tpc_listen_await(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
- * @param s is the socket to use to send
- * @param port is the target port
- * @param outbuffer is the target buffer to write to
- * @return -1 on error, byte count on success
- */
-size_t jnx_socket_tcp_listen_await(jnx_socket *s, char *port, char **outbuffer);
 #ifdef __cplusplus
 }
 #endif
