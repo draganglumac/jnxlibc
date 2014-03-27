@@ -20,7 +20,9 @@
 #ifdef __cplusplus
 	extern "C" {
 #endif
+#if defined(linux)
 char *jnx_network_get_ip(char *interface,unsigned int addrfamily);
+#endif
 #ifdef __cplusplus
 	}
 #endif
