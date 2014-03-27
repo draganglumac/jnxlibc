@@ -3,15 +3,15 @@
  *
  *       Filename:  jnxsocket.h
  *
- *    Description:  Low level network API 
+ *    Description:  Low level network API
  *
  *        Version:  1.0
  *        Created:  02/20/14 12:50:15
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  jonesax (), 
- *   Organization:  
+ *         Author:  jonesax (),
+ *   Organization:
  *
  * =====================================================================================
  */
@@ -29,9 +29,9 @@
 #include <sys/un.h>
 #include <netinet/in.h>
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
-typedef struct 
+typedef struct
 {
 	int isclosed;
 	int socket;
@@ -41,13 +41,13 @@ typedef struct
 
 
 /*
- *@warning must return 0 or will break the listener loop 
+ *@warning must return 0 or will break the listener loop
  */
-typedef int (*tcp_socket_listener_callback)(char *payload, size_t bytesread,char *ipaddress);
+typedef int (*tcp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress);
 /*
- *@warning must return 0 or will break the listener loop 
+ *@warning must return 0 or will break the listener loop
  */
-typedef int (*udp_socket_listener_callback)(char *payload, size_t bytesread,char *ipaddress);
+typedef int (*udp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress);
 /**
  * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
  * @brief creates a jnx tcp socket
@@ -62,7 +62,7 @@ jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily);
  * @return jnx_socket
  */
 jnx_socket *jnx_socket_udp_create(unsigned int addrfamily);
-/** 
+/**
  *@fn jnx_socket_socket_close(jnx_socket *s)
  *@brief close the socket but maintain the socket object
  *@params s the socket object to close
@@ -137,6 +137,6 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
  */
 size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c);
 #ifdef __cplusplus
-	}
+}
 #endif
 #endif
