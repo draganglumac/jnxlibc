@@ -28,9 +28,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#if defined(linux)
 #include <linux/if_link.h>
+#endif
 #include <stdlib.h>
 #include "jnxnetwork.h"
+#if defined(linux)
 char *jnx_network_get_ip(char *interface,unsigned int addrfamily) {
     struct ifaddrs *ifaddr, *ifa;
     char host[NI_MAXHOST];
@@ -68,3 +71,4 @@ char *jnx_network_get_ip(char *interface,unsigned int addrfamily) {
     freeifaddrs(ifaddr);
     return NULL;
 }
+#endif
