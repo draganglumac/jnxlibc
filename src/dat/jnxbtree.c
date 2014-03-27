@@ -67,7 +67,7 @@ void shift_children_left_from_index(jnx_btree_node *node, int index) {
 }
 
 int is_node_full(jnx_btree *tree, jnx_btree_node *node) {
-    if ( node->count == 2 * tree->order - 1 ) {
+    if ( node->count == (2 * tree->order - 1) ) {
         return 1;
     }
 
@@ -91,7 +91,7 @@ int find_index_for_record(jnx_btree *tree, jnx_btree_node *node, record *r) {
         return 0;
     }
 
-    int left_bound = 0;
+	int left_bound = 0;
     int right_bound = node->count - 1;
     int curr_index = (right_bound - left_bound) / 2;
 
@@ -420,7 +420,10 @@ record *delete_record_from_node(jnx_btree *tree, jnx_btree_node *node, record *r
         }
     }
 
-    return delete_record_from_node(tree, node->children[i], r);
+	if (tree->root->is_leaf)
+		return delete_record_from_node(tree, tree->root, r);
+	else
+	   	return delete_record_from_node(tree, node->children[i], r);
 }
 
 
