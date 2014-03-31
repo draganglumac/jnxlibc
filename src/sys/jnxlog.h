@@ -20,7 +20,7 @@
  *@macro JNX_LOG_PATH
  *@brief set the log path
  */
-#define JNX_LOG_PATH(X) jnx_log_file_setup(X);
+#define JNX_LOG_PATH(X) jnx_log_set_path(X);
 /**
  *@macro JNX_LOGC
  *@brief log to console
@@ -33,7 +33,7 @@
 #define JNX_LOGF(X, ...) jnx_log(LOG_FILE,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)
 		
 /**
- * @fn jnx_log_setup(char *path)
+ * @fn jnx_log_set_path(char *path)
  * 
  * @brief Call this function to create/open the log file.
  * This function should be called at least once before jnx_log is called 
@@ -43,8 +43,15 @@
  *
  * @return returns 0 on succes and 1 on failure 
  */
-int jnx_log_file_setup(char *path);
+int jnx_log_set_path(char *path);
 
+/**
+ *@fn jnx_log_get_path()
+ *@brief gets the current log path if there is one set
+ *@param path is a pointer to pointer that will be filled with log path on success
+ *@return will return 1 on error
+ */
+int jnx_log_get_path(char **path);
 /**
  * @fn jnx_log(const char *format, ...)
  *

@@ -49,7 +49,7 @@ void *jnx_write_to_log(void *message) {
 #endif
     return 0;
 }
-int jnx_log_file_setup(char *path) {
+int jnx_log_set_path(char *path) {
     struct stat s;
     int err = stat(path,&s);
     if(-1 == err) {
@@ -73,6 +73,14 @@ int jnx_log_file_setup(char *path) {
         log_path = path;
     }
     return 0;
+}
+int jnx_log_get_path(char **path) {
+	if(log_path == NULL) {
+		printf("jnx_log_get_path: No log path set\n");
+		return 1;
+	}
+	*path = log_path;
+	return 0;
 }
 char* jnx_get_time() {
     time_t t;
