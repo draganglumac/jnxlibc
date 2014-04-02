@@ -31,7 +31,7 @@ void *worker(void *args) {
     return args;
 }
 void test_thread_add() {
-    JNX_LOGC("Running test_thread_add test: ");
+    JNX_LOGC(JLOG_DEBUG,"Running test_thread_add test: ");
     jnx_thread_poolflush();
     jnx_thread *t = jnx_thread_create(worker,NULL);
     assert(jnx_thread_poolcount() == 1);
@@ -40,7 +40,7 @@ void test_thread_add() {
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_thread_join() {
-    JNX_LOGC("Running test_thread_join test: ");
+    JNX_LOGC(JLOG_DEBUG,"Running test_thread_join test: ");
     jnx_thread_poolflush();
 
     time_t s,e;
@@ -57,7 +57,7 @@ void test_thread_join() {
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_threadpool_flush() {
-    JNX_LOGC("Running test_threadpool_flush test: ");
+    JNX_LOGC(JLOG_DEBUG,"Running test_threadpool_flush test: ");
     jnx_thread_poolflush();
     assert(jnx_thread_poolcount() == 0);
     int x;
@@ -76,7 +76,7 @@ void *work_target(void *args) {
     return ret;
 }
 void test_thread_mutex() {
-    JNX_LOGC("Running test_thread_mutex: ");
+    JNX_LOGC(JLOG_DEBUG,"Running test_thread_mutex: ");
     jnx_thread *a = jnx_thread_create(work_target,"Thread One\n");
     void *data;
     jnx_thread_join(a,&data);
@@ -89,7 +89,7 @@ void test_thread_mutex() {
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv) {
-    JNX_LOGC("Running jnx_threading tests\n");
+    JNX_LOGC(JLOG_DEBUG,"Running jnx_threading tests\n");
     test_thread_mutex();
     test_thread_add();
     test_threadpool_flush();

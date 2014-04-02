@@ -36,17 +36,17 @@ void test_redirect() {
     assert(strcmp(buffer,"test") == 0);
 }
 int main() {
-    JNX_LOGC("Running jnx_term tests\n");
-    JNX_LOGC("- terminal tests ");
+    JNX_LOGC(JLOG_DEBUG,"Running jnx_term tests\n");
+    JNX_LOGC(JLOG_DEBUG,"- terminal tests ");
     test_redirect();
     jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
-    JNX_LOGC("- terminal output \n");
+    JNX_LOGC(JLOG_DEBUG,"- terminal output \n");
     jnx_term_load_bar(1);
     sleep(5);
     jnx_term_load_bar(0);
     jnx_term_load_spinner(1);
     sleep(2);
     jnx_term_load_spinner(0);
-    JNX_LOGC("Terminal tests completed.\n");
+    JNX_LOGC(JLOG_DEBUG,"Terminal tests completed.\n");
     return 0;
 }

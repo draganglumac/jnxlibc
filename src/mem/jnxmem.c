@@ -61,14 +61,14 @@ void jnx_mem_print() {
                 state = "FREE";
                 totalbytes_free += m->size;
             }
-            JNX_LOGC("[%s][%s:%d][%s - %zu]\n",m->file,m->function,m->line,state,m->size);
+            JNX_LOGC(JLOG_ALERT,"[%s][%s:%d][%s - %zu]\n",m->file,m->function,m->line,state,m->size);
             l->head = l->head->next_node;
         }
     }
     char buffer[1024];
     sprintf(buffer,"TOTAL ALLOC IN USE: %zukb [exact:%zu]\nTOTAL ALLOC FREE: %zu kb[exact:%zu]\n",(totalbytes_alloc / 1024 ),totalbytes_alloc
             ,(totalbytes_free / 1024),totalbytes_free);
-    JNX_LOGC(buffer);
+    JNX_LOGC(JLOG_ALERT,buffer);
     jnx_list_destroy(&l);
 }
 void jnx_mem_print_to_file(char *path) {
@@ -196,7 +196,7 @@ size_t jnx_mem_get_total_number_allocations() {
 static inline void jnx_mem_new(void *ptr, size_t size,char* file,const char *function,int line) {
     jnx_mem_item *m = malloc(sizeof(jnx_mem_item));
     if(m == NULL) {
-        JNX_LOGC("Error with allocation\n [%zu(kb)]",(size /1024));
+        JNX_LOGC(JLOG_ALERT,"Error with allocation\n [%zu(kb)]",(size /1024));
         return;
     }
     m->ptr = ptr;

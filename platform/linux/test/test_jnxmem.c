@@ -24,7 +24,7 @@
 #include "jnxmem.h"
 #include <assert.h>
 void test_basic() {
-    JNX_LOGC("- test_basic");
+    JNX_LOGC(JLOG_DEBUG,"- test_basic");
     int x;
     int y = 10;
     char *ar[y];
@@ -46,7 +46,7 @@ void test_basic() {
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_allocation_times() {
-    JNX_LOGC("- test_allocation_times\n");
+    JNX_LOGC(JLOG_DEBUG,"- test_allocation_times\n");
 
     int l = 3;
     int ar[3] = { 100, 1000, 10000 };
@@ -58,10 +58,10 @@ void test_allocation_times() {
             char *s = JNX_MEM_MALLOC(sizeof(char));
         }
         clock_t end = clock();
-        JNX_LOGC("- Allocated %d blocks of %d in %zu\n",ar[d],sizeof(char),(end - start));
+        JNX_LOGC(JLOG_DEBUG,"- Allocated %d blocks of %d in %zu\n",ar[d],sizeof(char),(end - start));
         assert(jnx_mem_get_current_number_allocations() == ar[d]);
         size_t rb = jnx_mem_clear();
-        JNX_LOGC("- Cleared %d blocks\n",rb);
+        JNX_LOGC(JLOG_DEBUG,"- Cleared %d blocks\n",rb);
         assert(rb == (ar[d] * sizeof(char)));
         assert(jnx_mem_get_total_number_allocations() == 0);
         assert(jnx_mem_get_current_number_allocations() == 0);
@@ -70,40 +70,42 @@ void test_allocation_times() {
     }
 }
 void test_deallocation_times() {
-    JNX_LOGC("- test_deallocation_times\n");
+    JNX_LOGC(JLOG_DEBUG,"- test_deallocation_times\n");
     int l = 3;
     int ar[3] = { 100, 1000, 10000};
     int c,d;
-    char **h = calloc(3, sizeof(char));
-    for(c=0; c<l; ++c) {
-        h[c] = calloc(ar[c],sizeof(char));
-    }
-    for(c=0; c<l; ++c) {
-        for(d=0; d<ar[l]; ++d) {
-            char *s = JNX_MEM_MALLOC(sizeof(char));
-            h[c][d] = s;
-        }
-    }
-    for(c=0; c<l; ++c) {
-        clock_t start = clock();
-        for(d=0; d<ar[c]; ++d) {
-            JNX_MEM_FREE(h[c][d]);
-        }
-        clock_t end = clock();
-        JNX_LOGC("- Deallocated %d blocks of %d in %zu\n",ar[c],sizeof(char),(end - start));
+    char *h = calloc(3, sizeof(char));
+	for(c = 0; c < l; ++c) {
+		
+		int current_number = ar[c];
+		
+		void *ptr_array[current_number];
+
+		for(d = 0; d < current_number; ++d) {
+			
+			ptr_array[d] = JNX_MEM_MALLOC(sizeof(char));
+		}
+
+		clock_t start = clock();	
+		for(d = 0; d < current_number; ++d) {
+
+			JNX_MEM_FREE(ptr_array[d]);
+		}
+		clock_t end = clock();
+		JNX_LOGC(JLOG_DEBUG,"- Dealloced %d blocks of %d in %zu\n",current_number, sizeof(char), (end - start));
+	}
         assert(jnx_mem_get_current_number_allocations() == 0);
         assert(jnx_mem_get_current_size_allocations() == 0);
-    }
 }
 int main(int argc, char **argv) {
 #if defined(JNX_MEMORY_MANAGEMENT)
-    JNX_LOGC("Running memory tests...\n");
+    JNX_LOGC(JLOG_DEBUG,"Running memory tests...\n");
     test_basic();
     test_allocation_times();
     test_deallocation_times();
-    JNX_LOGC("Memory tests completed\n");
+    JNX_LOGC(JLOG_DEBUG,"Memory tests completed\n");
 #else
-    JNX_LOGC("JNX_MEMORY_MANAGEMENT not defined - skipping tests\n");
+    JNX_LOGC(JLOG_DEBUG,"JNX_MEMORY_MANAGEMENT not defined - skipping tests\n");
 #endif
     return 0;
 }

@@ -16,6 +16,20 @@
 #define __JNX_LOG_SINGLE_THREAD__
 #endif
 
+typedef enum JNX_LOG_LEVEL{ 
+	JLOG_CRITICAL,
+	JLOG_ALERT,
+	JLOG_CAUTION,
+	JLOG_NOTICE,
+	JLOG_DEBUG,
+	JLOG_NORMAL
+} JNX_LOG_LEVEL;
+#define JCRITICAL "CRITICAL"
+#define JALERT "ALERT"
+#define JCAUTION "CAUTION"
+#define JNOTICE "NOTICE"
+#define JDEBUG "DEBUG"
+#define JNORMAL "NORMAL"
 /**
  *@macro JNX_LOG_PATH
  *@brief set the log path
@@ -25,12 +39,12 @@
  *@macro JNX_LOGC
  *@brief log to console
  */
-#define JNX_LOGC(X, ...) jnx_log(LOG_CONSOLE,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)		
+#define JNX_LOGC(LEVEL,X, ...) jnx_log(LOG_CONSOLE,LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)		
 /**
  *@macro JNX_LOGF
  *@brief log to file
  */
-#define JNX_LOGF(X, ...) jnx_log(LOG_FILE,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)
+#define JNX_LOGF(LEVEL,X, ...) jnx_log(LOG_FILE,LEVEL,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)
 		
 /**
  * @fn jnx_log_set_path(char *path)
@@ -64,7 +78,7 @@ int jnx_log_get_path(char **path);
  * @return size_t of byte length of log entry
  */
 typedef enum logtype { LOG_FILE, LOG_CONSOLE }logtype;
-size_t jnx_log(const logtype l, const char *file, const char *function,const int line,const char *format,...);
+size_t jnx_log(const logtype l, JNX_LOG_LEVEL level, const char *file, const char *function,const int line,const char *format,...);
 
 #ifdef __cplusplus
 	}

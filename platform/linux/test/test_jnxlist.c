@@ -27,26 +27,26 @@ struct foo {
 } foo;
 
 void test_list_creation() {
-    JNX_LOGC("- test_list_creation");
+    JNX_LOGC(JLOG_DEBUG,"- test_list_creation");
     jnx_list *secondlist = jnx_list_create();
     assert(secondlist != NULL);
     jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
     struct foo *f = malloc(sizeof(foo));
     f->number = 10;
-    JNX_LOGC("- test_list_insertion");
+    JNX_LOGC(JLOG_DEBUG,"- test_list_insertion");
     jnx_list_add(secondlist,(void*)f);
     jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-    JNX_LOGC("- test_list_removal");
+    JNX_LOGC(JLOG_DEBUG,"- test_list_removal");
     struct foo *output = (struct foo*)jnx_list_remove(&secondlist);
     assert(output->number == 10);
     free(output);
     jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-    JNX_LOGC("- test_list_deletion");
+    JNX_LOGC(JLOG_DEBUG,"- test_list_deletion");
     jnx_list_destroy(&secondlist);
     jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_list_index() {
-    JNX_LOGC("- test_list_sequence");
+    JNX_LOGC(JLOG_DEBUG,"- test_list_sequence");
     jnx_list *j = jnx_list_create();
     int count = 6;
     char *ar[] = { "A", "B", "C", "D", "E", "F" };
@@ -64,7 +64,7 @@ void test_list_index() {
     assert(j == NULL);
 }
 void test_data_removal() {
-    JNX_LOGC("- test_data_removal");
+    JNX_LOGC(JLOG_DEBUG,"- test_data_removal");
     char *test_string = "AABBCC";
     jnx_list *list = jnx_list_create();
     int count = 10;
@@ -101,11 +101,11 @@ void test_list_tail() {
     jnx_list_destroy(&l);
 }
 int main(int args, char **argv) {
-    JNX_LOGC("Running list tests...\n");
+    JNX_LOGC(JLOG_DEBUG,"Running list tests...\n");
     test_list_creation();
     test_data_removal();
     test_list_index();
     test_list_tail();
-    JNX_LOGC("List tests completed.\n");
+    JNX_LOGC(JLOG_DEBUG,"List tests completed.\n");
     return 0;
 }

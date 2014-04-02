@@ -271,7 +271,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
         socklen_t addr_size = sizeof(their_addr);
         int recfd = accept(s->socket,(struct sockaddr*)&their_addr,&addr_size);
         if(recfd < 0) {
-            JNX_LOGC("accept: %s",strerror(errno));
+            JNX_LOGC(JLOG_ALERT,"accept: %s",strerror(errno));
             return -1;
         }
         bzero(buffer,MAXBUFFER);

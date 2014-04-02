@@ -89,7 +89,7 @@ void jnx_thread_lock(jnx_thread_mutex *m) {
 }
 void jnx_thread_destroy(jnx_thread *thr) {
 #if defined(WIN32)
-    JNX_LOGC("Not implemented\n");
+    JNX_LOGC(JLOG_ALERT,"Not implemented\n");
     return NULL;
 #endif
     if(thr == NULL) {
@@ -105,7 +105,7 @@ void jnx_thread_destroy(jnx_thread *thr) {
 }
 jnx_thread* jnx_thread_create(entry_point e,void *args) {
 #if defined(WIN32)
-    JNX_LOGC("Not implemented\n");
+    JNX_LOGC(JLOG_ALERT,"Not implemented\n");
     return NULL;
 #endif
     jnx_thread *thr = malloc(sizeof(jnx_thread));
@@ -126,7 +126,7 @@ jnx_thread* jnx_thread_create(entry_point e,void *args) {
 int jnx_thread_create_disposable(entry_point e,void *args) {
     int ret = 0;
 #if defined(WIN32)
-    JNX_LOGC("Not implemented\n");
+    JNX_LOGC(JLOG_ALERT,"Not implemented\n");
     return NULL;
 #endif
     //platform specific zone//
@@ -140,7 +140,7 @@ int jnx_thread_create_disposable(entry_point e,void *args) {
 }
 int jnx_thread_join(jnx_thread *thr, void **data) {
 #if defined(WIN32)
-    JNX_LOGC("Not implemented\n");
+    JNX_LOGC(JLOG_ALERT,"Not implemented\n");
     return NULL;
 #endif
     int ret = 0;

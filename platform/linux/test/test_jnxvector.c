@@ -28,7 +28,7 @@ typedef struct {
 } teststruct;
 
 void test_complex_insertion() {
-    JNX_LOGC("- test_complex_insertion");
+    JNX_LOGC(JLOG_DEBUG,"- test_complex_insertion");
     jnx_vector *vector = jnx_vector_create();
     int spread[5] = { 1, 200, 412, 55, 65 };
     //we are testing to see how well the vector handles distribution and reallocation on demand
@@ -45,7 +45,7 @@ void test_complex_insertion() {
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_sequential_insertion() {
-    JNX_LOGC("- test_sequential_insertion");
+    JNX_LOGC(JLOG_DEBUG,"- test_sequential_insertion");
     jnx_vector *vector = jnx_vector_create();
 
     int x = 0;
@@ -62,7 +62,7 @@ void test_sequential_insertion() {
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_insert_position() {
-    JNX_LOGC("- test_insert_position");
+    JNX_LOGC(JLOG_DEBUG,"- test_insert_position");
     jnx_vector *vector = jnx_vector_create();
     jnx_vector_insert_at(vector,15,"Test");
     jnx_vector_insert_at(vector,100,"Derp");
@@ -73,7 +73,7 @@ void test_insert_position() {
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_remove_position() {
-    JNX_LOGC("- test_remove_position");
+    JNX_LOGC(JLOG_DEBUG,"- test_remove_position");
     jnx_vector *vector = jnx_vector_create();
     jnx_vector_insert(vector,"Hello");
     jnx_vector_insert_at(vector,90,"Bye");
@@ -85,11 +85,11 @@ void test_remove_position() {
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv) {
-    JNX_LOGC("Running vector tests...\n");
+    JNX_LOGC(JLOG_DEBUG,"Running vector tests...\n");
     test_insert_position();
     test_remove_position();
     test_sequential_insertion();
     test_complex_insertion();
-    JNX_LOGC("Vector tests completed.\n");
+    JNX_LOGC(JLOG_DEBUG,"Vector tests completed.\n");
     return 0;
 }

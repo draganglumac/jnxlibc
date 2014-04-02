@@ -83,7 +83,7 @@ static int jnx_file_path_exists(char *path) {
     char buffer[s];
     getcwd(buffer,s);
     if(buffer == NULL) {
-        JNX_LOGC("jnx_file_path_exists: Unable to validate cwd\n");
+        JNX_LOGC(JLOG_ALERT,"jnx_file_path_exists: Unable to validate cwd\n");
         return 0;
     }
     if(chdir(path) != 0) {
@@ -112,7 +112,7 @@ int jnx_file_mktempdir(char *dirtemplate, char **path) {
     if(jnx_file_path_exists(dirtemplate)) {
         char *tempdir=jnx_file_random_dir(dirtemplate);
         if((mkdir(tempdir, S_IRWXU  | S_IRWXG | S_IROTH | S_IXOTH)) != 0) {
-            JNX_LOGC("jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
+            JNX_LOGC(JLOG_ALERT,"jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
             *path = NULL;
             free(tempdir);
             return 1;
