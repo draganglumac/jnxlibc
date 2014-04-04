@@ -2,8 +2,7 @@ jnxlibc
 =======
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
 
-C based common code library based on libjnx philosophy of general purpose & lightweight development.
-Built in the spirit of TDD ( [See Here](http://showterm.io/3dd2883f32e0e385be055#fast) )
+C common utility library driven and built on solid integrated testing. ( [See Here](http://showterm.io/3dd2883f32e0e385be055#fast) )
 
 
 ##Key features:
