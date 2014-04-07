@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logtype',['logtype',['../jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3af',1,'jnxlog.h']]]
+  ['jnx_5flog_5flevel',['JNX_LOG_LEVEL',['../jnxlog_8h.html#ae0261b0dcba1e63000000bff3cfd8173',1,'jnxlog.h']]]
 ];

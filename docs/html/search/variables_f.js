@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['value',['value',['../structB__tree__record.html#a1ffbfe009891c807b61609095d9f9712',1,'B_tree_record::value()'],['../structjnx__file__kvp__node.html#ab7af4a57ef934525d2b605b8d57568d7',1,'jnx_file_kvp_node::value()']]],
-  ['vector',['vector',['../structjnx__vector.html#ac4f2669f401c6c911b9efd26168422e5',1,'jnx_vector']]]
+  ['used',['used',['../structhashel.html#a2ffafb3ec3cc2f7b189e68e484a83b5f',1,'hashel::used()'],['../structjnx__vector__record.html#a8ef43f19b4277dbb0121011e7958e60d',1,'jnx_vector_record::used()']]],
+  ['used_5fup',['used_up',['../structhashmap.html#af4e2e87e65e23b0ca57a638bfa28a14c',1,'hashmap']]]
 ];
