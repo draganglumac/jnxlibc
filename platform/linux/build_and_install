@@ -20,14 +20,15 @@ sudo make install
 fi
 echo "Installed succesfully"
 popd
-#which doxygen
-#HAS_DOXYGEN=$?
+which doxygen
+HAS_DOXYGEN=$?
 
-#which doxy2man
-#HAS_DOXY2MAN=$?
+which doxy2man
+HAS_DOXY2MAN=$?
 
-#MANPATH=/usr/share/man/man3
+MANPATH=/usr/share/man/man3
 
+#pushd ../../
 #if [[ $HAS_DOXYGEN -eq 0 && $HAS_DOXY2MAN -eq 0 ]]; then
 #	rm -rf man
 #	mkdir -p docs/man/man3
@@ -48,3 +49,4 @@ popd
 #		echo "No man pages found in the repository. If you want to generate them you need to install doxygen and doxy2man, and run this script again."
 #	fi
 #fi
+#popd

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['order',['order',['../structB__tree.html#a8116575ad5ba94b37ba1750388512b9a',1,'B_tree']]],
-  ['origin_5fkey',['origin_key',['../structbucketel.html#a5199d3ad82a52cc0a5f4c83303adc481',1,'bucketel']]],
-  ['origin_5fvalue',['origin_value',['../structbucketel.html#a5c1a790565399baefc81e79a0717a952',1,'bucketel']]]
+  ['next',['next',['../structjnx__file__kvp__node.html#afac4811a98116e3519933de7909e9c36',1,'jnx_file_kvp_node']]],
+  ['next_5fnode',['next_node',['../structnode.html#a24c054564fa79112d4b878d2576d3b4f',1,'node::next_node()'],['../structjnx__snode.html#a81b06ca5f206971b676979a11c39c166',1,'jnx_snode::next_node()']]]
 ];
