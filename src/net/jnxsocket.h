@@ -99,7 +99,7 @@ size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int 
  */
 size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, char *group);
 /**
- * @fn jnx_socket_tcp_send((jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
+ * @fn jnx_socket_tcp_send((jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param host is the target destination
  * @param port is the target port
@@ -109,7 +109,7 @@ size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, ch
  */
 ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
 /**
- * @fn jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
+ * @fn jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param host is the target destination
  * @param port is the target port
