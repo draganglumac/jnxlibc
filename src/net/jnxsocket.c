@@ -158,7 +158,7 @@ char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
 
     return NULL;
 }
-ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len) {
+ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, unsigned char *msg, ssize_t msg_len) {
     assert(s);
     assert(host);
     assert(port);
@@ -194,7 +194,7 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ss
     }
     return tbytes;
 }
-ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len) {
+ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, unsigned char *msg, ssize_t msg_len) {
     assert(s);
     assert(host);
     assert(port);
