@@ -158,7 +158,7 @@ char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
 
     return NULL;
 }
-size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len) {
+ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len) {
     assert(s);
     assert(host);
     assert(port);
@@ -176,7 +176,7 @@ size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
     if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
         perror("connect:");
         freeaddrinfo(res);
-        return -1;
+        return 0;
     }
     freeaddrinfo(res);
 
@@ -187,14 +187,14 @@ size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
         size_t n = write(s->socket,msg,rbytes);
         if(n == -1) {
             perror("send:");
-            return -1;
+            return 0;
         }
         tbytes +=n;
         rbytes = msg_len - tbytes;
     }
     return tbytes;
 }
-size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len) {
+ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len) {
     assert(s);
     assert(host);
     assert(port);
@@ -213,7 +213,7 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
     int rg = 0;
     if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
         printf("%s\n",gai_strerror(rg));
-        return -1;
+        return 0;
     }
     size_t tbytes = 0;
     size_t rbytes = msg_len;
@@ -223,7 +223,7 @@ size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
         if(n == -1) {
             freeaddrinfo(res);
             perror("send:");
-            return -1;
+            return 0;
         }
         tbytes +=n;
         rbytes = msg_len - tbytes;

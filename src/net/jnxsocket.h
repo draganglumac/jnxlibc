@@ -105,9 +105,9 @@ size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, ch
  * @param port is the target port
  * @param msg is the payload to send
  * @param msg_len is the size of payload
- * @return size_t of bytes sent, -1 for failure
+ * @return size_t of bytes sent
  */
-size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
+ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
 /**
  * @fn jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
  * @param s is the socket to use to send
@@ -115,9 +115,9 @@ size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssi
  * @param port is the target port
  * @param msg is the payload to send
  * @param msg_len is the size of payload
- * @return size_t of bytes sent, -1 for failure
+ * @return size_t of bytes sent
  */
-size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
+ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
 /**
  * @fn size_t jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
  * @param s is the socket to use to send
