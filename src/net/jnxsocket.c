@@ -231,7 +231,7 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ss
     freeaddrinfo(res);
     return tbytes;
 }
-size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c) {
+int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c) {
     assert(s);
     assert(port);
     assert(s->isclosed == 0);
@@ -250,7 +250,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
     while(p != NULL) {
         if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1) {
             perror("server: socket");
-            continue;
+            return -1;
         }
         if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,
                        sizeof(int)) == -1) {
@@ -259,7 +259,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
         }
         if (bind(s->socket, p->ai_addr, p->ai_addrlen) == -1) {
             perror("server: bind");
-            continue;
+            return -1;
         }
         break;
 
@@ -305,7 +305,7 @@ size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections,
     }
     return 0;
 }
-size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c) {
+int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c) {
     assert(s);
     assert(port);
     assert(s->isclosed == 0);
@@ -326,7 +326,7 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
     while(p != NULL) {
         if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1) {
             perror("server: socket");
-            continue;
+            return -1;
         }
         if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,
                        sizeof(int)) == -1) {
@@ -335,7 +335,7 @@ size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections,
         }
         if (bind(s->socket, p->ai_addr, p->ai_addrlen) == -1) {
             perror("server: bind");
-            continue;
+            return -1;
         }
         break;
         p= p->ai_next;
