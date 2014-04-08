@@ -43,11 +43,11 @@ typedef struct
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*tcp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress);
+typedef int (*tcp_socket_listener_callback)(uint8_t *payload, size_t bytesread, char *ipaddress);
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*udp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress);
+typedef int (*udp_socket_listener_callback)(uint8_t *payload, size_t bytesread, char *ipaddress);
 /**
  * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
  * @brief creates a jnx tcp socket
@@ -107,7 +107,7 @@ size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, ch
  * @param msg_len is the size of payload
  * @return size_t of bytes sent
  */
-ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, unsigned char *msg, ssize_t msg_len);
+ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
 /**
  * @fn jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
  * @param s is the socket to use to send
@@ -117,7 +117,7 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, unsigned char
  * @param msg_len is the size of payload
  * @return size_t of bytes sent
  */
-ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, unsigned char *msg, ssize_t msg_len);
+ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
 /**
  * @fn int jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
  * @param s is the socket to use to send
