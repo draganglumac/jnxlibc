@@ -32,7 +32,7 @@
 #include "jnxunixsocket.h"
 
 //#define MAXBUFFER 1024
-jnx_unix_socket *create_socket(ssize_t stype, char *socket_path) {
+jnx_unix_socket *create_unix_socket(ssize_t stype, char *socket_path) {
 	jnx_unix_socket *jus= calloc(1, sizeof(jnx_unix_socket));
 	jus->isclosed = 0;
 	int sock = socket(AF_UNIX, SOCK_STREAM, 0);
@@ -46,10 +46,10 @@ jnx_unix_socket *create_socket(ssize_t stype, char *socket_path) {
 	return jus;
 }
 jnx_unix_socket *jnx_unix_socket_stream_create(char *socket_path) {
-	return create_socket(SOCK_STREAM, socket_path);
+	return create_unix_socket(SOCK_STREAM, socket_path);
 }
 jnx_unix_socket *jnx_unix_socket_datagram_create(char *socket_path) {
-	return create_socket(SOCK_DGRAM, socket_path);
+	return create_unix_socket(SOCK_DGRAM, socket_path);
 }
 void jnx_unix_socket_close(jnx_unix_socket *s) {
 	if (!s->isclosed) {
