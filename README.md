@@ -29,7 +29,8 @@ Linux distributions/OS X
 
 Arch linux users
 ````
-https://aur.archlinux.org/packages/jnxlibc/
+yaourt jnxlibc 
+
 ````
 
 Grab this repo.
