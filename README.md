@@ -30,7 +30,6 @@ Linux distributions/OS X
 Arch linux users
 ````
 yaourt jnxlibc 
-
 ````
 
 Grab this repo.
