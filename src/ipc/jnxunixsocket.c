@@ -15,149 +15,54 @@
  *
  * =====================================================================================
  */
-//#if defined(WIN32)
-//
-//#else
-//#include <arpa/inet.h>
-//#endif
 //#include <assert.h>
 //#include <netdb.h>
-//#include <stdio.h>
-//#include <string.h>
+#include <stdio.h>
+#include <string.h>
 //#include <errno.h>
-//#include <stdlib.h>
-//#include <unistd.h>
+#include <stdlib.h>
+#include <unistd.h>
 //#include <net/if.h>
-//#include <sys/types.h>
-//#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 //#include <ifaddrs.h>
 //#include <netinet/in.h>
-//#include <arpa/inet.h>
-//#include <stdlib.h>
+#include <arpa/inet.h>
 //#include "jnxlog.h"
-//#include "jnxsocket.h"
+#include "jnxunixsocket.h"
+
 //#define MAXBUFFER 1024
-//jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
-//	assert(type);
-//	assert(addrfamily);
-//	int sock = socket(addrfamily,type,0);
-//	if(sock < 0) {
-//		return NULL;
-//	}
-//	int optval = 1;
-//	setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval);
-//	jnx_socket *s = malloc(sizeof(jnx_socket));
-//	s->isclosed = 0;
-//	s->addrfamily = addrfamily;
-//	s->socket = sock;
-//	s->stype = type;
-//	return s;
-//}
-//jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily) {
-//	return create_socket(SOCK_STREAM,addrfamily);
-//}
-//jnx_socket *jnx_socket_udp_create(unsigned int addrfamily) {
-//	return create_socket(SOCK_DGRAM,addrfamily);
-//}
-//void jnx_socket_close(jnx_socket *s) {
-//	if(!s->isclosed) {
-//		if(s->socket != -1) {
-//			close(s->socket);
-//			s->isclosed = 1;
-//		}
-//	}
-//}
-//void jnx_socket_destroy(jnx_socket **s) {
-//	jnx_socket_close(*s);
-//	free(*s);
-//	*s = NULL;
-//}
-//size_t jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
-//	assert(s->stype == SOCK_DGRAM);
-//	assert(s->addrfamily == AF_INET);
-//	int optval = 1;
-//	if(setsockopt(s->socket,SOL_SOCKET,SO_BROADCAST,&optval, sizeof(optval)) != 0) {
-//		perror("setsockopt:");
-//		return -1;
-//	}
-//	return 0;
-//}
-//size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local) {
-//	assert(interface);
-//	assert(s->stype == SOCK_DGRAM);
-//	int optval = 0;
-//	struct in_addr localinterface;
-//	if(ignore_local) {
-//		if(setsockopt(s->socket,IPPROTO_IP,IP_MULTICAST_LOOP,&optval, sizeof(optval)) != 0) {
-//			perror("setsockopt:");
-//			return -1;
-//		}
-//	}
-//	localinterface.s_addr = inet_addr(interface);
-//	if(setsockopt(s->socket,IPPROTO_IP,IP_MULTICAST_IF,(char*)&localinterface,
-//				sizeof(localinterface)) < 0) {
-//		perror("setsockopt:");
-//		return -1;
-//	}
-//	//Note: This is due to bug in getaddrinfo
-//	s->addrfamily = AF_UNSPEC;
-//	return 0;
-//}
-//size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, char *group) {
-//	assert(interface);
-//	assert(group);
-//	assert(s->stype == SOCK_DGRAM);
-//	struct ip_mreq bgroup;
-//	bgroup.imr_multiaddr.s_addr = inet_addr(group);
-//	bgroup.imr_interface.s_addr = inet_addr(interface);
-//	if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(char*)&bgroup,
-//				sizeof(bgroup)) < 0) {
-//		perror("setsockopt:");
-//		return -1;
-//	}
-//	//Note: This is due to bug in getaddrinfo
-//	s->addrfamily = AF_UNSPEC;
-//	return 0;
-//}
-//char *jnx_socket_tcp_resolve_ipaddress(int socket) {
-//	char ipstr[INET6_ADDRSTRLEN];
-//	socklen_t len;
-//	struct sockaddr_storage addr;
-//	len = sizeof(addr);
-//
-//	if(getpeername(socket,(struct sockaddr*)&addr,&len) == -1) {
-//		perror("getpeername:");
-//		return NULL;
-//	}
-//	if(addr.ss_family != AF_INET && addr.ss_family != AF_INET6) {
-//		return NULL;
-//	}
-//	if(addr.ss_family == AF_INET) {
-//		struct sockaddr_in *s = (struct sockaddr_in*)&addr;
-//		inet_ntop(AF_INET,&s->sin_addr,ipstr,sizeof(ipstr));
-//	} else {
-//		struct sockaddr_in6 *s = (struct sockaddr_in6*)&addr;
-//		inet_ntop(AF_INET6,&s->sin6_addr,ipstr,sizeof(ipstr));
-//	}
-//
-//	return strdup(ipstr);
-//}
-//char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
-//	char str[INET6_ADDRSTRLEN];
-//	bzero(str,INET6_ADDRSTRLEN);
-//	switch (((struct sockaddr*)&sa)->sa_family) {
-//		case AF_INET:
-//			inet_ntop(AF_INET, &(((struct sockaddr_in*)&sa)->sin_addr),str,INET_ADDRSTRLEN);
-//			return strndup(str,strlen(str));
-//			break;
-//		case AF_INET6:
-//			inet_ntop(AF_INET6, &(((struct sockaddr_in6*)&sa)->sin6_addr),str,INET6_ADDRSTRLEN);
-//			return strndup(str,strlen(str));
-//			break;
-//	}
-//
-//	return NULL;
-//}
+jnx_unix_socket *create_socket(ssize_t stype, char *socket_path) {
+	jnx_unix_socket *jus= calloc(1, sizeof(jnx_unix_socket));
+	jus->isclosed = 0;
+	int sock = socket(AF_UNIX, SOCK_STREAM, 0);
+	if (sock == -1) {
+		return NULL;
+	}
+	jus->socket = sock;
+	(jus->address).sun_family = AF_UNIX;
+	strncpy((jus->address).sun_path, socket_path, sizeof(jnx_unix_socket_address) - 1);
+	jus->stype = stype;
+	return jus;
+}
+jnx_unix_socket *jnx_unix_socket_stream_create(char *socket_path) {
+	return create_socket(SOCK_STREAM, socket_path);
+}
+jnx_unix_socket *jnx_unix_socket_datagram_create(char *socket_path) {
+	return create_socket(SOCK_DGRAM, socket_path);
+}
+void jnx_unix_socket_close(jnx_unix_socket *s) {
+	if (!s->isclosed) {
+		close(s->socket);
+		remove((s->address).sun_path);
+		s->isclosed = 1;
+	}
+}
+void jnx_unix_socket_destroy(jnx_unix_socket **s) {
+	jnx_unix_socket_close(*s);
+	free(*s);
+	*s = NULL;
+}
 //ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len) {
 //	assert(s);
 //	assert(host);
@@ -194,6 +99,9 @@
 //	}
 //	return tbytes;
 //}
+ssize_t jnx_unix_socket_stream_send(jnx_unix_socket *s, uint8_t *msg, ssize_t msg_len) {
+	return 0;
+}
 //ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len) {
 //	assert(s);
 //	assert(host);
@@ -231,6 +139,9 @@
 //	freeaddrinfo(res);
 //	return tbytes;
 //}
+ssize_t jnx_unix_socket_datagram_send(jnx_unix_socket *s, uint8_t *msg, ssize_t msg_len) {
+	return 0;
+}
 //int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c) {
 //	assert(s);
 //	assert(port);
@@ -305,6 +216,9 @@
 //	}
 //	return 0;
 //}
+int jnx_unix_socket_stream_listen(jnx_unix_socket *s, ssize_t max_connections, stream_socket_listener_callback c) {
+	return 0;
+}
 //int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c) {
 //	assert(s);
 //	assert(port);
@@ -360,3 +274,6 @@
 //	}
 //	return -1;
 //}
+int jnx_unix_socket_datagram_listen(jnx_unix_socket *s, ssize_t max_connections, datagram_socket_listener_callback c) {
+	return 0;
+}

@@ -15,10 +15,10 @@
  *
  * =====================================================================================
  */
-/** @file jnxsocket.h
- *  @brief The API for jnxlibc networking (includes TCP, UDP )
+/** @file jnxunixsocket.h
+ *  @brief The API for jnxlibc inter-process communication using Unix domain sockets.
  *
- *  #include <jnxc_headers/jnxsocket.h>
+ *  #include <jnxc_headers/jnxunixsocket.h>
  */
 #ifndef __JNXSOCKET_H__
 #define __JNXSOCKET_H__
@@ -37,7 +37,7 @@ typedef struct
 {
 	int isclosed;
 	int socket;
-	jnx_unix_socket_address address
+	jnx_unix_socket_address address;
 	ssize_t stype;
 } jnx_unix_socket;
 
@@ -52,19 +52,17 @@ typedef int (*datagram_socket_listener_callback)(uint8_t *payload, size_t bytesr
 /**
  * @fn jnx_unix_socket *jnx_unix_socket_stream_create(unsigned int addrfamily)
  * @brief creates a jnx stream socket
- * @param addrfamily this is the address family to use (e.g. AF_INET)
  * @param socket_path path to the socket file on the file system
  * @return jnx_unix_socket
  */
-jnx_unix_socket *jnx_unix_socket_stream_create(unsigned int addrfamily, char *socket_path);
+jnx_unix_socket *jnx_unix_socket_stream_create(char *socket_path);
 /**
  * @fn jnx_unix_socket *jnx_unix_socket_datagram_create(unsigned int addrfamily)
  * @brief creates a jnx datagram socket
- * @param addrfamily this is the address family to use (e.g. AF_INET)
  * @param socket_path path to the socket file on the file system
  * @return jnx_unix_socket
  */
-jnx_unix_socket *jnx_unix_socket_datagram_create(unsigned int addrfamily, char *socket_path);
+jnx_unix_socket *jnx_unix_socket_datagram_create(char *socket_path);
 /**
  *@fn jnx_unix_socket_socket_close(jnx_unix_socket *s)
  *@brief close the socket but maintain the socket object
