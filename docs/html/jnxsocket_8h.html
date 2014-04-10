@@ -110,10 +110,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a105659af71128d71c91605a73f84945e"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a105659af71128d71c91605a73f84945e">tcp_socket_listener_callback</a> )(char *payload, size_t bytesread, char *ipaddress)</td></tr>
-<tr class="separator:a105659af71128d71c91605a73f84945e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390e89f22a8769ed86d51dd86de3b9cd"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a390e89f22a8769ed86d51dd86de3b9cd">udp_socket_listener_callback</a> )(char *payload, size_t bytesread, char *ipaddress)</td></tr>
-<tr class="separator:a390e89f22a8769ed86d51dd86de3b9cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97f0133baf49c5a54ea4222c4ef4ef3b"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a97f0133baf49c5a54ea4222c4ef4ef3b">tcp_socket_listener_callback</a> )(uint8_t *payload, size_t bytesread, char *ipaddress)</td></tr>
+<tr class="separator:a97f0133baf49c5a54ea4222c4ef4ef3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae422f8adfa5d532123f3feb8cbcee841"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#ae422f8adfa5d532123f3feb8cbcee841">udp_socket_listener_callback</a> )(uint8_t *payload, size_t bytesread, char *ipaddress)</td></tr>
+<tr class="separator:ae422f8adfa5d532123f3feb8cbcee841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -135,37 +135,37 @@ Functions</h2></td></tr>
 <tr class="memitem:a89ba12b9721b5ccd91cbe1b5fdb0726a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a89ba12b9721b5ccd91cbe1b5fdb0726a">jnx_socket_udp_enable_multicast_listen</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *interface, char *group)</td></tr>
 <tr class="memdesc:a89ba12b9721b5ccd91cbe1b5fdb0726a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will enable the given socket to recieve multicast packets on the given interface for the subscribed group.  <a href="#a89ba12b9721b5ccd91cbe1b5fdb0726a">More...</a><br/></td></tr>
 <tr class="separator:a89ba12b9721b5ccd91cbe1b5fdb0726a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a342e74c44cf653ef6fd5128bd80f110b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a342e74c44cf653ef6fd5128bd80f110b">jnx_socket_tcp_send</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *host, char *port, char *msg, ssize_t msg_len)</td></tr>
-<tr class="separator:a342e74c44cf653ef6fd5128bd80f110b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad79379d504fe0b8db9934e6b87be953a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#ad79379d504fe0b8db9934e6b87be953a">jnx_socket_udp_send</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *host, char *port, char *msg, ssize_t msg_len)</td></tr>
-<tr class="separator:ad79379d504fe0b8db9934e6b87be953a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea3ba5b2dc13607b472fa0910f3c9a98"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#aea3ba5b2dc13607b472fa0910f3c9a98">jnx_socket_tcp_listen</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *port, ssize_t max_connections, <a class="el" href="jnxsocket_8h.html#a105659af71128d71c91605a73f84945e">tcp_socket_listener_callback</a> c)</td></tr>
-<tr class="separator:aea3ba5b2dc13607b472fa0910f3c9a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70c5f553e30965f2275270584bb52272"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a70c5f553e30965f2275270584bb52272">jnx_socket_udp_listen</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *port, ssize_t max_connections, <a class="el" href="jnxsocket_8h.html#a390e89f22a8769ed86d51dd86de3b9cd">udp_socket_listener_callback</a> c)</td></tr>
-<tr class="separator:a70c5f553e30965f2275270584bb52272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39a58058f643306a560e9b999678d332"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a39a58058f643306a560e9b999678d332">jnx_socket_tcp_send</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *host, char *port, uint8_t *msg, ssize_t msg_len)</td></tr>
+<tr class="separator:a39a58058f643306a560e9b999678d332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bde499f1e4a20da0257ab17a0a28a43"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a9bde499f1e4a20da0257ab17a0a28a43">jnx_socket_udp_send</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *host, char *port, uint8_t *msg, ssize_t msg_len)</td></tr>
+<tr class="separator:a9bde499f1e4a20da0257ab17a0a28a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c753a0a49652f338f72c285ccf3d9d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a54c753a0a49652f338f72c285ccf3d9d">jnx_socket_tcp_listen</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *port, ssize_t max_connections, <a class="el" href="jnxsocket_8h.html#a97f0133baf49c5a54ea4222c4ef4ef3b">tcp_socket_listener_callback</a> c)</td></tr>
+<tr class="separator:a54c753a0a49652f338f72c285ccf3d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f5631d1bbc3b921c81150288c86e3b1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a9f5631d1bbc3b921c81150288c86e3b1">jnx_socket_udp_listen</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *port, ssize_t max_connections, <a class="el" href="jnxsocket_8h.html#ae422f8adfa5d532123f3feb8cbcee841">udp_socket_listener_callback</a> c)</td></tr>
+<tr class="separator:a9f5631d1bbc3b921c81150288c86e3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The API for jnxlibc networking (includes TCP, UDP ) </p>
 <p>#include &lt;jnxc_headers/jnxsocket.h&gt; </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a105659af71128d71c91605a73f84945e"></a>
+<a class="anchor" id="a97f0133baf49c5a54ea4222c4ef4ef3b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* tcp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress)</td>
+          <td class="memname">typedef int(* tcp_socket_listener_callback)(uint8_t *payload, size_t bytesread, char *ipaddress)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="a390e89f22a8769ed86d51dd86de3b9cd"></a>
+<a class="anchor" id="ae422f8adfa5d532123f3feb8cbcee841"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* udp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress)</td>
+          <td class="memname">typedef int(* udp_socket_listener_callback)(uint8_t *payload, size_t bytesread, char *ipaddress)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -230,12 +230,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aea3ba5b2dc13607b472fa0910f3c9a98"></a>
+<a class="anchor" id="a54c753a0a49652f338f72c285ccf3d9d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t jnx_socket_tcp_listen </td>
+          <td class="memname">int jnx_socket_tcp_listen </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structjnx__socket.html">jnx_socket</a> *&#160;</td>
           <td class="paramname"><em>s</em>, </td>
@@ -255,7 +255,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="jnxsocket_8h.html#a105659af71128d71c91605a73f84945e">tcp_socket_listener_callback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="jnxsocket_8h.html#a97f0133baf49c5a54ea4222c4ef4ef3b">tcp_socket_listener_callback</a>&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -268,12 +268,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a342e74c44cf653ef6fd5128bd80f110b"></a>
+<a class="anchor" id="a39a58058f643306a560e9b999678d332"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t jnx_socket_tcp_send </td>
+          <td class="memname">ssize_t jnx_socket_tcp_send </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structjnx__socket.html">jnx_socket</a> *&#160;</td>
           <td class="paramname"><em>s</em>, </td>
@@ -293,7 +293,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>msg</em>, </td>
         </tr>
         <tr>
@@ -439,12 +439,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a70c5f553e30965f2275270584bb52272"></a>
+<a class="anchor" id="a9f5631d1bbc3b921c81150288c86e3b1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t jnx_socket_udp_listen </td>
+          <td class="memname">int jnx_socket_udp_listen </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structjnx__socket.html">jnx_socket</a> *&#160;</td>
           <td class="paramname"><em>s</em>, </td>
@@ -464,7 +464,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="jnxsocket_8h.html#a390e89f22a8769ed86d51dd86de3b9cd">udp_socket_listener_callback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="jnxsocket_8h.html#ae422f8adfa5d532123f3feb8cbcee841">udp_socket_listener_callback</a>&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -477,7 +477,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad79379d504fe0b8db9934e6b87be953a"></a>
+<a class="anchor" id="a9bde499f1e4a20da0257ab17a0a28a43"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -502,7 +502,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>msg</em>, </td>
         </tr>
         <tr>
@@ -528,14 +528,14 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>size_t of bytes sent, -1 for failure </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>size_t of bytes sent </dd></dl>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 7 2014 19:52:58 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 8 2014 18:31:34 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

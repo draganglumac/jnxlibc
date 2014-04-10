@@ -1,4 +1,4 @@
-SRC_DIR=../../src
+SRC_DIR=../src
 BUILD_DIR=build
 FLAGS=-Wall -fPIC -c
 all: setup main_artifact shipping teardown

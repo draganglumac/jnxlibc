@@ -34,8 +34,7 @@ https://aur.archlinux.org/packages/jnxlibc/
 
 Grab this repo.
 ````
-//LINUX
-./platform/linux/build_and_install
+./setup/build_and_install
 
 Use -ljnxc when building your project
 
