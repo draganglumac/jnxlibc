@@ -28,7 +28,7 @@ HAS_DOXY2MAN=$?
 
 MANPATH=/usr/share/man/man3
 
-pushd ../../
+pushd ../
 if [[ $HAS_DOXYGEN -eq 0 && $HAS_DOXY2MAN -eq 0 ]]; then
 	rm -rf man
 	mkdir -p docs/man/man3
