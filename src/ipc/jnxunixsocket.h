@@ -44,11 +44,11 @@ typedef struct
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*stream_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress);
+typedef int (*stream_socket_listener_callback)(char *payload, size_t bytesread, jnx_unix_socket *remote_sock);
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*datagram_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress);
+typedef int (*datagram_socket_listener_callback)(char *payload, size_t bytesread, jnx_unix_socket *remote_sock);
 /**
  * @fn jnx_unix_socket *jnx_unix_socket_stream_create(unsigned int addrfamily)
  * @brief creates a jnx stream socket
