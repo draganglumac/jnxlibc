@@ -26,7 +26,7 @@
 
 #define MAXBUFFER 1024
 
-jnx_unix_socket *create_unix_socket(ssize_t stype, char *socket_path) {
+jnx_unix_socket *create_unix_socket(ssize_t stype, char*socket_path) {
 	jnx_unix_socket *jus= calloc(1, sizeof(jnx_unix_socket));
 	jus->isclosed = 0;
 	jus->islisten = 0;
@@ -60,7 +60,7 @@ void jnx_unix_socket_destroy(jnx_unix_socket **s) {
 	free(*s);
 	*s = NULL;
 }
-ssize_t write_to_stream_socket(jnx_unix_socket *s, char *msg, ssize_t msg_len) {
+ssize_t write_to_stream_socket(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len) {
 	size_t tbytes = 0;
 	size_t rbytes = msg_len;
 
@@ -75,7 +75,7 @@ ssize_t write_to_stream_socket(jnx_unix_socket *s, char *msg, ssize_t msg_len) {
 	}
 	return tbytes;
 }
-ssize_t jnx_unix_stream_socket_send(jnx_unix_socket *s, char *msg, ssize_t msg_len) {
+ssize_t jnx_unix_stream_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len) {
 	if (connect(s->socket,(struct sockaddr *)&(s->address),sizeof(struct sockaddr_un)) == -1) {
 		perror("jnx unix stream socket connect");
 		return 0;
@@ -83,7 +83,7 @@ ssize_t jnx_unix_stream_socket_send(jnx_unix_socket *s, char *msg, ssize_t msg_l
 
 	return write_to_stream_socket(s, msg, msg_len);
 }
-ssize_t jnx_unix_datagram_socket_send(jnx_unix_socket *s, char *msg, ssize_t msg_len) {
+ssize_t jnx_unix_datagram_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len) {
 	size_t tbytes = 0;
 	size_t rbytes = msg_len;
 
@@ -128,14 +128,13 @@ jnx_unix_socket *accept_stream_socket_connection(jnx_unix_socket *s) {
 		return rs;
 	}	
 }
-int read_stream_socket(jnx_unix_socket *s, char **out, int *len) {
-	char buffer[MAXBUFFER];
-
-	bzero(buffer, MAXBUFFER);
+int read_stream_socket(jnx_unix_socket *s, uint8_t**out, int *len) {
+	uint8_t buffer[MAXBUFFER];
+	memset(buffer,0,MAXBUFFER);
 	FILE *fp = tmpfile();
 	ssize_t bytesread = 0;
 	while ((bytesread = read(s->socket, buffer, MAXBUFFER)) > 0) {
-		fwrite(buffer, sizeof(char), bytesread, fp);
+		fwrite(buffer, sizeof(uint8_t), bytesread, fp);
 		bzero(buffer, MAXBUFFER);
 		if (bytesread < MAXBUFFER) {
 			break;
@@ -147,8 +146,8 @@ int read_stream_socket(jnx_unix_socket *s, char **out, int *len) {
 	}
 	*len = ftell(fp);
 	rewind(fp);
-	*out = (char *)(calloc(*len + 1, sizeof(char)));
-	fread(*out, sizeof(char), *len, fp);
+	*out = (uint8_t*)(calloc(*len + 1, sizeof(uint8_t)));
+	fread(*out, sizeof(uint8_t), *len, fp);
 	fclose(fp);
 	return 0;
 }
@@ -166,7 +165,7 @@ int jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, s
 			return -1;
 		}
 
-		char *out;
+		uint8_t*out;
 		int len;
 		if (read_stream_socket(remote_sock, &out, &len) == -1) {
 			return -1;
@@ -193,10 +192,10 @@ int bind_datagram_socket(jnx_unix_socket *s) {
 	s->islisten = 1;
 	return 0;
 }
-int receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_socket, char **out, int *len) {
-	char buffer[MAXBUFFER];
+int receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_socket, uint8_t**out, int *len) {
 
-	bzero(buffer, MAXBUFFER);
+	uint8_t buffer[MAXBUFFER];
+	memset(buffer,0,MAXBUFFER);
 	jnx_unix_socket *rs = jnx_unix_datagram_socket_create("");
 	socklen_t addr_len;
 	ssize_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&(rs->address),&addr_len);
@@ -208,7 +207,7 @@ int receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_so
 		return -1;
 	}
 
-	char *copy = calloc(bytesread, sizeof(char));
+	uint8_t*copy = calloc(bytesread, sizeof(uint8_t));
 	memcpy(copy, buffer, bytesread);
 	*out = copy;
 	*len = bytesread;
@@ -222,7 +221,7 @@ int jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener
 
 	while(1) {
 		jnx_unix_socket *remote = NULL;
-		char *out = NULL;
+		uint8_t*out = NULL;
 		int len = 0;
 
 		if (receive_from_datagram_socket(s, &remote, &out, &len) == -1) {

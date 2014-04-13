@@ -23,6 +23,7 @@
 #ifndef __JNXSOCKET_H__
 #define __JNXSOCKET_H__
 #include <stddef.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
@@ -45,11 +46,11 @@ typedef struct
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*stream_socket_listener_callback)(char *payload, size_t bytesread, jnx_unix_socket *remote_sock);
+typedef int (*stream_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_unix_socket *remote_sock);
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*datagram_socket_listener_callback)(char *payload, size_t bytesread, jnx_unix_socket *remote_sock);
+typedef int (*datagram_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_unix_socket *remote_sock);
 /**
  * @fn jnx_unix_socket *jnx_unix_stream_socket_create(unsigned int addrfamily)
  * @brief creates a jnx stream socket
@@ -76,30 +77,30 @@ void jnx_unix_socket_close(jnx_unix_socket *s);
  */
 void jnx_unix_socket_destroy(jnx_unix_socket **s);
 /**
- * @fn jnx_unix_stream_socket_send((jnx_unix_socket *s, char *socket_path, char *msg, ssize_t msg_len)
+ * @fn jnx_unix_stream_socket_send((jnx_unix_socket *s,, uint8_t*msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param msg is the payload to send
  * @param msg_len is the size of payload
  * @return size_t of bytes sent
  */
-ssize_t jnx_unix_stream_socket_send(jnx_unix_socket *s, char *msg, ssize_t msg_len);
+ssize_t jnx_unix_stream_socket_send(jnx_unix_socket *s, uint8_t *msg, ssize_t msg_len);
 /**
- * @fn jnx_unix_datagram_socket_send(jnx_unix_socket *s, char *socket_path, char *msg, ssize_t msg_len)
+ * @fn jnx_unix_datagram_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param msg is the payload to send
  * @param msg_len is the size of payload
  * @return size_t of bytes sent
  */
-ssize_t jnx_unix_datagram_socket_send(jnx_unix_socket *s, char *msg, ssize_t msg_len);
+ssize_t jnx_unix_datagram_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len);
 /**
- * @fn int jnx_unix_stream_socket_listen(jnx_unix_socket *s, char *socket_path, ssize_t max_connections, stream_socket_listener_callback c)
+ * @fn int jnx_unix_stream_socket_listen(jnx_unix_socket *s,  ssize_t max_connections, stream_socket_listener_callback c)
  * @param max_connections are the number of connetions in the queue
  * @param c is the function pointer callback for received messages
  * @return -1 on error
  */
 int jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, stream_socket_listener_callback c);
 /**
- * @fn int jnx_unix_datagram_socket_listen(jnx_unix_socket *s, char *socket_path, ssize_t max_connections, datagram_socket_listener_callback c)
+ * @fn int jnx_unix_datagram_socket_listen(jnx_unix_socket *s, ssize_t max_connections, datagram_socket_listener_callback c)
  * @param s is the socket to use to send
  * @param c is the function pointer callback for received messages
  * @return -1 on error
