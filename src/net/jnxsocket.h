@@ -37,17 +37,18 @@ typedef struct
 	int socket;
 	unsigned int addrfamily;
 	ssize_t stype;
+	char *ipaddress;
 } jnx_socket;
 
 
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*tcp_socket_listener_callback)(uint8_t *payload, size_t bytesread, char *ipaddress);
+typedef int (*tcp_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_socket *s);
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*udp_socket_listener_callback)(uint8_t *payload, size_t bytesread, char *ipaddress);
+typedef int (*udp_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_socket *s);
 /**
  * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
  * @brief creates a jnx tcp socket

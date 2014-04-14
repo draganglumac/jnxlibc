@@ -37,8 +37,8 @@
 char *jnx_network_get_ip(char *interface,unsigned int addrfamily) {
     struct ifaddrs *ifaddr, *ifa;
     char host[NI_MAXHOST];
-    bzero(host,NI_MAXHOST);
-    int n,s,family;
+    memset(host,0,NI_MAXHOST);
+	int n,s,family;
     if(getifaddrs(&ifaddr) != 0) {
         perror("getifaddrs:");
         return NULL;

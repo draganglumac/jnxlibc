@@ -51,6 +51,7 @@ jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
 	s->addrfamily = addrfamily;
 	s->socket = sock;
 	s->stype = type;
+	s->ipaddress = NULL;
 	return s;
 }
 jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily) {
@@ -144,7 +145,7 @@ char *jnx_socket_tcp_resolve_ipaddress(int socket) {
 }
 char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
 	char str[INET6_ADDRSTRLEN];
-	bzero(str,INET6_ADDRSTRLEN);
+	memset(str,0,INET6_ADDRSTRLEN);
 	switch (((struct sockaddr*)&sa)->sa_family) {
 		case AF_INET:
 			inet_ntop(AF_INET, &(((struct sockaddr_in*)&sa)->sin_addr),str,INET_ADDRSTRLEN);
@@ -274,13 +275,13 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 			JNX_LOGC(JLOG_ALERT,"accept: %s",strerror(errno));
 			return -1;
 		}
-		bzero(buffer,MAXBUFFER);
+		memset(buffer,0,MAXBUFFER);
 		FILE *fp = tmpfile();
 		size_t bytesread = read(recfd,buffer,MAXBUFFER);
 		fwrite(buffer,sizeof(uint8_t),bytesread,fp);
 
 		while(bytesread > 0) {
-			bzero(buffer,MAXBUFFER);
+			memset(buffer,0,MAXBUFFER);
 			bytesread = read(recfd,buffer,MAXBUFFER);
 			if(bytesread == -1) {
 				perror("read:");
@@ -298,7 +299,8 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 		fclose(fp);
 
 		int ret = 0;
-		if((ret = c(out,len,jnx_socket_tcp_resolve_ipaddress(recfd))) != 0) {
+		s->ipaddress = jnx_socket_tcp_resolve_ipaddress(recfd);
+		if((ret = c(out,len,s)) != 0) {
 			printf("Exiting tcp listener with %d\n",ret);
 			return 0;
 		}
@@ -343,7 +345,7 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 	freeaddrinfo(res);
 
 	while(1) {
-		bzero(buffer,MAXBUFFER);
+		memset(buffer,0,MAXBUFFER);
 		size_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
 
 		if(bytesread == -1) {
@@ -353,7 +355,8 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 		int ret = 0;
 		uint8_t *outbuffer = malloc(bytesread * sizeof(uint8_t));
 		memcpy(outbuffer,buffer,bytesread);
-		if((ret = c(outbuffer,bytesread,jnx_socket_udp_resolve_ipaddress(their_addr))) != 0) {
+		s->ipaddress = jnx_socket_udp_resolve_ipaddress(their_addr);
+		if((ret = c(outbuffer,bytesread,s)) != 0) {
 			printf("Exiting udp listener with %d",ret);
 			return 0;
 		}
