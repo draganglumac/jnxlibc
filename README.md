@@ -7,6 +7,7 @@ C common utility library driven and built on solid integrated testing. ( [See He
 
 ##Key features:
 - Threading
+- Interprocess communication
 - Lightweight data structures (hash, list, vector, btree, stack, queue)
 - Memory & stack tracing
 - Network socket implmentation supporting multiple transport and IPV4/IPV6
