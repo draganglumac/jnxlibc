@@ -172,15 +172,17 @@ void test_negative_stream_listen_scenarios() {
 int stream_callback(char *out, size_t len, jnx_unix_socket *rs) {
 	counter++;
 	assert(strncmp(out, "Hello world from stream socket!", 31) == 0);
-	jnx_term_printf_in_color(JNX_COL_YELLOW, "%s\n", out);
+	jnx_term_printf_in_color(JNX_COL_WHITE, ".");
+	fflush(stdout);
 	if (counter < 5)
 		return 0;
-	else
+	else 
 		return 5;
 }
 void test_stream_ipc_comms() {
 	JNX_LOGC(JLOG_DEBUG,"Test unix stream socket inter-process communication.\n");
 	fflush(stdout);
+	remove("/tmp/stream_sun");
 	jnx_unix_socket *ss = jnx_unix_stream_socket_create("/tmp/stream_sun");
 	counter = 0;
 
@@ -201,6 +203,89 @@ void test_stream_ipc_comms() {
 			jnx_unix_stream_socket_listen(ss, 5, stream_callback);
 			jnx_term_printf_in_color(JNX_COL_WHITE, "closing server socket\n");
 			jnx_unix_socket_destroy(&ss);
+		}
+	}
+	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+int check_binary_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
+	uint8_t expected[] = {'a', 'b', 'c', '\0', '\n', '\t', 0x01, 0xff, 0x13, '\f', '\v'};
+	assert(sizeof(expected) == len);
+	int i;
+	jnx_term_printf_in_color(JNX_COL_WHITE, ".");
+	for (i=0; i < len; i++) {
+		assert(out[i] == expected[i]);
+	}
+	return 11;
+}
+void test_binary_data_in_stream_ipc_comms() {
+	JNX_LOGC(JLOG_DEBUG, "Test binary data sent and received via stream socket\n");
+	fflush(stdout);
+	remove("/tmp/binary_stream");
+	jnx_unix_socket *ss = jnx_unix_stream_socket_create("/tmp/binary_stream");
+	uint8_t buffer[] = {'a', 'b', 'c', '\0', '\n', '\t', 0x01, 0xff, 0x13, '\f', '\v'};
+	pid_t child_pid;
+	if ((child_pid = fork()) != -1) {
+		if (child_pid == 0) {
+			jnx_unix_socket *cs = 0;
+			sleep(1);
+			cs = jnx_unix_stream_socket_create("/tmp/binary_stream");
+			jnx_unix_stream_socket_send(cs, buffer, sizeof(buffer));
+			jnx_unix_socket_destroy(&cs);
+			exit(0);
+		}
+		else {
+			jnx_unix_stream_socket_listen(ss, 5, check_binary_stream);
+			jnx_term_printf_in_color(JNX_COL_WHITE, "closing server socket\n");
+			jnx_unix_socket_destroy(&ss);	
+		}
+	}
+	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+int check_large_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
+	counter++;
+	int i;
+	jnx_term_printf_in_color(JNX_COL_WHITE, ".");
+	fflush(stdout);
+	if (counter < 5)
+	for (i = 0; i < len; i++) {
+		assert(out[i] == i % 256);
+	}
+	if (counter < 4)
+		return 0;
+	else 
+		return 4;	
+}
+void test_large_data_in_stream_ipc_comms() {
+	JNX_LOGC(JLOG_DEBUG, "Test large data sent and received via stream socket\n");
+	fflush(stdout);
+	remove("/tmp/large_stream");
+	jnx_unix_socket *ss = jnx_unix_stream_socket_create("/tmp/large_stream");
+	
+	uint8_t buffer[2000];
+	int i;
+	for (i = 0; i < 2000; i++) {
+		buffer[i] = i % 256;
+	}
+
+	counter = 0;
+	pid_t child_pid;
+	if ((child_pid = fork()) != -1) {
+		if (child_pid == 0) {
+			jnx_unix_socket *cs = 0;
+			int lengths[4] = {1023, 1024, 1025, 2000};
+			int i;
+			for (i=0; i<4; i++) {
+				sleep(1);
+				cs = jnx_unix_stream_socket_create("/tmp/large_stream");
+				jnx_unix_stream_socket_send(cs, buffer, lengths[i]);
+				jnx_unix_socket_destroy(&cs);
+			}
+			exit(0);
+		}
+		else {
+			jnx_unix_stream_socket_listen(ss, 5, check_large_stream);
+			jnx_term_printf_in_color(JNX_COL_WHITE, "closing server socket\n");
+			jnx_unix_socket_destroy(&ss);	
 		}
 	}
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
@@ -239,15 +324,17 @@ void test_negative_datagram_listen_scenarios() {
 int datagram_callback(char *out, size_t len, jnx_unix_socket *rs) {
 	counter++;
 	assert(strncmp(out, "Hello world from datagram socket!", 33) == 0);
-	jnx_term_printf_in_color(JNX_COL_YELLOW, "%s\n", out);
+	jnx_term_printf_in_color(JNX_COL_WHITE, ".");
+	fflush(stdout);
 	if (counter < 5)
 		return 0;
-	else
+	else 
 		return 5;
 }
 void test_datagram_ipc_comms() {
 	JNX_LOGC(JLOG_DEBUG,"Test unix datagram socket inter-process communication.\n");
 	fflush(stdout);
+	remove("/tmp/datagram_sun");
 	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("/tmp/datagram_sun");
 	counter = 0;
 
@@ -272,12 +359,90 @@ void test_datagram_ipc_comms() {
 	}
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
+void test_binary_data_in_datagram_ipc_comms() {
+	JNX_LOGC(JLOG_DEBUG, "Test binary data sent and received via datagram socket\n");
+	fflush(stdout);
+	remove("/tmp/binary_datagram");
+	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("/tmp/binary_datagram");
+	uint8_t buffer[] = {'a', 'b', 'c', '\0', '\n', '\t', 0x01, 0xff, 0x13, '\f', '\v'};
+	pid_t child_pid;
+	if ((child_pid = fork()) != -1) {
+		if (child_pid == 0) {
+			jnx_unix_socket *cs = 0;
+			sleep(1);
+			cs = jnx_unix_datagram_socket_create("/tmp/binary_datagram");
+			jnx_unix_datagram_socket_send(cs, buffer, sizeof(buffer));
+			jnx_unix_socket_destroy(&cs);
+			exit(0);
+		}
+		else {
+			jnx_unix_datagram_socket_listen(ss, check_binary_stream);
+			jnx_term_printf_in_color(JNX_COL_WHITE, "closing server socket\n");
+			jnx_unix_socket_destroy(&ss);	
+		}
+	}
+	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+int check_large_datagram(uint8_t *out, size_t len, jnx_unix_socket *rs) {
+	counter++;
+	int i;
+	assert(len <= 1024);
+	jnx_term_printf_in_color(JNX_COL_WHITE, ".");
+	fflush(stdout);
+	if (counter < 5)
+	for (i = 0; i < len; i++) {
+		assert(out[i] == i % 256);
+	}
+	if (counter < 4)
+		return 0;
+	else 
+		return 4;	
+}
+void test_large_data_in_datagram_ipc_comms() {
+	JNX_LOGC(JLOG_DEBUG, "Test large data sent and received via datagram socket\n");
+	fflush(stdout);
+	remove("/tmp/large_datagram");
+	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("/tmp/large_datagram");
+	
+	uint8_t buffer[2000];
+	int i;
+	for (i = 0; i < 2000; i++) {
+		buffer[i] = i % 256;
+	}
+
+	counter = 0;
+	pid_t child_pid;
+	if ((child_pid = fork()) != -1) {
+		if (child_pid == 0) {
+			jnx_unix_socket *cs = 0;
+			int lengths[4] = {1023, 1024, 1025, 2000};
+			int i;
+			for (i=0; i<4; i++) {
+				sleep(1);
+				cs = jnx_unix_datagram_socket_create("/tmp/large_datagram");
+				jnx_unix_datagram_socket_send(cs, buffer, lengths[i]);
+				jnx_unix_socket_destroy(&cs);
+			}
+			exit(0);
+		}
+		else {
+			jnx_unix_datagram_socket_listen(ss, check_large_stream);
+			jnx_term_printf_in_color(JNX_COL_WHITE, "closing server socket\n");
+			jnx_unix_socket_destroy(&ss);	
+		}
+	}
+	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
 
 // Test runner
 int main(int argc, char **argv) {
 	JNX_LOGC(JLOG_DEBUG,"Starting unix socket tests\n");
 	test_stream_ipc_comms();
+	test_binary_data_in_stream_ipc_comms();
+	test_large_data_in_stream_ipc_comms();
 	test_datagram_ipc_comms();
+	test_binary_data_in_datagram_ipc_comms();
+	test_large_data_in_datagram_ipc_comms();
 	test_create_and_destroy();
 	test_negative_send_stream_scenarios();
 	test_negative_send_datagram_scenarios();
