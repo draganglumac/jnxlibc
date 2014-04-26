@@ -19,10 +19,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <jnxc_headers/jnxthread.h>
-#include <jnxc_headers/jnxqueue.h>
-#include <jnxc_headers/jnxlog.h>
-#include <jnxc_headers/jnxhash.h>
+#include "jnxthread.h"
+#include "jnxqueue.h"
+#include "jnxlog.h"
+#include "jnxhash.h"
 #include "jnxevent.h"
 #include <time.h>
 jnx_thread_mutex evt_lock;

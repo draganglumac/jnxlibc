@@ -9,7 +9,7 @@
 	extern "C" {
 #endif
 #include <stdint.h>
-#include <jnxc_headers/jnxmem.h>
+#include "jnxmem.h"
 /**
  * @brief Event object is given to the use subscribing to an event
  */
