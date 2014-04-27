@@ -50,7 +50,7 @@ Use -ljnxc when building your project
 gcc ${YOUR_PROGRAM_FILES} -ljnxc 
 ````
 
-###Examples
+##Examples
 
 Creating a linkedlist
 ```C
