@@ -42,7 +42,7 @@ Grab this repo.
 Use -ljnxc when building your project
 
 ````
-###Flags
+####Flags
 
 -DJNX_MEMORY_MANAGEMENT (Enables jnx memory management if JNX_MEM macros are being used)
 -DRELEASE (Sets library for release mode optimisations) 
