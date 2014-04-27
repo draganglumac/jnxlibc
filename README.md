@@ -7,6 +7,7 @@ C common utility library driven and built on solid integrated testing. ( [See He
 
 ##Key features:
 - Threading
+- Event messaging system
 - Interprocess communication
 - Lightweight data structures (hash, list, vector, btree, stack, queue)
 - Memory & stack tracing
@@ -56,6 +57,14 @@ jnx_list *exampleList = jnx_list_create();
 jnx_list_add(exampleList,"A");
 jnx_list_destroy(&exampleList);
 ```
+Sending an event
+```C
+//Thread 0
+JNX_EVENT_SUBSCRIBE("Fired_weapon_evt!",callback_function);
+//Thread 1
+JNX_EVENT_SEND("Fired_weapon_evt!",&Data);
+```
+
 Reading from a file
 ```C
 char *buffer;
