@@ -18,10 +18,11 @@ C common utility library driven and built on solid integrated testing. ( [See He
 - Terminal loading spinners and fancy colors done easily.
 - Auto generated documentation and logical API
 
-#Documentation
+#Documentation & Examples
 
 - MAN  docs/man
 - HTML docs/html ([Here](http://htmlpreview.github.io/?https://raw.github.com/AlexsJones/jnxlibc/master/docs/html/files.html))
+- Examples of functionality in test suite.
 
 
 #Installation
