@@ -18,10 +18,11 @@ C common utility library driven and built on solid integrated testing. ( [See He
 - Terminal loading spinners and fancy colors done easily.
 - Auto generated documentation and logical API
 
-#Documentation
+#Documentation & Examples
 
 - MAN  docs/man
 - HTML docs/html ([Here](http://htmlpreview.github.io/?https://raw.github.com/AlexsJones/jnxlibc/master/docs/html/files.html))
+- Examples of functionality in test suite.
 
 
 #Installation
@@ -41,7 +42,7 @@ Grab this repo.
 Use -ljnxc when building your project
 
 ````
-###Flags
+####Flags
 
 -DJNX_MEMORY_MANAGEMENT (Enables jnx memory management if JNX_MEM macros are being used)
 -DRELEASE (Sets library for release mode optimisations) 
@@ -49,7 +50,7 @@ Use -ljnxc when building your project
 gcc ${YOUR_PROGRAM_FILES} -ljnxc 
 ````
 
-###Examples
+##Examples
 
 Creating a linkedlist
 ```C
