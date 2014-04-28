@@ -25,7 +25,7 @@
 #include "jnxhash.h"
 #include "jnxevent.h"
 #include <time.h>
-jnx_thread_mutex evt_lock;
+jnx_thread_mutex sub_lock;
 jnx_thread_mutex queue_lock;
 pthread_t evt_thr;
 pthread_mutex_t event_lock;
@@ -72,8 +72,11 @@ void jnx_event_handle_destroy(jnx_event_handle *e) {
 	JNX_MEM_FREE(e);
 }
 void jnx_event_unsubscribe(jnx_event_handle *e) {
+	if(!subscription_list) {
+		return;
+	}
 	jnx_list *temp = jnx_list_create();
-	jnx_thread_lock(&evt_lock);
+	jnx_thread_lock(&sub_lock);
 	jnx_node *head = subscription_list->head;
 	while(head) {
 		jnx_event_handle *je = head->_data;
@@ -85,14 +88,14 @@ void jnx_event_unsubscribe(jnx_event_handle *e) {
 	jnx_list_destroy(&subscription_list);
 	subscription_list = temp;
 	JNX_LOGC(JLOG_NORMAL,"Number of events %d\n",subscription_list->counter);
-	jnx_thread_unlock(&evt_lock);
+	jnx_thread_unlock(&sub_lock);
 	jnx_event_handle_destroy(e);
 }
 void jnx_event_subscribe(jnx_event_handle *e) {
 	JNX_LOGC(JLOG_NORMAL,"Subscribing new handle [%lu:%d]\n",e->identity,e->evt_type);
-	jnx_thread_lock(&evt_lock);
+	jnx_thread_lock(&sub_lock);
 	jnx_list_add(subscription_list,e);
-	jnx_thread_unlock(&evt_lock);
+	jnx_thread_unlock(&sub_lock);
 }
 typedef struct datalink {
 	event_object *e;
@@ -106,7 +109,7 @@ void *async_update(void *args) {
 }
 void jnx_event_update_subscribers(event_object *e) {
 	assert(e);	
-	jnx_thread_lock(&evt_lock);
+	jnx_thread_lock(&sub_lock);
 	jnx_node *head = subscription_list->head,
 			 *reset = subscription_list->head;
 	while(head) {
@@ -121,7 +124,7 @@ void jnx_event_update_subscribers(event_object *e) {
 		head = head->next_node;
 	}
 	head = reset;
-	jnx_thread_unlock(&evt_lock);
+	jnx_thread_unlock(&sub_lock);
 	JNX_LOGC(JLOG_NORMAL,"Queue length %d\n",event_queue->list->counter);
 }
 void jnx_event_send(event_object *e) {
@@ -135,13 +138,7 @@ void *jnx_event_mainloop(void *args) {
 	tim.tv_sec=0;
 	tim.tv_nsec=250000000L;
 
-	while(1) {
-		jnx_thread_lock(&evt_lock);
-		if(exiting) {
-			jnx_thread_unlock(&evt_lock);
-			return 0;
-		}
-		jnx_thread_unlock(&evt_lock);
+	while(1 && !exiting) {
 		jnx_thread_lock(&queue_lock);
 		event_object *e = jnx_queue_pop(event_queue);
 		jnx_thread_unlock(&queue_lock);
@@ -168,17 +165,18 @@ void jnx_event_global_create() {
 	jnx_thread_create_disposable(jnx_event_mainloop,NULL);
 }
 void jnx_event_global_destroy() {
-	jnx_thread_lock(&evt_lock);
 	exiting = 1;	
-	jnx_thread_unlock(&evt_lock);
-
-	jnx_node *head = subscription_list->head;
-	while(head) {
-		jnx_event_handle *e = head->_data;
-		jnx_event_handle_destroy(e);
-		head = head->next_node;
+	jnx_thread_lock(&sub_lock);
+	if(subscription_list){
+		jnx_node *head = subscription_list->head;
+		while(head) {
+			jnx_event_handle *e = head->_data;
+			jnx_event_handle_destroy(e);
+			head = head->next_node;
+		}
+		jnx_list_destroy(&subscription_list);
 	}
-	jnx_list_destroy(&subscription_list);
+	jnx_thread_unlock(&sub_lock);
 
 	event_object *eo;
 	while((eo = jnx_queue_pop(event_queue)) != NULL) {
