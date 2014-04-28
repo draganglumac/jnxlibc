@@ -16,9 +16,9 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "jnxthread.h"
-#include "jnxterm.h"
-#include "jnxlog.h"
+#include <jnxc_headers/jnxthread.h>
+#include <jnxc_headers/jnxterm.h>
+#include <jnxc_headers/jnxlog.h>
 #include "jnxevent.h"
 #include <unistd.h>
 #include <time.h>
