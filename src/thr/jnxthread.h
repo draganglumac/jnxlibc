@@ -37,7 +37,6 @@ typedef struct jnx_thread{
 	//platform specific zone//
 	pthread_t system_thread;
 	//platform specific zone//
-	int is_initialized;
 }jnx_thread;
 
 typedef union jnx_thread_mutex{
