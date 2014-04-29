@@ -40,13 +40,17 @@ typedef struct jnx_thread{
 	int is_initialized;
 }jnx_thread;
 
-typedef union jnx_thread_mutex{
+typedef struct jnx_thread_mutex{
 	//platform specific zone//
 	pthread_mutex_t system_mutex;
 	//platform specific zone//
 	int is_initialized;
 }jnx_thread_mutex;
 
+typedef struct jnx_thread_system_handle{
+
+}
+jnx_thread_system_handle;
 
 void jnx_thread_mutex_create(jnx_thread_mutex *m);
 
