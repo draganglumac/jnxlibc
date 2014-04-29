@@ -46,10 +46,6 @@ typedef struct jnx_thread_mutex{
 	int is_initialized;
 }jnx_thread_mutex;
 
-typedef struct jnx_thread_system_handle{
-
-}
-jnx_thread_system_handle;
 
 void jnx_thread_mutex_create(jnx_thread_mutex *m);
 
@@ -69,19 +65,6 @@ void jnx_thread_lock(jnx_thread_mutex *m);
  *@return int errorcode 0 on success
  */
 int jnx_thread_trylock(jnx_thread_mutex *m);
-/**
- *@fn void jnx_thread_poolflush
- *@brief resets the pool and removes thread data
- *@warning Does not ensure threads have terminated
- */
-void jnx_thread_poolflush();
-/**
- *@fn size_t jnx_thread_poolcount
- *@brief counts the current number of threads in the pool
- *@warning does not give thread status active/inactive
- *@return size_t of thread count
- */
-size_t jnx_thread_poolcount();
 /**
  *@fn jnx_thread* jnx_thread_create(entry_point e,void *args)
  *@param entry_point is the function pointer the thread starts with
@@ -103,7 +86,7 @@ int jnx_thread_create_disposable(entry_point e,void *args);
  *@brief Destroy the thread data structure and pool listing
  *@warning Destroy will not ensure thread is killed
  */
-void jnx_thread_destroy(jnx_thread *thr);
+void jnx_thread_handle_destroy(jnx_thread *thr);
 /**
  *@fn int jnx_thread_join(jnx_thread *thr)
  *@param jnx_thread pointer to thread object to wait for

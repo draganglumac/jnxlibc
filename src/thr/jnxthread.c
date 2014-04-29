@@ -17,55 +17,8 @@
  */
 #include <stdlib.h>
 #include "jnxthread.h"
-#include "jnxbtree.h"
 #include "jnxlog.h"
-static jnx_btree *pooltree = NULL;
-static int threadcount  = 1;
 
-int thread_id_comparison(void *A, void *B) {
-    if(A > B) {
-        return -1;
-    }
-    if(B > A) {
-        return 1;
-    }
-    return 0;
-}
-void jnx_thread_poolflush() {
-    if(!pooltree) {
-        return;
-    }
-    threadcount = 1;
-    jnx_list *keys = jnx_list_create();
-    jnx_btree_keys(pooltree,keys);
-    while(keys->head) {
-        jnx_thread *thr = keys->head->_data;
-        jnx_thread_destroy(thr);
-
-        keys->head = keys->head->next_node;
-    }
-    jnx_list_destroy(&keys);
-    jnx_btree_destroy(pooltree);
-    pooltree = NULL;
-}
-size_t jnx_thread_poolcount() {
-    if(!pooltree) {
-        return 0;
-    }
-    jnx_list *keys = jnx_list_create();
-    jnx_btree_keys(pooltree,keys);
-
-    size_t s = keys->counter;
-    jnx_list_destroy(&keys);
-    return s;
-}
-int jnx_thread_addpool(jnx_thread *thr) {
-    if(!pooltree) {
-        pooltree = jnx_btree_create(sizeof(int),thread_id_comparison);
-    };
-    jnx_btree_add(pooltree,&thr->id,thr);
-    return 0;
-}
 void jnx_thread_mutex_create(jnx_thread_mutex *m) {
 	pthread_mutex_init(&m->system_mutex,NULL);	
 	m->is_initialized = 1;
@@ -93,7 +46,7 @@ void jnx_thread_lock(jnx_thread_mutex *m) {
 	}
     pthread_mutex_lock(&m->system_mutex);
 }
-void jnx_thread_destroy(jnx_thread *thr) {
+void jnx_thread_handle_destroy(jnx_thread *thr) {
     if(thr == NULL) {
         return;
     }
@@ -108,12 +61,10 @@ jnx_thread* jnx_thread_create(entry_point e,void *args) {
     jnx_thread_attributes *attr = malloc(sizeof(jnx_thread_attributes));
     attr->has_custom_attr = 0;
     thr->attributes = attr;
-    thr->id = threadcount++;
     //platform specific zone//
     pthread_attr_t *default_attr = NULL;
     pthread_create(&thr->system_thread,default_attr,e,args);
     //platform specific zone//
-    jnx_thread_addpool(thr);
     return thr;
 }
 int jnx_thread_create_disposable(entry_point e,void *args) {
