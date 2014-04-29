@@ -20,17 +20,11 @@
 #ifdef __cplusplus
 	extern "C" {
 #endif
-#if !defined(WIN32)
 #include <pthread.h>
-#else
-#include <windows.h>
-#endif
 typedef struct jnx_thread_attributes{
 	//platform specific zone//
 	int has_custom_attr;
-#if !defined(WIN32)
 	pthread_attr_t *system_attributes;
-#endif
 	//platform specific zone//
 }jnx_thread_attributes;
 
@@ -41,22 +35,22 @@ typedef struct jnx_thread{
 	void *args;
 	jnx_thread_attributes *attributes;
 	//platform specific zone//
-#if !defined(WIN32)
 	pthread_t system_thread;
-#else
-	HANDLE system_thread;
-#endif
 	//platform specific zone//
+	int is_initialized;
 }jnx_thread;
 
 typedef union jnx_thread_mutex{
 	//platform specific zone//
-#if !defined(WIN32)
 	pthread_mutex_t system_mutex;
-#endif
 	//platform specific zone//
+	int is_initialized;
 }jnx_thread_mutex;
 
+
+void jnx_thread_mutex_create(jnx_thread_mutex *m);
+
+void jnx_thread_mutex_destroy(jnx_thread_mutex *m);
 
 int jnx_thread_unlock(jnx_thread_mutex *m);
 /**

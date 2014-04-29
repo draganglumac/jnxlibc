@@ -68,29 +68,8 @@ void test_threadpool_flush() {
     assert(jnx_thread_poolcount() == 0);
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-
-jnx_thread_mutex _mutex;
-void *work_target(void *args) {
-    int ret = jnx_thread_trylock(&_mutex);
-    sleep(2);
-    return ret;
-}
-void test_thread_mutex() {
-    JNX_LOGC(JLOG_DEBUG,"Running test_thread_mutex: ");
-    jnx_thread *a = jnx_thread_create(work_target,"Thread One\n");
-    void *data;
-    jnx_thread_join(a,&data);
-    assert(data == 0);
-    sleep(1);
-    jnx_thread *b = jnx_thread_create(work_target,"Thread Two\n");
-    void *data_two;
-    jnx_thread_join(b,&data_two);
-    assert(data_two != 0);
-    jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-}
 int main(int argc, char **argv) {
     JNX_LOGC(JLOG_DEBUG,"Running jnx_threading tests\n");
-    test_thread_mutex();
     test_thread_add();
     test_threadpool_flush();
     test_thread_join();
