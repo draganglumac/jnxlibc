@@ -23,7 +23,7 @@
 #include "jnxlog.h"
 #include "jnxterm.h"
 int main(int args, char **argv) {
-    JNX_LOGC(JLOG_DEBUG,"Running test for jnxlog\n");
+    JNX_LOGC(JLOG_DEBUG,"Running test for jnxlog");
     JNX_LOG_PATH("temp.log");
     size_t bytesw = JNX_LOGF(JLOG_DEBUG,"Write to file\n");
 
