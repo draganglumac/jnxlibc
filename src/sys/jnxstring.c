@@ -28,7 +28,7 @@ void jnx_string_join(char** destination, char* buf) {
     }
 }
 char* jnx_string_itos(int input) {
-    char *str = malloc(24);
+    char *str = malloc(sizeof(int));
     if(sprintf(str,"%d",input) > 0) {
         return str;
     } else {
