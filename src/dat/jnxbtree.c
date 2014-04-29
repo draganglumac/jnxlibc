@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include "jnxmem.h"
 #include "jnxbtree.h"
 
 jnx_btree_node *new_node(int order, int is_leaf) {

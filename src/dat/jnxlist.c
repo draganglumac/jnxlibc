@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include "jnxlist.h"
 #include "jnxlog.h"
-#include "jnxmem.h"
 #include <stdio.h>
 
 jnx_list* jnx_list_create(void) {

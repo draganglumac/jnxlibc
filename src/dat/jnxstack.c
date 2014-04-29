@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "jnxstack.h"
-#include "jnxmem.h"
 jnx_stack* jnx_stack_create(void) {
     jnx_stack *s = malloc(sizeof(jnx_stack));
     s->count = 0;

@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include "jnxlog.h"
 #include "jnxvector.h"
-#include "jnxmem.h"
 jnx_vector *jnx_vector_create(void) {
     jnx_vector *vector = malloc(sizeof(jnx_vector));
     vector->count = 0;

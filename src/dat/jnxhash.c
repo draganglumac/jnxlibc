@@ -1,4 +1,3 @@
-#include "jnxmem.h"
 #include "jnxhash.h"
 int jnx_hash_string(const char* input, int map_size) {
     assert(input != 0 && input[0] != 0);

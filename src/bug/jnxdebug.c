@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include "jnxdebug.h"
 #include "jnxfile.h"
-#include "jnxmem.h"
 #include <assert.h>
 #include <time.h>
 #include <stdio.h>
