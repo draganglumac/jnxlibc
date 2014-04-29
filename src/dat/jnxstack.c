@@ -62,5 +62,6 @@ void jnx_stack_destroy(jnx_stack** A) {
         free(temp);
         (*A)->count--;
     }
-    *A = NULL;
+	jnx_thread_mutex_destroy(&(*A)->internal_lock);
+	*A = NULL;
 }

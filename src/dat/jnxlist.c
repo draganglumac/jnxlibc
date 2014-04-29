@@ -117,7 +117,8 @@ void jnx_list_destroy(jnx_list** A) {
         current = current->next_node;
         free(current_node);
     }
-    free(*A);
+	jnx_thread_mutex_destroy(&(*A)->internal_lock);
+	free(*A);
     (*A) = NULL;
 }
 

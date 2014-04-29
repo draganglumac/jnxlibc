@@ -516,7 +516,8 @@ void jnx_btree_destroy(jnx_btree* tree) {
     }
 
     delete_node_and_subtrees(tree->root);
-
+	
+	jnx_thread_mutex_destroy(&tree->internal_lock);
     free(tree);
 }
 static void append_keys_from_node(jnx_btree_node *node, jnx_list *keys) {

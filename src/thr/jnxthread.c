@@ -20,12 +20,16 @@
 #include "jnxlog.h"
 
 void jnx_thread_mutex_create(jnx_thread_mutex *m) {
-	pthread_mutex_init(&m->system_mutex,NULL);	
-	m->is_initialized = 1;
+	if(!m->is_initialized) {
+		pthread_mutex_init(&m->system_mutex,NULL);	
+		m->is_initialized = 1;
+	}
 }
 void jnx_thread_mutex_destroy(jnx_thread_mutex *m) {
-	pthread_mutex_destroy(&m->system_mutex);
-	m->is_initialized = 0;
+	if(m->is_initialized) {	
+		pthread_mutex_destroy(&m->system_mutex);
+		m->is_initialized = 0;
+	}
 }
 int jnx_thread_unlock(jnx_thread_mutex *m) {
     int ret = 0;

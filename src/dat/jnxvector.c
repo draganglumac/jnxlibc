@@ -45,7 +45,8 @@ void jnx_vector_destroy(jnx_vector* vector) {
     for ( x = 0; x < vector->count; ++x ) {
         free(vector->vector[x]);
     }
-    free(vector->vector);
+	jnx_thread_mutex_destroy(&vector->internal_lock);
+	free(vector->vector);
     free(vector);
 }
 void jnx_vector_grow(jnx_vector **vector, int increment) {

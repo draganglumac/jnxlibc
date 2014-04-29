@@ -79,6 +79,7 @@ void jnx_queue_destroy(jnx_queue **q) {
 	}
 	jnx_list *temp = (*q)->list;
 	jnx_list_destroy(&temp);
+	jnx_thread_mutex_destroy(&(*q)->internal_lock);
 	free(*q);
 	*q = NULL;
 }

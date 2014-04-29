@@ -29,10 +29,17 @@ static int testscomplete = 0;
 
 static jnx_queue *queue = NULL;
 int counter = 0;
+int stop = 0;
 void *worker(void *args) {
 	jnx_queue_push_ts(queue,"DATA");
 	++counter;
 	return 0;
+}
+void *noise(void *args) {
+	
+	while(!stop) {
+		jnx_queue_pop_ts(queue);
+	}
 }
 void test_queue_push() {
 	queue = jnx_queue_create();
@@ -43,11 +50,15 @@ void test_queue_push() {
 	float max_time = 5.0f;
 	time_t s,e;
 	time(&s);
+
+	jnx_thread_create_disposable(noise,NULL);
+
 	for(x=0;x<y;++x) {
 		jnx_thread_create_disposable(worker,NULL);
 		time(&e);
 		current_time = difftime(e,s);
 	}
+	stop = 1;
 	while(counter < y && current_time < max_time) {
 	}
 	assert(current_time < max_time);
@@ -57,9 +68,6 @@ int main(int argc, char **argv) {
 
 	JNX_LOGC(JLOG_DEBUG,"Running jnx_threading tests\n");
 	test_queue_push();
-
-
-
 
     return 0;
 }

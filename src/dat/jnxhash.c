@@ -26,7 +26,8 @@ void jnx_hash_destroy(jnx_hashmap* hashmap) {
             jnx_list_destroy(&current_bucket);
         }
     }
-    free(hashmap);
+	jnx_thread_mutex_destroy(&hashmap->internal_lock);
+	free(hashmap);
 }
 jnx_hashmap* jnx_hash_create(unsigned int size) {
     jnx_hashmap* hashmap = (jnx_hashmap*)malloc(sizeof(jnx_hashmap));
