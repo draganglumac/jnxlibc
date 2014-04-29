@@ -21,9 +21,10 @@
 	extern "C" {
 #endif
 #include "jnxlist.h"
+#include "jnxthread.h"
 typedef struct jnx_queue {
 	jnx_list *list;
-
+	jnx_thread_mutex internal_lock;
 }jnx_queue;
 
 /**
@@ -33,6 +34,8 @@ typedef struct jnx_queue {
  * @param data is the data to store
  */
 void jnx_queue_push(jnx_queue *q, void *data);
+
+void jnx_queue_push_ts(jnx_queue *q, void *data);
 /**
  * @fn void* jnx_queue_pop(jnx_queue *q)
  * @brief pops the first available item off of the queue
@@ -40,6 +43,8 @@ void jnx_queue_push(jnx_queue *q, void *data);
  * @return the first queue item or NULL on error 
  */
 void *jnx_queue_pop(jnx_queue *q);
+
+void *jnx_queue_pop_ts(jnx_queue *q);
 /**
  * @fn size_t jnx_queue_size(jnx_queue *q)
  * @brief get the queue size
@@ -47,6 +52,8 @@ void *jnx_queue_pop(jnx_queue *q);
  * @return the size of queue, 0 on empty or error
  */
 size_t jnx_queue_size(jnx_queue *q);
+
+size_t jnx_queue_size_ts(jnx_queue *q);
 /**
  * @fn jnx_queue* jnx_queue_create()
  * @brief create a jnx_queue

@@ -11,7 +11,7 @@
 #endif
 
 #include "jnxlist.h"
-
+#include "jnxthread.h"
 /**
  * @brief Internal representation of a (key, value) pair.
  */
@@ -56,6 +56,7 @@ typedef struct B_tree {
     int order; /**< The order of the tree, i.e. the minimum number of records a non-root node can have. */
     compare_keys compare_function; /**< Callback function to compare keys. @see compare_keys */
     jnx_btree_node *root; /**< The root node of the B-tree. */
+	jnx_thread_mutex internal_lock;
 } jnx_btree;
 
 
@@ -78,7 +79,6 @@ typedef struct B_tree {
  */
 jnx_btree* jnx_btree_create(int order, compare_keys callback);
 
-
 /** @fn void jnx_btree_add(jnx_btree *tree, void *key, void *value)
  * @brief Add a record (key, value) to the B-tree.
  *
@@ -95,7 +95,7 @@ jnx_btree* jnx_btree_create(int order, compare_keys callback);
  */
 void jnx_btree_add(jnx_btree *tree, void *key, void *value);
 
-
+void jnx_btree_add_ts(jnx_btree *tree, void *key, void *value);
 /** @fn void jnx_btree_lookup(jnx_btree *tree, void *key)
  * @brief Retreive the value for key from the B-tree.
  *
@@ -112,6 +112,7 @@ void jnx_btree_add(jnx_btree *tree, void *key, void *value);
 void *jnx_btree_lookup(jnx_btree *tree, void *key);
 
 
+void *jnx_btree_lookup_ts(jnx_btree *tree, void *key);
 /** @fn void* jnx_btree_remove(jnx_btree *tree, void *key_in, void **key_out, void **val_out)
  * @brief Remove from the B-tree the record which matches the passed in key.
  *
@@ -135,6 +136,7 @@ void *jnx_btree_lookup(jnx_btree *tree, void *key);
 void jnx_btree_remove(jnx_btree *tree, void *key_in, void **key_out, void **val_out);
 
 
+void jnx_btree_remove_ts(jnx_btree *tree, void *key_in, void **key_out, void **val_out);
 /** @fn void jnx_btree_delete(jnx_btree *tree)
  * @brief Delete the B-tree.
  *
@@ -143,8 +145,6 @@ void jnx_btree_remove(jnx_btree *tree, void *key_in, void **key_out, void **val_
  * @param tree The B-tree to delete.
  */
 void jnx_btree_destroy(jnx_btree* tree);
-
-
 /** @fh void jnx_btree_keys(jnx_btree *tree, jnx_list *keys)
  * @brief Put all the keys currently in the tree into the keys list.
  *
@@ -160,6 +160,7 @@ void jnx_btree_destroy(jnx_btree* tree);
  */
 void jnx_btree_keys(jnx_btree *tree, jnx_list *keys);
 
+void jnx_btree_keys_ts(jnx_btree *tree, jnx_list *keys);
 #ifdef __cplusplus
 	}
 #endif	

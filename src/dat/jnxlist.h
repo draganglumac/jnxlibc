@@ -5,6 +5,7 @@
  */
 #ifndef __JNXLIST_H__
 #define __JNXLIST_H__
+#include "jnxthread.h"
 #ifdef __cplusplus
 	extern "C" {
 #endif
@@ -23,6 +24,7 @@ typedef struct list {
    	struct node* head;
 	struct node* tail;
     int counter;
+	jnx_thread_mutex internal_lock;
 } jnx_list;
 
 /** @fn jnx_list_create(void)
@@ -38,6 +40,7 @@ jnx_list* jnx_list_create(void);
  */
 void jnx_list_add(jnx_list* A, void* _datain);
 
+void jnx_list_add_ts(jnx_list* A, void* _datain);
 /** @fn jnx_list_remove(jnx_list *A) 
  *  @brief Removes the structure from list but returns the data for the user to handle
  *  @param A is a pointer to the pointer of the list to remove the last link of
@@ -45,11 +48,13 @@ void jnx_list_add(jnx_list* A, void* _datain);
  */
 void* jnx_list_remove(jnx_list** A);
 
+void* jnx_list_remove_ts(jnx_list** A);
 /** @fn jnx_list_destroy(jnx_list* A) 
  * @brief  Deletes the list node structure and list, not data inside
  * @param A is a pointer the pointer of list to destroy
  */
 void jnx_list_destroy(jnx_list** A);
+
 #ifdef __cplusplus
 	}
 #endif

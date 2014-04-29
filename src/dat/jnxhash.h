@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "jnxlist.h"
+#include "jnxthread.h"
 #ifdef __cplusplus
 	extern "C" {
 #endif
@@ -37,6 +38,7 @@ typedef struct hashmap {
     jnx_hash_element* data;
     unsigned int size;
     unsigned int used_up;
+	jnx_thread_mutex internal_lock;
 } jnx_hashmap;
 
 /** @fn jnx_hash_destroy(jnx_hashmap* hashmap)
@@ -46,6 +48,7 @@ typedef struct hashmap {
  */
 void jnx_hash_destroy(jnx_hashmap* hashmap);
 
+void jnx_hash_destroy_ts(jnx_hashmap* hashmap);
 /** @fn jnx_hash_delete_value(jnx_hashmap *hashmap, char *key)
  *  @brief removes the key and returns the value for an entry
  *  @param hashmap pointer to the map 
@@ -54,6 +57,7 @@ void jnx_hash_destroy(jnx_hashmap* hashmap);
  */
 void* jnx_hash_delete_value(jnx_hashmap* hashmap, char *key);
 
+void* jnx_hash_delete_value_ts(jnx_hashmap* hashmap, char *key);
 /** @fn jnx_hash_create(unsigned int size)
  *  @brief Returns a newly created hashmap
  *  @param size createial size for the hashmap, unsigned int i.e 1024
@@ -69,6 +73,7 @@ jnx_hashmap* jnx_hash_create(unsigned int size);
  */
 int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value);
 
+int jnx_hash_put_ts(jnx_hashmap* hashmap, const char* key, void* value);
 /** @fn jnx_hash_get(jnx_hashmap* hashmap, const char *key)
  *  @brief Returns the value for a given key
  *  @param hashmap pointer to hashmap for retrieval
@@ -77,6 +82,7 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value);
  */
 void* jnx_hash_get(jnx_hashmap* hashmap, const char* key);
 
+void* jnx_hash_get_ts(jnx_hashmap* hashmap, const char* key);
 /** @fn jnx_hash_get_keys(jnx_hashmap* hashmap, const char ***keys)
  *  @brief Returns the number of keys found, and mallocs keys array and inserts keys
  *  @param hashmap pointer to hashmap for retrieval
@@ -85,6 +91,7 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const char* key);
  */
 int jnx_hash_get_keys(jnx_hashmap* hashmap,const char ***keys);
 
+int jnx_hash_get_keys_ts(jnx_hashmap* hashmap,const char ***keys);
 /** @fn jnx_hash_string(const char* input, int map_size) 
  *  @brief  Allows access to the hash string function, returning and unsigned int
  *  @param input is the string to be hashed

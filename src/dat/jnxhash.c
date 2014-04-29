@@ -60,6 +60,12 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const char* key) {
     }
     return NULL;
 }
+void* jnx_hash_get_ts(jnx_hashmap* hashmap, const char* key) {
+	jnx_thread_lock(&hashmap->internal_lock);
+	void *ret = jnx_hash_get(hashmap,key);
+	jnx_thread_unlock(&hashmap->internal_lock);
+	return ret;
+}
 int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys) {
     int x, counter = 0;
     int offset = 1;
@@ -80,6 +86,12 @@ int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys) {
         }
     }
     return counter;
+}
+int jnx_hash_get_keys_ts(jnx_hashmap *hashmap,const char ***keys) {
+	jnx_thread_lock(&hashmap->internal_lock);
+	int ret = jnx_hash_get_keys(hashmap,keys);
+	jnx_thread_unlock(&hashmap->internal_lock);
+	return ret;
 }
 int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value) {
     int index = jnx_hash_string(key, hashmap->size);
@@ -124,6 +136,12 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value) {
     }
 
     return 0;
+}
+int jnx_hash_put_ts(jnx_hashmap* hashmap, const char* key, void* value) {
+	jnx_thread_lock(&hashmap->internal_lock);
+	int ret = jnx_hash_put(hashmap,key,value);
+	jnx_thread_unlock(&hashmap->internal_lock);
+	return ret;
 }
 void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key) {
     int index = jnx_hash_string(key, hashmap->size);
@@ -191,4 +209,10 @@ void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key) {
         head = head->next_node;
     }
     return NULL;
+}
+void* jnx_hash_delete_value_ts(jnx_hashmap *hashmap,char *key) {
+	jnx_thread_lock(&hashmap->internal_lock);
+	void *ret = jnx_hash_delete_value(hashmap,key);
+	jnx_thread_unlock(&hashmap->internal_lock);
+	return ret;
 }

@@ -56,6 +56,11 @@ void jnx_list_add(jnx_list* A, void* _datain) {
     }
     A->head = marker;
 }
+void jnx_list_add_ts(jnx_list* A, void* _datain) {
+	jnx_thread_lock(&A->internal_lock);
+	jnx_list_add(A,_datain);
+	jnx_thread_unlock(&A->internal_lock);
+}
 void* jnx_list_remove(jnx_list** A) {
     if((*A)->head == NULL) {
         return NULL;
@@ -82,6 +87,13 @@ void* jnx_list_remove(jnx_list** A) {
     }
     (*A)->head = origin_head;
     return NULL;
+}
+void* jnx_list_remove_ts(jnx_list** A) {
+	jnx_list *l = *A;
+	jnx_thread_lock(&l->internal_lock);
+	void *ret = jnx_list_remove(A);
+	jnx_thread_unlock(&l->internal_lock);
+	return ret;
 }
 void jnx_list_destroy(jnx_list** A) {
     if((*A) == NULL) {

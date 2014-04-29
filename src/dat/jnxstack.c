@@ -14,6 +14,12 @@ int jnx_stack_is_empty(jnx_stack* A) {
 
     return 0;
 }
+int jnx_stack_is_empty_ts(jnx_stack* A) {
+	jnx_thread_lock(&A->internal_lock);
+	int ret = jnx_stack_is_empty(A);
+	jnx_thread_unlock(&A->internal_lock);
+	return ret;
+}
 void jnx_stack_push(jnx_stack* A, void* _datain) {
     if ( _datain == NULL ) {
         // We don't accept NULL data
@@ -24,6 +30,11 @@ void jnx_stack_push(jnx_stack* A, void* _datain) {
     temp->next_node = A->top;
     A->top = temp;
     A->count++;
+}
+void jnx_stack_push_ts(jnx_stack* A, void* _datain) {
+	jnx_thread_lock(&A->internal_lock);
+	jnx_stack_push(A,_datain);
+	jnx_thread_unlock(&A->internal_lock);
 }
 void* jnx_stack_pop(jnx_stack* A) {
     if ( A->top == NULL ) {
@@ -37,6 +48,12 @@ void* jnx_stack_pop(jnx_stack* A) {
     A->count--;
 
     return retval;
+}
+void* jnx_stack_pop_ts(jnx_stack* A) {
+	jnx_thread_lock(&A->internal_lock);
+	void *ret = jnx_stack_pop(A);
+	jnx_thread_unlock(&A->internal_lock);
+	return ret;
 }
 void jnx_stack_destroy(jnx_stack** A) {
     while ( (*A)->top != NULL ) {
