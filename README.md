@@ -1,4 +1,6 @@
-![jnx Icon](http://i.imgur.com/w6M1lJP.png) jnxlibc
+![jnx Icon](http://i.imgur.com/w6M1lJP.png) 
+
+jnxlibc
 =======
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
 
