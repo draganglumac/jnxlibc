@@ -44,9 +44,6 @@ Use -ljnxc when building your project
 ####Flags
 
 -DRELEASE (Sets library for release mode optimisations) 
-```C
-gcc ${YOUR_PROGRAM_FILES} -ljnxc 
-```
 
 ##Examples
 
