@@ -7,7 +7,8 @@ Test driven C library for reliable networking, data structures and utility funct
 Constantly in development and refinement to make it as memory/thread safe as possible whilst maintaining
 no dependencies and low foot print.
 
-https://github.com/AlexsJones/jnxlibc/releases/tag/v1.5
+####For a solid snapshot of the library check out the releases
+https://github.com/AlexsJones/jnxlibc/releases
 
 
 #Key features
