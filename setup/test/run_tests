@@ -25,7 +25,8 @@ for file in $filelist; do
         rm $current
     fi
 
-	`gcc $file ../build/*.c -DJNX_MEMORY_MANAGEMENT -I../build -o ${file:0:${#file}-2} -pthread -w`
+	echo "Running next test for --> ${file}"
+	`gcc $file ../build/*.c -I../build -o ${file:0:${#file}-2} -pthread -w`
     ./$current
     out=$?
     if [ ! $out -eq 0 ]; then

@@ -19,12 +19,12 @@
 #include <stdio.h>
 #include "jnxlog.h"
 #include "jnxvector.h"
-#include "jnxmem.h"
 jnx_vector *jnx_vector_create(void) {
     jnx_vector *vector = malloc(sizeof(jnx_vector));
     vector->count = 0;
     vector->vector = NULL;
-    return vector;
+	vector->internal_lock = jnx_thread_mutex_create();
+	return vector;
 }
 jnx_vector_record *jnx_vector_record_create(void *value) {
     jnx_vector_record *record = malloc(sizeof(record));
@@ -41,13 +41,14 @@ jnx_vector_record *jnx_vector_record_create_empty() {
 }
 //One of the primary reasons not to free data here is we don't know where it belongs too
 //and it may cause a segfault if its on the stack
-void jnx_vector_destroy(jnx_vector* vector) {
+void jnx_vector_destroy(jnx_vector** vector) {
     int x = 0;
-    for ( x = 0; x < vector->count; ++x ) {
-        free(vector->vector[x]);
+    for ( x = 0; x < (*vector)->count; ++x ) {
+        free((*vector)->vector[x]);
     }
-    free(vector->vector);
-    free(vector);
+	jnx_thread_mutex_destroy(&(*vector)->internal_lock);
+	free((*vector)->vector);
+    free(*vector);
 }
 void jnx_vector_grow(jnx_vector **vector, int increment) {
     int resize = (*vector)->count + increment;
@@ -79,6 +80,11 @@ void jnx_vector_insert_at(jnx_vector *vector, int position, void *value) {
         vector->vector[position]->data = value;
     }
 }
+void jnx_vector_insert_at_ts(jnx_vector *vector, int position, void *value) {
+	jnx_thread_lock(vector->internal_lock);
+	jnx_vector_insert_at(vector,position,value);
+	jnx_thread_unlock(vector->internal_lock);
+}
 void* jnx_vector_remove_at(jnx_vector *vector,int position) {
     if(vector->vector[position]->used) {
         void *data = vector->vector[position]->data;
@@ -88,11 +94,22 @@ void* jnx_vector_remove_at(jnx_vector *vector,int position) {
     }
     return NULL;
 }
+void* jnx_vector_remove_at_ts(jnx_vector *vector,int position) {
+	jnx_thread_lock(vector->internal_lock);
+	void *ret = jnx_vector_remove_at(vector,position);
+	jnx_thread_unlock(vector->internal_lock);
+	return ret;
+}
 void jnx_vector_insert(jnx_vector *vector, void *value) {
     jnx_vector_record *record = jnx_vector_record_create(value);
     jnx_vector_grow(&vector,1);
     vector->vector[vector->count] = record;
     vector->count++;
+}
+void jnx_vector_insert_ts(jnx_vector *vector, void *value) {
+	jnx_thread_lock(vector->internal_lock);
+	jnx_vector_insert(vector,value);
+	jnx_thread_unlock(vector->internal_lock);
 }
 void *jnx_vector_last(jnx_vector *vector) {
     if(vector->count == 0) {
@@ -104,4 +121,10 @@ void *jnx_vector_last(jnx_vector *vector) {
     vector->count--;
     vector->vector = realloc(vector->vector, (vector->count) * sizeof(void*));
     return data;
+}
+void *jnx_vector_last_ts(jnx_vector *vector) {
+	jnx_thread_lock(vector->internal_lock);
+	void *ret = jnx_vector_last(vector);
+	jnx_thread_unlock(vector->internal_lock);
+	return ret;
 }

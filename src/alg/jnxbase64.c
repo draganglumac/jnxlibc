@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "jnxmem.h"
 #include "jnxbase64.h"
 void build_decoding_table();
 void base64_cleanup();

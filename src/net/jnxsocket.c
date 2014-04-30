@@ -301,7 +301,6 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 		int ret = 0;
 		s->ipaddress = jnx_socket_tcp_resolve_ipaddress(recfd);
 		if((ret = c(out,len,s)) != 0) {
-			printf("Exiting tcp listener with %d\n",ret);
 			return 0;
 		}
 	}
@@ -357,7 +356,6 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 		memcpy(outbuffer,buffer,bytesread);
 		s->ipaddress = jnx_socket_udp_resolve_ipaddress(their_addr);
 		if((ret = c(outbuffer,bytesread,s)) != 0) {
-			printf("Exiting udp listener with %d",ret);
 			return 0;
 		}
 	}

@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include "jnxstack.h"
-#include "jnxmem.h"
 jnx_stack* jnx_stack_create(void) {
     jnx_stack *s = malloc(sizeof(jnx_stack));
     s->count = 0;
     s->top = NULL;
-
+	s->internal_lock = jnx_thread_mutex_create();
     return s;
 }
 int jnx_stack_is_empty(jnx_stack* A) {
@@ -14,6 +13,12 @@ int jnx_stack_is_empty(jnx_stack* A) {
     }
 
     return 0;
+}
+int jnx_stack_is_empty_ts(jnx_stack* A) {
+	jnx_thread_lock(A->internal_lock);
+	int ret = jnx_stack_is_empty(A);
+	jnx_thread_unlock(A->internal_lock);
+	return ret;
 }
 void jnx_stack_push(jnx_stack* A, void* _datain) {
     if ( _datain == NULL ) {
@@ -25,6 +30,11 @@ void jnx_stack_push(jnx_stack* A, void* _datain) {
     temp->next_node = A->top;
     A->top = temp;
     A->count++;
+}
+void jnx_stack_push_ts(jnx_stack* A, void* _datain) {
+	jnx_thread_lock(A->internal_lock);
+	jnx_stack_push(A,_datain);
+	jnx_thread_unlock(A->internal_lock);
 }
 void* jnx_stack_pop(jnx_stack* A) {
     if ( A->top == NULL ) {
@@ -39,6 +49,12 @@ void* jnx_stack_pop(jnx_stack* A) {
 
     return retval;
 }
+void* jnx_stack_pop_ts(jnx_stack* A) {
+	jnx_thread_lock(A->internal_lock);
+	void *ret = jnx_stack_pop(A);
+	jnx_thread_unlock(A->internal_lock);
+	return ret;
+}
 void jnx_stack_destroy(jnx_stack** A) {
     while ( (*A)->top != NULL ) {
         jnx_snode *temp = (*A)->top;
@@ -46,5 +62,6 @@ void jnx_stack_destroy(jnx_stack** A) {
         free(temp);
         (*A)->count--;
     }
-    *A = NULL;
+	jnx_thread_mutex_destroy(&(*A)->internal_lock);
+	*A = NULL;
 }

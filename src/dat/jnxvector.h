@@ -6,6 +6,7 @@
  */
 #ifndef __JNX_VECTOR_H__
 #define __JNX_VECTOR_H__
+#include "jnxthread.h"
 #ifdef __cplusplus
 	extern "C" {
 #endif
@@ -22,6 +23,7 @@ typedef struct{
 typedef struct{
     int count;
     jnx_vector_record **vector;
+	jnx_thread_mutex *internal_lock;
 }jnx_vector;
 
 
@@ -39,7 +41,7 @@ jnx_vector *jnx_vector_create(void);
  *
  * @warning User assumes responsibility for deleting all data entries first
  */
-void jnx_vector_destroy(jnx_vector* vector);
+void jnx_vector_destroy(jnx_vector** vector);
 
 /**
  * @fn jnx_vector_insert(jnx_vector *vector, void *value)
@@ -49,6 +51,7 @@ void jnx_vector_destroy(jnx_vector* vector);
  */
 void jnx_vector_insert(jnx_vector *vector, void *value);
 
+void jnx_vector_insert_ts(jnx_vector *vector, void *value);
 /**
  * @fn jnx_vector_insert_at(jnx_vector *vector, int position, void *value)
  * @brief inserts into the vector at a particular position, if it doesn't exist it will be crearted
@@ -58,6 +61,7 @@ void jnx_vector_insert(jnx_vector *vector, void *value);
  */
 void jnx_vector_insert_at(jnx_vector *vector, int position, void *value);
 
+void jnx_vector_insert_at_ts(jnx_vector *vector, int position, void *value);
 /**
  * @fn jnx_vector_last(jnx_vector *vector)
  * @brief returns the last data entry in the vector and shortens it by 1
@@ -67,6 +71,7 @@ void jnx_vector_insert_at(jnx_vector *vector, int position, void *value);
  */
 void *jnx_vector_last(jnx_vector *vector);
 
+void *jnx_vector_last_ts(jnx_vector *vector);
 /**
  * @fn jnx_vector_remove_at(jnx_vector *vector, int position)
  * @brief removes an entry at position in the vector
@@ -75,6 +80,8 @@ void *jnx_vector_last(jnx_vector *vector);
  * @return returns the value, returns NULL on error 
  */
 void* jnx_vector_remove_at(jnx_vector *vector,int position);
+
+void* jnx_vector_remove_at_ts(jnx_vector *vector,int position);
 #ifdef __cplusplus
 	}
 #endif

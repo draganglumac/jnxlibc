@@ -23,15 +23,11 @@
 #include "jnxlog.h"
 #include "jnxterm.h"
 int main(int args, char **argv) {
-    JNX_LOGC(JLOG_DEBUG,"Running test for jnxlog\n");
-    JNX_LOG_PATH("temp.log");
-    size_t bytesw = JNX_LOGF(JLOG_DEBUG,"Write to file\n");
+    JNX_LOGC(JLOG_DEBUG,"Running test for jnxlog");
 
-    char *buffer;
-    size_t fbytesr = jnx_file_read("temp.log",&buffer,"r");
-    system("rm temp.log");
-    assert(fbytesr == bytesw);
+	size_t bytes_out = jnx_log(JLOG_NORMAL,__FILE__,__FUNCTION__,__LINE__,"This is a log message\n");
 
+	assert(bytes_out > 0);
 
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
     return 0;
