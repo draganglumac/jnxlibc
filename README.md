@@ -3,7 +3,9 @@
 =======
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
 
-C common utility library driven and built on solid integrated testing. ( [See Here](http://showterm.io/3dd2883f32e0e385be055#fast) )
+Test driven C library for reliable networking, data structures and utility functionality.
+Constantly in development and refinement to make it as memory/thread safe as possible whilst maintaining
+no dependencies and low foot print.
 
 
 ##Key features:
