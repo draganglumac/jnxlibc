@@ -24,7 +24,7 @@
 #include "jnxthread.h"
 typedef struct jnx_queue {
 	jnx_list *list;
-	jnx_thread_mutex internal_lock;
+	jnx_thread_mutex *internal_lock;
 }jnx_queue;
 
 /**

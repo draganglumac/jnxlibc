@@ -47,9 +47,9 @@ typedef struct jnx_thread_mutex{
 }jnx_thread_mutex;
 
 
-void jnx_thread_mutex_create(jnx_thread_mutex *m);
+jnx_thread_mutex* jnx_thread_mutex_create();
 
-void jnx_thread_mutex_destroy(jnx_thread_mutex *m);
+void jnx_thread_mutex_destroy(jnx_thread_mutex **m);
 
 int jnx_thread_unlock(jnx_thread_mutex *m);
 /**

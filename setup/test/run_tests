@@ -25,6 +25,7 @@ for file in $filelist; do
         rm $current
     fi
 
+	echo "Running next test for --> ${file}"
 	`gcc $file ../build/*.c -I../build -o ${file:0:${#file}-2} -pthread -w`
     ./$current
     out=$?

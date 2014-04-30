@@ -24,7 +24,7 @@ typedef struct list {
    	struct node* head;
 	struct node* tail;
     int counter;
-	jnx_thread_mutex internal_lock;
+	jnx_thread_mutex *internal_lock;
 } jnx_list;
 
 /** @fn jnx_list_create(void)

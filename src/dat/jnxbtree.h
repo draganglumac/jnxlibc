@@ -56,7 +56,7 @@ typedef struct B_tree {
     int order; /**< The order of the tree, i.e. the minimum number of records a non-root node can have. */
     compare_keys compare_function; /**< Callback function to compare keys. @see compare_keys */
     jnx_btree_node *root; /**< The root node of the B-tree. */
-	jnx_thread_mutex internal_lock;
+	jnx_thread_mutex *internal_lock;
 } jnx_btree;
 
 

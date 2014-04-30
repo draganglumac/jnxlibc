@@ -442,7 +442,7 @@ jnx_btree* jnx_btree_create(int order, compare_keys callback) {
     tree->order = order;
     tree->compare_function = callback;
     tree->root = new_node(tree->order, 1);
-
+	tree->internal_lock = jnx_thread_mutex_create();
     return tree;
 }
 
@@ -466,9 +466,9 @@ void jnx_btree_add(jnx_btree *tree, void *key, void *value) {
     insert_into_tree_at_node(tree, tree->root, r);
 }
 void jnx_btree_add_ts(jnx_btree *tree, void *key, void *value) {
-	jnx_thread_lock(&tree->internal_lock);	
+	jnx_thread_lock(tree->internal_lock);	
 	jnx_btree_add(tree,key,value);
-	jnx_thread_unlock(&tree->internal_lock);	
+	jnx_thread_lock(tree->internal_lock);	
 }
 void *jnx_btree_lookup(jnx_btree *tree, void *key) {
     if ( tree == NULL ) {
@@ -478,9 +478,9 @@ void *jnx_btree_lookup(jnx_btree *tree, void *key) {
     return find_value_for_key_in_node(tree, tree->root, key);
 }
 void *jnx_btree_lookup_ts(jnx_btree *tree, void *key) {
-	jnx_thread_lock(&tree->internal_lock);	
+	jnx_thread_lock(tree->internal_lock);	
 	void *ret = jnx_btree_lookup(tree,key);
-	jnx_thread_unlock(&tree->internal_lock);	
+	jnx_thread_lock(tree->internal_lock);	
 	return ret;
 }
 void jnx_btree_remove(jnx_btree *tree, void *key_in, void** key_out, void **val_out ) {
@@ -506,9 +506,9 @@ void jnx_btree_remove(jnx_btree *tree, void *key_in, void** key_out, void **val_
     free(r);
 }
 void jnx_btree_remove_ts(jnx_btree *tree, void *key_in, void** key_out, void **val_out ) {
-	jnx_thread_lock(&tree->internal_lock);
+	jnx_thread_lock(tree->internal_lock);
 	jnx_btree_remove(tree,key_in,key_out,val_out);
-	jnx_thread_unlock(&tree->internal_lock);
+	jnx_thread_lock(tree->internal_lock);
 }
 void jnx_btree_destroy(jnx_btree* tree) {
     if ( tree == NULL ) {
@@ -548,7 +548,7 @@ void jnx_btree_keys(jnx_btree *tree, jnx_list *keys) {
     collect_keys_from_node(tree->root, keys);
 }
 void jnx_btree_keys_ts(jnx_btree *tree, jnx_list *keys) {
-	jnx_thread_lock(&tree->internal_lock);
+	jnx_thread_lock(tree->internal_lock);
 	jnx_btree_keys(tree,keys);
-	jnx_thread_unlock(&tree->internal_lock);
+	jnx_thread_lock(tree->internal_lock);
 }

@@ -22,7 +22,7 @@ typedef struct jnx_snode{
 typedef struct {
     struct jnx_snode* top;
     int count;
-	jnx_thread_mutex internal_lock;
+	jnx_thread_mutex *internal_lock;
 } jnx_stack;
 
 /** @fn jnx_stack_create(void)

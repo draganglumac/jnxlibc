@@ -19,17 +19,19 @@
 #include "jnxthread.h"
 #include "jnxlog.h"
 
-void jnx_thread_mutex_create(jnx_thread_mutex *m) {
-	if(!m->is_initialized) {
-		pthread_mutex_init(&m->system_mutex,NULL);	
-		m->is_initialized = 1;
-	}
+jnx_thread_mutex* jnx_thread_mutex_create() {
+	jnx_thread_mutex *m = malloc(sizeof(jnx_thread_mutex));
+	pthread_mutex_init(&m->system_mutex,NULL);	
+	m->is_initialized = 1;
+	return m;
 }
-void jnx_thread_mutex_destroy(jnx_thread_mutex *m) {
-	if(m->is_initialized) {	
-		pthread_mutex_destroy(&m->system_mutex);
-		m->is_initialized = 0;
+void jnx_thread_mutex_destroy(jnx_thread_mutex **m) {
+	if((*m)->is_initialized) {	
+		pthread_mutex_destroy(&(*m)->system_mutex);
+		(*m)->is_initialized = 0;
 	}
+	free(*m);
+	*m = NULL;
 }
 int jnx_thread_unlock(jnx_thread_mutex *m) {
     int ret = 0;

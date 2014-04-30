@@ -41,7 +41,7 @@ void test_complex_insertion() {
         assert(res->a == x);
         ++x;
     }
-    jnx_vector_destroy(vector);
+    jnx_vector_destroy(&vector);
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_sequential_insertion() {
@@ -58,7 +58,7 @@ void test_sequential_insertion() {
         assert(vector->vector[y]->data == y);
         ++y;
     }
-    jnx_vector_destroy(vector);
+    jnx_vector_destroy(&vector);
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_insert_position() {
@@ -81,7 +81,7 @@ void test_remove_position() {
     assert((char*)vector->vector[90]->data == "Bye");
     char *data = jnx_vector_remove_at(vector,90);
     assert(strcmp("Bye",(char*)data) == 0);
-    jnx_vector_destroy(vector);
+    jnx_vector_destroy(&vector);
     jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv) {

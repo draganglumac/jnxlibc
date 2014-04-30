@@ -23,7 +23,7 @@ typedef struct{
 typedef struct{
     int count;
     jnx_vector_record **vector;
-	jnx_thread_mutex internal_lock;
+	jnx_thread_mutex *internal_lock;
 }jnx_vector;
 
 
@@ -41,7 +41,7 @@ jnx_vector *jnx_vector_create(void);
  *
  * @warning User assumes responsibility for deleting all data entries first
  */
-void jnx_vector_destroy(jnx_vector* vector);
+void jnx_vector_destroy(jnx_vector** vector);
 
 /**
  * @fn jnx_vector_insert(jnx_vector *vector, void *value)

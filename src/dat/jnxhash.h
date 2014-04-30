@@ -38,7 +38,7 @@ typedef struct hashmap {
     jnx_hash_element* data;
     unsigned int size;
     unsigned int used_up;
-	jnx_thread_mutex internal_lock;
+	jnx_thread_mutex *internal_lock;
 } jnx_hashmap;
 
 /** @fn jnx_hash_destroy(jnx_hashmap* hashmap)
