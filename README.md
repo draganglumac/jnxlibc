@@ -3,18 +3,18 @@
 =======
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
 
-C common utility library driven and built on solid integrated testing. ( [See Here](http://showterm.io/3dd2883f32e0e385be055#fast) )
+Test driven C library for reliable networking, data structures and utility functionality.
+Constantly in development and refinement to make it as memory/thread safe as possible whilst maintaining
+no dependencies and low foot print.
 
 
 ##Key features:
 - Threading
 - Interprocess communication
-- Lightweight data structures (hash, list, vector, btree, stack, queue)
+- Lightweight data structures (hash, list, vector, btree, stack, queue) with thread safe API
 - Network socket implmentation supporting multiple transport and IPV4/IPV6
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
-- Robust logger system
-- Terminal loading spinners and fancy colors done easily.
 - Auto generated documentation and logical API
 
 #Documentation & Examples
