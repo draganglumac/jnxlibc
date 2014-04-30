@@ -79,10 +79,10 @@ void run_error_test(void(*test)(), char *expected_error, int expected_err_size) 
 void test_create_and_destroy() {
 	JNX_LOGC(JLOG_DEBUG,"Test creation of unix sockets");
 
-	jnx_unix_socket *a = jnx_unix_stream_socket_create("/tmp/stream_a");
-	(a, "/tmp/stream_a", SOCK_STREAM);
-	jnx_unix_socket *b = jnx_unix_datagram_socket_create("/tmp/stream_b");
-	verify_socket(b, "/tmp/stream_b", SOCK_DGRAM);
+	jnx_unix_socket *a = jnx_unix_stream_socket_create("stream_a");
+	(a, "stream_a", SOCK_STREAM);
+	jnx_unix_socket *b = jnx_unix_datagram_socket_create("stream_b");
+	verify_socket(b, "stream_b", SOCK_DGRAM);
 
 	jnx_socket_destroy(&a);
 	assert(a == NULL);
@@ -93,14 +93,14 @@ void test_create_and_destroy() {
 }
 // stream_send negative scenarios
 void stream_send_connect_fails() {
-	jnx_unix_socket *s = jnx_unix_stream_socket_create("/tmp/stream_sun");
+	jnx_unix_socket *s = jnx_unix_stream_socket_create("stream_sun");
 	int retval = jnx_unix_stream_socket_send(s, "stream send", 12);
 	assert(retval == 0);
 	jnx_unix_socket_destroy(&s);
 }
 extern ssize_t write_to_stream_socket(jnx_unix_socket*, char*, ssize_t);
 void stream_send_fails() {
-	jnx_unix_socket *s = jnx_unix_stream_socket_create("/tmp/stream_sun");
+	jnx_unix_socket *s = jnx_unix_stream_socket_create("stream_sun");
 	int retval = write_to_stream_socket(s, "stream send", 12);
 	assert(retval == 0);
 	jnx_unix_socket_destroy(&s);
@@ -114,7 +114,7 @@ void test_negative_send_stream_scenarios() {
 }
 // datagram_send negative scenarios
 void datagram_send_fails() {
-	jnx_unix_socket *s = jnx_unix_datagram_socket_create("/tmp/datagram_sun");
+	jnx_unix_socket *s = jnx_unix_datagram_socket_create("datagram_sun");
 	int retval = jnx_unix_datagram_socket_send(s, "datagram send", 13);
 	assert(retval == 0);
 	jnx_unix_socket_destroy(&s);
@@ -131,8 +131,8 @@ extern int listen_on_stream_socket(jnx_unix_socket*, ssize_t);
 extern jnx_unix_socket *accept_stream_socket_connection(jnx_unix_socket*);
 extern int read_stream_socket(jnx_unix_socket*,char**,int*len);
 void stream_bind_fails() {
-	jnx_unix_socket *s = jnx_unix_stream_socket_create("/tmp/stream_sun");
-	jnx_unix_socket *s2 = jnx_unix_stream_socket_create("/tmp/stream_sun");
+	jnx_unix_socket *s = jnx_unix_stream_socket_create("stream_sun");
+	jnx_unix_socket *s2 = jnx_unix_stream_socket_create("stream_sun");
 
 	int retval = bind_stream_socket(s);
 	retval = bind_stream_socket(s2);
@@ -141,19 +141,19 @@ void stream_bind_fails() {
 	jnx_unix_socket_destroy(&s2);
 }
 void stream_listen_fails() {
-	jnx_unix_socket *s = jnx_unix_stream_socket_create("/tmp/sun_stream"); 
+	jnx_unix_socket *s = jnx_unix_stream_socket_create("sun_stream"); 
 	int retval = listen_on_stream_socket(s, 5);
 	assert(retval == -1);
 	jnx_socket_destroy(&s);
 }
 void stream_accept_fails() {
-	jnx_unix_socket *s = jnx_unix_stream_socket_create("/tmp/stream_sun");
+	jnx_unix_socket *s = jnx_unix_stream_socket_create("stream_sun");
 	jnx_unix_socket *retval = accept_stream_socket_connection(s);
 	assert(retval == NULL);
 	jnx_unix_socket_destroy(&s);
 }
 void stream_read_fails() {
-	jnx_unix_socket *s = jnx_unix_stream_socket_create("/tmp/stream_sun");
+	jnx_unix_socket *s = jnx_unix_stream_socket_create("stream_sun");
 	char *out;
 	int len;
 	int retval = read_stream_socket(s, &out, &len);
@@ -182,8 +182,8 @@ int stream_callback(char *out, size_t len, jnx_unix_socket *rs) {
 void test_stream_ipc_comms() {
 	JNX_LOGC(JLOG_DEBUG,"Test unix stream socket inter-process communication.\n");
 	fflush(stdout);
-	remove("/tmp/stream_sun");
-	jnx_unix_socket *ss = jnx_unix_stream_socket_create("/tmp/stream_sun");
+	remove("stream_sun");
+	jnx_unix_socket *ss = jnx_unix_stream_socket_create("stream_sun");
 	counter = 0;
 
 	pid_t child_pid;
@@ -193,7 +193,7 @@ void test_stream_ipc_comms() {
 			jnx_unix_socket *cs = NULL; 
 			for(i = 0; i < 5; i++) {
 				sleep(1);
-				cs = jnx_unix_stream_socket_create("/tmp/stream_sun");
+				cs = jnx_unix_stream_socket_create("stream_sun");
 				jnx_unix_stream_socket_send(cs, "Hello world from stream socket!", 31);
 				jnx_unix_socket_destroy(&cs);
 			}
@@ -220,15 +220,15 @@ int check_binary_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 void test_binary_data_in_stream_ipc_comms() {
 	JNX_LOGC(JLOG_DEBUG, "Test binary data sent and received via stream socket\n");
 	fflush(stdout);
-	remove("/tmp/binary_stream");
-	jnx_unix_socket *ss = jnx_unix_stream_socket_create("/tmp/binary_stream");
+	remove("binary_stream");
+	jnx_unix_socket *ss = jnx_unix_stream_socket_create("binary_stream");
 	uint8_t buffer[] = {'a', 'b', 'c', '\0', '\n', '\t', 0x01, 0xff, 0x13, '\f', '\v'};
 	pid_t child_pid;
 	if ((child_pid = fork()) != -1) {
 		if (child_pid == 0) {
 			jnx_unix_socket *cs = 0;
 			sleep(1);
-			cs = jnx_unix_stream_socket_create("/tmp/binary_stream");
+			cs = jnx_unix_stream_socket_create("binary_stream");
 			jnx_unix_stream_socket_send(cs, buffer, sizeof(buffer));
 			jnx_unix_socket_destroy(&cs);
 			exit(0);
@@ -258,8 +258,8 @@ int check_large_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 void test_large_data_in_stream_ipc_comms() {
 	JNX_LOGC(JLOG_DEBUG, "Test large data sent and received via stream socket\n");
 	fflush(stdout);
-	remove("/tmp/large_stream");
-	jnx_unix_socket *ss = jnx_unix_stream_socket_create("/tmp/large_stream");
+	remove("large_stream");
+	jnx_unix_socket *ss = jnx_unix_stream_socket_create("large_stream");
 	
 	uint8_t buffer[2000];
 	int i;
@@ -276,7 +276,7 @@ void test_large_data_in_stream_ipc_comms() {
 			int i;
 			for (i=0; i<4; i++) {
 				sleep(1);
-				cs = jnx_unix_stream_socket_create("/tmp/large_stream");
+				cs = jnx_unix_stream_socket_create("large_stream");
 				jnx_unix_stream_socket_send(cs, buffer, lengths[i]);
 				jnx_unix_socket_destroy(&cs);
 			}
@@ -294,8 +294,8 @@ void test_large_data_in_stream_ipc_comms() {
 extern int bind_datagram_socket(jnx_unix_socket*);
 extern int receive_from_datagram_socket(jnx_unix_socket*,jnx_unix_socket**,char**,int*);
 void datagram_bind_fails() {
-	jnx_unix_socket *s = jnx_unix_datagram_socket_create("/tmp/datagram_sun");
-	jnx_unix_socket *s2 = jnx_unix_datagram_socket_create("/tmp/datagram_sun");
+	jnx_unix_socket *s = jnx_unix_datagram_socket_create("datagram_sun");
+	jnx_unix_socket *s2 = jnx_unix_datagram_socket_create("datagram_sun");
 
 	int retval = bind_datagram_socket(s);
 	retval = bind_datagram_socket(s2);
@@ -304,7 +304,7 @@ void datagram_bind_fails() {
 	jnx_unix_socket_destroy(&s2);
 }
 void datagram_receive_fails() {
-	jnx_unix_socket *s = jnx_unix_datagram_socket_create("/tmp/datagram_sun");
+	jnx_unix_socket *s = jnx_unix_datagram_socket_create("datagram_sun");
 	s->socket = -1;
 	jnx_unix_socket *rs;
 	char *out;
@@ -334,8 +334,8 @@ int datagram_callback(char *out, size_t len, jnx_unix_socket *rs) {
 void test_datagram_ipc_comms() {
 	JNX_LOGC(JLOG_DEBUG,"Test unix datagram socket inter-process communication.\n");
 	fflush(stdout);
-	remove("/tmp/datagram_sun");
-	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("/tmp/datagram_sun");
+	remove("datagram_sun");
+	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("datagram_sun");
 	counter = 0;
 
 	pid_t child_pid;
@@ -345,7 +345,7 @@ void test_datagram_ipc_comms() {
 			jnx_unix_socket *cs = NULL; 
 			for(i = 0; i < 5; i++) {
 				sleep(1);
-				cs = jnx_unix_datagram_socket_create("/tmp/datagram_sun");
+				cs = jnx_unix_datagram_socket_create("datagram_sun");
 				jnx_unix_datagram_socket_send(cs, "Hello world from datagram socket!", 33);
 				jnx_unix_socket_destroy(&cs);
 			}
@@ -362,15 +362,15 @@ void test_datagram_ipc_comms() {
 void test_binary_data_in_datagram_ipc_comms() {
 	JNX_LOGC(JLOG_DEBUG, "Test binary data sent and received via datagram socket\n");
 	fflush(stdout);
-	remove("/tmp/binary_datagram");
-	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("/tmp/binary_datagram");
+	remove("binary_datagram");
+	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("binary_datagram");
 	uint8_t buffer[] = {'a', 'b', 'c', '\0', '\n', '\t', 0x01, 0xff, 0x13, '\f', '\v'};
 	pid_t child_pid;
 	if ((child_pid = fork()) != -1) {
 		if (child_pid == 0) {
 			jnx_unix_socket *cs = 0;
 			sleep(1);
-			cs = jnx_unix_datagram_socket_create("/tmp/binary_datagram");
+			cs = jnx_unix_datagram_socket_create("binary_datagram");
 			jnx_unix_datagram_socket_send(cs, buffer, sizeof(buffer));
 			jnx_unix_socket_destroy(&cs);
 			exit(0);
@@ -401,8 +401,8 @@ int check_large_datagram(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 void test_large_data_in_datagram_ipc_comms() {
 	JNX_LOGC(JLOG_DEBUG, "Test large data sent and received via datagram socket\n");
 	fflush(stdout);
-	remove("/tmp/large_datagram");
-	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("/tmp/large_datagram");
+	remove("large_datagram");
+	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("large_datagram");
 	
 	uint8_t buffer[2000];
 	int i;
@@ -419,7 +419,7 @@ void test_large_data_in_datagram_ipc_comms() {
 			int i;
 			for (i=0; i<4; i++) {
 				sleep(1);
-				cs = jnx_unix_datagram_socket_create("/tmp/large_datagram");
+				cs = jnx_unix_datagram_socket_create("large_datagram");
 				jnx_unix_datagram_socket_send(cs, buffer, lengths[i]);
 				jnx_unix_socket_destroy(&cs);
 			}
