@@ -13,8 +13,6 @@ C common utility library driven and built on solid integrated testing. ( [See He
 - Network socket implmentation supporting multiple transport and IPV4/IPV6
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
-- Robust logger system
-- Terminal loading spinners and fancy colors done easily.
 - Auto generated documentation and logical API
 
 #Documentation & Examples
