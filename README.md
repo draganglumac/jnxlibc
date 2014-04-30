@@ -6,10 +6,10 @@
 Test driven C library for reliable networking, data structures and utility functionality.
 Constantly in development and refinement to make it as memory/thread safe as possible whilst maintaining
 no dependencies and low foot print.
+Latest release(https://github.com/AlexsJones/jnxlibc/releases/tag/v1.5)
 
-#Latest release: https://github.com/AlexsJones/jnxlibc/releases/tag/v1.5
 
-#Key features:
+#Key features
 - Threading
 - Interprocess communication
 - Lightweight data structures (hash, list, vector, btree, stack, queue) with thread safe API
