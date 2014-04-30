@@ -43,11 +43,10 @@ Use -ljnxc when building your project
 ````
 ####Flags
 
--DJNX_MEMORY_MANAGEMENT (Enables jnx memory management if JNX_MEM macros are being used)
 -DRELEASE (Sets library for release mode optimisations) 
-```
+```C
 gcc ${YOUR_PROGRAM_FILES} -ljnxc 
-````
+```
 
 ##Examples
 
