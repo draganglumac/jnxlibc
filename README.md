@@ -47,17 +47,6 @@ Use -ljnxc when building your project
 
 ##Examples
 
-Creating a linkedlist
-```C
-jnx_list *exampleList = jnx_list_create(); 
-jnx_list_add(exampleList,"A");
-jnx_list_destroy(&exampleList);
-```
-Reading from a file
-```C
-char *buffer;
-size_t readBytes = jnx_file_read("example.txt",&buffer,"r");
-```
 Sending message over network
 ```C
 jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
@@ -69,10 +58,26 @@ jnx_socket_tcp_send(tcp_sock,"host","port","message",strlen("message"));
 jnx_socket_close(udp_sock);
 
 ```
-Using memory management
+Using a btree
 ```C
-char *str = JNX_MEM_MALLOC(sizeof(char*));
-size_t s = jnx_mem_get_current_size_allocations();
-size_t cleared = jnx_mem_clear();
+jnx_btree *tree = jnx_btree_create(sizeof(int),callback_func);
+//insertion
+int i;
+for(i=0;i<10;++i) {
+  void *next = (void*)(guids[i]);
+  jnx_btree_add(tree,next,next);
+}
+//get keys
+jnx_list *keys = jnx_list_create();
+jnx_btree_keys(tree,keys);
+
+while(keys->head) {
+  char *a_key = keys->head->data;
+  void *val = jnx_btree_lookup(tree,(void*)a_key);
+  jnx_btree_remove(tree,a_key,NULL,NULL);
+  keys->head = keys->head->next_node;
+}
+jnx_list_destroy(&keys);
+jnx_btree_destroy(&tree);
 ```
 
