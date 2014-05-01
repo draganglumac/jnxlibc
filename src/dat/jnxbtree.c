@@ -478,7 +478,7 @@ void *jnx_btree_lookup(jnx_btree *tree, void *key) {
     return find_value_for_key_in_node(tree, tree->root, key);
 }
 void *jnx_btree_lookup_ts(jnx_btree *tree, void *key) {
-	if(!tree) { return ; }
+	if(!tree) { return NULL; }
 	jnx_thread_lock(tree->internal_lock);	
 	void *ret = jnx_btree_lookup(tree,key);
 	jnx_thread_unlock(tree->internal_lock);	
