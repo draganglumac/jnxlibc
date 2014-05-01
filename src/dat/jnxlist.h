@@ -50,7 +50,7 @@ void* jnx_list_remove(jnx_list** A);
 
 void* jnx_list_remove_ts(jnx_list** A);
 
-/** @fn jnx_list_count(jnx_list *A)
+/** @fn jnx_list_size(jnx_list *A)
  *  @param A is the target list
  *  @return the number of elements in the list
  */

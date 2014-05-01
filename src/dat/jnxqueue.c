@@ -56,15 +56,15 @@ void *jnx_queue_pop_ts(jnx_queue *q) {
 	jnx_thread_unlock(q->internal_lock);
 	return ret;
 }
-size_t jnx_queue_size(jnx_queue *q) {
+size_t jnx_queue_count(jnx_queue *q) {
 	if(q == NULL) {
 		return 0;
 	}
 	return q->list->counter;
 }
-size_t jnx_queue_size_ts(jnx_queue *q) {
+size_t jnx_queue_count_ts(jnx_queue *q) {
 	jnx_thread_lock(q->internal_lock);
-	size_t ret = jnx_queue_size(q);
+	size_t ret = jnx_queue_count(q);
 	jnx_thread_unlock(q->internal_lock);
 	return ret;
 }

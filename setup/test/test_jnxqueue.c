@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
 	}
 	for(x=5 ;x > 0; --x) {
 		char *r = jnx_queue_pop(q);
-		assert(jnx_queue_size(q) == (x-1));
+		assert(jnx_queue_count(q) == (x-1));
 	}
 
 	jnx_queue_destroy(&q);

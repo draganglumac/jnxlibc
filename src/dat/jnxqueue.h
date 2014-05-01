@@ -46,14 +46,14 @@ void *jnx_queue_pop(jnx_queue *q);
 
 void *jnx_queue_pop_ts(jnx_queue *q);
 /**
- * @fn size_t jnx_queue_size(jnx_queue *q)
+ * @fn size_t jnx_queue_count(jnx_queue *q)
  * @brief get the queue size
  * @param q is a pointer to the queue to use
  * @return the size of queue, 0 on empty or error
  */
-size_t jnx_queue_size(jnx_queue *q);
+size_t jnx_queue_count(jnx_queue *q);
 
-size_t jnx_queue_size_ts(jnx_queue *q);
+size_t jnx_queue_count_ts(jnx_queue *q);
 /**
  * @fn jnx_queue* jnx_queue_create()
  * @brief create a jnx_queue
