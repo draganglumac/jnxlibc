@@ -72,6 +72,15 @@ void jnx_vector_insert_at_ts(jnx_vector *vector, int position, void *value);
 void *jnx_vector_last(jnx_vector *vector);
 
 void *jnx_vector_last_ts(jnx_vector *vector);
+
+/**
+ * @fn jnx_vector_count(jnx_vector *vector);
+ * @param vector is the pointer to the vector to count
+ * @return number of vector elements
+ */
+size_t jnx_vector_count(jnx_vector *vector);
+
+size_t jnx_vector_count_ts(jnx_vector *vector);
 /**
  * @fn jnx_vector_remove_at(jnx_vector *vector, int position)
  * @brief removes an entry at position in the vector

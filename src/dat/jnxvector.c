@@ -128,3 +128,12 @@ void *jnx_vector_last_ts(jnx_vector *vector) {
 	jnx_thread_unlock(vector->internal_lock);
 	return ret;
 }
+size_t jnx_vector_count(jnx_vector *vector) {
+	return vector->count;
+}
+size_t jnx_vector_count_ts(jnx_vector *vector) {
+	jnx_thread_lock(vector->internal_lock);
+	size_t ret = jnx_vector_count(vector);
+	jnx_thread_unlock(vector->internal_lock);
+	return ret;
+}
