@@ -100,7 +100,6 @@ size_t jnx_list_count(jnx_list *A) {
 	size_t count = A->counter;
 	return count;
 }
-
 size_t jnx_list_count_ts(jnx_list *A) {
 	jnx_thread_lock(A->internal_lock);
 	size_t count = jnx_list_count(A);
