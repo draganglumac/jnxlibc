@@ -30,11 +30,11 @@ int main(int argc, char **argv) {
 
 	int x;
 	for(x = 0; x < 5;++x) {
-		jnx_queue_push(q,ar[x]);
+		jnx_queue_push_ts(q,ar[x]);
 	}
 	for(x=5 ;x > 0; --x) {
-		char *r = jnx_queue_pop(q);
-		assert(jnx_queue_count(q) == (x-1));
+		char *r = jnx_queue_pop_ts(q);
+		assert(jnx_queue_count_ts(q) == (x-1));
 	}
 
 	jnx_queue_destroy(&q);

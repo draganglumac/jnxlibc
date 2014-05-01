@@ -93,8 +93,18 @@ void* jnx_list_remove_ts(jnx_list** A) {
 	jnx_list *l = *A;
 	jnx_thread_lock(l->internal_lock);
 	void *ret = jnx_list_remove(A);
-	jnx_thread_lock(l->internal_lock);
+	jnx_thread_unlock(l->internal_lock);
 	return ret;
+}
+size_t jnx_list_count(jnx_list *A) {
+	size_t count = A->counter;
+	return count;
+}
+size_t jnx_list_count_ts(jnx_list *A) {
+	jnx_thread_lock(A->internal_lock);
+	size_t count = jnx_list_count(A);
+	jnx_thread_unlock(A->internal_lock);
+	return count;
 }
 void jnx_list_destroy(jnx_list** A) {
     if((*A) == NULL) {

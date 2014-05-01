@@ -7,12 +7,16 @@ Test driven C library for reliable networking, data structures and utility funct
 Constantly in development and refinement to make it as memory/thread safe as possible whilst maintaining
 no dependencies and low foot print.
 
+####For a solid snapshot of the library check out the releases
+https://github.com/AlexsJones/jnxlibc/releases
 
-##Key features:
-- Threading
-- Interprocess communication
-- Lightweight data structures (hash, list, vector, btree, stack, queue) with thread safe API
+
+#Key features
+- Lightweight data structures (hash, list, vector, btree, stack, queue)
 - Network socket implmentation supporting multiple transport and IPV4/IPV6
+- Threading & threadsafe data structure API
+- Interprocess communication
+- Verbose terminal logging
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
 - Auto generated documentation and logical API
@@ -53,12 +57,8 @@ jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
 jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
 jnx_socket_close(tcp_sock);
 
-jnx_socket *tcp_sock = jnx_socket_tcp_create(AF_INET6);
-jnx_socket_tcp_send(tcp_sock,"host","port","message",strlen("message"));
-jnx_socket_close(udp_sock);
-
 ```
-Using a btree
+Using a binary tree
 ```C
 jnx_btree *tree = jnx_btree_create(sizeof(int),callback_func);
 //insertion
@@ -79,5 +79,10 @@ while(keys->head) {
 }
 jnx_list_destroy(&keys);
 jnx_btree_destroy(&tree);
+```
+Manipulating data from a hashmap with thread safety
+```C
+void *value = jnx_hash_get_ts(hashmap,"Key");
+jnx_hash_put_ts(hashmap,"Key",update_value);
 ```
 
