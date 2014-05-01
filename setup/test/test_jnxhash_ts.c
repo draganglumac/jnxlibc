@@ -38,8 +38,8 @@ void test_key_deletion() {
     //free data
     free(data_to_free);
     //assert the values are no longer available
-    void *ret = jnx_hash_get(testhash,"Alex");
-    void *ret2 = jnx_hash_get(testhash,"Bob");
+    void *ret = jnx_hash_get_ts(testhash,"Alex");
+    void *ret2 = jnx_hash_get_ts(testhash,"Bob");
     assert(ret == NULL);
     assert(ret2 == NULL);
     ///assert the map is empty
