@@ -87,3 +87,15 @@ void *value = jnx_hash_get_ts(hashmap,"Key");
 jnx_hash_put_ts(hashmap,"Key",update_value);
 ```
 
+Using signals and slots
+```C
+
+	typedef void local_slot(jnx_signal *s);
+
+	jnx_signal *s = jnx_signal_create();
+	jnx_signal_connect(s,local_slot);
+	jnx_signal_call(s,NULL);
+	jnx_signal_destroy(&s);
+
+```
+
