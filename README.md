@@ -15,6 +15,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 - Lightweight data structures (hash, list, vector, btree, stack, queue)
 - Network socket implmentation supporting multiple transport and IPV4/IPV6
 - Threading & threadsafe data structure API
+- Signals & Slots
 - Interprocess communication
 - Verbose terminal logging
 - Easy to use file read/write functions
