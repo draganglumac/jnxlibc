@@ -55,6 +55,7 @@ size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const
 			break;
 		case JLOG_DEBUG:
 			warning_level = JDEBUG;
+			break;
 		case JLOG_NORMAL:
 			warning_level = JNORMAL;
 			break;

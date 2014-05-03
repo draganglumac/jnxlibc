@@ -15,6 +15,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 - Lightweight data structures (hash, list, vector, btree, stack, queue)
 - Network socket implmentation supporting multiple transport and IPV4/IPV6
 - Threading & threadsafe data structure API
+- Signals & Slots
 - Interprocess communication
 - Verbose terminal logging
 - Easy to use file read/write functions
@@ -84,5 +85,17 @@ Manipulating data from a hashmap with thread safety
 ```C
 void *value = jnx_hash_get_ts(hashmap,"Key");
 jnx_hash_put_ts(hashmap,"Key",update_value);
+```
+
+Using signals and slots
+```C
+
+typedef void local_slot(jnx_signal *s);
+
+jnx_signal *s = jnx_signal_create();
+jnx_signal_connect(s,local_slot);
+jnx_signal_call(s,NULL);
+jnx_signal_destroy(&s);
+
 ```
 
