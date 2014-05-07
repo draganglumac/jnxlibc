@@ -17,12 +17,7 @@
  */
 #ifndef __JNX_QUICKSORT_H__
 #define __JNX_QUICKSORT_H__
-/* @fn int jnxquicksort(int *array, int len)
- * @brief A quick sorting algorithm that reorders arrays of ints
- * @param array is pointer to the array to sort
- * @param len is the length of the array
- * @return 0 on success
- */
+
 int jnxquicksort( int *array, int len); 
 
 #endif

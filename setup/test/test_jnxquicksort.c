@@ -17,12 +17,12 @@
  */
 #include <stdlib.h>
 #include "jnxquicksort.h"
-#include "jnxterm.h"
 #include "jnxlog.h"
+#include "jnxterm.h"
 #include <assert.h>
 #include <stdio.h>
 int main(int argc, char **argv) {
-	JNX_LOGC(JLOG_NORMAL,"Starting quicksort tests:");
+	JNX_LOGC(JLOG_DEBUG,"Starting quicksort tests -");
 	int assumed[] = { -41, 4, 5, 32, 100 };
 	int a[] = { 4, 100, 5, 32, -41 };
 
