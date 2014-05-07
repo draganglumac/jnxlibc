@@ -19,5 +19,4 @@
 #define __JNX_QUICKSORT_H__
 
 int jnxquicksort( int *array, int len); 
-
 #endif

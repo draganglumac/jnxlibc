@@ -39,7 +39,6 @@ int jnxquicksort( int *array, int len) {
 		*l++ = *r;
 		*r-- = t;	
 	}	
-
 	jnxquicksort(array,r - array + 1);
 	jnxquicksort(l, array + len - l);
 	return 0;
