@@ -37,6 +37,7 @@
 #endif
 #include <stdlib.h>
 #include "jnxnetwork.h"
+#include "jnxlog.h"
 #if defined(linux)
 
 char* show_address_info( struct ifaddrs *ifa,unsigned int family){
@@ -48,19 +49,19 @@ char* show_address_info( struct ifaddrs *ifa,unsigned int family){
 		if(family == AF_INET) {
 			s4 = (struct sockaddr_in *)(ifa->ifa_addr);
 			if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s4->sin_addr), buf, sizeof(buf))){
-				printf("%s: inet_ntop failed!\n", ifa->ifa_name);
+				JNX_LOGC(JLOG_DEBUG,"%s: inet_ntop failed!\n", ifa->ifa_name);
 				return NULL;
 			} else {
-				printf("IPv4 addr %s: %s\n", ifa->ifa_name, buf);
+				JNX_LOGC(JLOG_DEBUG,"IPv4 addr %s: %s\n", ifa->ifa_name, buf);
 				return strdup(buf);
 			}
 		}else {
 			s6 = (struct sockaddr_in6 *)(ifa->ifa_addr);
 			if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s6->sin6_addr), buf, sizeof(buf))) {
-				printf("%s: inet_ntop failed!\n", ifa->ifa_name);
+				JNX_LOGC(JLOG_DEBUG,"%s: inet_ntop failed!\n", ifa->ifa_name);
 				return NULL;
 			} else {
-				printf("IPv6 addr %s: %s\n", ifa->ifa_name, buf);
+				JNX_LOGC(JLOG_DEBUG,"IPv6 addr %s: %s\n", ifa->ifa_name, buf);
 				return strdup(buf);
 			}
 		}
