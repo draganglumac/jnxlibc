@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include "jnxlog.h"
+#include "jnxcheck.h"
 #include "jnxsignal.h"
 
 jnx_signal *jnx_signal_create() {
@@ -33,11 +34,13 @@ void jnx_signal_destroy(jnx_signal **s) {
 	*s = NULL;	
 }
 void jnx_signal_connect(jnx_signal *s, jnx_slot sl) {
+	JNXCHECK(s);
 	jnx_thread_lock(s->internal_lock);
 	jnx_list_add_ts(s->slot_list,sl);
 	jnx_thread_unlock(s->internal_lock);
 }
 int jnx_signal_call(jnx_signal *s,void *data) {
+	JNXCHECK(s);
 	int ret = jnx_thread_trylock(s->internal_lock);   //test to see if we can lock?!
 	if(ret != 0) {
 		JNX_LOGC(JLOG_DEBUG,"Unable to lock thread for signal call\n");

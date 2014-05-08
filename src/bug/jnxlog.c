@@ -19,6 +19,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "jnxlog.h"
+#include "jnxcheck.h"
 #include "jnxthread.h"
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -35,6 +36,9 @@ char* jnx_get_time() {
 }
 size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const int line,const char *format,...)
 {    
+	JNXCHECK(file);
+	JNXCHECK(function);
+
 	char output[MAX_LOG_SIZE];
 	char buffer[MAX_ARG_SIZE];
 	char *_time = jnx_get_time();

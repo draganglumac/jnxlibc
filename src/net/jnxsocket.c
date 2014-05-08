@@ -20,7 +20,6 @@
 #else
 #include <arpa/inet.h>
 #endif
-#include <assert.h>
 #include <netdb.h>
 #include <stdio.h>
 #include <string.h>
@@ -35,11 +34,14 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include "jnxlog.h"
+#include "jnxcheck.h"
 #include "jnxsocket.h"
 #define MAXBUFFER 1024
 jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
-	assert(type);
-	assert(addrfamily);
+	JNXCHECK(addrfamily);
+	JNXCHECK(type);
+	JNXCHECK(type);
+	JNXCHECK(addrfamily);
 	int sock = socket(addrfamily,type,0);
 	if(sock < 0) {
 		return NULL;
@@ -61,6 +63,7 @@ jnx_socket *jnx_socket_udp_create(unsigned int addrfamily) {
 	return create_socket(SOCK_DGRAM,addrfamily);
 }
 void jnx_socket_close(jnx_socket *s) {
+	JNXCHECK(s);
 	if(!s->isclosed) {
 		if(s->socket != -1) {
 			close(s->socket);
@@ -69,13 +72,15 @@ void jnx_socket_close(jnx_socket *s) {
 	}
 }
 void jnx_socket_destroy(jnx_socket **s) {
+	JNXCHECK(*s);
 	jnx_socket_close(*s);
 	free(*s);
 	*s = NULL;
 }
 size_t jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
-	assert(s->stype == SOCK_DGRAM);
-	assert(s->addrfamily == AF_INET);
+	JNXCHECK(s);
+	JNXCHECK(s->stype == SOCK_DGRAM);
+	JNXCHECK(s->addrfamily == AF_INET);
 	int optval = 1;
 	if(setsockopt(s->socket,SOL_SOCKET,SO_BROADCAST,&optval, sizeof(optval)) != 0) {
 		perror("setsockopt:");
@@ -84,8 +89,9 @@ size_t jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
 	return 0;
 }
 size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local) {
-	assert(interface);
-	assert(s->stype == SOCK_DGRAM);
+	JNXCHECK(s);
+	JNXCHECK(interface);
+	JNXCHECK(s->stype == SOCK_DGRAM);
 	int optval = 0;
 	struct in_addr localinterface;
 	if(ignore_local) {
@@ -105,9 +111,10 @@ size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int 
 	return 0;
 }
 size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, char *group) {
-	assert(interface);
-	assert(group);
-	assert(s->stype == SOCK_DGRAM);
+	JNXCHECK(s);
+	JNXCHECK(interface);
+	JNXCHECK(group);
+	JNXCHECK(s->stype == SOCK_DGRAM);
 	struct ip_mreq bgroup;
 	bgroup.imr_multiaddr.s_addr = inet_addr(group);
 	bgroup.imr_interface.s_addr = inet_addr(interface);
@@ -160,13 +167,13 @@ char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
 	return NULL;
 }
 ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len) {
-	assert(s);
-	assert(host);
-	assert(port);
-	assert(msg);
-	assert(msg_len);
-	assert(s->isclosed == 0);
-	assert(s->stype == SOCK_STREAM);
+	JNXCHECK(s);
+	JNXCHECK(host);
+	JNXCHECK(port);
+	JNXCHECK(msg);
+	JNXCHECK(msg_len);
+	JNXCHECK(s->isclosed == 0);
+	JNXCHECK(s->stype == SOCK_STREAM);
 	struct addrinfo hints, *res;
 	memset(&hints,0,sizeof(hints));
 	hints.ai_family = s->addrfamily;
@@ -196,13 +203,13 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 	return tbytes;
 }
 ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len) {
-	assert(s);
-	assert(host);
-	assert(port);
-	assert(msg);
-	assert(msg_len);
-	assert(s->isclosed == 0);
-	assert(s->stype == SOCK_DGRAM);
+	JNXCHECK(s);
+	JNXCHECK(host);
+	JNXCHECK(port);
+	JNXCHECK(msg);
+	JNXCHECK(msg_len);
+	JNXCHECK(s->isclosed == 0);
+	JNXCHECK(s->stype == SOCK_DGRAM);
 	struct addrinfo hints, *res;
 	memset(&hints,0,sizeof(hints));
 	hints.ai_family = s->addrfamily;
@@ -233,10 +240,10 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 	return tbytes;
 }
 int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c) {
-	assert(s);
-	assert(port);
-	assert(s->isclosed == 0);
-	assert(s->stype == SOCK_STREAM);
+	JNXCHECK(s);
+	JNXCHECK(port);
+	JNXCHECK(s->isclosed == 0);
+	JNXCHECK(s->stype == SOCK_STREAM);
 	int optval = 1;
 	struct addrinfo hints, *res, *p;
 	struct sockaddr_storage their_addr;
@@ -307,10 +314,10 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 	return 0;
 }
 int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c) {
-	assert(s);
-	assert(port);
-	assert(s->isclosed == 0);
-	assert(s->stype == SOCK_DGRAM);
+	JNXCHECK(s);
+	JNXCHECK(port);
+	JNXCHECK(s->isclosed == 0);
+	JNXCHECK(s->stype == SOCK_DGRAM);
 	int optval = 1;
 	struct addrinfo hints, *res, *p;
 	struct sockaddr_storage their_addr;

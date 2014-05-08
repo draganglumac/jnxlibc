@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "jnxbase64.h"
+#include "jnxcheck.h"
 void build_decoding_table();
 void base64_cleanup();
 static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -22,6 +23,8 @@ char *jnx_base64_encode(const unsigned char *data,
                         size_t input_length,
                         size_t *output_length) {
 
+	JNXCHECK(data);
+	JNXCHECK(input_length);
     *output_length = 4 * ((input_length + 2) / 3);
     char *encoded_data = malloc(((*output_length) +1) * sizeof (char));
     if (encoded_data == NULL) return NULL;
@@ -57,6 +60,8 @@ unsigned char *jnx_base64_decode(const char *data,
                                  size_t input_length,
                                  size_t *output_length) {
 
+	JNXCHECK(data);
+	JNXCHECK(input_length);
     if (decoding_table == NULL) build_decoding_table();
 
     if (input_length % 4 != 0) return NULL;
@@ -102,8 +107,6 @@ void build_decoding_table() {
     for (i = 0; i < 65; i++)
         decoding_table[(unsigned char) encoding_table[i]] = i;
 }
-
-
 void jnx_base64_cleanup() {
     free(decoding_table);
-}
+};

@@ -13,7 +13,10 @@
 #include <libgen.h>
 #include <assert.h>
 #include "jnxlog.h"
+#include "jnxcheck.h"
 size_t jnx_file_read(char* path, char **buffer,char *flags) {
+	JNXCHECK(path);
+	JNXCHECK(buffer);
 	FILE* fp;
 	if ((fp = fopen(path, flags)) == NULL) {
 		perror("file: ");
@@ -31,6 +34,9 @@ size_t jnx_file_read(char* path, char **buffer,char *flags) {
 	return size;
 }
 jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer, char *delimiter) {
+	JNXCHECK(path);
+	JNXCHECK(max_buffer);
+	JNXCHECK(delimiter);
 	FILE *file;
 	if((file = fopen(path, "r+")) == NULL) {
 		return NULL;
@@ -64,6 +70,10 @@ jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer, char *delimiter) {
 	return map;
 }
 size_t jnx_file_write(char* path, char* data, size_t data_size,char *flags) {
+	JNXCHECK(path);
+	JNXCHECK(data);
+	JNXCHECK(data_size);
+	JNXCHECK(flags);
 	FILE* fp;
 	if ((fp = fopen(path, flags)) == NULL) {
 		perror("file: ");
@@ -78,6 +88,8 @@ int jnx_file_recursive_delete_callback(const char *fpath, const struct stat *sb,
 	return 0;
 }
 int jnx_file_recursive_delete(char* path, int depth) {
+	JNXCHECK(path);
+	JNXCHECK(depth);
 	if( nftw(path,jnx_file_recursive_delete_callback, depth, FTW_DEPTH) != 0) {
 		perror("jnx_file_recursive_delete");
 		return -1;
@@ -85,6 +97,7 @@ int jnx_file_recursive_delete(char* path, int depth) {
 	return 0;
 }
 static int jnx_file_path_exists(char *path) {
+	JNXCHECK(path);
 	size_t s = 512;
 	char buffer[s];
 	getcwd(buffer,s);
@@ -99,6 +112,7 @@ static int jnx_file_path_exists(char *path) {
 	return 1;
 }
 static char *jnx_file_random_dir(char *basepath) {
+	JNXCHECK(basepath);
 	srand(time(NULL));
 	unsigned long int n = 0;
 	do {
@@ -115,6 +129,7 @@ static char *jnx_file_random_dir(char *basepath) {
 	return s;
 }
 int jnx_file_mktempdir(char *dirtemplate, char **path) {
+	JNXCHECK(dirtemplate);
 	if(jnx_file_path_exists(dirtemplate)) {
 		char *tempdir=jnx_file_random_dir(dirtemplate);
 		if((mkdir(tempdir, S_IRWXU  | S_IRWXG | S_IROTH | S_IXOTH)) != 0) {
@@ -130,6 +145,7 @@ int jnx_file_mktempdir(char *dirtemplate, char **path) {
 	return 1;
 }
 int jnx_file_exists(char *file) {
+	JNXCHECK(file);
 	struct stat st;
 	int ret = stat(file,&st);
 

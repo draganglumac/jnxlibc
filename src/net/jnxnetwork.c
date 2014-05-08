@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include "jnxnetwork.h"
 #include "jnxlog.h"
+#include "jnxcheck.h"
 #if defined(linux)
 
 char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
@@ -69,6 +70,8 @@ char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
 	return NULL;
 }
 char* jnx_network_interface_to_string(char *interface, unsigned int family) {
+	JNXCHECK(interface);
+	JNXCHECK(family);
 	struct ifaddrs *myaddrs, *ifa;
 	int status;
 	status = getifaddrs(&myaddrs);
