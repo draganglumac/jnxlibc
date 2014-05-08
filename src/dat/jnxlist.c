@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include "jnxlist.h"
 #include "jnxlog.h"
+#include "jnxcheck.h"
 #include <stdio.h>
 
 jnx_list* jnx_list_create(void) {
@@ -29,6 +30,8 @@ jnx_list* jnx_list_create(void) {
 	return list;
 }
 void jnx_list_add(jnx_list* A, void* _datain) {
+	JNXCHECK(A);
+	JNXCHECK(_datain);
     if(A->head == NULL) {
         jnx_node *node = malloc(sizeof(jnx_node));
         node->_data = _datain;

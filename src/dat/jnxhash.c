@@ -1,5 +1,8 @@
 #include "jnxhash.h"
+#include "jnxcheck.h"
 int jnx_hash_string(const char* input, int map_size) {
+	JNXCHECK(input);
+	JNXCHECK(map_size);
     assert(input != 0 && input[0] != 0);
     int i;
     unsigned h = input[0];
@@ -9,6 +12,7 @@ int jnx_hash_string(const char* input, int map_size) {
     return h % map_size;
 }
 void jnx_hash_destroy(jnx_hashmap* hashmap) {
+	JNXCHECK(hashmap);
     int len = hashmap->size;
     int count;
 
@@ -30,6 +34,7 @@ void jnx_hash_destroy(jnx_hashmap* hashmap) {
 	free(hashmap);
 }
 jnx_hashmap* jnx_hash_create(unsigned int size) {
+	JNXCHECK(size);
     jnx_hashmap* hashmap = (jnx_hashmap*)malloc(sizeof(jnx_hashmap));
     hashmap->data = (jnx_hash_element*)calloc(size, sizeof(jnx_hash_element));
     hashmap->size = size;
@@ -38,6 +43,8 @@ jnx_hashmap* jnx_hash_create(unsigned int size) {
 	return hashmap;
 }
 void* jnx_hash_get(jnx_hashmap* hashmap, const char* key) {
+	JNXCHECK(hashmap);
+	JNXCHECK(key);
     int index = jnx_hash_string(key, hashmap->size);
 
     if (hashmap->data[index].used) {
@@ -63,12 +70,15 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const char* key) {
     return NULL;
 }
 void* jnx_hash_get_ts(jnx_hashmap* hashmap, const char* key) {
+	JNXCHECK(hashmap);
+	JNXCHECK(key);
 	jnx_thread_lock(hashmap->internal_lock);
 	void *ret = jnx_hash_get(hashmap,key);
 	jnx_thread_unlock(hashmap->internal_lock);
 	return ret;
 }
 int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys) {
+	JNXCHECK(hashmap);
     int x, counter = 0;
     int offset = 1;
     int default_size = sizeof(char*);
@@ -90,12 +100,16 @@ int jnx_hash_get_keys(jnx_hashmap *hashmap,const char ***keys) {
     return counter;
 }
 int jnx_hash_get_keys_ts(jnx_hashmap *hashmap,const char ***keys) {
+	JNXCHECK(hashmap);
 	jnx_thread_lock(hashmap->internal_lock);
 	int ret = jnx_hash_get_keys(hashmap,keys);
 	jnx_thread_unlock(hashmap->internal_lock);
 	return ret;
 }
 int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value) {
+	JNXCHECK(hashmap);
+	JNXCHECK(key);
+	JNXCHECK(value);
     int index = jnx_hash_string(key, hashmap->size);
     if (hashmap->data[index].used == 0) {
         // we need to setup the bucket
@@ -140,12 +154,17 @@ int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value) {
     return 0;
 }
 int jnx_hash_put_ts(jnx_hashmap* hashmap, const char* key, void* value) {
+	JNXCHECK(hashmap);
+	JNXCHECK(key);
+	JNXCHECK(value);
 	jnx_thread_lock(hashmap->internal_lock);
 	int ret = jnx_hash_put(hashmap,key,value);
 	jnx_thread_unlock(hashmap->internal_lock);
 	return ret;
 }
 void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key) {
+	JNXCHECK(hashmap);
+	JNXCHECK(key);
     int index = jnx_hash_string(key, hashmap->size);
     jnx_node *head = hashmap->data[index].bucket->head;
     jnx_node *rewind = head;
@@ -213,6 +232,8 @@ void* jnx_hash_delete_value(jnx_hashmap *hashmap,char *key) {
     return NULL;
 }
 void* jnx_hash_delete_value_ts(jnx_hashmap *hashmap,char *key) {
+	JNXCHECK(hashmap);
+	JNXCHECK(key);
 	jnx_thread_lock(hashmap->internal_lock);
 	void *ret = jnx_hash_delete_value(hashmap,key);
 	jnx_thread_unlock(hashmap->internal_lock);

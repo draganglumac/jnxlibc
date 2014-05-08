@@ -23,10 +23,12 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include "jnxunixsocket.h"
-
+#include "jnxcheck.h"
 #define MAXBUFFER 1024
 
 jnx_unix_socket *create_unix_socket(ssize_t stype, char*socket_path) {
+	JNXCHECK(stype);
+	JNXCHECK(socket_path);
 	jnx_unix_socket *jus= calloc(1, sizeof(jnx_unix_socket));
 	jus->isclosed = 0;
 	jus->islisten = 0;
@@ -41,12 +43,15 @@ jnx_unix_socket *create_unix_socket(ssize_t stype, char*socket_path) {
 	return jus;
 }
 jnx_unix_socket *jnx_unix_stream_socket_create(char *socket_path) {
+	JNXCHECK(socket_path);
 	return create_unix_socket(SOCK_STREAM, socket_path);
 }
 jnx_unix_socket *jnx_unix_datagram_socket_create(char *socket_path) {
+	JNXCHECK(socket_path);
 	return create_unix_socket(SOCK_DGRAM, socket_path);
 }
 void jnx_unix_socket_close(jnx_unix_socket *s) {
+	JNXCHECK(s);
 	if (!(s->isclosed)) {
 		close(s->socket);
 		if (s->islisten) {
@@ -56,11 +61,13 @@ void jnx_unix_socket_close(jnx_unix_socket *s) {
 	}
 }
 void jnx_unix_socket_destroy(jnx_unix_socket **s) {
+	JNXCHECK(*s);
 	jnx_unix_socket_close(*s);
 	free(*s);
 	*s = NULL;
 }
 ssize_t write_to_stream_socket(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len) {
+	JNXCHECK(s);
 	size_t tbytes = 0;
 	size_t rbytes = msg_len;
 
@@ -76,6 +83,7 @@ ssize_t write_to_stream_socket(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len)
 	return tbytes;
 }
 ssize_t jnx_unix_stream_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len) {
+	JNXCHECK(s);
 	if (connect(s->socket,(struct sockaddr *)&(s->address),sizeof(struct sockaddr_un)) == -1) {
 		perror("jnx unix stream socket connect");
 		return 0;
@@ -84,6 +92,7 @@ ssize_t jnx_unix_stream_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t msg
 	return write_to_stream_socket(s, msg, msg_len);
 }
 ssize_t jnx_unix_datagram_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t msg_len) {
+	JNXCHECK(s);
 	size_t tbytes = 0;
 	size_t rbytes = msg_len;
 
@@ -99,6 +108,7 @@ ssize_t jnx_unix_datagram_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t m
 	return tbytes;
 }
 int bind_stream_socket(jnx_unix_socket *s) {
+	JNXCHECK(s);
 	if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
 		perror("jnx unix stream socket bind");
 		return -1;
@@ -107,6 +117,7 @@ int bind_stream_socket(jnx_unix_socket *s) {
 	return 0;
 }
 int listen_on_stream_socket(jnx_unix_socket *s, ssize_t max_connections) {
+	JNXCHECK(s);
 	if (listen(s->socket, max_connections) == -1) {
 		perror("jnx unix stream socket listen");
 		return -1;
@@ -114,6 +125,7 @@ int listen_on_stream_socket(jnx_unix_socket *s, ssize_t max_connections) {
 	return 0;
 }
 jnx_unix_socket *accept_stream_socket_connection(jnx_unix_socket *s) {
+	JNXCHECK(s);
 	int remote_sock;
 	jnx_unix_socket *rs = jnx_unix_stream_socket_create("");
 	socklen_t addr_len;
@@ -129,6 +141,7 @@ jnx_unix_socket *accept_stream_socket_connection(jnx_unix_socket *s) {
 	}	
 }
 int read_stream_socket(jnx_unix_socket *s, uint8_t**out, int *len) {
+	JNXCHECK(s);
 	uint8_t buffer[MAXBUFFER];
 	memset(buffer,0,MAXBUFFER);
 	FILE *fp = tmpfile();
@@ -152,6 +165,7 @@ int read_stream_socket(jnx_unix_socket *s, uint8_t**out, int *len) {
 	return 0;
 }
 int jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, stream_socket_listener_callback c) {
+	JNXCHECK(s);
 	if (bind_stream_socket(s) == -1) {
 		return -1;
 	}
@@ -185,6 +199,7 @@ int jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, s
 	return 0;
 }
 int bind_datagram_socket(jnx_unix_socket *s) {
+	JNXCHECK(s);
 	if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
 		perror("jnx unix datagram socket bind");
 		return -1;
@@ -193,6 +208,7 @@ int bind_datagram_socket(jnx_unix_socket *s) {
 	return 0;
 }
 int receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_socket, uint8_t**out, int *len) {
+	JNXCHECK(s);
 
 	uint8_t buffer[MAXBUFFER];
 	memset(buffer,0,MAXBUFFER);
@@ -215,6 +231,7 @@ int receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_so
 	return 0;
 }
 int jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener_callback c) {
+	JNXCHECK(s);
 	if (bind_datagram_socket(s) == -1) {
 		return -1;
 	}
