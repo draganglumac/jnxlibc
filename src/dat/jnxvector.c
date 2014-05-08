@@ -110,7 +110,6 @@ void* jnx_vector_remove_at_ts(jnx_vector *vector,int position) {
 }
 void jnx_vector_insert(jnx_vector *vector, void *value) {
 	JNXCHECK(vector);
-	JNXCHECK(value);
     jnx_vector_record *record = jnx_vector_record_create(value);
     jnx_vector_grow(&vector,1);
     vector->vector[vector->count] = record;
@@ -118,7 +117,6 @@ void jnx_vector_insert(jnx_vector *vector, void *value) {
 }
 void jnx_vector_insert_ts(jnx_vector *vector, void *value) {
 	JNXCHECK(vector);
-	JNXCHECK(value);
 	jnx_thread_lock(vector->internal_lock);
 	jnx_vector_insert(vector,value);
 	jnx_thread_unlock(vector->internal_lock);

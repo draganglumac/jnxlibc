@@ -433,8 +433,6 @@ record *delete_record_from_node(jnx_btree *tree, jnx_btree_node *node, record *r
  */
 
 jnx_btree* jnx_btree_create(int order, compare_keys callback) {
-	JNXCHECK(order);
-	JNXCHECK(callback);
     if ( order <= 1 ) {
         return NULL;
     }
@@ -497,12 +495,12 @@ void *jnx_btree_lookup_ts(jnx_btree *tree, void *key) {
 	return ret;
 }
 void jnx_btree_remove(jnx_btree *tree, void *key_in, void** key_out, void **val_out ) {
-	JNXCHECK(tree);
-	JNXCHECK(key_in);
 	record *temp = NULL;
     if ( tree == NULL || tree->root->count == 0 ) {
         return;
     }
+	JNXCHECK(tree);
+	JNXCHECK(key_in);
 
     record *r = malloc(sizeof(record));
     r->key = key_in;
@@ -519,9 +517,9 @@ void jnx_btree_remove(jnx_btree *tree, void *key_in, void** key_out, void **val_
     free(r);
 }
 void jnx_btree_remove_ts(jnx_btree *tree, void *key_in, void** key_out, void **val_out ) {
+	if(!tree) { return ; }
 	JNXCHECK(tree);
 	JNXCHECK(key_in);
-	if(!tree) { return ; }
 	jnx_thread_lock(tree->internal_lock);
 	jnx_btree_remove(tree,key_in,key_out,val_out);
 	jnx_thread_unlock(tree->internal_lock);

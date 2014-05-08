@@ -23,7 +23,8 @@
 	do \
 	{ \
 		if(!(X)) {\
-		JNX_LOGC(JLOG_CRITICAL,"CHECK FAILED: [%s:%s:%d]\n",__FILE__,__FUNCTION__,__LINE__); \
+		JNX_LOGC(JLOG_CRITICAL,"CHECK FAILED: >%s< [%s:%s:%d]\n",#X,__FILE__,__FUNCTION__,__LINE__); \
+			exit(1);\
 		} \
 	} \
 	while(0); \

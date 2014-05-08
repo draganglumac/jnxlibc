@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include "jnxthread.h"
 #include "jnxlog.h"
-
+#include "jnxcheck.h"
 jnx_thread_mutex* jnx_thread_mutex_create() {
 	jnx_thread_mutex *m = malloc(sizeof(jnx_thread_mutex));
 	pthread_mutex_init(&m->system_mutex,NULL);	
@@ -26,6 +26,7 @@ jnx_thread_mutex* jnx_thread_mutex_create() {
 	return m;
 }
 void jnx_thread_mutex_destroy(jnx_thread_mutex **m) {
+	JNXCHECK(*m);
 	if((*m)->is_initialized) {	
 		pthread_mutex_destroy(&(*m)->system_mutex);
 		(*m)->is_initialized = 0;
@@ -34,11 +35,13 @@ void jnx_thread_mutex_destroy(jnx_thread_mutex **m) {
 	*m = NULL;
 }
 int jnx_thread_unlock(jnx_thread_mutex *m) {
+	JNXCHECK(m);
     int ret = 0;
     ret = pthread_mutex_unlock(&m->system_mutex);
     return ret;
 }
 int jnx_thread_trylock(jnx_thread_mutex *m) {
+	JNXCHECK(m);
     int ret = 0;
     if(m->is_initialized != 1) {
 		jnx_thread_mutex_create(m);
@@ -47,13 +50,15 @@ int jnx_thread_trylock(jnx_thread_mutex *m) {
     return ret;
 }
 void jnx_thread_lock(jnx_thread_mutex *m) {
+	JNXCHECK(m);
     if(m->is_initialized != 1) {
 		jnx_thread_mutex_create(m);
 	}
     pthread_mutex_lock(&m->system_mutex);
 }
 void jnx_thread_handle_destroy(jnx_thread *thr) {
-    if(thr == NULL) {
+    JNXCHECK(thr);
+	if(thr == NULL) {
         return;
     }
     if(thr->attributes->has_custom_attr) {
@@ -83,6 +88,7 @@ int jnx_thread_create_disposable(entry_point e,void *args) {
     return ret;
 }
 int jnx_thread_join(jnx_thread *thr, void **data) {
+	JNXCHECK(thr);
     int ret = 0;
     //platform specific zone//
     ret = pthread_join(thr->system_thread,data);
