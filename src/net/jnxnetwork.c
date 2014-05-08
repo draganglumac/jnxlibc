@@ -40,7 +40,7 @@
 #include "jnxlog.h"
 #if defined(linux)
 
-char* show_address_info( struct ifaddrs *ifa,unsigned int family){
+char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
 	struct sockaddr_in *s4;
 	struct sockaddr_in6 *s6;
 	char buf[64];
@@ -86,7 +86,7 @@ char* jnx_network_interface_to_string(char *interface, unsigned int family) {
 			continue;
 		}
 		if(strcmp(ifa->ifa_name,interface) == 0) {
-			outaddr = show_address_info(ifa,family);
+			outaddr = internal_address_info(ifa,family);
 		}
 	}
 	freeifaddrs(myaddrs);

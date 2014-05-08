@@ -36,22 +36,28 @@ jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer, char *delimiter) {
 		return NULL;
 	}
 	char buffer[max_buffer];
-	jnx_hashmap *map = jnx_hash_create(64);
-	while(fgets(buffer, sizeof(buffer), file) != NULL) {
+	memset(buffer,0,max_buffer);
+	jnx_hashmap *map = jnx_hash_create(max_buffer);
+
+	while(fgets(buffer, sizeof(buffer), file) != NULL) 
+	{
 		char *key = strtok(buffer,delimiter);
 		char *value = strtok(NULL,delimiter);
+
 		if(value == NULL) {
 			continue;
 		}
+		size_t vs = strlen(value);
+
+		if(value[vs -1] != '\0') {
+			value[vs -1] = '\0';
+		}
 		char *st = malloc(strlen(key));
 		char *sv = malloc(strlen(value));
-		bzero(st,strlen(key));
-		bzero(sv,strlen(value));
+		bzero(st,strlen(key) +1);
+		bzero(sv,strlen(value) +1);
 		strncpy(st,key,strlen(key));
 		strncpy(sv,value,strlen(value));
-		if(sv[strlen(sv) -1] == '\n') {
-			sv[strlen(sv) - 1] = '\0';
-		}
 		jnx_hash_put(map,st,sv);
 	}
 	fclose(file);
