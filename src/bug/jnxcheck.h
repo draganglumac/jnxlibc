@@ -19,6 +19,8 @@
 #define __JNX_CHECK_H__
 #include "jnxlog.h"
 
+#if !defined(RELEASE)
+
 #define JNXCHECK(X)\
 	do \
 	{ \
@@ -27,6 +29,11 @@
 			exit(1);\
 		} \
 	} \
-	while(0); \
+	while(0) \
+
+#else
+#define JNXCHECK(X)\
+	do { (void)sizeof(X); } while(0)
+#endif
 
 #endif
