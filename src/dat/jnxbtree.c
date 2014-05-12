@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include "jnxmem.h"
 #include "jnxbtree.h"
-
+#include "jnxcheck.h"
 jnx_btree_node *new_node(int order, int is_leaf) {
     jnx_btree_node *node = calloc(1, sizeof(jnx_btree_node));
 
@@ -67,7 +66,7 @@ void shift_children_left_from_index(jnx_btree_node *node, int index) {
 }
 
 int is_node_full(jnx_btree *tree, jnx_btree_node *node) {
-    if ( node->count == 2 * tree->order - 1 ) {
+    if ( node->count == (2 * tree->order - 1) ) {
         return 1;
     }
 
@@ -91,7 +90,7 @@ int find_index_for_record(jnx_btree *tree, jnx_btree_node *node, record *r) {
         return 0;
     }
 
-    int left_bound = 0;
+	int left_bound = 0;
     int right_bound = node->count - 1;
     int curr_index = (right_bound - left_bound) / 2;
 
@@ -420,7 +419,10 @@ record *delete_record_from_node(jnx_btree *tree, jnx_btree_node *node, record *r
         }
     }
 
-    return delete_record_from_node(tree, node->children[i], r);
+	if (tree->root->is_leaf)
+		return delete_record_from_node(tree, tree->root, r);
+	else
+	   	return delete_record_from_node(tree, node->children[i], r);
 }
 
 
@@ -440,11 +442,14 @@ jnx_btree* jnx_btree_create(int order, compare_keys callback) {
     tree->order = order;
     tree->compare_function = callback;
     tree->root = new_node(tree->order, 1);
-
+	tree->internal_lock = jnx_thread_mutex_create();
     return tree;
 }
 
 void jnx_btree_add(jnx_btree *tree, void *key, void *value) {
+	JNXCHECK(tree);
+	JNXCHECK(key);
+	JNXCHECK(value);
     if ( tree == NULL) {
         return;
     }
@@ -463,21 +468,39 @@ void jnx_btree_add(jnx_btree *tree, void *key, void *value) {
 
     insert_into_tree_at_node(tree, tree->root, r);
 }
-
+void jnx_btree_add_ts(jnx_btree *tree, void *key, void *value) {
+	JNXCHECK(tree);
+	JNXCHECK(key);
+	JNXCHECK(value);
+	if(!tree) { return ; }
+	jnx_thread_lock(tree->internal_lock);	
+	jnx_btree_add(tree,key,value);
+	jnx_thread_unlock(tree->internal_lock);	
+}
 void *jnx_btree_lookup(jnx_btree *tree, void *key) {
+	JNXCHECK(tree);
+	JNXCHECK(key);
     if ( tree == NULL ) {
         return NULL;
     }
-
     return find_value_for_key_in_node(tree, tree->root, key);
 }
-
+void *jnx_btree_lookup_ts(jnx_btree *tree, void *key) {
+	JNXCHECK(tree);
+	JNXCHECK(key);
+	if(!tree) { return NULL; }
+	jnx_thread_lock(tree->internal_lock);	
+	void *ret = jnx_btree_lookup(tree,key);
+	jnx_thread_unlock(tree->internal_lock);	
+	return ret;
+}
 void jnx_btree_remove(jnx_btree *tree, void *key_in, void** key_out, void **val_out ) {
-    record *temp = NULL;
-
+	record *temp = NULL;
     if ( tree == NULL || tree->root->count == 0 ) {
         return;
     }
+	JNXCHECK(tree);
+	JNXCHECK(key_in);
 
     record *r = malloc(sizeof(record));
     r->key = key_in;
@@ -490,21 +513,27 @@ void jnx_btree_remove(jnx_btree *tree, void *key_in, void** key_out, void **val_
         if (val_out != NULL)
             *val_out = temp->value;
     }
-
     free(temp);
     free(r);
 }
-
+void jnx_btree_remove_ts(jnx_btree *tree, void *key_in, void** key_out, void **val_out ) {
+	if(!tree) { return ; }
+	JNXCHECK(tree);
+	JNXCHECK(key_in);
+	jnx_thread_lock(tree->internal_lock);
+	jnx_btree_remove(tree,key_in,key_out,val_out);
+	jnx_thread_unlock(tree->internal_lock);
+}
 void jnx_btree_destroy(jnx_btree* tree) {
+	JNXCHECK(tree);
     if ( tree == NULL ) {
         return;
     }
-
     delete_node_and_subtrees(tree->root);
-
+	
+	jnx_thread_mutex_destroy(&tree->internal_lock);
     free(tree);
 }
-
 static void append_keys_from_node(jnx_btree_node *node, jnx_list *keys) {
     int i;
     for (i = 0; i < node->count; i++ )
@@ -530,5 +559,13 @@ static void collect_keys_from_node(jnx_btree_node *node, jnx_list *keys) {
 }
 
 void jnx_btree_keys(jnx_btree *tree, jnx_list *keys) {
+	JNXCHECK(tree);
     collect_keys_from_node(tree->root, keys);
+}
+void jnx_btree_keys_ts(jnx_btree *tree, jnx_list *keys) {
+	JNXCHECK(tree);
+	if(!tree) { return ; }
+	jnx_thread_lock(tree->internal_lock);
+	jnx_btree_keys(tree,keys);
+	jnx_thread_unlock(tree->internal_lock);
 }

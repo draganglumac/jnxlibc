@@ -37,17 +37,18 @@ typedef struct
 	int socket;
 	unsigned int addrfamily;
 	ssize_t stype;
+	char *ipaddress;
 } jnx_socket;
 
 
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*tcp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress);
+typedef int (*tcp_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_socket *s);
 /*
  *@warning must return 0 or will break the listener loop
  */
-typedef int (*udp_socket_listener_callback)(char *payload, size_t bytesread, char *ipaddress);
+typedef int (*udp_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_socket *s);
 /**
  * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
  * @brief creates a jnx tcp socket
@@ -99,43 +100,43 @@ size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int 
  */
 size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, char *group);
 /**
- * @fn jnx_socket_tcp_send((jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
+ * @fn jnx_socket_tcp_send((jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param host is the target destination
  * @param port is the target port
  * @param msg is the payload to send
  * @param msg_len is the size of payload
- * @return size_t of bytes sent, -1 for failure
+ * @return size_t of bytes sent
  */
-size_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
+ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
 /**
- * @fn jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len)
+ * @fn jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len)
  * @param s is the socket to use to send
  * @param host is the target destination
  * @param port is the target port
  * @param msg is the payload to send
  * @param msg_len is the size of payload
- * @return size_t of bytes sent, -1 for failure
+ * @return size_t of bytes sent
  */
-size_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, char *msg, ssize_t msg_len);
+ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
 /**
- * @fn size_t jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
+ * @fn int jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
  * @param s is the socket to use to send
  * @param port is the target port
  * @param max_connections are the number of connetions in the queue
  * @param c is the function pointer callback for received messages
  * @return -1 on error
  */
-size_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c);
+int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c);
 /**
- * @fn size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
+ * @fn int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
  * @param s is the socket to use to send
  * @param port is the target port
  * @param max_connections are the number of connetions in the queue
  * @param c is the function pointer callback for received messages
  * @return -1 on error
  */
-size_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c);
+int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c);
 #ifdef __cplusplus
 }
 #endif

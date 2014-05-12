@@ -20,17 +20,11 @@
 #ifdef __cplusplus
 	extern "C" {
 #endif
-#if !defined(WIN32)
 #include <pthread.h>
-#else
-#include <windows.h>
-#endif
 typedef struct jnx_thread_attributes{
 	//platform specific zone//
 	int has_custom_attr;
-#if !defined(WIN32)
 	pthread_attr_t *system_attributes;
-#endif
 	//platform specific zone//
 }jnx_thread_attributes;
 
@@ -41,22 +35,21 @@ typedef struct jnx_thread{
 	void *args;
 	jnx_thread_attributes *attributes;
 	//platform specific zone//
-#if !defined(WIN32)
 	pthread_t system_thread;
-#else
-	HANDLE system_thread;
-#endif
 	//platform specific zone//
 }jnx_thread;
 
-typedef union jnx_thread_mutex{
+typedef struct jnx_thread_mutex{
 	//platform specific zone//
-#if !defined(WIN32)
 	pthread_mutex_t system_mutex;
-#endif
 	//platform specific zone//
+	int is_initialized;
 }jnx_thread_mutex;
 
+
+jnx_thread_mutex* jnx_thread_mutex_create();
+
+void jnx_thread_mutex_destroy(jnx_thread_mutex **m);
 
 int jnx_thread_unlock(jnx_thread_mutex *m);
 /**
@@ -72,19 +65,6 @@ void jnx_thread_lock(jnx_thread_mutex *m);
  *@return int errorcode 0 on success
  */
 int jnx_thread_trylock(jnx_thread_mutex *m);
-/**
- *@fn void jnx_thread_poolflush
- *@brief resets the pool and removes thread data
- *@warning Does not ensure threads have terminated
- */
-void jnx_thread_poolflush();
-/**
- *@fn size_t jnx_thread_poolcount
- *@brief counts the current number of threads in the pool
- *@warning does not give thread status active/inactive
- *@return size_t of thread count
- */
-size_t jnx_thread_poolcount();
 /**
  *@fn jnx_thread* jnx_thread_create(entry_point e,void *args)
  *@param entry_point is the function pointer the thread starts with
@@ -106,7 +86,7 @@ int jnx_thread_create_disposable(entry_point e,void *args);
  *@brief Destroy the thread data structure and pool listing
  *@warning Destroy will not ensure thread is killed
  */
-void jnx_thread_destroy(jnx_thread *thr);
+void jnx_thread_handle_destroy(jnx_thread *thr);
 /**
  *@fn int jnx_thread_join(jnx_thread *thr)
  *@param jnx_thread pointer to thread object to wait for

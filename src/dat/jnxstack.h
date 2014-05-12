@@ -5,6 +5,7 @@
  */
 #ifndef __JNXSTACK_H__
 #define __JNXSTACK_H__
+#include "jnxthread.h"
 #ifdef __cplusplus
 	extern "C" {
 #endif
@@ -21,6 +22,7 @@ typedef struct jnx_snode{
 typedef struct {
     struct jnx_snode* top;
     int count;
+	jnx_thread_mutex *internal_lock;
 } jnx_stack;
 
 /** @fn jnx_stack_create(void)
@@ -35,6 +37,7 @@ jnx_stack* jnx_stack_create(void);
  */
 int jnx_stack_is_empty(jnx_stack* A);
 
+int jnx_stack_is_empty_ts(jnx_stack* A);
 /** @fn jnx_stack_push(jnx_stack *A, void* _datain)
  *  @brief  Accepts a void pointer to input data to push onto the stack
  *  @param A is the target stack
@@ -42,6 +45,7 @@ int jnx_stack_is_empty(jnx_stack* A);
  */
 void jnx_stack_push(jnx_stack* A, void* _datain);
 
+void jnx_stack_push_ts(jnx_stack* A, void* _datain);
 /** @fn jnx_stack_pop(jnx_stack *A) 
  *  @brief Pops the top element off the stack and returns it.
  *  @param A is a pointer to the target stack.
@@ -50,6 +54,7 @@ void jnx_stack_push(jnx_stack* A, void* _datain);
  */
 void* jnx_stack_pop(jnx_stack* A);
 
+void* jnx_stack_pop_ts(jnx_stack* A);
 /** @fn jnx_stack_destroy(jnx_stack* A) 
  * @brief  Deletes the stack's internal representation, but it doesn't try to
  * destroy the _datain void pointers passed in. If you call jnx_stack_is_empty

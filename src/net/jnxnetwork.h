@@ -17,10 +17,13 @@
  */
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
+#include <ifaddrs.h>
 #ifdef __cplusplus
 	extern "C" {
 #endif
-char *jnx_network_get_ip(char *interface,unsigned int addrfamily);
+#if defined(linux)
+char *jnx_network_interface_to_string(char *interface, unsigned int family);
+#endif
 #ifdef __cplusplus
 	}
 #endif

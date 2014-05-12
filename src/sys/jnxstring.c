@@ -3,9 +3,11 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "jnxmem.h"
+#include "jnxcheck.h"
 char* jnx_string_joincreate(char* destination, char* append) {
-    int origin_len = strlen(destination);
+	JNXCHECK(destination);
+	JNXCHECK(append);
+	int origin_len = strlen(destination);
     int append_len = strlen(append);
     char* str = malloc(sizeof(origin_len + append_len + 1));
     strcpy(str, destination);
@@ -29,7 +31,7 @@ void jnx_string_join(char** destination, char* buf) {
     }
 }
 char* jnx_string_itos(int input) {
-    char *str = malloc(24);
+    char *str = malloc(sizeof(int));
     if(sprintf(str,"%d",input) > 0) {
         return str;
     } else {
