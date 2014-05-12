@@ -21,9 +21,7 @@
 #ifdef __cplusplus
 	extern "C" {
 #endif
-#if defined(linux)
 char *jnx_network_interface_to_string(char *interface, unsigned int family);
-#endif
 #ifdef __cplusplus
 	}
 #endif

@@ -24,8 +24,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#if defined(linux)
-#include <linux/if_link.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <net/if.h>
@@ -34,12 +32,10 @@
 #include <ifaddrs.h>
 #include <netinet/in.h>
 #include <stdio.h>
-#endif
 #include <stdlib.h>
 #include "jnxnetwork.h"
 #include "jnxlog.h"
 #include "jnxcheck.h"
-#if defined(linux)
 
 char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
 	struct sockaddr_in *s4;
@@ -95,4 +91,3 @@ char* jnx_network_interface_to_string(char *interface, unsigned int family) {
 	freeifaddrs(myaddrs);
 	return outaddr;
 }
-#endif
