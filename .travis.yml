@@ -2,7 +2,7 @@ language: c
 compiler:
     - gcc
     - clang
-script: ./setup/build_and_install SKIP
+script: ./setup/build_and_install SKIP_INSTALL
 notifications:
     email:
         recipients:

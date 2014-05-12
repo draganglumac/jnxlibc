@@ -2,6 +2,8 @@
 
 pushd setup
 ./configure
+#run tests
+if [ "$1" != "SKIP_TESTS" ]; then
 make setup
 pushd test
 ./run_tests
@@ -14,8 +16,10 @@ if [ ! $result -eq 0 ]; then
 fi
 popd
 make teardown
+#tests end
+fi
 make
-if [ "$1" != "SKIP" ]; then
+if [ "$1" != "SKIP_INSTALL" ]; then
 sudo make install
 fi
 echo "Installed succesfully"
