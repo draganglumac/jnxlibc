@@ -44,7 +44,7 @@ int jnx_thread_trylock(jnx_thread_mutex *m) {
 	JNXCHECK(m);
     int ret = 0;
     if(m->is_initialized != 1) {
-		jnx_thread_mutex_create(m);
+		m = jnx_thread_mutex_create();
 	}
 	ret = pthread_mutex_trylock(&m->system_mutex);
     return ret;
@@ -52,7 +52,7 @@ int jnx_thread_trylock(jnx_thread_mutex *m) {
 void jnx_thread_lock(jnx_thread_mutex *m) {
 	JNXCHECK(m);
     if(m->is_initialized != 1) {
-		jnx_thread_mutex_create(m);
+		m = jnx_thread_mutex_create();
 	}
     pthread_mutex_lock(&m->system_mutex);
 }
