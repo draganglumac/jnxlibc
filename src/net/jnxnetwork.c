@@ -81,7 +81,6 @@ int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int
 		perror("getifaddrs failed!");
 		return 1;
 	}
-
 	for (ifa = myaddrs; ifa != NULL; ifa = ifa->ifa_next){
 		if (NULL == ifa->ifa_addr){
 			continue;
@@ -92,7 +91,7 @@ int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int
 		if(strcmp(ifa->ifa_name,interface) == 0) {
 			outaddr = internal_address_info(ifa,family);
 			if(outaddr){
-			*obuffer = strdup(outaddr);
+				*obuffer = strdup(outaddr);
 			}
 		}
 	}
