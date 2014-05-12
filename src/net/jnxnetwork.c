@@ -69,16 +69,17 @@ char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
 	}
 	return NULL;
 }
-char* jnx_network_interface_to_string(char *interface, unsigned int family) {
+int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family){
 	JNXCHECK(interface);
 	JNXCHECK(family);
 	struct ifaddrs *myaddrs, *ifa;
 	int status;
 	status = getifaddrs(&myaddrs);
 	char *outaddr = NULL;
+	*obuffer = NULL;
 	if (status != 0){
 		perror("getifaddrs failed!");
-		exit(1);
+		return 1;
 	}
 
 	for (ifa = myaddrs; ifa != NULL; ifa = ifa->ifa_next){
@@ -90,9 +91,12 @@ char* jnx_network_interface_to_string(char *interface, unsigned int family) {
 		}
 		if(strcmp(ifa->ifa_name,interface) == 0) {
 			outaddr = internal_address_info(ifa,family);
+			if(outaddr){
+			*obuffer = strdup(outaddr);
+			}
 		}
 	}
 	freeifaddrs(myaddrs);
-	return outaddr;
+	return 0;
 }
 #endif
