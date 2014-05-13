@@ -32,7 +32,7 @@ void test_complex_insertion() {
     jnx_vector *vector = jnx_vector_create();
     int spread[5] = { 1, 200, 412, 55, 65 };
     //we are testing to see how well the vector handles distribution and reallocation on demand
-    int x;
+    int x = 0;
     while(x < 5) {
         teststruct *temp = malloc(sizeof(teststruct));
         temp->a = x;
