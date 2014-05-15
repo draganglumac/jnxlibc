@@ -179,7 +179,11 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
 
-	getaddrinfo(host,port,&hints,&res);
+	int rg = 0;
+	if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
+		printf("%s\n",gai_strerror(rg));
+		return 0;
+	}
 
 	if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
 		perror("connect:");
