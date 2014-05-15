@@ -91,7 +91,7 @@ size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const
 	size_t bytec = 0;
 	bytec = strlen(output);
 	
-	printf(output);
+	printf("%s",output);
 	return bytec;
 }
 
