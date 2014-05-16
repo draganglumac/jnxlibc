@@ -1,6 +1,7 @@
 SRC_DIR=../src
 BUILD_DIR=build
-FLAGS=-Wall -fPIC -c
+FLAGS=-Wall -fPIC -c -rdynamic
+COMPILER=gcc
 all: setup main_artifact shipping teardown
 setup:
 	mkdir -p build
@@ -9,7 +10,7 @@ setup:
 teardown:
 	rm -rf build
 main_artifact:
-	gcc ${FLAGS} $(BUILD_DIR)/*.c
+	${COMPILER} ${FLAGS} $(BUILD_DIR)/*.c
 	build.shared.object
 	rm *.o
 	find . -type f -name "*~" -exec rm {} \;

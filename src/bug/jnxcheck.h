@@ -18,6 +18,8 @@
 #ifndef __JNX_CHECK_H__
 #define __JNX_CHECK_H__
 #include "jnxlog.h"
+#define MAXSTACKFRAMES 20
+void jnxcheck_backtrace(void);
 
 #if !defined(RELEASE)
 
@@ -26,6 +28,7 @@
 	{ \
 		if(!(X)) {\
 		JNX_LOGC(JLOG_CRITICAL,"CHECK FAILED: >%s< [%s:%s:%d]\n",#X,__FILE__,__FUNCTION__,__LINE__); \
+			jnxcheck_backtrace(); \
 			exit(1);\
 		} \
 	} \
@@ -35,5 +38,4 @@
 #define JNXCHECK(X)\
 	do { (void)sizeof(X); } while(0)
 #endif
-
 #endif
