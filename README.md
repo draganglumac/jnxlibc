@@ -26,7 +26,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 
 - MAN  docs/man
 - HTML docs/html ([Here](http://htmlpreview.github.io/?https://raw.github.com/AlexsJones/jnxlibc/master/docs/html/files.html))
-- Examples of functionality in test suite.
+- [Loads of lovely tests in C!](setup/test)
 - Code reviewing
 
 #Installation
