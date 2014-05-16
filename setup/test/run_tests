@@ -26,7 +26,7 @@ for file in $filelist; do
     fi
 
 	echo "Running next test for --> ${file}"
-	`gcc $file ../build/*.c -I../build -o ${file:0:${#file}-2} -pthread -w`
+	`gcc $file ../build/*.c -I../build -o ${file:0:${#file}-2} -pthread -w -rdynamic`
     ./$current
     out=$?
     if [ ! $out -eq 0 ]; then
