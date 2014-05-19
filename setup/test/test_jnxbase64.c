@@ -24,17 +24,17 @@
 int main(int argc, char **argv) {
 
 	printf("Running base64 tests...");
-    char *test[] = {"A","BA","Some String","AbbA","A A A ","","Matey"};
-    int x;
-    for(x = 0; x < 5; ++x) {
-        size_t test_len;
-        char *encoded_test = jnx_base64_encode(test[x],strlen(test[x]),&test_len);
-        size_t decode_len;
+	char *test[] = {"A","BA","Some String","AbbA","A A A ","","Matey"};
+	int x;
+	for(x = 0; x < 5; ++x) {
+		size_t test_len;
+		char *encoded_test = jnx_base64_encode(test[x],strlen(test[x]),&test_len);
+		size_t decode_len;
 
-        char *decoded_test = jnx_base64_decode(encoded_test,test_len,&decode_len);
-        JNXCHECK(strcmp(decoded_test,test[x]) == 0);
-        free(encoded_test);
-    }
+		char *decoded_test = jnx_base64_decode(encoded_test,test_len,&decode_len);
+		JNXCHECK(strcmp(decoded_test,test[x]) == 0);
+		free(encoded_test);
+	}
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-    return 0;
+	return 0;
 }

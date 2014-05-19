@@ -46,7 +46,7 @@ typedef struct hashmap {
  *  @warning Does not remove values 
  *  @param hashmap pointer to the map to be deleted
  */
-void jnx_hash_destroy(jnx_hashmap* hashmap);
+void jnx_hash_destroy(jnx_hashmap** hashmap);
 
 void jnx_hash_destroy_ts(jnx_hashmap* hashmap);
 /** @fn jnx_hash_delete_value(jnx_hashmap *hashmap, char *key)

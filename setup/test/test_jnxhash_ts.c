@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include "jnxcheck.h"
 #include "jnxlog.h"
 #include "jnxhash.h"
 #include "jnxterm.h"
@@ -47,7 +48,7 @@ void test_key_deletion() {
     int num_keys = jnx_hash_get_keys_ts(testhash,&buffer);
     assert(num_keys == 0);
     free(buffer);
-    jnx_hash_destroy(testhash);
+    jnx_hash_destroy(&testhash);
 }
 void test_hash_get_keys() {
     jnx_hashmap *testhash = jnx_hash_create(1024);
@@ -60,7 +61,7 @@ void test_hash_get_keys() {
     int num_keys = jnx_hash_get_keys_ts(testhash,&buffer);
     free(buffer);
     assert(num_keys == 4);
-    jnx_hash_destroy(testhash);
+    jnx_hash_destroy(&testhash);
 }
 void test_hash_deletion() {
     jnx_hashmap *testhash = jnx_hash_create(1024);
@@ -78,7 +79,7 @@ void test_hash_deletion() {
     }
     num = jnx_hash_get_keys_ts(testhash,&keys);
     assert(num == 0);
-    jnx_hash_destroy(testhash);
+    jnx_hash_destroy(&testhash);
 }
 int main(int argc, char **argv) {
     JNX_LOGC(JLOG_DEBUG,"Running test for jnxhash\n");

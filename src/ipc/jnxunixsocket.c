@@ -215,7 +215,7 @@ int receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_so
 	jnx_unix_socket *rs = jnx_unix_datagram_socket_create("");
 	socklen_t addr_len;
 	ssize_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&(rs->address),&addr_len);
-	
+
 	if (bytesread == -1) {
 		perror("jnx unix datagram socket recvfrom");
 		jnx_unix_socket_destroy(&rs);

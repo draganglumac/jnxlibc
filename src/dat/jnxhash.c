@@ -11,7 +11,8 @@ int jnx_hash_string(const char* input, int map_size) {
     }
     return h % map_size;
 }
-void jnx_hash_destroy(jnx_hashmap* hashmap) {
+void jnx_hash_destroy(jnx_hashmap** hash) {
+	jnx_hashmap *hashmap = *hash;
 	JNXCHECK(hashmap);
     int len = hashmap->size;
     int count;
@@ -32,6 +33,7 @@ void jnx_hash_destroy(jnx_hashmap* hashmap) {
     }
 	jnx_thread_mutex_destroy(&hashmap->internal_lock);
 	free(hashmap);
+	*hash = NULL;
 }
 jnx_hashmap* jnx_hash_create(unsigned int size) {
 	JNXCHECK(size);
