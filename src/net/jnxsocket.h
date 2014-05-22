@@ -109,6 +109,10 @@ size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, ch
  * @return size_t of bytes sent
  */
 ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
+
+
+
+ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len,uint8_t **out_receipt);
 /**
  * @fn jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len)
  * @param s is the socket to use to send
@@ -119,6 +123,10 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
  * @return size_t of bytes sent
  */
 ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
+
+
+
+ssize_t jnx_socket_udp_send_with_receipt(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len,uint8_t **out_receipt);
 /**
  * @fn int jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
  * @param s is the socket to use to send
