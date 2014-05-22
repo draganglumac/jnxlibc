@@ -138,16 +138,3 @@ int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,un
 	}
 	return 0;
 }
-size_t jnx_network_request_POST(char *host, char *page, char *args, unsigned int addrfamily, uint8_t **out_reply) {	
-	jnx_socket *s  = jnx_socket_tcp_create(addrfamily);	
-
-	char sendline[MAXBUFFER];
-	snprintf(sendline, MAXSUB,
-			"POST %s HTTP/1.0\r\n"
-			"Host: %s\r\n"
-			"Content-type: application/x-www-form-urlencoded\r\n"
-			"Content-length: %zu\r\n\r\n"
-			"%s", page, host, strlen(args),args);
-
-	return jnx_socket_tcp_send_with_receipt(s,host,"80",(uint8_t*)sendline,(ssize_t)strlen(sendline),out_reply);
-}
