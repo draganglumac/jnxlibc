@@ -18,6 +18,7 @@
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
 #include <ifaddrs.h>
+#include <inttypes.h>
 #ifdef __cplusplus
 	extern "C" {
 #endif

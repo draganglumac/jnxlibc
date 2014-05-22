@@ -35,7 +35,11 @@
 #include <stdlib.h>
 #include "jnxnetwork.h"
 #include "jnxlog.h"
+#include "jnxsocket.h"
 #include "jnxcheck.h"
+
+#define MAXBUFFER 1024
+#define MAXSUB 200
 
 char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
 	struct sockaddr_in *s4;
