@@ -22,6 +22,7 @@
 	extern "C" {
 #endif
 int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family);
+int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,unsigned int *out_addrfamily);
 #ifdef __cplusplus
 	}
 #endif
