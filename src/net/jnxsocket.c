@@ -219,6 +219,7 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
 	memset(&hints,0,sizeof(hints));
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
+	*out_receipt = NULL;
 
 	int rg = 0;
 	if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
@@ -284,7 +285,7 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 	hints.ai_flags =0;
 	hints.ai_protocol = IPPROTO_UDP;
 	hints.ai_next = NULL;
-
+	
 	int rg = 0;
 	if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
 		printf("%s\n",gai_strerror(rg));
@@ -322,7 +323,7 @@ ssize_t jnx_socket_udp_send_with_receipt(jnx_socket *s, char *host, char* port, 
 	hints.ai_flags =0;
 	hints.ai_protocol = IPPROTO_UDP;
 	hints.ai_next = NULL;
-
+	*out_receipt = NULL;
 	int rg = 0;
 	if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
 		printf("%s\n",gai_strerror(rg));
