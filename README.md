@@ -13,7 +13,8 @@ https://github.com/AlexsJones/jnxlibc/releases
 
 #Key features
 - Lightweight data structures (hash, list, vector, btree, stack, queue)
-- Network socket implmentation supporting multiple transport and IPV4/IPV6
+- Socket implmentation supporting multiple transport and IPV4/IPV6
+- Network utilities (get IP from hostname, resolve hostname from IP, interface to IP)
 - Threading & threadsafe data structure API
 - Signals & Slots
 - Interprocess communication
