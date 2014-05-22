@@ -15,11 +15,6 @@
  *
  * =====================================================================================
  */
-#if defined(WIN32)
-
-#else
-#include <arpa/inet.h>
-#endif
 #include <netdb.h>
 #include <stdio.h>
 #include <string.h>
@@ -147,7 +142,6 @@ char *jnx_socket_tcp_resolve_ipaddress(int socket) {
 		struct sockaddr_in6 *s = (struct sockaddr_in6*)&addr;
 		inet_ntop(AF_INET6,&s->sin6_addr,ipstr,sizeof(ipstr));
 	}
-
 	return strdup(ipstr);
 }
 char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
@@ -184,14 +178,12 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 		printf("%s\n",gai_strerror(rg));
 		return 0;
 	}
-
 	if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
 		perror("connect:");
 		freeaddrinfo(res);
 		return 0;
 	}
 	freeaddrinfo(res);
-
 	size_t tbytes = 0;
 	size_t rbytes = msg_len;
 
@@ -220,13 +212,11 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
 	*out_receipt = NULL;
-
 	int rg = 0;
 	if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
 		printf("%s\n",gai_strerror(rg));
 		return 0;
 	}
-
 	if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
 		perror("connect:");
 		freeaddrinfo(res);
@@ -260,15 +250,15 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
 		}
 		if(bytesread > 0) {
 			fwrite(buffer,sizeof(uint8_t),bytesread,fp);
-			}
 		}
-		int len = ftell(fp);
-		rewind(fp);
-		uint8_t *out = calloc(len + 1, sizeof(uint8_t));
-		fread(out,sizeof(uint8_t),len,fp);
-		fclose(fp);
-		*out_receipt = out;
-	return tbytes;
+	}
+	int len = ftell(fp);
+	rewind(fp);
+	uint8_t *out = calloc(len + 1, sizeof(uint8_t));
+	fread(out,sizeof(uint8_t),len,fp);
+	fclose(fp);
+	*out_receipt = out;
+	return len;
 }
 ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len) {
 	JNXCHECK(s);
@@ -285,7 +275,7 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 	hints.ai_flags =0;
 	hints.ai_protocol = IPPROTO_UDP;
 	hints.ai_next = NULL;
-	
+
 	int rg = 0;
 	if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
 		printf("%s\n",gai_strerror(rg));
@@ -305,77 +295,6 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 		rbytes = msg_len - tbytes;
 	}
 	freeaddrinfo(res);
-	return tbytes;
-}
-ssize_t jnx_socket_udp_send_with_receipt(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len,uint8_t **out_receipt) {
-	JNXCHECK(s);
-	JNXCHECK(host);
-	JNXCHECK(port);
-	JNXCHECK(msg);
-	JNXCHECK(msg_len);
-	JNXCHECK(s->isclosed == 0);
-	JNXCHECK(s->stype == SOCK_DGRAM);
-	struct addrinfo hints, *res;
-	uint8_t buffer[MAXBUFFER];
-	memset(&hints,0,sizeof(hints));
-	hints.ai_family = s->addrfamily;
-	hints.ai_socktype = s->stype;
-	hints.ai_flags =0;
-	hints.ai_protocol = IPPROTO_UDP;
-	hints.ai_next = NULL;
-	*out_receipt = NULL;
-	int rg = 0;
-	if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-		printf("%s\n",gai_strerror(rg));
-		return 0;
-	}
-	size_t tbytes = 0;
-	size_t rbytes = msg_len;
-
-	while(tbytes < rbytes) {
-		size_t n = sendto(s->socket,msg,msg_len,0,res->ai_addr,res->ai_addrlen);
-		if(n == -1) {
-			freeaddrinfo(res);
-			perror("send:");
-			return 0;
-		}
-		tbytes +=n;
-		rbytes = msg_len - tbytes;
-	}
-	freeaddrinfo(res);
-	
-	while(tbytes < rbytes) {
-		size_t n = write(s->socket,msg,rbytes);
-		if(n == -1) {
-			perror("send:");
-			return 0;
-		}
-		tbytes +=n;
-		rbytes = msg_len - tbytes;
-	}
-	memset(buffer,0,MAXBUFFER);
-	FILE *fp = tmpfile();
-	size_t bytesread = read(s->socket,buffer,MAXBUFFER);
-	fwrite(buffer,sizeof(uint8_t),bytesread,fp);
-
-	while(bytesread > 0) {
-		memset(buffer,0,MAXBUFFER);
-		bytesread = read(s->socket,buffer,MAXBUFFER);
-		if(bytesread == -1) {
-			perror("read:");
-			fclose(fp);
-			return -1;
-		}
-		if(bytesread > 0) {
-			fwrite(buffer,sizeof(uint8_t),bytesread,fp);
-			}
-		}
-		int len = ftell(fp);
-		rewind(fp);
-		uint8_t *out = calloc(len + 1, sizeof(uint8_t));
-		fread(out,sizeof(uint8_t),len,fp);
-		fclose(fp);
-		*out_receipt = out;
 	return tbytes;
 }
 int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c) {
@@ -390,9 +309,7 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 	memset(&hints,0,sizeof(hints));
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
-
 	getaddrinfo(NULL,port,&hints,&res);
-
 	p = res;
 	while(p != NULL) {
 		if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1) {
@@ -466,9 +383,7 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
 	hints.ai_flags = AI_PASSIVE;
-
 	getaddrinfo(NULL,port,&hints,&res);
-
 	p = res;
 	while(p != NULL) {
 		if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1) {
@@ -488,7 +403,6 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 		p= p->ai_next;
 	}
 	freeaddrinfo(res);
-
 	while(1) {
 		memset(buffer,0,MAXBUFFER);
 		size_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);

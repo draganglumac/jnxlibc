@@ -130,18 +130,6 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
  * @return size_t of bytes sent
  */
 ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
-
-/**
- * @fn jnx_socket_udp_send_with_receipt(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len,uint8_t **out_receipt)
- * @param s is the socket to use to send
- * @param host is the target destination
- * @param port is the target port
- * @param msg is the payload to send
- * @param msg_len is the size of payload
- * @param out_receipt is the returned message from target host
- * @return size_t of bytes sent
- */
-ssize_t jnx_socket_udp_send_with_receipt(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len,uint8_t **out_receipt);
 /**
  * @fn int jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
  * @param s is the socket to use to send
