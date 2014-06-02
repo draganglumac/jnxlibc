@@ -22,7 +22,8 @@ https://github.com/AlexsJones/jnxlibc/releases
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
 - Auto generated documentation and logical API
-
+- Almost total test coverage
+- 
 #Documentation & Examples
 
 - MAN  docs/man
