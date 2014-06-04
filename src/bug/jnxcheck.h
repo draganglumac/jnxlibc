@@ -38,4 +38,7 @@ void jnxcheck_backtrace(void);
 #define JNXCHECK(X)\
 	do { (void)sizeof(X); } while(0)
 #endif
+#define JNXFAIL(X)\
+		JNX_LOGC(JLOG_CRITICAL,"CHECK FAILED WITH >%s<\n",#X); \
+		JNXCHECK(0) 
 #endif
