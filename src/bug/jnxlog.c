@@ -47,10 +47,8 @@ size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const
 	bzero(tempbuff,MAX_LOG_SIZE);
 	bzero(buffer,MAX_ARG_SIZE);
 	bzero(output,MAX_LOG_SIZE);
-
 	char *_time = jnx_get_time();
 	char *warning_level = NULL;
-
 	switch(level) {
 		case JLOG_CRITICAL:
 			warning_level = JCRITICAL;
@@ -75,18 +73,14 @@ size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const
 	}	
 	sprintf(tempbuff,LOGTEMPLATE,_time,warning_level,file,function,line);
 	strcpy(output,tempbuff);	
-
 	va_list ap;
 	va_start(ap,format);
 	vsprintf(buffer,format,ap);
 	va_end(ap);
-
 	strcat(output,buffer);
-
 	free(_time);
 	size_t bytec = 0;
 	bytec = strlen(output);
-
 	printf("%s",output);
 	return bytec;
 }
