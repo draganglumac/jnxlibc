@@ -22,6 +22,7 @@ typedef enum JNX_LOG_LEVEL{
 	JLOG_DEBUG,
 	JLOG_NORMAL
 } JNX_LOG_LEVEL;
+#define LOGTEMPLATE "[%s][%s][%s:%s:%d]"
 #define JCRITICAL "CRITICAL"
 #define JALERT "ALERT"
 #define JCAUTION "CAUTION"
