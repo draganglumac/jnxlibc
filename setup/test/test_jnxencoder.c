@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "jnxbase64.h"
+#include "jnxencoder.h"
 #include <string.h>
 #include <stdio.h>
 #include "jnxterm.h"
