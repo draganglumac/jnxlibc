@@ -24,10 +24,10 @@ sudo make install
 fi
 echo "Installed succesfully"
 popd
-which doxygen
+which doxygen  > /dev/null 2>&1
 HAS_DOXYGEN=$?
 
-which doxy2man
+which doxy2man > /dev/null 2>&1
 HAS_DOXY2MAN=$?
 
 MANPATH=/usr/share/man/man3
