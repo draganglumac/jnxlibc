@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include "jnxbase64.h"
 #include "jnxcheck.h"
-void build_decoding_table();
-void base64_cleanup();
-static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+
+jnx_encoder* jnx_encoder_create() {
+
+	char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
                                 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
                                 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
@@ -15,14 +16,29 @@ static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                 'w', 'x', 'y', 'z', '0', '1', '2', '3',
                                 '4', '5', '6', '7', '8', '9', '+', '/'
                                };
-static char *decoding_table = NULL;
-static int mod_table[] = {0, 2, 1};
+	int mod_table[] = {0, 2, 1};
+	jnx_encoder *e = malloc(sizeof(jnx_encoder));
+	e->b64_mod_table = calloc(3,sizeof(int));
+	e->b64_encoding_table = calloc(65,sizeof(char));
+	e->b64_decoding_table = calloc(256,sizeof(char));
+	int x,y;
+	for(y=0;y<256;++y) {
+		e->b64_decoding_table[y] = (char)-1;
+	}	
+	for(x=0;x<65;++x) {
+		char current = encoding_table[x];
+		e->b64_encoding_table[x] = current;
+		e->b64_decoding_table[(unsigned char)e->b64_encoding_table[x]] = x;
+	}
+	for(x=0;x<3;++x) {
+		e->b64_mod_table[x] = mod_table[x];
+	}
+	return e;
+}
+void jnx_encoder_destroy(jnx_encoder **en) {
 
-
-char *jnx_base64_encode(const unsigned char *data,
-                        size_t input_length,
-                        size_t *output_length) {
-
+}
+char* jnx_encoder_b64_encode(jnx_encoder *e,const unsigned char *data, size_t input_length, size_t *output_length)  {
 	JNXCHECK(data);
 	JNXCHECK(input_length);
     *output_length = 4 * ((input_length + 2) / 3);
@@ -41,28 +57,23 @@ char *jnx_base64_encode(const unsigned char *data,
         i++;
         uint32_t triple = (octet_a << 0x10) + (octet_b << 0x08) + octet_c;
 
-        encoded_data[j++] = encoding_table[(triple >> 3 * 6) & 0x3F];
-        encoded_data[j++] = encoding_table[(triple >> 2 * 6) & 0x3F];
-        encoded_data[j++] = encoding_table[(triple >> 1 * 6) & 0x3F];
-        encoded_data[j++] = encoding_table[(triple >> 0 * 6) & 0x3F];
+        encoded_data[j++] = e->b64_encoding_table[(triple >> 3 * 6) & 0x3F];
+        encoded_data[j++] = e->b64_encoding_table[(triple >> 2 * 6) & 0x3F];
+        encoded_data[j++] = e->b64_encoding_table[(triple >> 1 * 6) & 0x3F];
+        encoded_data[j++] = e->b64_encoding_table[(triple >> 0 * 6) & 0x3F];
     }
 
     int l;
-    for(l = 0; l < mod_table[input_length %3]; l++) {
+    for(l = 0; l < e->b64_mod_table[input_length %3]; l++) {
         encoded_data[*output_length -1 -l] = '=';
     }
     encoded_data[*output_length ] = '\0';
     return encoded_data;
 }
 
-
-unsigned char *jnx_base64_decode(const char *data,
-                                 size_t input_length,
-                                 size_t *output_length) {
-
+unsigned char *jnx_encoder_b64_decode(jnx_encoder *e, const char *data,size_t input_length, size_t *output_length) {
 	JNXCHECK(data);
 	JNXCHECK(input_length);
-    if (decoding_table == NULL) build_decoding_table();
 
     if (input_length % 4 != 0) return NULL;
 
@@ -77,10 +88,10 @@ unsigned char *jnx_base64_decode(const char *data,
     int i,j;
     for (i = 0, j = 0; i < input_length;) {
 
-        uint32_t sextet_a = data[i] == '=' ? 0 & i++ : decoding_table[(int)data[i++]];
-        uint32_t sextet_b = data[i] == '=' ? 0 & i++ : decoding_table[(int)data[i++]];
-        uint32_t sextet_c = data[i] == '=' ? 0 & i++ : decoding_table[(int)data[i++]];
-        uint32_t sextet_d = data[i] == '=' ? 0 & i++ : decoding_table[(int)data[i++]];
+        uint32_t sextet_a = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int)data[i++]];
+        uint32_t sextet_b = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int)data[i++]];
+        uint32_t sextet_c = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int)data[i++]];
+        uint32_t sextet_d = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int)data[i++]];
 
         uint32_t triple = (sextet_a << 3 * 6)
                           + (sextet_b << 2 * 6)
@@ -95,18 +106,3 @@ unsigned char *jnx_base64_decode(const char *data,
 }
 
 
-void build_decoding_table() {
-
-    decoding_table = malloc(256 * sizeof(char));
-
-    int z;
-    for(z = 0; z < 256; ++z) {
-        decoding_table[z] = (char)-1;
-    }
-    int i;
-    for (i = 0; i < 65; i++)
-        decoding_table[(unsigned char) encoding_table[i]] = i;
-}
-void jnx_base64_cleanup() {
-    free(decoding_table);
-};
