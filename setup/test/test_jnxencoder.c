@@ -21,9 +21,10 @@
 #include <stdio.h>
 #include "jnxterm.h"
 #include "jnxcheck.h"
+#include "jnxlog.h"
 int main(int argc, char **argv) {
 
-	printf("Running base64 tests...");
+    JNX_LOGC(JLOG_DEBUG,"Running test for jnxencoder\n");
 
 	jnx_encoder *e = jnx_encoder_create();
 
@@ -42,5 +43,6 @@ int main(int argc, char **argv) {
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 
 	jnx_encoder_destroy(&e);
+	JNXCHECK(e == NULL);
 	return 0;
 }
