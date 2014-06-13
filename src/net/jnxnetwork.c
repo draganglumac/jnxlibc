@@ -69,6 +69,17 @@ char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
 	}
 	return NULL;
 }
+JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
+	union { uint8_t c[4]; uint32_t i;} u; 
+	u.i = 0x01020304; 
+	if(0x04 == u.c[0]) { 
+		return JNX_BIG_ENDIAN;
+	}; 
+	if (0x01 == u.c[0]) {	
+		return JNX_LITTLE_ENDIAN;
+	}; 
+	return JNX_UNKNOWN_ENDIAN;
+}
 int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family){
 	JNXCHECK(interface);
 	JNXCHECK(family);

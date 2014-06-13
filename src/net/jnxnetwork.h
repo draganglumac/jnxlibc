@@ -22,6 +22,19 @@
 #ifdef __cplusplus
 	extern "C" {
 #endif
+
+typedef enum JNX_NETWORK_ENDIAN {
+	JNX_LITTLE_ENDIAN,
+	JNX_BIG_ENDIAN,
+	JNX_UNKNOWN_ENDIAN
+}JNX_NETWORK_ENDIAN;
+/*
+ * @fn jnx_network_get_endianness
+ * @brief an enum that indicates the endien prescidence on the system
+ * @return an enum value of JNX_NETWORK_ENDIAN
+ */
+JNX_NETWORK_ENDIAN jnx_network_get_endianness();
+
 int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family);
 /*
  * @fn int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip, unsigned int *out_addrfamily);
