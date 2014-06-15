@@ -30,11 +30,19 @@ typedef enum JNX_NETWORK_ENDIAN {
 }JNX_NETWORK_ENDIAN;
 /*
  * @fn jnx_network_get_endianness
- * @brief an enum that indicates the endien prescidence on the system
+ * @brief an enum that indicates the endien precedence on the system
  * @return an enum value of JNX_NETWORK_ENDIAN
  */
 JNX_NETWORK_ENDIAN jnx_network_get_endianness();
 
+/*
+ * @fn int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family)
+ * @brief This will attempt to convert the chosen interface and family into a string representing the IP address
+ * @param obuffer is pointer to the out buffer that will contained stored data
+ * @param interface is the name of the interface to use (accepts const char *)
+ * @param family is the family type to use - either AF_INET or AF_INET6
+ * @return 0 on success 
+ */
 int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family);
 /*
  * @fn int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip, unsigned int *out_addrfamily);

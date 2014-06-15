@@ -83,6 +83,7 @@ JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
 int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family){
 	JNXCHECK(interface);
 	JNXCHECK(family);
+	JNXCHECK(family == AF_INET || family == AF_INET6);
 	struct ifaddrs *myaddrs, *ifa;
 	int status;
 	status = getifaddrs(&myaddrs);
