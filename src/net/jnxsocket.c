@@ -316,8 +316,7 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 			perror("server: socket");
 			return -1;
 		}
-		if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,
-					sizeof(int)) == -1) {
+		if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(int)) == -1) {
 			perror("setsockopt");
 			exit(1);
 		}
@@ -403,32 +402,18 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 	freeaddrinfo(res);
 	while(1) {
 		memset(buffer,0,MAXBUFFER);
-		FILE *fp = tmpfile();
 		size_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
-		fwrite(buffer,sizeof(uint8_t),bytesread,fp);
 
-		while(bytesread > 0) {
-			memset(buffer,0,MAXBUFFER);
-			bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
-			if(bytesread == -1) {
-				perror("recvfrom:");
-				fclose(fp);
-				return -1;
-			}
-			if(bytesread > 0) {
-				fwrite(buffer,sizeof(uint8_t),bytesread,fp);
-			}	
-			int len = ftell(fp);
-			rewind(fp);
-			uint8_t *out = calloc(len + 1, sizeof(uint8_t));
-			fread(out,sizeof(uint8_t),len,fp);
-			fclose(fp);
-
-			int ret = 0;
-			if((ret = c(out,len,s)) != 0) {
-				return 0;
-			}
+		if(bytesread == -1) {
+			perror("recvcfrom:");
+			return -1;
+		}
+		int ret = 0;
+		uint8_t *outbuffer = malloc(bytesread * sizeof(uint8_t));
+		memcpy(outbuffer,buffer,bytesread);
+		if((ret = c(outbuffer,bytesread,s)) != 0) {
+			return 0;
 		}
 	}
-	return 0;
+	return -1;
 }
