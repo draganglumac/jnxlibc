@@ -127,6 +127,7 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
  * @param port is the target port
  * @param msg is the payload to send
  * @param msg_len is the size of payload
+ * @warning UDP header is 16bit which means 65k is the max file transmission size
  * @return size_t of bytes sent
  */
 ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);

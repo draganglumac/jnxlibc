@@ -32,6 +32,7 @@
 #include "jnxcheck.h"
 #include "jnxsocket.h"
 #define MAXBUFFER 1024
+#define MAX_UDP_BUFFER (MAXBUFFER * 65) 
 jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
 	JNXCHECK(addrfamily);
 	JNXCHECK(type);
@@ -283,7 +284,10 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 	}
 	size_t tbytes = 0;
 	size_t rbytes = msg_len;
-
+	if(rbytes > MAX_UDP_BUFFER) {
+		JNX_LOGC(JLOG_ALERT,"Message exceeds max UDP packet size\n");
+		return 0;
+	}
 	while(tbytes < rbytes) {
 		size_t n = sendto(s->socket,msg,msg_len,0,res->ai_addr,res->ai_addrlen);
 		if(n == -1) {
