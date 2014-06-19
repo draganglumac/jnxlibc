@@ -31,7 +31,8 @@
 #include "jnxlog.h"
 #include "jnxcheck.h"
 #include "jnxsocket.h"
-#define MAXBUFFER 1024
+#define KILOBYTE 1024
+#define MAXBUFFER (KILOBYTE * 124)
 #define MAX_UDP_BUFFER (MAXBUFFER * 65) 
 jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
 	JNXCHECK(addrfamily);
@@ -158,7 +159,6 @@ char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
 			return strndup(str,strlen(str));
 			break;
 	}
-
 	return NULL;
 }
 ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len) {
@@ -238,7 +238,7 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
 	}
 	memset(buffer,0,MAXBUFFER);
 	FILE *fp = tmpfile();
-	if(fp == null) {
+	if(fp == NULL) {
 		perror("tmpfile:");
 		return -1;
 	}
