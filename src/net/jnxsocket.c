@@ -238,6 +238,10 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
 	}
 	memset(buffer,0,MAXBUFFER);
 	FILE *fp = tmpfile();
+	if(fp == null) {
+		perror("tmpfile:");
+		return -1;
+	}
 	size_t bytesread = read(s->socket,buffer,MAXBUFFER);
 	fwrite(buffer,sizeof(uint8_t),bytesread,fp);
 
