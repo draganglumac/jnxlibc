@@ -286,6 +286,7 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 	size_t rbytes = msg_len;
 	if(rbytes > MAX_UDP_BUFFER) {
 		JNX_LOGC(JLOG_ALERT,"Message exceeds max UDP packet size\n");
+		freeaddrinfo(res);
 		return 0;
 	}
 	while(tbytes < rbytes) {
@@ -380,7 +381,7 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 	struct addrinfo hints, *res, *p;
 	struct sockaddr_storage their_addr;
 	socklen_t their_len = sizeof(their_addr);
-	uint8_t buffer[MAXBUFFER];
+	uint8_t buffer[MAX_UDP_BUFFER];
 	memset(&hints,0,sizeof(hints));
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
@@ -405,8 +406,8 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 	}
 	freeaddrinfo(res);
 	while(1) {
-		memset(buffer,0,MAXBUFFER);
-		size_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
+		memset(buffer,0,MAX_UDP_BUFFER);
+		size_t bytesread = recvfrom(s->socket,buffer,MAX_UDP_BUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
 
 		if(bytesread == -1) {
 			perror("recvcfrom:");
