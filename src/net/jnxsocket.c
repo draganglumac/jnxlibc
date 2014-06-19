@@ -340,10 +340,15 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 		int recfd = accept(s->socket,(struct sockaddr*)&their_addr,&addr_size);
 		if(recfd < 0) {
 			JNX_LOGC(JLOG_ALERT,"accept: %s",strerror(errno));
+			perror("accept:");
 			return -1;
 		}
 		memset(buffer,0,MAXBUFFER);
 		FILE *fp = tmpfile();
+		if(fp == NULL) {
+			perror("tmpfile:");
+			return -1;
+		}
 		size_t bytesread = read(recfd,buffer,MAXBUFFER);
 		fwrite(buffer,sizeof(uint8_t),bytesread,fp);
 
