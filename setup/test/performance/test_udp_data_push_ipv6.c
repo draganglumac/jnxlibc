@@ -16,11 +16,11 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include <jnxc_headers/jnxsocket.h>
-#include <jnxc_headers/jnxfile.h>
-#include <jnxc_headers/jnxnetwork.h>
-#include <jnxc_headers/jnxlog.h>
-#include <jnxc_headers/jnxencoder.h>
+#include "jnxsocket.h"
+#include "jnxfile.h"
+#include "jnxnetwork.h"
+#include "jnxlog.h"
+#include "jnxencoder.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>

@@ -16,9 +16,15 @@ function echo_green()
 echo "Running unit tests..."
 pushd unit
 ./run_tests
+if [ $? != 0 ]; then
+	exit 1
+fi
 popd 
 echo "Running performance tests"
 pushd performance
 ./run_tests
+if [ $? != 0 ]; then
+	exit 1
+fi
 popd
 exit 0
