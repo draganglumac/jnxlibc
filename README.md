@@ -4,8 +4,7 @@
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
 
 [Test Driven](setup/test) C library for reliable networking, data structures and utility functionality.
-Constantly in development and refinement to make it as memory/thread safe as possible whilst maintaining
-no dependencies and low foot print.
+Constantly in development to hone and refine code; acknowledging a need for consistant and tested public API's.
 
 ####For a solid snapshot of the library check out the releases
 https://github.com/AlexsJones/jnxlibc/releases
@@ -22,7 +21,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 - Easy to use file read/write functions
 - Fast and easy base64 encoding/decoding
 - Auto generated documentation and logical API
-- Almost total test coverage
+- Almost total test coverage (Unit tests/ Performance tests)
 
 #Documentation & Examples
 
