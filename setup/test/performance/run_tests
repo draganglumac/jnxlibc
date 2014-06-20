@@ -1,0 +1,69 @@
+#!/bin/bash
+function echo_red()
+{
+    tput setaf 1
+    echo $1
+    tput sgr0
+}
+
+function echo_green()
+{
+    tput setaf 2
+    echo $1
+    tput sgr0
+}
+function cleanup()
+{
+	echo "Deleting old test output data..."
+	if [ -d "$TESTOUTPATH" ]; then
+		`rm -rf "$TESTOUTPATH"`
+	fi
+}
+#Check the test output store has been cleaned up
+TESTOUTPATH="output"
+
+if [ ! -d "$TESTOUTPATH" ]; then
+	echo "No test output path exists"
+	mkdir $TESTOUTPATH
+else 
+	cleanup
+	mkdir $TESTOUTPATH
+	if [ ! -d "$TESTOUTPATH" ]; then
+		echo "Could not generate test path at all - aborting all tests"
+		exit 1
+	fi
+fi
+
+filelist=`ls | grep .c`
+for file in $filelist; do
+    if [ "$file" == "run_tests" ] 
+    then
+        continue
+    fi 
+	if [ "$file" == "jnxlibc" ]
+	then
+		continue
+	fi
+	current=${file:0:${#file}-2}
+    if [ -e $current ]
+    then
+        rm $current
+    fi
+
+	echo "Running next test for --> ${file}"
+	`gcc $file -o ${file:0:${#file}-2} -g -ljnxc -rdynamic -pthread -w`
+    ./$current
+    out=$?
+    if [ ! $out -eq 0 ]; then
+        echo_red "Test failed"
+		rm $current
+    	cleanup
+		exit 1
+
+    else
+        echo_green "Test passed"
+        rm $current
+    fi
+done;
+cleanup
+exit 0
