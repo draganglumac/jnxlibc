@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
 
 [Test Driven](setup/test) C library for reliable networking, data structures and utility functionality.
+
 Constantly in development to hone and refine code; acknowledging a need for consistant and tested public API's.
 
 ####For a solid snapshot of the library check out the releases
