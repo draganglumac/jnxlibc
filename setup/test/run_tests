@@ -13,31 +13,18 @@ function echo_green()
     tput sgr0
 }
 
-filelist=`ls | grep .c`
-for file in $filelist; do
-    if [ "$file" == "run_tests" ] 
-    then
-        continue
-    fi 
-    current=${file:0:${#file}-2}
-    if [ -e $current ]
-    then
-        rm $current
-    fi
-
-	echo "Running next test for --> ${file}"
-	`gcc $file ../build/*.c -I../build -o ${file:0:${#file}-2} -pthread -w -rdynamic`
-    ./$current
-    out=$?
-    if [ ! $out -eq 0 ]; then
-        echo_red "Test failed"
-        rm $current
-        exit 1
-
-    else
-        echo_green "Test passed"
-        rm $current
-    fi
-done;
-
+echo "Running unit tests..."
+pushd unit
+./run_tests
+if [ $? != 0 ]; then
+	exit 1
+fi
+popd 
+echo "Running performance tests"
+pushd performance
+./run_tests
+if [ $? != 0 ]; then
+	exit 1
+fi
+popd
 exit 0
