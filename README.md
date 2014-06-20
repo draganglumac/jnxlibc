@@ -59,7 +59,7 @@ Sending message over network
 ```C
 jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
 jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
-jnx_socket_close(tcp_sock);
+jnx_socket_close(udp_sock);
 
 ```
 Using a binary tree
