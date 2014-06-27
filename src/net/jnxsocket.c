@@ -32,8 +32,8 @@
 #include "jnxcheck.h"
 #include "jnxsocket.h"
 #define KILOBYTE 1024
-#define MAXBUFFER (KILOBYTE * 124)
-#define MAX_UDP_BUFFER (MAXBUFFER * 65) 
+#define MAXBUFFER KILOBYTE * 10 
+#define MAX_UDP_BUFFER KILOBYTE * 65
 jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
 	JNXCHECK(addrfamily);
 	JNXCHECK(type);
@@ -391,7 +391,7 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 	struct sockaddr_storage their_addr;
 	socklen_t their_len = sizeof(their_addr);
 	uint8_t buffer[MAX_UDP_BUFFER];
-	memset(&hints,0,sizeof(hints));
+	memset(&hints,0,sizeof(struct addrinfo));
 	hints.ai_family = s->addrfamily;
 	hints.ai_socktype = s->stype;
 	hints.ai_flags = AI_PASSIVE;
