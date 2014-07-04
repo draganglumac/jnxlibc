@@ -2,6 +2,7 @@
 # test/test_*
 docs/xml
 *.dSYM
+*.dSYM
 *.slo
 *.lo
 *.o

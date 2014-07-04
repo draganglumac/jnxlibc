@@ -1,4 +1,12 @@
 #!/bin/bash
+OS=`uname`
+if [ "$OS" == "Darwin" ]; then
+	echo "Building with Clang"
+COMPILER=clang
+else
+	echo "Building with GCC"
+COMPILER=gcc
+fi
 function echo_red()
 {
     tput setaf 1
@@ -13,7 +21,7 @@ function echo_green()
     tput sgr0
 }
 
-filelist=`ls | grep .c`
+filelist=`ls *.c`
 for file in $filelist; do
     if [ "$file" == "run_tests" ] 
     then
@@ -26,7 +34,7 @@ for file in $filelist; do
     fi
 
 	echo "Running next test for --> ${file}"
-	`gcc $file ../../build/*.c -I../../build -o ${file:0:${#file}-2} -pthread -w -rdynamic`
+	`$COMPILER $file ../../build/*.c -I../../build -o ${file:0:${#file}-2} -pthread -w -rdynamic`
     ./$current
     out=$?
     if [ ! $out -eq 0 ]; then
