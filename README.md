@@ -54,7 +54,8 @@ make
 #cmake . -DCMAKE_INSTALL_PREFIX=/Users/alexjo/Projects/jnxlibc/build/ 
 sudo make install
 
-Use -ljnxc when building your project
+Use -ljnxc when building your project for shared library
+Use -ljnxcs for static library
 
 ````
 ####Flags
