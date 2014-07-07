@@ -1,5 +1,10 @@
 # Compiled Object files
 # test/test_*
+jnxc_headers
+*Cache.txt
+*.dylib
+*.a
+*.cmake
 docs/xml
 *.dSYM
 *.dSYM
