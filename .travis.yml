@@ -2,7 +2,7 @@ language: c
 compiler:
     - gcc
     - clang
-script: cmake . && make && sudo make install
+script: ./test/run_tests
 notifications:
     email:
         recipients:
