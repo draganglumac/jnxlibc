@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+set(CMAKE_INSTALL_PREFIX /usr/local)
 project(jnxlibc)
 
 set(JNXLIBC_LIBRARY_NAME,"jnxc")
@@ -32,13 +33,13 @@ set(CMAKE_C_FLAGS_DEBUG "-g -rdynamic")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
 
 IF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64") 
-ADD_DEFINITIONS(-fPIC) 
+	ADD_DEFINITIONS(-fPIC) 
 ENDIF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
 
 add_library(jnxlibc_core OBJECT ${ALG_SRC} ${BUG_SRC} ${DAT_SRC} ${IO_SRC} ${IPC_SRC} ${NET_SRC} ${SIG_SRC} ${SYS_SRC} ${THR_SRC})
 add_library (jnxcs STATIC $<TARGET_OBJECTS:jnxlibc_core>)
 add_library (jnxc SHARED $<TARGET_OBJECTS:jnxlibc_core>)
 
-install(TARGETS ${JNXLIBC_LIBRARY_NAME} DESTINATION /usr/local/lib)
-install(TARGETS ${JNXLIBC_LIBRARY_NAME_STATIC} DESTINATION /usr/local/lib)
-install(DIRECTORY jnxc_headers DESTINATION /usr/local/include)
+install(TARGETS ${JNXLIBC_LIBRARY_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(TARGETS ${JNXLIBC_LIBRARY_NAME_STATIC} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(DIRECTORY jnxc_headers DESTINATION ${CMAKE_INSTALL_PREFIX}/include)

@@ -47,10 +47,11 @@ yaourt jnxlibc
 ````
 
 Grab this repo.
-````
-
+````shell
 cmake .
 make
+#Custom install path
+#cmake . -DCMAKE_INSTALL_PREFIX=/Users/alexjo/Projects/jnxlibc/build/ 
 sudo make install
 
 Use -ljnxc when building your project
