@@ -34,6 +34,10 @@ https://github.com/AlexsJones/jnxlibc/releases
 
 #Installation
 
+###Dependencies
+	- GCC
+	- CMake
+
 Currently supported platforms:
 Linux distributions/OS X
 
@@ -43,10 +47,15 @@ yaourt jnxlibc
 ````
 
 Grab this repo.
-````
-./setup/build_and_install
+````shell
+cmake .
+make
+#Custom install path
+#cmake . -DCMAKE_INSTALL_PREFIX=/Users/alexjo/Projects/jnxlibc/build/ 
+sudo make install
 
-Use -ljnxc when building your project
+Use -ljnxc when building your project for shared library
+Use -ljnxcs for static library
 
 ````
 ####Flags

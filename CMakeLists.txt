@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 2.8)
+set(CMAKE_INSTALL_PREFIX /usr/local)
+project(jnxlibc)
+
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/alg ALG_SRC)
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/bug BUG_SRC)
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/dat DAT_SRC)
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/io IO_SRC)
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/ipc IPC_SRC)
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/net NET_SRC)
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/sig SIG_SRC)
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/sys SYS_SRC)
+AUX_SOURCE_DIRECTORY(${PROJECT_INC_DIR}src/thr THR_SRC)
+
+file(MAKE_DIRECTORY jnxc_headers)
+FILE(GLOB HEADERS_CP "src/**/*.h")
+file(COPY ${HEADERS_CP} DESTINATION jnxc_headers)
+
+include_directories(${PROJECT_INC_DIR}src/alg)
+include_directories(${PROJECT_INC_DIR}src/bug)
+include_directories(${PROJECT_INC_DIR}src/dat)
+include_directories(${PROJECT_INC_DIR}src/io)
+include_directories(${PROJECT_INC_DIR}src/ipc)
+include_directories(${PROJECT_INC_DIR}src/net)
+include_directories(${PROJECT_INC_DIR}src/sig)
+include_directories(${PROJECT_INC_DIR}src/sys)
+include_directories(${PROJECT_INC_DIR}src/thr)
+
+set(CMAKE_C_FLAGS "-Wall -fPIC")
+set(CMAKE_C_FLAGS_DEBUG "-g -rdynamic")
+set(CMAKE_C_FLAGS_RELEASE "-O2")
+
+IF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64") 
+	ADD_DEFINITIONS(-fPIC) 
+ENDIF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+
+add_library(jnxlibc_core OBJECT ${ALG_SRC} ${BUG_SRC} ${DAT_SRC} ${IO_SRC} ${IPC_SRC} ${NET_SRC} ${SIG_SRC} ${SYS_SRC} ${THR_SRC})
+add_library (jnxcs STATIC $<TARGET_OBJECTS:jnxlibc_core>)
+add_library (jnxc SHARED $<TARGET_OBJECTS:jnxlibc_core>)
+
+install(TARGETS jnxcs DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(TARGETS jnxc DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(DIRECTORY jnxc_headers DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
