@@ -31,6 +31,9 @@ set(CMAKE_C_FLAGS "-Wall -fPIC")
 set(CMAKE_C_FLAGS_DEBUG "-g -rdynamic")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
 
+IF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64") 
+ADD_DEFINITIONS(-fPIC) 
+ENDIF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
 
 add_library(jnxlibc_core OBJECT ${ALG_SRC} ${BUG_SRC} ${DAT_SRC} ${IO_SRC} ${IPC_SRC} ${NET_SRC} ${SIG_SRC} ${SYS_SRC} ${THR_SRC})
 add_library (jnxlibc_static STATIC $<TARGET_OBJECTS:jnxlibc_core>)
