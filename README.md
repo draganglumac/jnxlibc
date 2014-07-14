@@ -2,6 +2,7 @@
  jnxlibc
 =======
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
+Status: Active development (Stable)
 
 ####Purpose
 
