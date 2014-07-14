@@ -16,7 +16,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 - Lightweight data structures with thread-safe API (hash, list, vector, btree, stack, queue) 
 - Socket implmentation supporting multiple transport and IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP & UDP
 - Network utilities (get IP from hostname, resolve hostname from IP, interface to IP)
-- Threading interface above POSIX
+- Threading interface above POSIX (Ambition to extend x-platform)
 - Signals & Slots
 - Interprocess communication
 - Verbose terminal logging
