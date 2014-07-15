@@ -10,8 +10,8 @@ notifications:
             - dragan.glumac@gmail.com
         on_sucess: [never]
         on_failure: [always] # default: always
-  irc:
-    channels:
-      - "chat.freenode.net#jnxlibc"
-      on_sucess: [always]
-      on_failure: [always] # default: always
+    irc:
+        channels:
+            - "chat.freenode.net#jnxlibc"
+    on_sucess: [always]
+    on_failure: [always] # default: always
