@@ -13,5 +13,8 @@ notifications:
         notifications:
     irc:
         channels: "irc.freenode.org#jnxlibc"
-    on_success: change
-    on_failure: change
+    on_success: always
+    on_failure: always
+    template:
+      - "%{repository} (%{commit}) : %{message} %{foo} "
+      - "Build details: %{build_url}"
