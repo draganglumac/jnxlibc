@@ -10,12 +10,8 @@ notifications:
             - dragan.glumac@gmail.com
         on_sucess: [never]
         on_failure: [always] # default: always
-        notifications:
-    irc:
-        channels: "irc.freenode.org#jnxlibc"
-    on_success: always
-    on_failure: always
-    use_notice: true
-    template:
-      - "%{repository} (%{commit}) : %{message} "
-      - "Build details: %{build_url}"
+  irc:
+    channels:
+      - "chat.freenode.net#jnxlibc"
+      on_sucess: [always]
+      on_failure: [always] # default: always
