@@ -18,6 +18,9 @@
 #ifndef __JNX_CHECK_H__
 #define __JNX_CHECK_H__
 #include "jnxlog.h"
+#ifdef __cplusplus
+extern		"C" {
+#endif
 #define MAXSTACKFRAMES 20
 void jnxcheck_backtrace(void);
 
@@ -25,20 +28,23 @@ void jnxcheck_backtrace(void);
 
 #define JNXCHECK(X)\
 	do \
-	{ \
-		if(!(X)) {\
+{ \
+	if(!(X)) {\
 		JNX_LOGC(JLOG_CRITICAL,"CHECK FAILED: >%s< [%s:%s:%d]\n",#X,__FILE__,__FUNCTION__,__LINE__); \
-			jnxcheck_backtrace(); \
-			exit(1);\
-		} \
+		jnxcheck_backtrace(); \
+		exit(1);\
 	} \
-	while(0) \
+} \
+while(0) \
 
 #else
 #define JNXCHECK(X)\
 	do { (void)sizeof(X); } while(0)
 #endif
 #define JNXFAIL(X)\
-		JNX_LOGC(JLOG_CRITICAL,"CHECK FAILED WITH >%s<\n",#X); \
-		JNXCHECK(0) 
+	JNX_LOGC(JLOG_CRITICAL,"CHECK FAILED WITH >%s<\n",#X); \
+JNXCHECK(0) 
+#endif
+#ifdef __cplusplus
+}
 #endif

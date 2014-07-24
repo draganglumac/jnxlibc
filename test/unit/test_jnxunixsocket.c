@@ -247,9 +247,9 @@ int check_large_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 	jnx_term_printf_in_color(JNX_COL_WHITE, ".");
 	fflush(stdout);
 	if (counter < 5)
-	for (i = 0; i < len; i++) {
-		assert(out[i] == i % 256);
-	}
+		for (i = 0; i < len; i++) {
+			assert(out[i] == i % 256);
+		}
 	if (counter < 4)
 		return 0;
 	else 
@@ -260,7 +260,7 @@ void test_large_data_in_stream_ipc_comms() {
 	fflush(stdout);
 	remove("large_stream");
 	jnx_unix_socket *ss = jnx_unix_stream_socket_create("large_stream");
-	
+
 	uint8_t buffer[2000];
 	int i;
 	for (i = 0; i < 2000; i++) {
@@ -390,9 +390,9 @@ int check_large_datagram(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 	jnx_term_printf_in_color(JNX_COL_WHITE, ".");
 	fflush(stdout);
 	if (counter < 5)
-	for (i = 0; i < len; i++) {
-		assert(out[i] == i % 256);
-	}
+		for (i = 0; i < len; i++) {
+			assert(out[i] == i % 256);
+		}
 	if (counter < 4)
 		return 0;
 	else 
@@ -403,7 +403,7 @@ void test_large_data_in_datagram_ipc_comms() {
 	fflush(stdout);
 	remove("large_datagram");
 	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("large_datagram");
-	
+
 	uint8_t buffer[2000];
 	int i;
 	for (i = 0; i < 2000; i++) {

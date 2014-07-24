@@ -23,89 +23,89 @@
 #include "jnxterm.h"
 #include "jnxlog.h"
 struct foo {
-    int number;
+	int number;
 } foo;
 
 void test_list_creation() {
-    JNX_LOGC(JLOG_DEBUG,"- test_list_creation");
-    jnx_list *secondlist = jnx_list_create();
-    assert(secondlist != NULL);
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-    struct foo *f = malloc(sizeof(foo));
-    f->number = 10;
-    JNX_LOGC(JLOG_DEBUG,"- test_list_insertion");
-    jnx_list_add_ts(secondlist,(void*)f);
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-    JNX_LOGC(JLOG_DEBUG,"- test_list_removal");
-    struct foo *output = (struct foo*)jnx_list_remove_ts(&secondlist);
-    assert(output->number == 10);
-    free(output);
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-    JNX_LOGC(JLOG_DEBUG,"- test_list_deletion");
-    jnx_list_destroy(&secondlist);
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	JNX_LOGC(JLOG_DEBUG,"- test_list_creation");
+	jnx_list *secondlist = jnx_list_create();
+	assert(secondlist != NULL);
+	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	struct foo *f = malloc(sizeof(foo));
+	f->number = 10;
+	JNX_LOGC(JLOG_DEBUG,"- test_list_insertion");
+	jnx_list_add_ts(secondlist,(void*)f);
+	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	JNX_LOGC(JLOG_DEBUG,"- test_list_removal");
+	struct foo *output = (struct foo*)jnx_list_remove_ts(&secondlist);
+	assert(output->number == 10);
+	free(output);
+	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	JNX_LOGC(JLOG_DEBUG,"- test_list_deletion");
+	jnx_list_destroy(&secondlist);
+	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_list_index() {
-    JNX_LOGC(JLOG_DEBUG,"- test_list_sequence");
-    jnx_list *j = jnx_list_create();
-    int count = 6;
-    char *ar[] = { "A", "B", "C", "D", "E", "F" };
-    int y;
-    for(y = 0; y < count; ++y) {
-        jnx_list_add_ts(j,ar[y]);
-    }
-    int x;
-    for(x = count - 1; x != 0; --x) {
-        char *current = jnx_list_remove_ts(&j);
-        assert(strcmp(current,ar[x]) == 0);
-    }
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-    jnx_list_destroy(&j);
-    assert(j == NULL);
+	JNX_LOGC(JLOG_DEBUG,"- test_list_sequence");
+	jnx_list *j = jnx_list_create();
+	int count = 6;
+	char *ar[] = { "A", "B", "C", "D", "E", "F" };
+	int y;
+	for(y = 0; y < count; ++y) {
+		jnx_list_add_ts(j,ar[y]);
+	}
+	int x;
+	for(x = count - 1; x != 0; --x) {
+		char *current = jnx_list_remove_ts(&j);
+		assert(strcmp(current,ar[x]) == 0);
+	}
+	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	jnx_list_destroy(&j);
+	assert(j == NULL);
 }
 void test_data_removal() {
-    JNX_LOGC(JLOG_DEBUG,"- test_data_removal");
-    char *test_string = "AABBCC";
-    jnx_list *list = jnx_list_create();
-    int count = 10;
-    int x;
-    for(x = 0; x < count; ++x) {
-        char *dynamic_string = malloc(strlen(test_string));
-        jnx_list_add_ts(list,dynamic_string);
-    }
-    char *ret;
-    while((ret = jnx_list_remove_ts(&list)) != NULL) {
-        free(ret);
-    }
-    jnx_list_destroy(&list);
-    assert(list == NULL);
-    jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	JNX_LOGC(JLOG_DEBUG,"- test_data_removal");
+	char *test_string = "AABBCC";
+	jnx_list *list = jnx_list_create();
+	int count = 10;
+	int x;
+	for(x = 0; x < count; ++x) {
+		char *dynamic_string = malloc(strlen(test_string));
+		jnx_list_add_ts(list,dynamic_string);
+	}
+	char *ret;
+	while((ret = jnx_list_remove_ts(&list)) != NULL) {
+		free(ret);
+	}
+	jnx_list_destroy(&list);
+	assert(list == NULL);
+	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_list_tail() {
-    jnx_list *l = jnx_list_create();
+	jnx_list *l = jnx_list_create();
 
-    int count = 3;
-    char *ar[] = { "A", "B", "C" };
-    int x;
-    for(x = 0; x < count; ++x) {
-        jnx_list_add_ts(l,ar[x]);
-    }
-    int c=count;
-    while(l->tail != NULL) {
+	int count = 3;
+	char *ar[] = { "A", "B", "C" };
+	int x;
+	for(x = 0; x < count; ++x) {
+		jnx_list_add_ts(l,ar[x]);
+	}
+	int c=count;
+	while(l->tail != NULL) {
 
-        assert(strcmp((char*)l->tail->_data,ar[c-1]) == 0);
-        --c;
-        l->tail = l->tail->prev_node;
-    }
+		assert(strcmp((char*)l->tail->_data,ar[c-1]) == 0);
+		--c;
+		l->tail = l->tail->prev_node;
+	}
 
-    jnx_list_destroy(&l);
+	jnx_list_destroy(&l);
 }
 int main(int args, char **argv) {
-    JNX_LOGC(JLOG_DEBUG,"Running list tests...\n");
-    test_list_creation();
-    test_data_removal();
-    test_list_index();
-    test_list_tail();
-    JNX_LOGC(JLOG_DEBUG,"List tests completed.\n");
-    return 0;
+	JNX_LOGC(JLOG_DEBUG,"Running list tests...\n");
+	test_list_creation();
+	test_data_removal();
+	test_list_index();
+	test_list_tail();
+	JNX_LOGC(JLOG_DEBUG,"List tests completed.\n");
+	return 0;
 }

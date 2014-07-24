@@ -1140,25 +1140,25 @@ void test_tree_level_1_add_and_remove() {
 	int i;
 	for ( i = 0; i < 10; i++ ) {
 		void *next = (void *)(guids[i]);
-//		printf("ADD -> %s\n", (char *)next);
+		//		printf("ADD -> %s\n", (char *)next);
 		jnx_btree_add(tree, next, next);		
 	}
 
 	jnx_list *keys = jnx_list_create();
 	jnx_btree_keys(tree, keys);
-    
+
 	while(keys->head) {
-        char *a_key = keys->head->_data;
-     
-	 	void *val = jnx_btree_lookup(tree, (void *) a_key);
-   		void *key_h;
+		char *a_key = keys->head->_data;
+
+		void *val = jnx_btree_lookup(tree, (void *) a_key);
+		void *key_h;
 		void *value_h;
 		jnx_btree_remove(tree, a_key, &key_h, &value_h);  
-//	    printf("REMOVE -> %s\n",(char*)(key_h));
+		//	    printf("REMOVE -> %s\n",(char*)(key_h));
 		keys->head = keys->head->next_node;
-    }
-    jnx_list_destroy(&keys);
-    jnx_btree_destroy(tree);
+	}
+	jnx_list_destroy(&keys);
+	jnx_btree_destroy(tree);
 
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }

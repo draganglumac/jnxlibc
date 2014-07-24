@@ -40,7 +40,7 @@ void local_slot2(jnx_signal *s) {
 void simple_test() {
 
 	JNX_LOGC(JLOG_DEBUG,"Simple signal slot test\n");
-	
+
 	jnx_signal *s = jnx_signal_create();
 	jnx_signal_connect(s,local_slot);
 	jnx_signal_connect(s,local_slot2);
@@ -65,11 +65,11 @@ void *simple_threaded_worker(void *args) {
 	return 0;
 }
 void simple_threaded_test() {
-	
+
 	JNX_LOGC(JLOG_DEBUG,"Simple thread signal slot test\n");
 	jnx_signal *s = jnx_signal_create();
 	jnx_signal *y = jnx_signal_create();
-	
+
 	jnx_signal_connect(s,local_slot);	
 	jnx_signal_connect(y,local_slot);
 
@@ -99,7 +99,7 @@ void dual_slot_test_callback1(jnx_signal *s) {
 	dual_slot1_cb_hit = 1;
 }
 void dual_slot_test() {
-	
+
 	JNX_LOGC(JLOG_DEBUG,"Dual slot tests\n");
 	jnx_signal *s = jnx_signal_create();
 	jnx_signal_connect(s,dual_slot_test_callback0);
@@ -115,9 +115,9 @@ int cross_thread_B = 0;
 void cross_thread_slot_callback(jnx_signal *s) {
 	int *d = (int*)s->data;
 	if(*d == 5) {
-			cross_thread_A = 1;
+		cross_thread_A = 1;
 	}else {
-			cross_thread_B = 1;
+		cross_thread_B = 1;
 	}
 }
 int cross_thread_lock_try = 0;

@@ -36,7 +36,7 @@ void *worker(void *args) {
 	return 0;
 }
 void *noise(void *args) {
-	
+
 	while(!stop) {
 		jnx_queue_pop_ts(queue);
 	}
@@ -69,5 +69,5 @@ int main(int argc, char **argv) {
 	JNX_LOGC(JLOG_DEBUG,"Running jnx_threading tests\n");
 	test_queue_push();
 
-    return 0;
+	return 0;
 }
