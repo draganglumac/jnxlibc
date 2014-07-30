@@ -28,7 +28,8 @@ size_t jnx_file_read(char* path, char **buffer,char *flags) {
   }
   size_t size = ftell(fp);
   rewind(fp);
-  (*buffer) = calloc(size, sizeof(char));
+  (*buffer) = calloc(size + 1, sizeof(char));
+  bzero((*buffer),size +1);
   fread((*buffer), 1, size, fp);
   fclose(fp);
   return size;
