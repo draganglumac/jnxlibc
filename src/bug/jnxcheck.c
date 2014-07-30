@@ -20,14 +20,14 @@
 #include <execinfo.h>
 #include <stdio.h>
 void jnxcheck_backtrace() {
-	void *array[MAXSTACKFRAMES];
-	size_t size;
-	char **strings;
-	size_t i;
-	size = backtrace (array, MAXSTACKFRAMES);
-	strings = backtrace_symbols (array, size);
-	JNX_LOGC(JLOG_CRITICAL,"Obtained %zd stack frames.\n", size);
-	for (i = 0; i < size; i++)
-		JNX_LOGC(JLOG_CRITICAL,"%s\n", strings[i]);
-	free (strings);
+  void *array[MAXSTACKFRAMES];
+  size_t size;
+  char **strings;
+  size_t i;
+  size = backtrace (array, MAXSTACKFRAMES);
+  strings = backtrace_symbols (array, size);
+  JNX_LOGC(JLOG_CRITICAL,"Obtained %zd stack frames.\n", size);
+  for (i = 0; i < size; i++)
+    JNX_LOGC(JLOG_CRITICAL,"%s\n", strings[i]);
+  free (strings);
 }

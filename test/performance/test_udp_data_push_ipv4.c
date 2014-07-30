@@ -33,66 +33,66 @@ ssize_t total_bytes = 0;
 jnx_encoder *en;
 
 void send_msg(char *buffer) {
-	jnx_socket *s = jnx_socket_udp_create(AF_INET);
-	jnx_socket_udp_send(s,"localhost","9090",buffer,strlen(buffer));
-	jnx_socket_destroy(&s);
+  jnx_socket *s = jnx_socket_udp_create(AF_INET);
+  jnx_socket_udp_send(s,"localhost","9090",buffer,strlen(buffer));
+  jnx_socket_destroy(&s);
 }
 
 void *run_sender() {
-	time_t st;
-	time(&st);
-	time_t ed;
-	int max_time = 5.0;
-	int current_time = 0.0;
+  time_t st;
+  time(&st);
+  time_t ed;
+  int max_time = 5.0;
+  int current_time = 0.0;
 
-	jnx_encoder *en = jnx_encoder_create();
-	char *obuffer;
-	size_t bytes_read = jnx_file_read(TESTASSET,&obuffer,"r");
-	size_t out;
-	uint8_t *msg = jnx_encoder_b64_encode(en,obuffer,bytes_read + 1,&out);
-	while(current_time < max_time) {
-		send_msg(msg);
-		time(&ed);
-		current_time = (ed - st);
-	}
-	return 0;
+  jnx_encoder *en = jnx_encoder_create();
+  char *obuffer;
+  size_t bytes_read = jnx_file_read(TESTASSET,&obuffer,"r");
+  size_t out;
+  uint8_t *msg = jnx_encoder_b64_encode(en,obuffer,bytes_read + 1,&out);
+  while(current_time < max_time) {
+    send_msg(msg);
+    time(&ed);
+    current_time = (ed - st);
+  }
+  return 0;
 }
 int callback(uint8_t *msg, size_t bytesread, jnx_socket *s) {
-	size_t out;
-	uint8_t *m = jnx_encoder_b64_decode(en,msg,bytesread,&out);
-	char buffer[1024 * 65];	
-	bzero(buffer,1024 * 65);
-	sprintf(buffer,SAVEDEFINITION,count);
-	total_bytes += jnx_file_write(buffer,m,bytesread,"w");
-	++count;
-	free(m);
-	free(msg);
-	return 0;
+  size_t out;
+  uint8_t *m = jnx_encoder_b64_decode(en,msg,bytesread,&out);
+  char buffer[1024 * 65];	
+  bzero(buffer,1024 * 65);
+  sprintf(buffer,SAVEDEFINITION,count);
+  total_bytes += jnx_file_write(buffer,m,bytesread,"w");
+  ++count;
+  free(m);
+  free(msg);
+  return 0;
 }
 void *run_listener(void *args) {
-	en = jnx_encoder_create();
-	jnx_socket *listener = jnx_socket_udp_create(AF_INET);
-	jnx_socket_udp_listen(listener,"9090",100,callback);
-	return 0;
+  en = jnx_encoder_create();
+  jnx_socket *listener = jnx_socket_udp_create(AF_INET);
+  jnx_socket_udp_listen(listener,"9090",100,callback);
+  return 0;
 }
 int main(int argc, char **argv) {
-	time_t st;
-	time(&st);
-	time_t ed;
-	int max_time = 5;
-	
-	int current_time =0;
-	jnx_thread_create_disposable(run_listener,NULL);	
-	jnx_thread_create_disposable(run_sender,NULL);	
-	while(current_time < max_time) {
-		time(&ed);
+  time_t st;
+  time(&st);
+  time_t ed;
+  int max_time = 5;
 
-		current_time = (ed - st);
-	}
+  int current_time =0;
+  jnx_thread_create_disposable(run_listener,NULL);	
+  jnx_thread_create_disposable(run_sender,NULL);	
+  while(current_time < max_time) {
+    time(&ed);
 
-	do { total_bytes /= 1024;} 
-	while(total_bytes > 1024);
+    current_time = (ed - st);
+  }
 
-	JNX_LOGC(JLOG_NORMAL,"UDP - Received and saved an average of %zuMB per second total %d messages\n",(total_bytes / max_time),count);
-	return 0;
+  do { total_bytes /= 1024;} 
+  while(total_bytes > 1024);
+
+  JNX_LOGC(JLOG_NORMAL,"UDP - Received and saved an average of %zuMB per second total %d messages\n",(total_bytes / max_time),count);
+  return 0;
 }

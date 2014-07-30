@@ -23,23 +23,23 @@
 #include <stdio.h>
 int main(int argc, char **argv) { 
 
-	JNX_LOGC(JLOG_DEBUG,"Running Queue tests:");	
-	jnx_queue *q = jnx_queue_create();
+  JNX_LOGC(JLOG_DEBUG,"Running Queue tests:");	
+  jnx_queue *q = jnx_queue_create();
 
-	char *ar[5] = { "A", "B", "C", "D", "E" };
+  char *ar[5] = { "A", "B", "C", "D", "E" };
 
-	int x;
-	for(x = 0; x < 5;++x) {
-		jnx_queue_push(q,ar[x]);
-	}
-	for(x=5 ;x > 0; --x) {
-		char *r = jnx_queue_pop(q);
-		assert(jnx_queue_count(q) == (x-1));
-	}
+  int x;
+  for(x = 0; x < 5;++x) {
+    jnx_queue_push(q,ar[x]);
+  }
+  for(x=5 ;x > 0; --x) {
+    char *r = jnx_queue_pop(q);
+    assert(jnx_queue_count(q) == (x-1));
+  }
 
-	jnx_queue_destroy(&q);
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  jnx_queue_destroy(&q);
+  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 
-	JNX_LOGC(JLOG_DEBUG,"Queue tests completed\n");
-	return 0;
+  JNX_LOGC(JLOG_DEBUG,"Queue tests completed\n");
+  return 0;
 }
