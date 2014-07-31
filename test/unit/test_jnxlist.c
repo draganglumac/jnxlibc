@@ -100,12 +100,27 @@ void test_list_tail() {
 
   jnx_list_destroy(&l);
 }
+void test_removal_front() {
+  JNX_LOGC(JLOG_DEBUG,"- test_removal_front\n");
+  jnx_list *l = jnx_list_create();
+  int count = 3;
+  char *ar[] = { "A", "B", "C" };
+  int x;
+  for(x = 0; x < count; ++x) {
+    jnx_list_add(l,ar[x]);
+  }
+  assert(l->counter == 3);
+  void *data = jnx_list_remove_front(&l);
+  assert(strcmp(data,"A") == 0);
+  assert(l->counter == 2);
+}
 int main(int args, char **argv) {
   JNX_LOGC(JLOG_DEBUG,"Running list tests...\n");
   test_list_creation();
   test_data_removal();
   test_list_index();
   test_list_tail();
+  test_removal_front();
   JNX_LOGC(JLOG_DEBUG,"List tests completed.\n");
   return 0;
 }

@@ -41,15 +41,23 @@ extern		"C" {
   void jnx_list_add(jnx_list * A, void *_datain);
 
   void jnx_list_add_ts(jnx_list * A, void *_datain);
-  /** @fn jnx_list_remove(jnx_list *A)
+  /** @fn jnx_list_remove(jnx_list **A)
    *  @brief Removes the structure from list but returns the data for the user to handle
    *  @param A is a pointer to the pointer of the list to remove the last link of
-   *  @return void* to the data from the last link
+   *  @return void* to data, NULL on failure or end of list
    */
   void *jnx_list_remove(jnx_list ** A);
 
   void *jnx_list_remove_ts(jnx_list ** A);
 
+  /** @fn jnx_list_remove_front(jnx_list **A)
+   *  @brief removes jnx_node structure from the list and returns data to the user
+   *  @param A is a pointe rot pointer of the list to remove the first link of
+   *  @return void* to data, NULL on failure or end of list
+   */
+  void *jnx_list_remove_front(jnx_list ** A);
+
+  void *jnx_list_remove_front_ts(jnx_list ** A);
   /** @fn jnx_list_size(jnx_list *A)
    *  @param A is the target list
    *  @return the number of elements in the list

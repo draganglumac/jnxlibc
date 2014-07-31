@@ -99,6 +99,33 @@ void* jnx_list_remove_ts(jnx_list** A) {
   jnx_thread_unlock(l->internal_lock);
   return ret;
 }
+
+void *jnx_list_remove_front(jnx_list ** A) {
+  if((*A)->head == NULL) {
+    return NULL;
+  }
+  if((*A)->head->next_node == NULL) {
+    void *data = (*A)->head->_data; 
+    free((*A)->head);
+    (*A)->head = NULL;
+    (*A)->counter =0;
+    return data;
+  }
+  void *data = (*A)->head->_data;
+  free((*A)->head);
+  jnx_node *next = (*A)->head->next_node;
+  next->prev_node = NULL;
+  (*A)->head = next;
+  (*A)->counter--;
+  return data;
+}
+void *jnx_list_remove_front_ts(jnx_list ** A) {
+  jnx_list *l = *A;
+  jnx_thread_lock(l->internal_lock);
+  void *ret = jnx_list_remove_front(A);
+  jnx_thread_unlock(l->internal_lock);
+  return ret;
+}
 size_t jnx_list_count(jnx_list *A) {
   size_t count = A->counter;
   return count;
