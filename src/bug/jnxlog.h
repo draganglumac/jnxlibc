@@ -13,7 +13,6 @@ extern "C" {
 
 #define MAX_LOG_SIZE 2048
 #define MAX_ARG_SIZE 1024
-
   typedef enum JNX_LOG_LEVEL{ 
     JLOG_CRITICAL,
     JLOG_ALERT,
@@ -33,7 +32,7 @@ extern "C" {
    *@macro JNX_LOGC
    *@brief log to console
    */
-#if !defined(RELEASE)
+#if !defined(NDEBUG)
 #define JNX_LOGC(LEVEL,X, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)		
   /**
    * @fn jnx_log(const char *format, ...)
