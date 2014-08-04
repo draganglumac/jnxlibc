@@ -40,7 +40,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 ###Dependencies
 	- GCC
 	- CMake
-
+        - pthread library (included on OS/X and Linux)
 Currently supported platforms:
 Linux distributions/OS X
 
