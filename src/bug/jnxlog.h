@@ -33,6 +33,7 @@ extern "C" {
    *@macro JNX_LOGC
    *@brief log to console
    */
+#if !defined(RELEASE)
 #define JNX_LOGC(LEVEL,X, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)		
   /**
    * @fn jnx_log(const char *format, ...)
@@ -45,6 +46,9 @@ extern "C" {
    * @param ... optional arguments for insertion into formatted string
    * @return size_t of byte length of log entry
    */
+#else
+#define JNX_LOGC(LEVEL,X,...)
+#endif
   size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const int line,const char *format,...);
 
 #ifdef __cplusplus
