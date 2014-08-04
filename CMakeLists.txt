@@ -26,7 +26,7 @@ include_directories(${PROJECT_INC_DIR}src/sig)
 include_directories(${PROJECT_INC_DIR}src/sys)
 include_directories(${PROJECT_INC_DIR}src/thr)
 
-set(CMAKE_C_FLAGS "-Wall -fPIC")
+set(CMAKE_C_FLAGS "-Wall -fPIC -pthread")
 set(CMAKE_C_FLAGS_DEBUG "-g -rdynamic")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
 
@@ -37,7 +37,6 @@ ENDIF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
 add_library(jnxlibc_core OBJECT ${ALG_SRC} ${BUG_SRC} ${DAT_SRC} ${IO_SRC} ${IPC_SRC} ${NET_SRC} ${SIG_SRC} ${SYS_SRC} ${THR_SRC})
 add_library (jnxcs STATIC $<TARGET_OBJECTS:jnxlibc_core>)
 add_library (jnxc SHARED $<TARGET_OBJECTS:jnxlibc_core>)
-
 install(TARGETS jnxcs DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 install(TARGETS jnxc DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 install(DIRECTORY jnxc_headers DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
