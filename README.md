@@ -28,6 +28,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 - Fast and easy base64 encoding/decoding
 - Auto generated documentation and logical API
 - Almost total test coverage (Unit tests/ Performance tests)
+- Armv7 framework version available [Here](https://github.com/AlexsJones/jnxlibc_ios)
 
 #Documentation & Examples
 
