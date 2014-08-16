@@ -1,11 +1,16 @@
-![jnx Icon](http://i.imgur.com/w6M1lJP.png) 
+
  jnxlibc
 =======
-[![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
+[![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master)](https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master)
+[![License](http://img.shields.io/badge/license-GPLv3-green.svg)](http://img.shields.io/badge/license-GPLv3-green.svg)
+[![Dev](http://img.shields.io/badge/development-active-green.svg)](http://img.shields.io/badge/development-active-green.svg)
 
-[Test Driven](setup/test) C library for reliable networking, data structures and utility functionality.
+Status: Active development (Stable)
 
-Constantly in development to hone and refine code; acknowledging a need for consistant and tested public API's.
+####Purpose
+
+A modern C library that provides a useful self contained API that has built in testing and just works.
+Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library and tool for learning.
 
 ####For a solid snapshot of the library check out the releases
 https://github.com/AlexsJones/jnxlibc/releases
@@ -15,7 +20,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 - Lightweight data structures with thread-safe API (hash, list, vector, btree, stack, queue) 
 - Socket implmentation supporting multiple transport and IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP & UDP
 - Network utilities (get IP from hostname, resolve hostname from IP, interface to IP)
-- Threading interface above POSIX
+- Threading interface above POSIX (Ambition to extend x-platform)
 - Signals & Slots
 - Interprocess communication
 - Verbose terminal logging
@@ -23,6 +28,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 - Fast and easy base64 encoding/decoding
 - Auto generated documentation and logical API
 - Almost total test coverage (Unit tests/ Performance tests)
+- Armv7 framework version available [Here](https://github.com/AlexsJones/jnxlibc_ios)
 
 #Documentation & Examples
 
@@ -37,7 +43,7 @@ https://github.com/AlexsJones/jnxlibc/releases
 ###Dependencies
 	- GCC
 	- CMake
-
+        - pthread library (included on OS/X and Linux)
 Currently supported platforms:
 Linux distributions/OS X
 
