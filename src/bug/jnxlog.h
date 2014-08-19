@@ -38,8 +38,10 @@ extern "C" {
 
 #define JNX_LOG(CONFIG,FORMATTER, ...) jnx_log(CONFIG,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__); 
 
+#define JNX_LOG_CREATE(PATH,OUTPUT) jnx_log_create(PATH,OUTPUT);
+
   jnx_log_config* jnx_log_create(const char *path,jnx_log_type output);
-  
+
   size_t jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...);
 
 #ifdef __cplusplus
