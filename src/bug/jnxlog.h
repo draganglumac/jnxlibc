@@ -24,7 +24,7 @@ extern "C" {
   typedef enum jnx_log_type {
     CONSOLETYPE,
     FILETYPE
-  }jnx_log_type;
+  } jnx_log_type;
 
   typedef struct jnx_log_config{
     const char *log_path;
@@ -33,7 +33,7 @@ extern "C" {
     time_t pstart;
     time_t pend;
     double pcurrent;
-  }jnx_log_config;
+  } jnx_log_config;
 
 
 #define JNX_LOG(CONFIG,FORMATTER, ...) jnx_log(CONFIG,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__); 

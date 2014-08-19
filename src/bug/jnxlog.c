@@ -30,7 +30,7 @@ jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){
   jnx_log_config *conf = malloc(sizeof(jnx_log_config));
   conf->disable_newline = 0;
   conf->output = output;
-  time(&(*conf).pstart);
+  time(&(conf->pstart));
   conf->pcurrent = 0;
   return conf;
 }
@@ -60,7 +60,7 @@ size_t jnx_log(jnx_log_config *config, const char *file, const char *function,co
       printf(config->disable_newline ? "%s" : "%s\n",buffer);
       break;
   }
-  time(&(*conf).pend);
-  conf->pcurrent = (conf->pend - conf->pstart);
+  time(&(config->pend));
+  config->pcurrent = (config->pend - config->pstart);
   return strlen(buffer);
 }
