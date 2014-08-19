@@ -83,14 +83,14 @@ void test_hash_deletion() {
   jnx_hash_destroy(&testhash);
 }
 int main(int argc, char **argv) {
-  JNX_LOGC(JLOG_DEBUG,"Running test for jnxhash\n");
-  JNX_LOGC(JLOG_DEBUG,"- test_key_deletion: ");
+  printf("Running test for jnxhash\n");
+  printf("- test_key_deletion: ");
   test_key_deletion();
   jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
-  JNX_LOGC(JLOG_DEBUG,"- test_hash_deletion: ");
+  printf("- test_hash_deletion: ");
   test_hash_deletion();
   jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
-  JNX_LOGC(JLOG_DEBUG,"- test_hash_get_keys: ");
+  printf("- test_hash_get_keys: ");
   test_hash_get_keys();
   jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
   return 0;

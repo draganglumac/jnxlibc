@@ -64,14 +64,14 @@ void test_jnx_dir() {
   free(path);
 }
 int main(int args, char **argv) {
-  JNX_LOGC(JLOG_DEBUG,"Running file tests...\n");
-  JNX_LOGC(JLOG_DEBUG,"- test recursive delete");
+  printf("Running file tests...\n");
+  printf("- test recursive delete");
   test_recursive_delete();
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-  JNX_LOGC(JLOG_DEBUG,"- test file read");
+  printf("- test file read");
   test_jnx_file();
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-  JNX_LOGC(JLOG_DEBUG,"- test temp directory");
+  printf("- test temp directory");
   test_jnx_dir();
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
   return 0;

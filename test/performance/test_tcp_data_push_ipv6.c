@@ -93,6 +93,6 @@ int main(int argc, char **argv) {
   do { total_bytes /= 1024;} 
   while(total_bytes > 1024);
 
-  JNX_LOGC(JLOG_NORMAL,"TCP/IP - Received and saved an average of %zuMB per second total %d messages\n",(total_bytes / max_time),count);
+  printf("TCP/IP - Received and saved an average of %zuMB per second total %d messages\n",(total_bytes / max_time),count);
   return 0;
 }

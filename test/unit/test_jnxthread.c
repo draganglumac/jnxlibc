@@ -62,11 +62,11 @@ void test_queue_push() {
   while(counter < y && current_time < max_time) {
   }
   assert(current_time < max_time);
-  JNX_LOGC(JLOG_DEBUG,"Queue length %d\n",queue->list->counter);
+  printf("Queue length %d\n",queue->list->counter);
 }
 int main(int argc, char **argv) {
 
-  JNX_LOGC(JLOG_DEBUG,"Running jnx_threading tests\n");
+  printf("Running jnx_threading tests\n");
   test_queue_push();
 
   return 0;

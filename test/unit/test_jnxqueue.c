@@ -23,7 +23,7 @@
 #include <stdio.h>
 int main(int argc, char **argv) { 
 
-  JNX_LOGC(JLOG_DEBUG,"Running Queue tests:");	
+  printf("Running Queue tests:");	
   jnx_queue *q = jnx_queue_create();
 
   char *ar[5] = { "A", "B", "C", "D", "E" };
@@ -40,6 +40,6 @@ int main(int argc, char **argv) {
   jnx_queue_destroy(&q);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 
-  JNX_LOGC(JLOG_DEBUG,"Queue tests completed\n");
+  printf("Queue tests completed\n");
   return 0;
 }

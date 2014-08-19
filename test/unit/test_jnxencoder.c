@@ -40,7 +40,7 @@ size_t str_to_hex(char* s,char **out)
 }
 int main(int argc, char **argv) {
 
-  JNX_LOGC(JLOG_DEBUG,"Running test for jnxencoder\n");
+  printf("Running test for jnxencoder\n");
 
   jnx_encoder *e = jnx_encoder_create();
 
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
     char *encoded_test = jnx_encoder_b64_encode(e,binary_str,blen,&test_len);
     size_t decode_len;
     char *decoded_test = jnx_encoder_b64_decode(e,encoded_test,test_len,&decode_len);
-    JNX_LOGC(JLOG_DEBUG,"Base64 encoding [%s] into hex --> [%s] into b64 --> [%s]\n",test[x],binary_str,encoded_test);
+    printf("Base64 encoding [%s] into hex --> [%s] into b64 --> [%s]\n",test[x],binary_str,encoded_test);
     JNXCHECK(strcmp(decoded_test,binary_str) == 0);
     free(encoded_test);
 

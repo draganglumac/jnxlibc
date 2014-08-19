@@ -23,11 +23,8 @@
 #include "jnxlog.h"
 #include "jnxterm.h"
 int main(int args, char **argv) {
-  JNX_LOGC(JLOG_DEBUG,"Running test for jnxlog");
+  printf("Running test for jnxlog");
 
-  size_t bytes_out = jnx_log(JLOG_NORMAL,__FILE__,__FUNCTION__,__LINE__,"This is a log message\n");
-
-  assert(bytes_out > 0);
 
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
   return 0;

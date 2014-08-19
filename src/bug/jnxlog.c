@@ -1,87 +1,63 @@
 /*
  * =====================================================================================
  *
- *       Filename:  jnx_log.c
+ *       Filename:  jnxlog.c
  *
- *    Description:
+ *    Description:  
  *
  *        Version:  1.0
- *        Created:  02/20/13 10:17:02
+ *        Created:  18/08/2014 18:34:40
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  Alex Jones (alexsimonjones@gmail.com),
- *   Organization:
+ *         Author:  YOUR NAME (), 
+ *   Organization:  
  *
  * =====================================================================================
  */
-#include <sys/file.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "jnxlog.h"
-#include "jnxcheck.h"
-#include "jnxthread.h"
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <stdio.h>
-#include <time.h>
 #include <unistd.h>
-char* jnx_get_time() {
-  time_t t;
-  char *buf;
-  time(&t);
-  buf = (char*)malloc(strlen(ctime(&t)) +1);
-  snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
-  return buf;
+#include <stdarg.h>
+#include "jnxlog.h"
+#include "jnxcheck.h"
+#include "jnxfile.h"
+
+jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){  
+  jnx_log_config *conf = malloc(sizeof(jnx_log_config));
+  conf->disable_newline = 0;
+  conf->output = output;
+
+  return conf;
 }
-size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const int line,const char *format,...)
-{    
+size_t jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...){
+  JNXCHECK(config);
   JNXCHECK(file);
   JNXCHECK(function);
-  if((strlen(format) *sizeof(const char)) > MAX_LOG_SIZE) {
-    JNX_LOGC(JLOG_ALERT,"Exceeding max log length - truncating data\n");
-  }
-  char output[MAX_LOG_SIZE];
-  char buffer[MAX_ARG_SIZE];
-  char tempbuff[MAX_LOG_SIZE];
-  bzero(tempbuff,MAX_LOG_SIZE);
-  bzero(buffer,MAX_ARG_SIZE);
-  bzero(output,MAX_LOG_SIZE);
-  char *_time = jnx_get_time();
-  char *warning_level = NULL;
-  switch(level) {
-    case JLOG_CRITICAL:
-      warning_level = JCRITICAL;
-      break;
-    case JLOG_ALERT:
-      warning_level = JALERT;
-      break;
-    case JLOG_CAUTION:
-      warning_level = JCAUTION;
-      break;
-    case JLOG_NOTICE:
-      warning_level = JNOTICE;
-      break;
-    case JLOG_DEBUG:
-      warning_level = JDEBUG;
-      break;
-    case JLOG_NORMAL:
-      warning_level = JNORMAL;
-      break;
-    default:
-      warning_level = JNORMAL;
-  }	
-  sprintf(tempbuff,LOGTEMPLATE,_time,warning_level,file,function,line);
-  strcpy(output,tempbuff);	
+  JNXCHECK(format);
+  size_t MAX_SIZE = 2048;
+  char buffer[MAX_SIZE];
+  char msgbuffer[MAX_SIZE];
+
+  memset(msgbuffer,0,MAX_SIZE);
   va_list ap;
   va_start(ap,format);
-  vsprintf(buffer,format,ap);
+  vsprintf(msgbuffer,format,ap);
   va_end(ap);
-  strcat(output,buffer);
-  free(_time);
-  size_t bytec = 0;
-  bytec = strlen(output);
-  printf("%s",output);
-  return bytec;
-}
 
+  memset(buffer,0,MAX_SIZE);
+  sprintf(buffer,"[%s][%s:%d]%s",file,function,line,msgbuffer);
+  switch(config->output) {
+    case FILETYPE:
+      JNXCHECK(config->log_path);
+      jnx_file_write((char*)config->log_path ? (char*)config->log_path : "default.log",buffer,strlen(buffer),"w+");
+      break;
+    case CONSOLETYPE:
+      printf(config->disable_newline ? "%s" : "%s\n",buffer);
+      break;
+  }
+  return strlen(buffer);
+}

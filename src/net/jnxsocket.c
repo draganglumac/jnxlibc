@@ -289,7 +289,7 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
   size_t tbytes = 0;
   size_t rbytes = msg_len;
   if(rbytes > MAX_UDP_BUFFER) {
-    JNX_LOGC(JLOG_ALERT,"Message exceeds max UDP packet size\n");
+    printf("Message exceeds max UDP packet size\n");
     freeaddrinfo(res);
     return 0;
   }
@@ -343,7 +343,7 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
     socklen_t addr_size = sizeof(their_addr);
     int recfd = accept(s->socket,(struct sockaddr*)&their_addr,&addr_size);
     if(recfd < 0) {
-      JNX_LOGC(JLOG_ALERT,"accept: %s",strerror(errno));
+      printf("accept: %s",strerror(errno));
       perror("accept:");
       return -1;
     }

@@ -1,54 +1,46 @@
-/**
- * @file jnxlog.h
- * @brief Simple logger that allows program output to be captured to file. It allows one log file per process only.
+/*
+ * =====================================================================================
  *
- * #include <jnxc_headers/jnxlog.h>
+ *       Filename:  jnxlog.h
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  18/08/2014 18:23:34
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  YOUR NAME (), 
+ *   Organization:  
+ *
+ * =====================================================================================
  */
-#ifndef __JNX_LOG_H__
-#define __JNX_LOG_H__
-#include <stdarg.h>
+#ifndef __JNXLOG_H__
+#define __JNXLOG_H__
+#include <time.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
+  typedef enum jnx_log_type {
+    CONSOLETYPE,
+    FILETYPE
+  }jnx_log_type;
 
-#define MAX_LOG_SIZE 2048
-#define MAX_ARG_SIZE 1024
-  typedef enum JNX_LOG_LEVEL{ 
-    JLOG_CRITICAL,
-    JLOG_ALERT,
-    JLOG_CAUTION,
-    JLOG_NOTICE,
-    JLOG_DEBUG,
-    JLOG_NORMAL
-  } JNX_LOG_LEVEL;
-#define LOGTEMPLATE "[%s][%s][%s:%s:%d]"
-#define JCRITICAL "CRITICAL"
-#define JALERT "ALERT"
-#define JCAUTION "CAUTION"
-#define JNOTICE "NOTICE"
-#define JDEBUG "DEBUG"
-#define JNORMAL "NORMAL"
-  /**
-   *@macro JNX_LOGC
-   *@brief log to console
-   */
-#if !defined(NDEBUG)
-#define JNX_LOGC(LEVEL,X, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)		
-  /**
-   * @fn jnx_log(const char *format, ...)
-   *
-   * @brief Call this function to log a formatted string to your log file.
-   *			You pass it a format string and optional arguments to match
-   *			the format rules of printf.
-   *
-   * @param format Log formatted string, same format as printf.
-   * @param ... optional arguments for insertion into formatted string
-   * @return size_t of byte length of log entry
-   */
-#else
-#define JNX_LOGC(LEVEL,X,...)
-#endif
-  size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const int line,const char *format,...);
+  typedef struct jnx_log_config{
+    const char *log_path;
+    jnx_log_type output;
+    int disable_newline;
+    time_t pstart;
+    time_t pend;
+    double pcurrent;
+  }jnx_log_config;
+
+
+#define JNX_LOG(CONFIG,FORMATTER, ...) jnx_log(CONFIG,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__); 
+
+  jnx_log_config* jnx_log_create(const char *path,jnx_log_type output);
+  
+  size_t jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...);
 
 #ifdef __cplusplus
 }

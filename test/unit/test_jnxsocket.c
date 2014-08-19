@@ -23,7 +23,7 @@
 #include <assert.h>
 #include <pthread.h>
 void test_create() {
-  JNX_LOGC(JLOG_DEBUG,"Test creation of socket\n");
+  printf("Test creation of socket\n");
   jnx_socket *a = jnx_socket_tcp_create(AF_INET);
   assert(a);
   jnx_socket *b = jnx_socket_tcp_create(AF_INET6);
@@ -61,7 +61,7 @@ void *test_tcp_listen_ipv4(void *args) {
   return 0;
 }
 void setup_tcp_listen_ipv4_test() {
-  JNX_LOGC(JLOG_DEBUG,"Starting TCP IPV4 test\n");
+  printf("Starting TCP IPV4 test\n");
   pthread_t worker;
   pthread_create(&worker,NULL,test_tcp_listen_ipv4,NULL);
 
@@ -96,7 +96,7 @@ void *test_tcp_listen_ipv6(void *args) {
   return 0;
 }
 void setup_tcp_listen_ipv6_test() {
-  JNX_LOGC(JLOG_DEBUG,"Starting TCP IPV6 test\n");
+  printf("Starting TCP IPV6 test\n");
   pthread_t worker;
   pthread_create(&worker,NULL,test_tcp_listen_ipv6,NULL);
 
@@ -136,7 +136,7 @@ void *test_udp_listen_ipv4(void *args) {
   return 0;
 }
 void setup_udp_listen_ipv4_test() {
-  JNX_LOGC(JLOG_DEBUG,"Starting UDP IPV4 test\n");
+  printf("Starting UDP IPV4 test\n");
   pthread_t worker;
   pthread_create(&worker,NULL,test_udp_listen_ipv4,NULL);
 
@@ -170,7 +170,7 @@ void *test_udp_listen_ipv6(void *args) {
   return 0;
 }
 void setup_udp_listen_ipv6_test() {
-  JNX_LOGC(JLOG_DEBUG,"Starting UDP IPV6 test\n");
+  printf("Starting UDP IPV6 test\n");
   pthread_t worker;
   pthread_create(&worker,NULL,test_udp_listen_ipv6,NULL);
 
@@ -193,7 +193,7 @@ void setup_udp_listen_ipv6_test() {
   jnx_socket_destroy(&udp_ipv6_listener);
 }
 int main(int argc, char **argv) {
-  JNX_LOGC(JLOG_DEBUG,"Starting network tests\n");
+  printf("Starting network tests\n");
   test_create();
   setup_tcp_listen_ipv4_test();
   setup_tcp_listen_ipv6_test();
