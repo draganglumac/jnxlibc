@@ -72,6 +72,8 @@ size_t jnx_log(jnx_log_config *config, const char *file, const char *function,co
 }
 void jnx_log_destroy(jnx_log_config **config){
   JNXCHECK(*config);
+  free((*config)->pstart);
+  free((*config)->pend);
   free(*config);
   *config = NULL;
 }
