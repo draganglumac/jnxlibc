@@ -50,7 +50,7 @@ size_t jnx_log(jnx_log_config *config, const char *file, const char *function,co
   va_end(ap);
 
   memset(buffer,0,MAX_SIZE);
-  sprintf(buffer,"[%s][%s:%d]%s",file,function,line,msgbuffer);
+  sprintf(buffer,"[%s][%s:%d][t:%f]%s",file,function,line,config->pcurrent,msgbuffer);
   switch(config->output) {
     case FILETYPE:
       JNXCHECK(config->log_path);
