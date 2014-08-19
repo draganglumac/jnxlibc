@@ -27,12 +27,7 @@ int main(int args, char **argv) {
   printf("Running test for jnxlog");
 
   JNX_LOG_CONTEXT(context) = JNX_LOG_CREATE(NULL,CONSOLETYPE);
-  JNX_LOG_SWITCH_OUTPUT(context,FILETYPE);
 
-  JNX_LOG_SWITCH_OUTPUT(context,"log.output");
-  JNX_LOG(context,"File test!");
-  
-  JNX_LOG_SWITCH_OUTPUT(context,CONSOLETYPE);
   int n;
   for(n = 0; n < 5; ++n) {
     size_t t = JNX_LOG(context,"Test message %d",n);

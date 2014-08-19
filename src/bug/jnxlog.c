@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -29,9 +30,10 @@
 jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){  
   jnx_log_config *conf = malloc(sizeof(jnx_log_config));
   conf->log_path = path;
-  conf->disable_newline = 0;
   conf->output = output;
-  time(&(conf->pstart));
+  conf->pstart = malloc(sizeof(struct timeval));
+  conf->pend = malloc(sizeof(struct timeval));
+  gettimeofday(conf->pstart,NULL);
   conf->pcurrent = 0;
   return conf;
 }
@@ -51,18 +53,21 @@ size_t jnx_log(jnx_log_config *config, const char *file, const char *function,co
   va_end(ap);
 
   memset(buffer,0,MAX_SIZE);
-  sprintf(buffer,"[%s][%s:%d][t:%f]%s",file,function,line,config->pcurrent,msgbuffer);
+  sprintf(buffer,"[%s][%s:%d][t:%f]%s\n",file,function,line,config->pcurrent,msgbuffer);
   switch(config->output) {
     case FILETYPE:
       JNXCHECK(config->log_path);
-      jnx_file_write((char*)config->log_path ? (char*)config->log_path : "default.log",buffer,strlen(buffer),"w+");
+      jnx_file_write((char*)config->log_path ? (char*)config->log_path : "default.log",buffer,strlen(buffer),"a");
       break;
     case CONSOLETYPE:
-      printf(config->disable_newline ? "%s" : "%s\n",buffer);
+      printf("%s",buffer);
       break;
   }
-  time(&(config->pend));
-  config->pcurrent = (config->pend - config->pstart);
+  gettimeofday(config->pend,NULL);
+
+  double elapsed_time = ((*config->pend).tv_sec - (*config->pstart).tv_sec) * 1000.0;
+  elapsed_time += ((*config->pend).tv_usec - (*config->pstart).tv_usec) / 1000.0;
+  config->pcurrent = elapsed_time;
   return strlen(buffer);
 }
 void jnx_log_destroy(jnx_log_config **config){

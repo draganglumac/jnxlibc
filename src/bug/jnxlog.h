@@ -29,9 +29,8 @@ extern "C" {
   typedef struct jnx_log_config{
     const char *log_path;
     jnx_log_type output;
-    int disable_newline;
-    time_t pstart;
-    time_t pend;
+    struct timeval *pstart;
+    struct timeval *pend;
     double pcurrent;
   } jnx_log_config;
 
@@ -50,10 +49,6 @@ extern "C" {
 
 #define JNX_LOG_DESTROY(X) jnx_log_destroy(X);
 
-#define JNX_LOG_SWITCH_OUTPUT(CONFIG,LOG_TYPE) \
-  CONFIG->output=LOG_TYPE;
-#define JNX_LOG_SWITCH_LOG_PATH(CONFIG,PATH) \
-  CONFIG->log_path=PATH;
 #ifdef __cplusplus
 }
 #endif
