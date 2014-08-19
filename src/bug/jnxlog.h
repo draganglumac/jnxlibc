@@ -35,6 +35,12 @@ extern "C" {
     double pcurrent;
   } jnx_log_config;
 
+  jnx_log_config* jnx_log_create(const char *path,jnx_log_type output);
+
+  void jnx_log_destroy(jnx_log_config **config);
+
+  size_t jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...);
+
 #define JNX_LOG_CONTEXT(X) \
   jnx_log_config *X
 
@@ -42,10 +48,12 @@ extern "C" {
 
 #define JNX_LOG_CREATE(PATH,OUTPUT) jnx_log_create(PATH,OUTPUT);
 
-  jnx_log_config* jnx_log_create(const char *path,jnx_log_type output);
+#define JNX_LOG_DESTROY(X) jnx_log_destroy(X);
 
-  size_t jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...);
-
+#define JNX_LOG_SWITCH_OUTPUT(CONFIG,LOG_TYPE) \
+  CONFIG->output=LOG_TYPE;
+#define JNX_LOG_SWITCH_LOG_PATH(CONFIG,PATH) \
+  CONFIG->log_path=PATH;
 #ifdef __cplusplus
 }
 #endif
