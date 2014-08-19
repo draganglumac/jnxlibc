@@ -26,7 +26,7 @@
 int main(int args, char **argv) {
   printf("Running test for jnxlog");
 
-  jnx_log_config *conf = JNX_LOG_CREATE(NULL,CONSOLETYPE);
+  JNX_LOG_CONTEXT(conf) = JNX_LOG_CREATE(NULL,CONSOLETYPE);
 
   int n;
   for(n = 0; n < 5; ++n) {

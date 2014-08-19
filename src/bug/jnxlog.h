@@ -35,6 +35,9 @@ extern "C" {
     double pcurrent;
   } jnx_log_config;
 
+#define JNX_LOG_CONTEXT(X) \
+  jnx_log_config *X
+
 #define JNX_LOG(CONFIG,FORMATTER, ...) jnx_log(CONFIG,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__); 
 
 #define JNX_LOG_CREATE(PATH,OUTPUT) jnx_log_create(PATH,OUTPUT);
