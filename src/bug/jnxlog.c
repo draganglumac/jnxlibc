@@ -44,19 +44,23 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
   size_t MAX_SIZE = 2048;
   char buffer[MAX_SIZE];
   char msgbuffer[MAX_SIZE];
-
+  memset(buffer,0,MAX_SIZE);
   memset(msgbuffer,0,MAX_SIZE);
   va_list ap;
   va_start(ap,format);
   vsprintf(msgbuffer,format,ap);
   va_end(ap);
-
-  memset(buffer,0,MAX_SIZE);
-  sprintf(buffer,"[%s][%s:%d][t:%f]%s\n",file,function,line,config ? config->pcurrent : 0,msgbuffer);
   if(!config) {
-      printf("%s",buffer);
-      return;
+    time_t ptime;
+    time(&ptime);
+    char pbuffer[256];
+    sprintf(pbuffer,"%s",ctime(&ptime));
+    pbuffer[strlen(pbuffer)-1] = '\0';
+    sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",file,function,line,pbuffer, msgbuffer);
+    printf("%s",buffer);
+    return;
   }
+  sprintf(buffer,"[%s][%s:%d][t:%f]%s\n",file,function,line,config ? config->pcurrent : 0, msgbuffer);
   switch(config->output) {
     case FILETYPE:
       JNXCHECK(config->log_path);
@@ -67,7 +71,6 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
       break;
   }
   gettimeofday(config->pend,NULL);
-
   double elapsed_time = ((*config->pend).tv_sec - (*config->pstart).tv_sec) * 1000.0;
   elapsed_time += ((*config->pend).tv_usec - (*config->pstart).tv_usec) / 1000.0;
   config->pcurrent = elapsed_time;
