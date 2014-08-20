@@ -187,7 +187,7 @@ int jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, s
 
     int ret = 0;
     if ((ret = c(out, len, remote_sock)) != 0) {
-      printf("Exiting unix stream socket listener with %d\n",ret);
+      JNX_LOG(NULL,"Exiting unix stream socket listener with %d\n",ret);
       free(out);
       jnx_unix_socket_destroy(&remote_sock);
       return 0;
@@ -247,7 +247,7 @@ int jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener
 
     int ret = 0;
     if ((ret = c(out, len, remote)) != 0) {
-      printf("Exiting unix datagram socket listener with %d\n",ret);
+      JNX_LOG(NULL,"Exiting unix datagram socket listener with %d\n",ret);
       free(out);
       jnx_unix_socket_destroy(&remote);
       return 0;

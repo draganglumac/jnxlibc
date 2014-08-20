@@ -29,7 +29,7 @@ char *B = "TestB";
 char *C = "TestC";
 char *ar[] = { "A","B","C"};
 void test_stack_grow() {
-  printf("- test_stack_grow");
+  JNX_LOG(NULL,"- test_stack_grow");
   jnx_stack *s = jnx_stack_create();
   assert(s);
   jnx_stack_push(s,A);
@@ -40,7 +40,7 @@ void test_stack_grow() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_stack_pop() {
-  printf("- test_stack_pop");
+  JNX_LOG(NULL,"- test_stack_pop");
   jnx_stack *s = jnx_stack_create();
   assert(s);
   jnx_stack_push(s,ar[0]);
@@ -56,9 +56,9 @@ void test_stack_pop() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv) {
-  printf("Running stack tests...\n");
+  JNX_LOG(NULL,"Running stack tests...\n");
   test_stack_grow();
   test_stack_pop();
-  printf("Stack tests completed.\n");
+  JNX_LOG(NULL,"Stack tests completed.\n");
   return 0;
 }

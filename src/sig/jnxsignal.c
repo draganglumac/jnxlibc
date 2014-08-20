@@ -43,7 +43,7 @@ int jnx_signal_call(jnx_signal *s,void *data) {
   JNXCHECK(s);
   int ret = jnx_thread_trylock(s->internal_lock);   //test to see if we can lock?!
   if(ret != 0) {
-    printf("Unable to lock thread for signal call\n");
+    JNX_LOG(NULL,"Unable to lock thread for signal call\n");
     return ret;
   }
   jnx_node *h = s->slot_list->head;

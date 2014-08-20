@@ -62,7 +62,7 @@ int callback(uint8_t *msg, size_t bytesread, jnx_socket *s) {
   uint8_t *m = jnx_encoder_b64_decode(en,msg,bytesread,&out);
   char buffer[1024 * 65];	
   bzero(buffer,1024 * 65);
-  sprintf(buffer,SAVEDEFINITION,count);
+  sJNX_LOG(NULL,buffer,SAVEDEFINITION,count);
   total_bytes += jnx_file_write(buffer,m,bytesread,"w");
   ++count;
   free(m);
@@ -93,6 +93,6 @@ int main(int argc, char **argv) {
   do { total_bytes /= 1024;} 
   while(total_bytes > 1024);
 
-  printf("TCP/IP - Received and saved an average of %zuMB per second total %d messages\n",(total_bytes / max_time),count);
+  JNX_LOG(NULL,"TCP/IP - Received and saved an average of %zuMB per second total %d messages\n",(total_bytes / max_time),count);
   return 0;
 }

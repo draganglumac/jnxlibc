@@ -138,7 +138,7 @@ size_t jnx_list_count_ts(jnx_list *A) {
 }
 void jnx_list_destroy(jnx_list** A) {
   if((*A) == NULL) {
-    printf("jnx_list_destroy: No list\n");
+    JNX_LOG(NULL,"jnx_list_destroy: No list\n");
     return;
   }
   if((*A)->head == NULL) {

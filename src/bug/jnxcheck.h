@@ -18,6 +18,7 @@
 #ifndef __JNX_CHECK_H__
 #define __JNX_CHECK_H__
 #include <stdio.h>
+#include "jnxlog.h"
 #ifdef __cplusplus
 extern		"C" {
 #endif
@@ -30,7 +31,7 @@ extern		"C" {
   do \
   { \
     if(!(X)) {\
-      printf("CHECK FAILED: >%s< [%s:%s:%d]\n",#X,__FILE__,__FUNCTION__,__LINE__); \
+      JNX_LOG(NULL,"CHECK FAILED: >%s< [%s:%s:%d]\n",#X,__FILE__,__FUNCTION__,__LINE__); \
       jnxcheck_backtrace(); \
       exit(1);\
     } \
@@ -42,7 +43,7 @@ extern		"C" {
   do { (void)sizeof(X); } while(0)
 #endif
 #define JNXFAIL(X)\
-  JNX_LOGC(JLOG_CRITICAL,"CHECK FAILED WITH >%s<\n",#X); \
+  JNX_LOG(NULL,"CHECK FAILED WITH >%s<\n",#X); \
   JNXCHECK(0) 
 #endif
 #ifdef __cplusplus

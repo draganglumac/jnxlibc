@@ -39,7 +39,7 @@ void local_slot2(jnx_signal *s) {
 }
 void simple_test() {
 
-  printf("Simple signal slot test\n");
+  JNX_LOG(NULL,"Simple signal slot test\n");
 
   jnx_signal *s = jnx_signal_create();
   jnx_signal_connect(s,local_slot);
@@ -66,7 +66,7 @@ void *simple_threaded_worker(void *args) {
 }
 void simple_threaded_test() {
 
-  printf("Simple thread signal slot test\n");
+  JNX_LOG(NULL,"Simple thread signal slot test\n");
   jnx_signal *s = jnx_signal_create();
   jnx_signal *y = jnx_signal_create();
 
@@ -85,7 +85,7 @@ void simple_threaded_test() {
     time(&e);
     diff = difftime(e,st); 
   }
-  printf("ThreadA ticked slot %d times, ThreadB ticked slot %d times\n",local_slot_tickA,local_slot_tickB);
+  JNX_LOG(NULL,"ThreadA ticked slot %d times, ThreadB ticked slot %d times\n",local_slot_tickA,local_slot_tickB);
 
   jnx_signal_destroy(&s);
   jnx_signal_destroy(&y);
@@ -100,7 +100,7 @@ void dual_slot_test_callback1(jnx_signal *s) {
 }
 void dual_slot_test() {
 
-  printf("Dual slot tests\n");
+  JNX_LOG(NULL,"Dual slot tests\n");
   jnx_signal *s = jnx_signal_create();
   jnx_signal_connect(s,dual_slot_test_callback0);
   jnx_signal_connect(s,dual_slot_test_callback1);
@@ -127,13 +127,13 @@ void *cross_thread_worker(void *args) {
   int *A = &_a;
   int ret = jnx_signal_call(s,A);
   if(ret) {
-    printf("ThreadB unable to lock: %d\n",ret);
+    JNX_LOG(NULL,"ThreadB unable to lock: %d\n",ret);
   }
   cross_thread_lock_try = 1;
   return 0;
 }
 void cross_thread_slot_test() {
-  printf("Cross thread slot test\n");
+  JNX_LOG(NULL,"Cross thread slot test\n");
 
   jnx_signal *s = jnx_signal_create();
   jnx_signal_connect(s,cross_thread_slot_callback);
@@ -143,7 +143,7 @@ void cross_thread_slot_test() {
   jnx_thread_create_disposable(cross_thread_worker,s);
   int ret = jnx_signal_call(s,A);
   if(ret) {
-    printf("TheadA unable to lock: %d\n",ret);
+    JNX_LOG(NULL,"TheadA unable to lock: %d\n",ret);
   }
   if(ret == 0) {
     assert(cross_thread_A == 1);
@@ -154,7 +154,7 @@ void cross_thread_slot_test() {
 }
 int main(int argc, char **argv) {
 
-  printf("Testing signals and slots\n");	
+  JNX_LOG(NULL,"Testing signals and slots\n");	
   simple_test(); //one thread
 
   simple_threaded_test();
