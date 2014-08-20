@@ -38,7 +38,7 @@ extern "C" {
 
   void jnx_log_destroy(jnx_log_config **config);
 
-  size_t jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...);
+  void jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...);
 
 #define JNX_LOG_CONTEXT(X) \
   jnx_log_config *X

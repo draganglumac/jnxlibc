@@ -37,8 +37,7 @@ jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){
   conf->pcurrent = 0;
   return conf;
 }
-size_t jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...){
-  JNXCHECK(config);
+void jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...){
   JNXCHECK(file);
   JNXCHECK(function);
   JNXCHECK(format);
@@ -53,7 +52,11 @@ size_t jnx_log(jnx_log_config *config, const char *file, const char *function,co
   va_end(ap);
 
   memset(buffer,0,MAX_SIZE);
-  sprintf(buffer,"[%s][%s:%d][t:%f]%s\n",file,function,line,config->pcurrent,msgbuffer);
+  sprintf(buffer,"[%s][%s:%d][t:%f]%s\n",file,function,line,config ? config->pcurrent : 0,msgbuffer);
+  if(!config) {
+      printf("%s",buffer);
+      return;
+  }
   switch(config->output) {
     case FILETYPE:
       JNXCHECK(config->log_path);
@@ -68,7 +71,6 @@ size_t jnx_log(jnx_log_config *config, const char *file, const char *function,co
   double elapsed_time = ((*config->pend).tv_sec - (*config->pstart).tv_sec) * 1000.0;
   elapsed_time += ((*config->pend).tv_usec - (*config->pstart).tv_usec) / 1000.0;
   config->pcurrent = elapsed_time;
-  return strlen(buffer);
 }
 void jnx_log_destroy(jnx_log_config **config){
   JNXCHECK(*config);
