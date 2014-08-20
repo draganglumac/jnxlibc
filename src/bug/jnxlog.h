@@ -34,19 +34,51 @@ extern "C" {
     double pcurrent;
   } jnx_log_config;
 
+  /** @fn jnx_log_create(const char *path, jnx_log_type output)
+   *  @brief creates a log context for the given logtype 
+   *  @param path is the filepath to set for an output of FILETYPE, can be NULL if using CONSOLETYPE
+   *  @param output defines the logger type, either FILETYPE or CONSOLETYPE
+   *  @return jnx_log_config which is the current log context
+   */
   jnx_log_config* jnx_log_create(const char *path,jnx_log_type output);
-
+  /** @fn jnx_log_destroy(jnx_log_config **config)
+   *  @brief destroys the current log context
+   *  @param config is a pointer to pointer of current log context
+   *  @warning passing a null object will trigger an assertion
+   */
   void jnx_log_destroy(jnx_log_config **config);
-
+  /** @fn jnx_log(jnx_log_config *config, const char *file, const char *function, const int line, const char *format,...)
+   *  @brief logs a message to the context or defaults to stdout
+   *  @param conifg this is the context to use for writing, can be NULL and will default to stdout
+   *  @param file current file name [auto generated when using JNX_LOG macro]
+   *  @param function name [auto generated when using JNX_LOG macro]
+   *  @param line number [auto generated when using JNX_LOG macro]
+   *  @param format is a const string for formatting the appended arguments
+   *  @param ... and varadic args 
+   */
   void jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...);
 
 #define JNX_LOG_CONTEXT(X) \
   jnx_log_config *X
 
+  /**@fn JNX_LOG(CONFIG,FORMATTER,...)
+   * @brief a macro for logging that auto completes file,function,line information
+   * @param CONFIG is the context to use, can be NULL
+   * @param FORMATTER is the const char* formatter for displaying the subsequent args
+   * @param ... any optional arguments to be rendered by the formatter
+   */
 #define JNX_LOG(CONFIG,FORMATTER, ...) jnx_log(CONFIG,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__); 
-
+  /**@fn JNX_LOG_CREATE(PATH,OUTPUT)
+   * @brief creates a log context
+   * @param PATH is an optional value for log output path when using OUTPUT=FILETYPE, can be NULL
+   * @param OUTPUT is the context output can be either FILETYPE or CONSOLETYPE, CONSOLETYPE can be NULL
+   * @return JNX_LOG_CONTEXT which is a macro surrounding jnx_log_config
+   */
 #define JNX_LOG_CREATE(PATH,OUTPUT) jnx_log_create(PATH,OUTPUT);
-
+  /**@fn JNX_LOG_DESTROY(X)
+   * @brief destroys the provided log context
+   * @param X is a pointer to pointer of log context 
+   */
 #define JNX_LOG_DESTROY(X) jnx_log_destroy(X);
 
 #ifdef __cplusplus
