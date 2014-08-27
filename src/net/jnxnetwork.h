@@ -54,6 +54,28 @@ extern "C" {
    * @return 0 on success
    */
   int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,unsigned int *out_addrfamily);
+
+/**
+ * @brief Basic HTTP Protocols 
+ */
+#define MAXBUFFER 2048
+typedef enum JNX_HTTP_TYPE {
+  JNX_HTTP_POST,
+  JNX_HTTP_GET
+
+} JNX_HTTP_TYPE;
+typedef enum JNX_HTTP_STATE {
+  JNX_HTTP_STATE_OKAY,
+  JNX_HTTP_STATE_FAIL,
+  JNX_HTTP_STATE_UNKNOWN
+} JNX_HTTP_STATE;
+
+size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *page, char *args, uint8_t **out_reply,ssize_t *out_len);
+
+JNX_HTTP_TYPE jnx_http_request_post(const char *hostname, const char *page, char *args,uint8_t **out_reply, ssize_t *out_len);
+
+JNX_HTTP_TYPE jnx_http_request_get(const char *hostname, const char *page, char *args,uint8_t **out_reply, ssize_t *out_len);
+
 #ifdef __cplusplus
 }
 #endif
