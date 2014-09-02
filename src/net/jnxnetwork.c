@@ -168,7 +168,7 @@ size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *pa
   JNXCHECK(ret == 0);
   jnx_socket *sock = jnx_socket_tcp_create(out_family);
   JNXCHECK(sock);
-  char sendbuffer[MAXBUFFER];
+  char sendbuffer[2048];
   snprintf(sendbuffer,sizeof(sendbuffer), 
       "%s %s HTTP/1.0\r\n"
       "Host: %s\r\n"

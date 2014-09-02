@@ -56,6 +56,7 @@ int main(int argc, char **argv) {
     size_t decode_len;
     char *decoded_test = jnx_encoder_b64_decode(e,encoded_test,test_len,&decode_len);
     JNX_LOG(NULL,"Base64 encoding [%s] into hex --> [%s] into b64 --> [%s]\n",test[x],binary_str,encoded_test);
+    JNX_LOG(NULL,"Comparing [%s] and [%s]\n",decoded_test,binary_str);
     JNXCHECK(strcmp(decoded_test,binary_str) == 0);
     free(encoded_test);
 

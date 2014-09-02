@@ -58,7 +58,6 @@ extern "C" {
 /**
  * @brief Basic HTTP Protocols 
  */
-#define MAXBUFFER 2048
 typedef enum JNX_HTTP_TYPE {
   JNX_HTTP_POST,
   JNX_HTTP_GET
@@ -70,10 +69,10 @@ typedef enum JNX_HTTP_STATE {
   JNX_HTTP_STATE_UNKNOWN
 } JNX_HTTP_STATE;
 /* 
- * @fn size_T jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *page, char *args, uint8_t **out_reply, ssize_t *out_len)
- * @brief creates an http request defined within the JNX_HTTP_TYPE
+ * @fn size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *page, char *args, uint8_t **out_reply, ssize_t *out_len)
+ * @brief creates an http request defined within the JNX_HTTP_TYPE (JNX_HTTP_GET or JNX_HTTP_POST)
  * @param type will specify the type of http request. Either JNX_HTTP_GET or JNX_HTTP_POST
- * @param hostname is the host uri to connect to.
+ * @param hostname is the host domain to connect to.
  * @param page is the hostname page to display.
  * @params args are the optional arguments to add to the outward message
  * @params out_reply is a pointer to the pointer of uint8_t array that contains the outward reply
