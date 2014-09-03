@@ -47,19 +47,19 @@ char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
     if(family == AF_INET) {
       s4 = (struct sockaddr_in *)(ifa->ifa_addr);
       if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s4->sin_addr), buf, sizeof(buf))){
-        JNX_LOG(NULL,"%s: inet_ntop failed!\n", ifa->ifa_name);
+        JNX_LOG(DEFAULT_CONTEXT,"%s: inet_ntop failed!\n", ifa->ifa_name);
         return NULL;
       } else {
-        JNX_LOG(NULL,"IPv4 addr %s: %s\n", ifa->ifa_name, buf);
+        JNX_LOG(DEFAULT_CONTEXT,"IPv4 addr %s: %s\n", ifa->ifa_name, buf);
         return strdup(buf);
       }
     }else {
       s6 = (struct sockaddr_in6 *)(ifa->ifa_addr);
       if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s6->sin6_addr), buf, sizeof(buf))) {
-        JNX_LOG(NULL,"%s: inet_ntop failed!\n", ifa->ifa_name);
+        JNX_LOG(DEFAULT_CONTEXT,"%s: inet_ntop failed!\n", ifa->ifa_name);
         return NULL;
       } else {
-        JNX_LOG(NULL,"IPv6 addr %s: %s\n", ifa->ifa_name, buf);
+        JNX_LOG(DEFAULT_CONTEXT,"IPv6 addr %s: %s\n", ifa->ifa_name, buf);
         return strdup(buf);
       }
     }

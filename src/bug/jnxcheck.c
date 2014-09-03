@@ -26,8 +26,8 @@ void jnxcheck_backtrace() {
   size_t i;
   size = backtrace (array, MAXSTACKFRAMES);
   strings = backtrace_symbols (array, size);
-  JNX_LOG(NULL,"Obtained %zd stack frames.\n", size);
+  JNX_LOG(DEFAULT_CONTEXT,"Obtained %zd stack frames.\n", size);
   for (i = 0; i < size; i++)
-    JNX_LOG(NULL,"%s\n", strings[i]);
+    JNX_LOG(DEFAULT_CONTEXT,"%s\n", strings[i]);
   free (strings);
 }
