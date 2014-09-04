@@ -5,8 +5,6 @@
 [![License](http://img.shields.io/badge/license-GPLv3-green.svg)](http://img.shields.io/badge/license-GPLv3-green.svg)
 [![Dev](http://img.shields.io/badge/development-active-green.svg)](http://img.shields.io/badge/development-active-green.svg)
 
-Status: Active development (Stable)
-
 ####Purpose
 
 A modern C library that provides a useful self contained API that has built in testing and just works.
