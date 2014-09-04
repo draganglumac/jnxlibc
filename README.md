@@ -39,15 +39,15 @@ https://github.com/AlexsJones/jnxlibc/releases
 #Installation
 
 ###Dependencies
-	- `GCC`
-	- `CMake`
-        - `pthread` library (included on OS/X and Linux)
+	- GCC
+	- CMake
+        - pthread library (included on OS/X and Linux)
 Currently supported platforms:
 Linux distributions/OS X
 
 
 Default install location
-````shell
+```
 git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
 cmake .
 make
@@ -61,10 +61,9 @@ make
 sudo make install
 ```
 
-Use -ljnxc when building your project for shared library
-Use -ljnxcs for static library
+Use `-ljnxc` when building your project for shared library
+Use `-ljnxcs` for static library
 
-````
 ####Flags
 
 -DRELEASE (Sets library for release mode optimisations) 
