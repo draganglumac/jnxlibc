@@ -37,9 +37,10 @@
 #Installation
 
 ###Dependencies
-	- GCC
-	- CMake
-        - pthread library (included on OS/X and Linux)
+```
+GCC
+CMake
+```
 Currently supported platforms:
 Linux distributions/OS X
 
