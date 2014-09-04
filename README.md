@@ -7,10 +7,10 @@
 
 ####Purpose
 
-A modern C library that provides a useful self contained API that has built in testing and just works.
-Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library and tool for learning.
+>A modern C library that provides a useful self contained API that has built in testing and just works.
+>Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library >and tool for learning.
 
-####For a solid snapshot of the library check out the releases
+#####For a solid snapshot of the library check out the releases
 https://github.com/AlexsJones/jnxlibc/releases
 
 
