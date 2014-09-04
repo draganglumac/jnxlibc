@@ -5,13 +5,11 @@
 [![License](http://img.shields.io/badge/license-GPLv3-green.svg)](http://img.shields.io/badge/license-GPLv3-green.svg)
 [![Dev](http://img.shields.io/badge/development-active-green.svg)](http://img.shields.io/badge/development-active-green.svg)
 
-####Purpose
 
 >A modern C library that provides a useful self contained API that has built in testing and just works.
 >Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library >and tool for learning.
 
-#####For a solid snapshot of the library check out the releases
-https://github.com/AlexsJones/jnxlibc/releases
+[Latest release](https://github.com/AlexsJones/jnxlibc/releases)
 
 
 #Key features
