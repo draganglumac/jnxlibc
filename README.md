@@ -7,7 +7,7 @@
 
 
 >A modern C library that provides a useful self contained API that has built in testing and just works.
->Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library >and tool for learning.
+>Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library and tool for learning.
 
 [Latest release](https://github.com/AlexsJones/jnxlibc/releases)
 
