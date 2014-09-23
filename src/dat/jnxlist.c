@@ -136,6 +136,27 @@ size_t jnx_list_count_ts(jnx_list *A) {
   jnx_thread_unlock(A->internal_lock);
   return count;
 }
+int jnx_list_contains(jnx_list *A, void *datain, int (*list_comparison)(void *a,void *b) ){
+  JNXCHECK(A);
+  JNXCHECK(datain);
+  JNXCHECK(list_comparison);
+  jnx_node *head = A->head;
+  int f=0; 
+  while(A->head) {
+    if(list_comparison(datain,A->head->_data)) {
+      f = 1;
+    }
+    A->head = A->head->next_node;
+  }
+  A->head = head;
+  return f;
+}
+int jnx_list_contains_ts(jnx_list *A, void *datain, int (*list_comparison)(void *a,void *b) ){
+  jnx_thread_lock(A->internal_lock);
+  int f = jnx_list_contains(A,datain,list_comparison);
+  jnx_thread_unlock(A->internal_lock);
+  return f;
+}
 void jnx_list_destroy(jnx_list** A) {
   if((*A) == NULL) {
     JNX_LOG(DEFAULT_CONTEXT,"jnx_list_destroy: No list\n");

@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <assert.h>
+#include "jnxcheck.h"
 #include "jnxlist.h"
 #include "jnxterm.h"
 #include "jnxlog.h"
@@ -29,7 +29,7 @@ struct foo {
 void test_list_creation() {
   JNX_LOG(NULL,"- test_list_creation");
   jnx_list *secondlist = jnx_list_create();
-  assert(secondlist != NULL);
+  JNXCHECK(secondlist != NULL);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
   struct foo *f = malloc(sizeof(foo));
   f->number = 10;
@@ -38,7 +38,7 @@ void test_list_creation() {
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
   JNX_LOG(NULL,"- test_list_removal");
   struct foo *output = (struct foo*)jnx_list_remove(&secondlist);
-  assert(output->number == 10);
+  JNXCHECK(output->number == 10);
   free(output);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
   JNX_LOG(NULL,"- test_list_deletion");
@@ -57,11 +57,11 @@ void test_list_index() {
   int x;
   for(x = count - 1; x != 0; --x) {
     char *current = jnx_list_remove(&j);
-    assert(strcmp(current,ar[x]) == 0);
+    JNXCHECK(strcmp(current,ar[x]) == 0);
   }
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
   jnx_list_destroy(&j);
-  assert(j == NULL);
+  JNXCHECK(j == NULL);
 }
 void test_data_removal() {
   JNX_LOG(NULL,"- test_data_removal");
@@ -78,7 +78,7 @@ void test_data_removal() {
     free(ret);
   }
   jnx_list_destroy(&list);
-  assert(list == NULL);
+  JNXCHECK(list == NULL);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_list_tail() {
@@ -93,7 +93,7 @@ void test_list_tail() {
   int c=count;
   while(l->tail != NULL) {
 
-    assert(strcmp((char*)l->tail->_data,ar[c-1]) == 0);
+    JNXCHECK(strcmp((char*)l->tail->_data,ar[c-1]) == 0);
     --c;
     l->tail = l->tail->prev_node;
   }
@@ -109,10 +109,31 @@ void test_removal_front() {
   for(x = 0; x < count; ++x) {
     jnx_list_add(l,ar[x]);
   }
-  assert(l->counter == 3);
+  JNXCHECK(l->counter == 3);
   void *data = jnx_list_remove_front(&l);
-  assert(strcmp(data,"A") == 0);
-  assert(l->counter == 2);
+  JNXCHECK(strcmp(data,"A") == 0);
+  JNXCHECK(l->counter == 2);
+}
+
+int test_contains_comparator(void *A, void *B) {
+  if(A == B) {
+    return 1;
+  }
+  return 0;
+}
+void test_contains() {
+  jnx_list *l = jnx_list_create();
+  
+  char *text = "Text";
+  char *another = "Another";
+  char *fake = "Fake";
+  jnx_list_add(l,text);
+  jnx_list_add(l,another);
+
+  JNXCHECK(jnx_list_contains(l,text,test_contains_comparator) == 1);
+  JNXCHECK(jnx_list_contains(l,another,test_contains_comparator) == 1);
+  JNXCHECK(jnx_list_contains(l,fake,test_contains_comparator) == 0);
+
 }
 int main(int args, char **argv) {
   JNX_LOG(NULL,"Running list tests...\n");
@@ -121,6 +142,7 @@ int main(int args, char **argv) {
   test_list_index();
   test_list_tail();
   test_removal_front();
+  test_contains();
   JNX_LOG(NULL,"List tests completed.\n");
   return 0;
 }
