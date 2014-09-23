@@ -116,7 +116,6 @@ void test_removal_front() {
 }
 int test_contains_comparator(void *A, void *B) {
   
-  printf("A-> %s B-> %s\n",A,B);
   if(A == B) {
     return 1;
   }

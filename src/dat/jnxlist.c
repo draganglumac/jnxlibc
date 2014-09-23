@@ -141,13 +141,14 @@ int jnx_list_contains(jnx_list *A, void *datain, int (*list_comparison)(void *a,
   JNXCHECK(datain);
   JNXCHECK(list_comparison);
   jnx_node *head = A->head;
-  int f=0;  
-  while(A->head) {
-    void *candidate = A->head->_data;
+  jnx_node *current = A->head;
+  int f=0; 
+  while(current) {
+    void *candidate = current->_data;
     if(list_comparison(datain,candidate)) {
       f = 1;
     }
-    A->head = A->head->next_node;
+    current = current->next_node;
   }
   A->head = head;
   return f;
