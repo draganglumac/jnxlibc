@@ -91,6 +91,18 @@ extern "C" {
   void* jnx_vector_remove_at(jnx_vector *vector,int position);
 
   void* jnx_vector_remove_at_ts(jnx_vector *vector,int position);
+
+  /**
+   * @fn jnx_vector_contains(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a, void *b))
+   * @brief checks whether a list contains a specific value
+   * @param vector is a pointer to the jnx_vector_contains
+   * @param datain iis the value to check the vector for
+   * @param vector_comparison is the functor callback for comparison, 1 is a positive find, 0 is a negative
+   * @return either 1 on success or 0 on failure
+   */
+  int jnx_vector_contains(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a,void *b));
+
+  int jnx_vector_contains_ts(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a,void *b));
 #ifdef __cplusplus
 }
 #endif

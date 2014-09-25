@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include "jnxvector.h"
 #include <stdio.h>
-#include <assert.h>
+#include <JNXCHECK.h>
 #include "jnxlog.h"
 #include <time.h>
 #include <string.h>
@@ -38,7 +38,7 @@ void test_complex_insertion() {
     temp->a = x;
     jnx_vector_insert_at(vector,spread[x],temp);
     teststruct *res = vector->vector[spread[x]]->data;
-    assert(res->a == x);
+    JNXCHECK(res->a == x);
     ++x;
   }
   jnx_vector_destroy(&vector);
@@ -55,7 +55,7 @@ void test_sequential_insertion() {
   } while(x < 100);
   int y = 0;
   while(y < vector->count) {
-    assert(vector->vector[y]->data == y);
+    JNXCHECK(vector->vector[y]->data == y);
     ++y;
   }
   jnx_vector_destroy(&vector);
@@ -66,10 +66,10 @@ void test_insert_position() {
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert_at(vector,15,"Test");
   jnx_vector_insert_at(vector,100,"Derp");
-  assert(vector->vector[15]->used == 1);
-  assert(vector->vector[100]->used == 1);
-  assert((char*)vector->vector[15]->data == "Test");
-  assert((char*)vector->vector[100]->data == "Derp");
+  JNXCHECK(vector->vector[15]->used == 1);
+  JNXCHECK(vector->vector[100]->used == 1);
+  JNXCHECK((char*)vector->vector[15]->data == "Test");
+  JNXCHECK((char*)vector->vector[100]->data == "Derp");
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_remove_position() {
@@ -77,11 +77,26 @@ void test_remove_position() {
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert(vector,"Hello");
   jnx_vector_insert_at(vector,90,"Bye");
-  assert(vector->vector[15]->data == NULL);
-  assert((char*)vector->vector[90]->data == "Bye");
+  JNXCHECK(vector->vector[15]->data == NULL);
+  JNXCHECK((char*)vector->vector[90]->data == "Bye");
   char *data = jnx_vector_remove_at(vector,90);
-  assert(strcmp("Bye",(char*)data) == 0);
+  JNXCHECK(strcmp("Bye",(char*)data) == 0);
   jnx_vector_destroy(&vector);
+  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
+int vector_compare(void *A, void *B) {
+  if(A == B) {
+    return 1;
+  }
+  return 0;
+}
+void test_contains() {
+  JNX_LOG(NULL,"- test_contain");
+  jnx_vector *vector = jnx_vector_create();
+  jnx_vector_insert(vector,"Hello");
+  
+  JNXCHECK(jnx_vector_contains(vector,"Hello",vector_compare) == 1);
+  JNXCHECK(jnx_vector_contains(vector,"GoodBye",vector_compare) == 0);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv) {
@@ -90,6 +105,7 @@ int main(int argc, char **argv) {
   test_remove_position();
   test_sequential_insertion();
   test_complex_insertion();
+  test_contains();
   JNX_LOG(NULL,"Vector tests completed.\n");
   return 0;
 }
