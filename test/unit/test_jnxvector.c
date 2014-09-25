@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include "jnxvector.h"
 #include <stdio.h>
-#include <JNXCHECK.h>
+#include "jnxcheck.h"
 #include "jnxlog.h"
 #include <time.h>
 #include <string.h>
