@@ -47,13 +47,11 @@ void* jnx_stack_pop(jnx_stack* A) {
   if ( A->top == NULL ) {
     return NULL;
   }
-
   jnx_snode *temp = A->top;
   void *retval = temp->_data;
   A->top = temp->next_node;
   free(temp);
   A->count--;
-
   return retval;
 }
 void* jnx_stack_pop_ts(jnx_stack* A) {
@@ -62,6 +60,25 @@ void* jnx_stack_pop_ts(jnx_stack* A) {
   void *ret = jnx_stack_pop(A);
   jnx_thread_unlock(A->internal_lock);
   return ret;
+}
+int jnx_stack_contains(jnx_stack *A, void *datain, int (*stack_comparison)(void *a, void *b)) {
+  JNXCHECK(A);
+  int f = 0;
+  jnx_snode *current = A->top;
+  while(current) {
+    if(stack_comparison(current->_data,datain)) {
+      f = 1;
+      return f;
+    }
+    current = current->next_node;
+  }
+  return f;
+}
+int jnx_stack_contains_ts(jnx_stack *A, void *datain, int (*stack_comparison)(void *a, void *b)) { 
+  jnx_thread_lock(A->internal_lock);
+  int f = jnx_stack_contains(A,datain,stack_comparison);
+  jnx_thread_unlock(A->internal_lock);
+  return f;
 }
 void jnx_stack_destroy(jnx_stack** A) {
   JNXCHECK(*A);

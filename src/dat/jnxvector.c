@@ -151,3 +151,18 @@ size_t jnx_vector_count_ts(jnx_vector *vector) {
   jnx_thread_unlock(vector->internal_lock);
   return ret;
 }
+int jnx_vector_contains(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a,void *b)) {
+  int x = 0;
+  for ( x = 0; x < vector->count; ++x ) {
+    if(vector_comparison(vector->vector[x]->data,datain)){
+      return 1;
+    }
+  }
+  return 0;
+}
+int jnx_vector_contains_ts(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a,void *b)) {
+  jnx_thread_lock(vector->internal_lock);
+  int f = jnx_vector_contains(vector,datain,vector_comparison);
+  jnx_thread_unlock(vector->internal_lock);
+  return f;
+}

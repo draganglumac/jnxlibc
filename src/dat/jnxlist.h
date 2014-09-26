@@ -58,7 +58,7 @@ extern		"C" {
   void *jnx_list_remove_front(jnx_list ** A);
 
   void *jnx_list_remove_front_ts(jnx_list ** A);
-  
+
   /** @fn jnx_list_size(jnx_list *A)
    *  @param A is the target list
    *  @return the number of elements in the list
@@ -66,7 +66,7 @@ extern		"C" {
   size_t jnx_list_count(jnx_list * A);
 
   size_t jnx_list_count_ts(jnx_list * A);
-  
+
   /** @fn jnx_list_contains(jnx_list *A, void *datain, int (*list_comparison)(void *a,void *b))
    *  @brief checks whether a list contains a specific value
    *  @param A is a pointer to the list 
