@@ -55,7 +55,7 @@ void test_list_index() {
     jnx_list_add(j,ar[y]);
   }
   int x;
-  for(x = count - 1; x != 0; --x) {
+  for(x = count - 1; x >= 0; x--) {
     char *current = jnx_list_remove(&j);
     JNXCHECK(strcmp(current,ar[x]) == 0);
   }
@@ -106,13 +106,19 @@ void test_removal_front() {
   int count = 3;
   char *ar[] = { "A", "B", "C" };
   int x;
-  for(x = 0; x < count; ++x) {
+  for(x = 0; x < count; x++) {
     jnx_list_add(l,ar[x]);
   }
   JNXCHECK(l->counter == 3);
   void *data = jnx_list_remove_front(&l);
   JNXCHECK(strcmp(data,"A") == 0);
   JNXCHECK(l->counter == 2);
+  data = jnx_list_remove_front(&l);
+  JNXCHECK(strcmp(data, "B") == 0);
+  JNXCHECK(l->counter == 1);
+  data = jnx_list_remove_front(&l);
+  JNXCHECK(strcmp(data, "C") == 0);
+  JNXCHECK(l->counter == 0);
 }
 
 int test_contains_comparator(void *A, void *B) {
