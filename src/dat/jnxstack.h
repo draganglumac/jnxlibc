@@ -55,6 +55,17 @@ extern "C" {
   void* jnx_stack_pop(jnx_stack* A);
 
   void* jnx_stack_pop_ts(jnx_stack* A);
+
+  /** @fn jnx_stack_contains(jnx_stack *A, void *datain, int (*stack_comparison)(void *a, void *b))
+   *  @brief checks the given stack for whether a value exists within it
+   *  @param datain is the value to check for
+   *  @param stack_comparison is the functor given by the user for evaluation, 1 on success, 0 on failure
+   *  @return either 1 on contains or 0 on no entry found
+   */
+  int jnx_stack_contains(jnx_stack *A, void *datain, int (*stack_comparison)(void *a, void *b));
+  
+  int jnx_stack_contains_ts(jnx_stack *A, void *datain, int (*stack_comparison)(void *a, void *b));
+  
   /** @fn jnx_stack_destroy(jnx_stack* A) 
    * @brief  Deletes the stack's internal representation, but it doesn't try to
    * destroy the _datain void pointers passed in. If you call jnx_stack_is_empty
