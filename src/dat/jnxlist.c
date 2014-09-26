@@ -21,13 +21,6 @@
 #include "jnxcheck.h"
 #include <stdio.h>
 
-static jnx_node *make_new_node(void *_datain) {
-	jnx_node *node = malloc(sizeof(jnx_node));
-	node->_data = _datain;
-	node->next_node = NULL;
-	node->prev_node = NULL;
-	return node;
-}
 jnx_list* jnx_list_create(void) {
 	jnx_list *list = malloc(sizeof(jnx_list));
 	list->head = NULL;
@@ -39,7 +32,12 @@ jnx_list* jnx_list_create(void) {
 void jnx_list_add(jnx_list* A, void* _datain) {
 	JNXCHECK(A);
 	JNXCHECK(_datain);
-	jnx_node *node = make_new_node(_datain);
+
+	jnx_node *node = malloc(sizeof(jnx_node));
+	node->_data = _datain;
+	node->next_node = NULL;
+	node->prev_node = NULL;
+
 	jnx_node *current = A->head;
 	if (current == NULL) {
 		A->head = node;
