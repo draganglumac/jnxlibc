@@ -175,7 +175,6 @@ size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *pa
       "Content-type: application/x-www-form-urlencoded\r\n"
       "Content-length: %zu\r\n\r\n"
       "%s\r\n",verb, page, hostname, strlen(args),args);
-  JNXCHECK(sendbuffer);
 
   ssize_t l = jnx_socket_tcp_send_with_receipt(sock,
       (char*)hostname,"80",(uint8_t*)sendbuffer,(ssize_t)strlen(sendbuffer),out_reply);
