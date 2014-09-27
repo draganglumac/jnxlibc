@@ -94,7 +94,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>API for jnxlibc implementation of stack data structure.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &quot;<a class="el" href="jnxthread_8h_source.html">jnxthread.h</a>&quot;</code><br />
+</div>
 <p><a href="jnxstack_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -120,12 +121,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a98b3d94a74e3e08f7538a0fa5f18392e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxstack_8h.html#a98b3d94a74e3e08f7538a0fa5f18392e">jnx_stack_is_empty</a> (<a class="el" href="structjnx__stack.html">jnx_stack</a> *A)</td></tr>
 <tr class="memdesc:a98b3d94a74e3e08f7538a0fa5f18392e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns 1 (true) if the stack is empty, and 0 otherwise.  <a href="#a98b3d94a74e3e08f7538a0fa5f18392e">More...</a><br /></td></tr>
 <tr class="separator:a98b3d94a74e3e08f7538a0fa5f18392e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8cc9f485b105842c2b8c5442dc4aae9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxstack_8h.html#ad8cc9f485b105842c2b8c5442dc4aae9">jnx_stack_is_empty_ts</a> (<a class="el" href="structjnx__stack.html">jnx_stack</a> *A)</td></tr>
+<tr class="separator:ad8cc9f485b105842c2b8c5442dc4aae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e9a9a746c53df1acbd5946eb38be90d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxstack_8h.html#a9e9a9a746c53df1acbd5946eb38be90d">jnx_stack_push</a> (<a class="el" href="structjnx__stack.html">jnx_stack</a> *A, void *_datain)</td></tr>
 <tr class="memdesc:a9e9a9a746c53df1acbd5946eb38be90d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a void pointer to input data to push onto the stack.  <a href="#a9e9a9a746c53df1acbd5946eb38be90d">More...</a><br /></td></tr>
 <tr class="separator:a9e9a9a746c53df1acbd5946eb38be90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a471656d6c0d03dd13b28c936887c8f03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxstack_8h.html#a471656d6c0d03dd13b28c936887c8f03">jnx_stack_push_ts</a> (<a class="el" href="structjnx__stack.html">jnx_stack</a> *A, void *_datain)</td></tr>
+<tr class="separator:a471656d6c0d03dd13b28c936887c8f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d6c75608b6d3dc17d3d6d1bf76caaa7"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxstack_8h.html#a7d6c75608b6d3dc17d3d6d1bf76caaa7">jnx_stack_pop</a> (<a class="el" href="structjnx__stack.html">jnx_stack</a> *A)</td></tr>
 <tr class="memdesc:a7d6c75608b6d3dc17d3d6d1bf76caaa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pops the top element off the stack and returns it.  <a href="#a7d6c75608b6d3dc17d3d6d1bf76caaa7">More...</a><br /></td></tr>
 <tr class="separator:a7d6c75608b6d3dc17d3d6d1bf76caaa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad26bbd68b87008d2bfceaae31f952cdc"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxstack_8h.html#ad26bbd68b87008d2bfceaae31f952cdc">jnx_stack_pop_ts</a> (<a class="el" href="structjnx__stack.html">jnx_stack</a> *A)</td></tr>
+<tr class="separator:ad26bbd68b87008d2bfceaae31f952cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec50345fd87c4b9ce60a363e05eee30f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxstack_8h.html#aec50345fd87c4b9ce60a363e05eee30f">jnx_stack_destroy</a> (<a class="el" href="structjnx__stack.html">jnx_stack</a> **A)</td></tr>
 <tr class="separator:aec50345fd87c4b9ce60a363e05eee30f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -207,6 +214,22 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad8cc9f485b105842c2b8c5442dc4aae9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int jnx_stack_is_empty_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__stack.html">jnx_stack</a> *&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a7d6c75608b6d3dc17d3d6d1bf76caaa7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -229,6 +252,22 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The data element that was just popped off the stack or NULL if the stack is empty. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad26bbd68b87008d2bfceaae31f952cdc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* jnx_stack_pop_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__stack.html">jnx_stack</a> *&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -267,14 +306,36 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a471656d6c0d03dd13b28c936887c8f03"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void jnx_stack_push_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__stack.html">jnx_stack</a> *&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>_datain</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-<<<<<<< HEAD
-Generated on Wed Apr 16 2014 06:26:36 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
-=======
-Generated on Sun Apr 27 2014 17:14:15 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
->>>>>>> alex/master
+Generated on Sat Jun 7 2014 12:40:14 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

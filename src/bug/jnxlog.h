@@ -21,6 +21,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#define DEFAULT_CONTEXT NULL
   typedef enum jnx_log_type {
     CONSOLETYPE,
     FILETYPE
@@ -63,7 +64,7 @@ extern "C" {
 
   /**@fn JNX_LOG(CONFIG,FORMATTER,...)
    * @brief a macro for logging that auto completes file,function,line information
-   * @param CONFIG is the context to use, can be NULL
+   * @param CONFIG is the context to use, can be DEFAULT_CONTEXT or NULL
    * @param FORMATTER is the const char* formatter for displaying the subsequent args
    * @param ... any optional arguments to be rendered by the formatter
    */

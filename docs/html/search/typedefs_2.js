@@ -2,6 +2,7 @@ var searchData=
 [
   ['jnx_5fbtree',['jnx_btree',['../jnxbtree_8h.html#aa25d4cfe51d1bb1a861fb312de0ccde4',1,'jnxbtree.h']]],
   ['jnx_5fbtree_5fnode',['jnx_btree_node',['../jnxbtree_8h.html#a16e58c801aa86e5ee7a0576d8b907592',1,'jnxbtree.h']]],
+  ['jnx_5fencoder',['jnx_encoder',['../jnxencoder_8h.html#a59b1870f802483301243f50c32b38ba5',1,'jnxencoder.h']]],
   ['jnx_5ffile_5fkvp_5fnode',['jnx_file_kvp_node',['../jnxfile_8h.html#ad8239c680890cf06a3cc6b1756fc7dea',1,'jnxfile.h']]],
   ['jnx_5fhash_5fbucket_5fel',['jnx_hash_bucket_el',['../jnxhash_8h.html#a2130c943c51f6639e843be76a739c6e1',1,'jnxhash.h']]],
   ['jnx_5fhash_5felement',['jnx_hash_element',['../jnxhash_8h.html#a0ca34a46ad434227c3f357d080841d1e',1,'jnxhash.h']]],
@@ -13,5 +14,5 @@ var searchData=
   ['jnx_5fsnode',['jnx_snode',['../jnxstack_8h.html#a1f64b6aaa517678ee994e5b279d5313b',1,'jnxstack.h']]],
   ['jnx_5fthread',['jnx_thread',['../jnxthread_8h.html#aaee6cfaf1faef85fc1a7b6efe12f8808',1,'jnxthread.h']]],
   ['jnx_5fthread_5fattributes',['jnx_thread_attributes',['../jnxthread_8h.html#a12bf290da6448932614fe1a72abbcc2c',1,'jnxthread.h']]],
-  ['jnx_5fthread_5fmutex',['jnx_thread_mutex',['../jnxthread_8h.html#abb569311fb51a3310ec4e9dd169dff13',1,'jnxthread.h']]]
+  ['jnx_5fthread_5fmutex',['jnx_thread_mutex',['../jnxthread_8h.html#aefc41d5256b65a7cd73472f2b4072933',1,'jnxthread.h']]]
 ];

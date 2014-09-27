@@ -105,6 +105,8 @@ Macros</h2></td></tr>
 <tr class="separator:ab6bc945ce840e4f0a16ec0fb12acc1a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79d0e990c7280f3356391dab6824a745"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a79d0e990c7280f3356391dab6824a745">MAX_ARG_SIZE</a>&#160;&#160;&#160;1024</td></tr>
 <tr class="separator:a79d0e990c7280f3356391dab6824a745"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a142f203da914e6f4358baf7d3e2d90dc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a142f203da914e6f4358baf7d3e2d90dc">LOGTEMPLATE</a>&#160;&#160;&#160;&quot;[%s][%s][%s:%s:%d]&quot;</td></tr>
+<tr class="separator:a142f203da914e6f4358baf7d3e2d90dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cdb0f2c9d06bdc537409a48a47c1902"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a0cdb0f2c9d06bdc537409a48a47c1902">JCRITICAL</a>&#160;&#160;&#160;&quot;CRITICAL&quot;</td></tr>
 <tr class="separator:a0cdb0f2c9d06bdc537409a48a47c1902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7e06134c86c72c41cd73da06a068614"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#ad7e06134c86c72c41cd73da06a068614">JALERT</a>&#160;&#160;&#160;&quot;ALERT&quot;</td></tr>
@@ -117,22 +119,14 @@ Macros</h2></td></tr>
 <tr class="separator:a04145652d35ba82dac2dd6d8d16e24a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af08e1954170069c9647a367474b102c0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#af08e1954170069c9647a367474b102c0">JNORMAL</a>&#160;&#160;&#160;&quot;NORMAL&quot;</td></tr>
 <tr class="separator:af08e1954170069c9647a367474b102c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f08a4af974aeeb7ba241a91d80766f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a8f08a4af974aeeb7ba241a91d80766f0">JNX_LOG_PATH</a>(X)&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#a64d840e0a7ce1e75e6c9f83117e3d662">jnx_log_set_path</a>(X);</td></tr>
-<tr class="memdesc:a8f08a4af974aeeb7ba241a91d80766f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the log path  <a href="#a8f08a4af974aeeb7ba241a91d80766f0">More...</a><br /></td></tr>
-<tr class="separator:a8f08a4af974aeeb7ba241a91d80766f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36f4deda4a38dbd9750e34d6bc282a05"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a36f4deda4a38dbd9750e34d6bc282a05">JNX_LOGC</a>(LEVEL, X,...)&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ad2ec36f7c758328e852b84fc42b0e728">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa3fa0174e1fc703e47d00fb1627556206">LOG_CONSOLE</a>,LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)</td></tr>
+<tr class="memitem:a36f4deda4a38dbd9750e34d6bc282a05"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a36f4deda4a38dbd9750e34d6bc282a05">JNX_LOGC</a>(LEVEL, X,...)&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#a49c3e3418b00c0869af526eaacb34092">jnx_log</a>(LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)</td></tr>
 <tr class="memdesc:a36f4deda4a38dbd9750e34d6bc282a05"><td class="mdescLeft">&#160;</td><td class="mdescRight">log to console  <a href="#a36f4deda4a38dbd9750e34d6bc282a05">More...</a><br /></td></tr>
 <tr class="separator:a36f4deda4a38dbd9750e34d6bc282a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80190f3b1ac81ec715cc8fbfbf88a53a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a80190f3b1ac81ec715cc8fbfbf88a53a">JNX_LOGF</a>(LEVEL, X,...)&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ad2ec36f7c758328e852b84fc42b0e728">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa05a425919d86aebc82762bd79990df56">LOG_FILE</a>,LEVEL,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)</td></tr>
-<tr class="memdesc:a80190f3b1ac81ec715cc8fbfbf88a53a"><td class="mdescLeft">&#160;</td><td class="mdescRight">log to file  <a href="#a80190f3b1ac81ec715cc8fbfbf88a53a">More...</a><br /></td></tr>
-<tr class="separator:a80190f3b1ac81ec715cc8fbfbf88a53a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a1c6fbdc832fd14158662e5bdf6fde9b6"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="jnxlog_8h.html#ae0261b0dcba1e63000000bff3cfd8173">JNX_LOG_LEVEL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a1c6fbdc832fd14158662e5bdf6fde9b6">JNX_LOG_LEVEL</a></td></tr>
 <tr class="separator:a1c6fbdc832fd14158662e5bdf6fde9b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af838bdf05a3012d829363e7915dd4bba"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3af">logtype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#af838bdf05a3012d829363e7915dd4bba">logtype</a></td></tr>
-<tr class="separator:af838bdf05a3012d829363e7915dd4bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -147,20 +141,11 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:ae0261b0dcba1e63000000bff3cfd8173"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39c57ea9c9abd4808b31871bda91a3af"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3af">logtype</a> { <a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa05a425919d86aebc82762bd79990df56">LOG_FILE</a>, 
-<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa3fa0174e1fc703e47d00fb1627556206">LOG_CONSOLE</a>
- }</td></tr>
-<tr class="separator:a39c57ea9c9abd4808b31871bda91a3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a64d840e0a7ce1e75e6c9f83117e3d662"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a64d840e0a7ce1e75e6c9f83117e3d662">jnx_log_set_path</a> (char *path)</td></tr>
-<tr class="memdesc:a64d840e0a7ce1e75e6c9f83117e3d662"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call this function to create/open the log file. This function should be called at least once before jnx_log is called for the first time in the process.  <a href="#a64d840e0a7ce1e75e6c9f83117e3d662">More...</a><br /></td></tr>
-<tr class="separator:a64d840e0a7ce1e75e6c9f83117e3d662"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a803ab2bb54dfabd46d88d9272b70c7a6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a803ab2bb54dfabd46d88d9272b70c7a6">jnx_log_get_path</a> (char **path)</td></tr>
-<tr class="separator:a803ab2bb54dfabd46d88d9272b70c7a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2ec36f7c758328e852b84fc42b0e728"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#ad2ec36f7c758328e852b84fc42b0e728">jnx_log</a> (const <a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3af">logtype</a> l, <a class="el" href="jnxlog_8h.html#ae0261b0dcba1e63000000bff3cfd8173">JNX_LOG_LEVEL</a> level, const char *file, const char *function, const int line, const char *format,...)</td></tr>
-<tr class="separator:ad2ec36f7c758328e852b84fc42b0e728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49c3e3418b00c0869af526eaacb34092"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlog_8h.html#a49c3e3418b00c0869af526eaacb34092">jnx_log</a> (<a class="el" href="jnxlog_8h.html#ae0261b0dcba1e63000000bff3cfd8173">JNX_LOG_LEVEL</a> level, const char *file, const char *function, const int line, const char *format,...)</td></tr>
+<tr class="separator:a49c3e3418b00c0869af526eaacb34092"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Simple logger that allows program output to be captured to file. It allows one log file per process only. </p>
@@ -238,25 +223,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8f08a4af974aeeb7ba241a91d80766f0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define JNX_LOG_PATH</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">X</td><td>)</td>
-          <td>&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#a64d840e0a7ce1e75e6c9f83117e3d662">jnx_log_set_path</a>(X);</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>set the log path </p>
-<p>JNX_LOG_PATH </p>
-
-</div>
-</div>
 <a class="anchor" id="a36f4deda4a38dbd9750e34d6bc282a05"></a>
 <div class="memitem">
 <div class="memproto">
@@ -282,7 +248,7 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ad2ec36f7c758328e852b84fc42b0e728">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa3fa0174e1fc703e47d00fb1627556206">LOG_CONSOLE</a>,LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#a49c3e3418b00c0869af526eaacb34092">jnx_log</a>(LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -292,38 +258,15 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a80190f3b1ac81ec715cc8fbfbf88a53a"></a>
+<a class="anchor" id="a142f203da914e6f4358baf7d3e2d90dc"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define JNX_LOGF</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">LEVEL, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">X, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;<a class="el" href="jnxlog_8h.html#ad2ec36f7c758328e852b84fc42b0e728">jnx_log</a>(<a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3afa05a425919d86aebc82762bd79990df56">LOG_FILE</a>,LEVEL,__FILE__,__FUNCTION__,__LINE__,X,  ## __VA_ARGS__)</td>
+          <td class="memname">#define LOGTEMPLATE&#160;&#160;&#160;&quot;[%s][%s][%s:%s:%d]&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>log to file </p>
-<p>JNX_LOGF </p>
 
 </div>
 </div>
@@ -364,18 +307,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af838bdf05a3012d829363e7915dd4bba"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef enum <a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3af">logtype</a> <a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3af">logtype</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a class="anchor" id="ae0261b0dcba1e63000000bff3cfd8173"></a>
 <div class="memitem">
@@ -403,38 +334,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a39c57ea9c9abd4808b31871bda91a3af"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3af">logtype</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a39c57ea9c9abd4808b31871bda91a3afa05a425919d86aebc82762bd79990df56"></a>LOG_FILE&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a39c57ea9c9abd4808b31871bda91a3afa3fa0174e1fc703e47d00fb1627556206"></a>LOG_CONSOLE&#160;</td><td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ad2ec36f7c758328e852b84fc42b0e728"></a>
+<a class="anchor" id="a49c3e3418b00c0869af526eaacb34092"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">size_t jnx_log </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="jnxlog_8h.html#a39c57ea9c9abd4808b31871bda91a3af">logtype</a>&#160;</td>
-          <td class="paramname"><em>l</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="jnxlog_8h.html#ae0261b0dcba1e63000000bff3cfd8173">JNX_LOG_LEVEL</a>&#160;</td>
           <td class="paramname"><em>level</em>, </td>
         </tr>
@@ -478,55 +385,10 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a803ab2bb54dfabd46d88d9272b70c7a6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int jnx_log_get_path </td>
-          <td>(</td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a64d840e0a7ce1e75e6c9f83117e3d662"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">jnx_log_set_path </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Call this function to create/open the log file. This function should be called at least once before jnx_log is called for the first time in the process. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>location of log output</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>returns 0 on succes and 1 on failure </dd></dl>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-<<<<<<< HEAD
-Generated on Wed Apr 16 2014 06:26:36 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
-=======
-Generated on Sun Apr 27 2014 17:14:15 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
->>>>>>> alex/master
+Generated on Sat Jun 7 2014 12:40:14 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-.TH "hashmap" 3 "Wed Apr 16 2014" "jnxlibc" \" -*- nroff -*-
-=======
-.TH "hashmap" 3 "Sun Apr 27 2014" "jnxlibc" \" -*- nroff -*-
->>>>>>> alex/master
+.TH "hashmap" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -24,10 +20,15 @@ hashmap \-
 .ti -1c
 .RI "unsigned int \fBused_up\fP"
 .br
+.ti -1c
+.RI "\fBjnx_thread_mutex\fP * \fBinternal_lock\fP"
+.br
 .in -1c
 .SH "Member Data Documentation"
 .PP 
 .SS "\fBjnx_hash_element\fP* hashmap::data"
+
+.SS "\fBjnx_thread_mutex\fP* hashmap::internal_lock"
 
 .SS "unsigned int hashmap::size"
 

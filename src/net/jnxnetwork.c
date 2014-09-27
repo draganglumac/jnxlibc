@@ -38,9 +38,6 @@
 #include "jnxsocket.h"
 #include "jnxcheck.h"
 
-#define MAXBUFFER 1024
-#define MAXSUB 200
-
 char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
   struct sockaddr_in *s4;
   struct sockaddr_in6 *s6;
@@ -50,19 +47,19 @@ char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
     if(family == AF_INET) {
       s4 = (struct sockaddr_in *)(ifa->ifa_addr);
       if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s4->sin_addr), buf, sizeof(buf))){
-        JNX_LOG(NULL,"%s: inet_ntop failed!\n", ifa->ifa_name);
+        JNX_LOG(DEFAULT_CONTEXT,"%s: inet_ntop failed!\n", ifa->ifa_name);
         return NULL;
       } else {
-        JNX_LOG(NULL,"IPv4 addr %s: %s\n", ifa->ifa_name, buf);
+        JNX_LOG(DEFAULT_CONTEXT,"IPv4 addr %s: %s\n", ifa->ifa_name, buf);
         return strdup(buf);
       }
     }else {
       s6 = (struct sockaddr_in6 *)(ifa->ifa_addr);
       if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s6->sin6_addr), buf, sizeof(buf))) {
-        JNX_LOG(NULL,"%s: inet_ntop failed!\n", ifa->ifa_name);
+        JNX_LOG(DEFAULT_CONTEXT,"%s: inet_ntop failed!\n", ifa->ifa_name);
         return NULL;
       } else {
-        JNX_LOG(NULL,"IPv6 addr %s: %s\n", ifa->ifa_name, buf);
+        JNX_LOG(DEFAULT_CONTEXT,"IPv6 addr %s: %s\n", ifa->ifa_name, buf);
         return strdup(buf);
       }
     }
@@ -149,4 +146,54 @@ int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,un
     *out_ip = strndup(addrstr,strlen(addrstr));
   }
   return 0;
+}
+size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *page, char *args, uint8_t **out_reply,ssize_t *out_len) {
+  JNXCHECK(hostname);
+  JNXCHECK(page);
+  JNXCHECK(type == JNX_HTTP_POST || type == JNX_HTTP_GET);
+  char *verb = NULL;
+  char *out_ip;
+
+  switch(type) {
+    case JNX_HTTP_POST:
+      verb = "POST";
+      break;
+    case JNX_HTTP_GET:
+      verb = "GET";
+      break;
+  }
+  JNXCHECK(verb);
+  unsigned int out_family;
+  int ret = jnx_network_hostname_to_ip(AF_INET,(char*)hostname,&out_ip,&out_family);
+  JNXCHECK(ret == 0);
+  jnx_socket *sock = jnx_socket_tcp_create(out_family);
+  JNXCHECK(sock);
+  char sendbuffer[2048];
+  snprintf(sendbuffer,sizeof(sendbuffer), 
+      "%s %s HTTP/1.0\r\n"
+      "Host: %s\r\n"
+      "Content-type: application/x-www-form-urlencoded\r\n"
+      "Content-length: %zu\r\n\r\n"
+      "%s\r\n",verb, page, hostname, strlen(args),args);
+  JNXCHECK(sendbuffer);
+
+  ssize_t l = jnx_socket_tcp_send_with_receipt(sock,
+      (char*)hostname,"80",(uint8_t*)sendbuffer,(ssize_t)strlen(sendbuffer),out_reply);
+  *out_len = l;  
+  if(!l) {
+    return JNX_HTTP_STATE_UNKNOWN;
+  }
+  return JNX_HTTP_STATE_OKAY;
+}
+JNX_HTTP_TYPE jnx_http_request_post(const char *hostname, const char *page, char *args,uint8_t **out_reply, ssize_t *out_len) {
+  uint8_t *reply;
+  JNX_HTTP_TYPE t = jnx_http_request(JNX_HTTP_POST,hostname,page,args,&reply,out_len);
+  *out_reply = reply;
+  return t;
+}
+JNX_HTTP_TYPE jnx_http_request_get(const char *hostname, const char *page, char *args,uint8_t **out_reply, ssize_t *out_len) {
+  uint8_t *reply;
+  JNX_HTTP_TYPE t = jnx_http_request(JNX_HTTP_GET,hostname,page,args,&reply,out_len);
+  *out_reply = reply;
+  return t;
 }

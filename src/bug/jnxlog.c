@@ -50,7 +50,7 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
   va_start(ap,format);
   vsprintf(msgbuffer,format,ap);
   va_end(ap);
-  if(!config) {
+  if(config == DEFAULT_CONTEXT) {
     time_t ptime;
     time(&ptime);
     char pbuffer[256];

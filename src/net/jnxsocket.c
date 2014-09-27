@@ -176,7 +176,7 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 
   int rg = 0;
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-    JNX_LOG(NULL,"%s\n",gai_strerror(rg));
+    JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
     return 0;
   }
   if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
@@ -215,7 +215,7 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
   *out_receipt = NULL;
   int rg = 0;
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-    JNX_LOG(NULL,"%s\n",gai_strerror(rg));
+    JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
     return 0;
   }
   if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
@@ -283,13 +283,13 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
 
   int rg = 0;
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-    JNX_LOG(NULL,"%s\n",gai_strerror(rg));
+    JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
     return 0;
   }
   size_t tbytes = 0;
   size_t rbytes = msg_len;
   if(rbytes > MAX_UDP_BUFFER) {
-    JNX_LOG(NULL,"Message exceeds max UDP packet size\n");
+    JNX_LOG(DEFAULT_CONTEXT,"Message exceeds max UDP packet size\n");
     freeaddrinfo(res);
     return 0;
   }
@@ -343,7 +343,7 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
     socklen_t addr_size = sizeof(their_addr);
     int recfd = accept(s->socket,(struct sockaddr*)&their_addr,&addr_size);
     if(recfd < 0) {
-      JNX_LOG(NULL,"accept: %s",strerror(errno));
+      JNX_LOG(DEFAULT_CONTEXT,"accept: %s",strerror(errno));
       perror("accept:");
       return -1;
     }

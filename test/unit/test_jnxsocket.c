@@ -22,6 +22,9 @@
 #include "jnxsocket.h"
 #include <assert.h>
 #include <pthread.h>
+
+#define TESTPORT "8831"
+
 void test_create() {
   JNX_LOG(NULL,"Test creation of socket\n");
   jnx_socket *a = jnx_socket_tcp_create(AF_INET);
@@ -57,7 +60,7 @@ int tcplistenipv4_callback(char *msg, size_t size,jnx_socket *s) {
 void *test_tcp_listen_ipv4(void *args) {
   tcp_socket_listener_callback c = tcplistenipv4_callback;
   tcp_ipv4_listener = jnx_socket_tcp_create(AF_INET);
-  jnx_socket_tcp_listen(tcp_ipv4_listener,"8831",100,c);
+  jnx_socket_tcp_listen(tcp_ipv4_listener,TESTPORT,100,c);
   return 0;
 }
 void setup_tcp_listen_ipv4_test() {
@@ -68,7 +71,7 @@ void setup_tcp_listen_ipv4_test() {
   sleep(2);
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_tcp_create(AF_INET);
-  size_t bytes = jnx_socket_tcp_send(s,"localhost","8831","hi",strlen("hi"));
+  size_t bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"hi",strlen("hi"));
   jnx_socket_destroy(&s);
   time_t st;
   time(&st);
@@ -92,7 +95,7 @@ int tcplistenipv6_callback(char *msg, size_t size,jnx_socket *s) {
 void *test_tcp_listen_ipv6(void *args) {
   tcp_socket_listener_callback c = tcplistenipv6_callback;
   tcp_ipv6_listener = jnx_socket_tcp_create(AF_INET6);
-  jnx_socket_tcp_listen(tcp_ipv6_listener,"8831",100,c);
+  jnx_socket_tcp_listen(tcp_ipv6_listener,TESTPORT,100,c);
   return 0;
 }
 void setup_tcp_listen_ipv6_test() {
@@ -103,7 +106,7 @@ void setup_tcp_listen_ipv6_test() {
   sleep(2);
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_tcp_create(AF_INET6);
-  size_t bytes = jnx_socket_tcp_send(s,"localhost","8831","hi",strlen("hi"));
+  size_t bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"hi",strlen("hi"));
   jnx_socket_destroy(&s);
   time_t st;
   time(&st);
@@ -132,7 +135,7 @@ int udplistenipv4_callback(char *msg, size_t size,jnx_socket *s) {
 void *test_udp_listen_ipv4(void *args) {
   udp_socket_listener_callback c = udplistenipv4_callback;
   udp_ipv4_listener = jnx_socket_udp_create(AF_INET);
-  jnx_socket_udp_listen(udp_ipv4_listener,"8831",100,c);
+  jnx_socket_udp_listen(udp_ipv4_listener,TESTPORT,100,c);
   return 0;
 }
 void setup_udp_listen_ipv4_test() {
@@ -143,7 +146,7 @@ void setup_udp_listen_ipv4_test() {
   sleep(2);
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_udp_create(AF_INET);
-  size_t bytes = jnx_socket_udp_send(s,"localhost","8831","hi",strlen("hi"));
+  size_t bytes = jnx_socket_udp_send(s,"localhost",TESTPORT,"hi",strlen("hi"));
   jnx_socket_destroy(&s);
   time_t st;
   time(&st);
@@ -166,7 +169,7 @@ int  udplistenipv6_callback(char *msg, size_t size,jnx_socket *s) {
 void *test_udp_listen_ipv6(void *args) {
   udp_socket_listener_callback c = udplistenipv6_callback;
   udp_ipv6_listener = jnx_socket_udp_create(AF_INET6);
-  jnx_socket_udp_listen(udp_ipv6_listener,"8831",100,c);
+  jnx_socket_udp_listen(udp_ipv6_listener,TESTPORT,100,c);
   return 0;
 }
 void setup_udp_listen_ipv6_test() {
@@ -177,7 +180,7 @@ void setup_udp_listen_ipv6_test() {
   sleep(2);
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_udp_create(AF_INET6);
-  size_t bytes = jnx_socket_udp_send(s,"localhost","8831","hi",strlen("hi"));
+  size_t bytes = jnx_socket_udp_send(s,"localhost",TESTPORT,"hi",strlen("hi"));
   jnx_socket_destroy(&s);
 
   time_t st;

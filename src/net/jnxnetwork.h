@@ -54,6 +54,37 @@ extern "C" {
    * @return 0 on success
    */
   int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,unsigned int *out_addrfamily);
+
+/**
+ * @brief Basic HTTP Protocols 
+ */
+typedef enum JNX_HTTP_TYPE {
+  JNX_HTTP_POST,
+  JNX_HTTP_GET
+
+} JNX_HTTP_TYPE;
+typedef enum JNX_HTTP_STATE {
+  JNX_HTTP_STATE_OKAY,
+  JNX_HTTP_STATE_FAIL,
+  JNX_HTTP_STATE_UNKNOWN
+} JNX_HTTP_STATE;
+/* 
+ * @fn size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *page, char *args, uint8_t **out_reply, ssize_t *out_len)
+ * @brief creates an http request defined within the JNX_HTTP_TYPE (JNX_HTTP_GET or JNX_HTTP_POST)
+ * @param type will specify the type of http request. Either JNX_HTTP_GET or JNX_HTTP_POST
+ * @param hostname is the host domain to connect to.
+ * @param page is the hostname page to display.
+ * @params args are the optional arguments to add to the outward message
+ * @params out_reply is a pointer to the pointer of uint8_t array that contains the outward reply
+ * @params out_len is the length of outward reply
+ * @return message length sent in bytes 
+ */
+size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *page, char *args, uint8_t **out_reply,ssize_t *out_len);
+
+JNX_HTTP_TYPE jnx_http_request_post(const char *hostname, const char *page, char *args,uint8_t **out_reply, ssize_t *out_len);
+
+JNX_HTTP_TYPE jnx_http_request_get(const char *hostname, const char *page, char *args,uint8_t **out_reply, ssize_t *out_len);
+
 #ifdef __cplusplus
 }
 #endif

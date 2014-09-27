@@ -5,15 +5,11 @@
 [![License](http://img.shields.io/badge/license-GPLv3-green.svg)](http://img.shields.io/badge/license-GPLv3-green.svg)
 [![Dev](http://img.shields.io/badge/development-active-green.svg)](http://img.shields.io/badge/development-active-green.svg)
 
-Status: Active development (Stable)
 
-####Purpose
+>A modern C library that provides a useful self contained API that has built in testing and just works.
+>Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library and tool for learning.
 
-A modern C library that provides a useful self contained API that has built in testing and just works.
-Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library and tool for learning.
-
-####For a solid snapshot of the library check out the releases
-https://github.com/AlexsJones/jnxlibc/releases
+[Latest release](https://github.com/AlexsJones/jnxlibc/releases)
 
 
 #Key features
@@ -41,29 +37,32 @@ https://github.com/AlexsJones/jnxlibc/releases
 #Installation
 
 ###Dependencies
-	- GCC
-	- CMake
-        - pthread library (included on OS/X and Linux)
+```
+GCC
+CMake
+```
 Currently supported platforms:
 Linux distributions/OS X
 
-Arch linux users
-````
-yaourt jnxlibc 
-````
 
-Grab this repo.
-````shell
+Default install location
+```
+git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
 cmake .
 make
-#Custom install path
-#cmake . -DCMAKE_INSTALL_PREFIX=/Users/alexjo/Projects/jnxlibc/build/ 
 sudo make install
+```
+Custom install location
+```
+git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
+cmake . -DCMAKE_INSTALL_PREFIX=/Users/alexjo/Projects/jnxlibc/build/ 
+make
+sudo make install
+```
 
-Use -ljnxc when building your project for shared library
-Use -ljnxcs for static library
+Use `-ljnxc` when building your project for shared library
+Use `-ljnxcs` for static library
 
-````
 ####Flags
 
 -DRELEASE (Sets library for release mode optimisations) 

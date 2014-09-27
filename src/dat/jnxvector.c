@@ -56,7 +56,7 @@ void jnx_vector_grow(jnx_vector **vector, int increment) {
   int resize = (*vector)->count + increment;
   jnx_vector_record **temp = realloc((*vector)->vector,resize * sizeof(jnx_vector_record));
   if(temp == NULL) {
-    JNX_LOG(NULL,"Error with reallocing\n");
+    JNX_LOG(DEFAULT_CONTEXT,"Error with reallocing\n");
     exit(0);
   } else {
     (*vector)->vector = temp;
@@ -124,7 +124,7 @@ void jnx_vector_insert_ts(jnx_vector *vector, void *value) {
 void *jnx_vector_last(jnx_vector *vector) {
   JNXCHECK(vector);
   if(vector->count == 0) {
-    JNX_LOG(NULL,"Cannot pop from an empty vector\n");
+    JNX_LOG(DEFAULT_CONTEXT,"Cannot pop from an empty vector\n");
     return NULL;
   }
   void *data = vector->vector[vector->count -1 ]->data;
@@ -150,4 +150,19 @@ size_t jnx_vector_count_ts(jnx_vector *vector) {
   size_t ret = jnx_vector_count(vector);
   jnx_thread_unlock(vector->internal_lock);
   return ret;
+}
+int jnx_vector_contains(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a,void *b)) {
+  int x = 0;
+  for ( x = 0; x < vector->count; ++x ) {
+    if(vector_comparison(vector->vector[x]->data,datain)){
+      return 1;
+    }
+  }
+  return 0;
+}
+int jnx_vector_contains_ts(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a,void *b)) {
+  jnx_thread_lock(vector->internal_lock);
+  int f = jnx_vector_contains(vector,datain,vector_comparison);
+  jnx_thread_unlock(vector->internal_lock);
+  return f;
 }
