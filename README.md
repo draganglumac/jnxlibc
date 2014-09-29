@@ -13,15 +13,15 @@
 
 
 #Key features
-- Lightweight data structures with thread-safe API (hash, list, vector, btree, stack, queue) 
-- Socket implmentation supporting multiple transport and IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP & UDP
-- Network utilities (get IP from hostname, resolve hostname from IP, interface to IP)
-- Threading interface above POSIX (Ambition to extend x-platform)
-- Signals & Slots
-- Interprocess communication
+- Lightweight data structures with thread-safe API (`hash, list, vector, btree, stack, queue`) 
+- `Socket` implmentation supporting multiple transport and `IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP & UDP`
+- `Network` utilities (get IP from hostname, resolve hostname from IP, interface to IP)
+- `Threading` interface above POSIX (Ambition to extend x-platform)
+- `Signals` & `Slots`
+- `Interprocess communication`
 - Verbose terminal logging
-- Easy to use file read/write functions
-- Fast and easy base64 encoding/decoding
+- Easy to use `file read/write` functions
+- Fast and easy `base64 encoding/decoding`
 - Auto generated documentation and logical API
 - Almost total test coverage (Unit tests/ Performance tests)
 - Armv7 framework version available [Here](https://github.com/AlexsJones/jnxlibc_ios)
