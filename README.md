@@ -11,6 +11,7 @@
 
 [Latest release](https://github.com/AlexsJones/jnxlibc/releases)
 
+[Latest iOS arm7 release](https://www.dropbox.com/sh/yrmpg4s54haobvk/AAACzIDXYKS7b7CZURzZb6Qaa?dl=0)
 
 #Key features
 - Lightweight data structures with thread-safe API (`hash, list, vector, btree, stack, queue`) 
