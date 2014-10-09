@@ -68,6 +68,14 @@ Use `-ljnxcs` for static library
 
 -DRELEASE (Sets library for release mode optimisations) 
 
+###Tests
+
+To run tests from root of the project folder
+```
+./test/run_tests
+```
+
+
 ##Examples
 
 Sending message over network
