@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_INSTALL_PREFIX /usr)
 project(jnxlibc)
-AUX_SOURCE_DIRECTORY(src/** RAW_SRC)
 
 file(MAKE_DIRECTORY jnxc_headers)
 file(GLOB HEADERS_CP "src/**/*.h")
