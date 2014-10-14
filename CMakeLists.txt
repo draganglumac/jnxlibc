@@ -4,7 +4,8 @@ project(jnxlibc)
 AUX_SOURCE_DIRECTORY(src/** RAW_SRC)
 
 file(MAKE_DIRECTORY jnxc_headers)
-FILE(GLOB HEADERS_CP "src/**/*.h")
+file(GLOB HEADERS_CP "src/**/*.h")
+file(GLOB RAW_SRC "src/**/*.c")
 file(COPY ${HEADERS_CP} DESTINATION jnxc_headers)
 
 include_directories(${PROJECT_INC_DIR}src/alg)
