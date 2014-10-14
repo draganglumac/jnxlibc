@@ -1,7 +1,7 @@
 
  jnxlibc
 =======
-[![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master)](https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master)
+[![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.svg)](https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master)
 [![Build Status](https://drone.io/github.com/AlexsJones/jnxlibc/status.png)](https://drone.io/github.com/AlexsJones/jnxlibc/latest)
 [![License](http://img.shields.io/badge/license-GPLv3-green.svg)](http://img.shields.io/badge/license-GPLv3-green.svg)
 [![Dev](http://img.shields.io/badge/development-active-green.svg)](http://img.shields.io/badge/development-active-green.svg)
