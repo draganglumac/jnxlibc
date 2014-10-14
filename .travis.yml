@@ -2,7 +2,7 @@ language: c
 compiler:
     - gcc
     - clang
-script:  echo "yes" | sudo add-apt-repository ppa:kalakris/cmake && sudo apt-get install cmake && ./test/run_tests
+script:  echo "yes" | sudo add-apt-repository ppa:kalakris/cmake && sudo apt-get install cmake && cmake . && make && ./test/run_tests
 notifications:
     email:
         recipients:
