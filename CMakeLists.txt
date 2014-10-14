@@ -17,7 +17,7 @@ include_directories(${PROJECT_INC_DIR}src/sig)
 include_directories(${PROJECT_INC_DIR}src/sys)
 include_directories(${PROJECT_INC_DIR}src/thr)
 
-set(CMAKE_C_FLAGS "-Wall -fPIC")
+set(CMAKE_C_FLAGS "-Wall")
 set(CMAKE_C_FLAGS_DEBUG "-g -rdynamic")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
 
