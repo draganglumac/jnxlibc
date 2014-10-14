@@ -2,7 +2,7 @@ language: c
 compiler:
     - gcc
     - clang
-script: ./test/run_tests
+script: cmake . && make && ./test/run_tests
 notifications:
     email:
         recipients:
