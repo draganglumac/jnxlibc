@@ -40,9 +40,7 @@ jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
   JNXCHECK(type);
   JNXCHECK(addrfamily);
   int sock = socket(addrfamily,type,0);
-  if(sock < 0) {
-    return NULL;
-  }
+  JNXCHECK(sock);
   int optval = 1;
   setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval);
   jnx_socket *s = malloc(sizeof(jnx_socket));
@@ -321,10 +319,6 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
   getaddrinfo(NULL,port,&hints,&res);
   p = res;
   while(p != NULL) {
-    if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1) {
-      perror("server: socket");
-      return -1;
-    }
     if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(int)) == -1) {
       perror("setsockopt");
       exit(1);
@@ -398,10 +392,6 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
   getaddrinfo(NULL,port,&hints,&res);
   p = res;
   while(p != NULL) {
-    if((s->socket = socket(p->ai_family,p->ai_socktype,p->ai_protocol)) == -1) {
-      perror("server: socket");
-      return -1;
-    }
     if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(int)) == -1) {
       perror("setsockopt");
       exit(1);
