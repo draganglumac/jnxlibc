@@ -106,24 +106,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef __JNXNETWORK_H__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define __JNXNETWORK_H__</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#if defined(linux)</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">char</span> *jnx_network_get_ip(<span class="keywordtype">char</span> *interface,<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> addrfamily);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;ifaddrs.h&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;inttypes.h&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">int</span> <a class="code" href="jnxnetwork_8h.html#a456b0c402a5ee43d1faceb7c58811cfa">jnx_network_interface_to_string</a>(<span class="keywordtype">char</span> **obuffer,<span class="keywordtype">char</span> *interface, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> family);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"> * @fn int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip, unsigned int *out_addrfamily);</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"> * @brief This will attempt to use your hint for AF_INET|IAF_INET6 to resolve the ip address from hostname e.g. google.com</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment"> * @param hint_family must be either AF_INET or AF_INET6</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment"> * @param host is the ip string to use</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment"> * @param out_ip is a pointer to string pointer you wish to have populated</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment"> * @param out_addrfamily is a pointer to a pointer you wish to store the found address family</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment"> * @return 0 on success</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">int</span> <a class="code" href="jnxnetwork_8h.html#a291f3f06ca3b18f7cea4e338e5b35a5b">jnx_network_hostname_to_ip</a>(<span class="keywordtype">unsigned</span> hint_family,<span class="keywordtype">char</span> *host, <span class="keywordtype">char</span> **out_ip,<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> *out_addrfamily);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="jnxnetwork_8h_html_a456b0c402a5ee43d1faceb7c58811cfa"><div class="ttname"><a href="jnxnetwork_8h.html#a456b0c402a5ee43d1faceb7c58811cfa">jnx_network_interface_to_string</a></div><div class="ttdeci">int jnx_network_interface_to_string(char **obuffer, char *interface, unsigned int family)</div></div>
+<div class="ttc" id="jnxnetwork_8h_html_a291f3f06ca3b18f7cea4e338e5b35a5b"><div class="ttname"><a href="jnxnetwork_8h.html#a291f3f06ca3b18f7cea4e338e5b35a5b">jnx_network_hostname_to_ip</a></div><div class="ttdeci">int jnx_network_hostname_to_ip(unsigned hint_family, char *host, char **out_ip, unsigned int *out_addrfamily)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-<<<<<<< HEAD
-Generated on Wed Apr 16 2014 06:26:36 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
-=======
-Generated on Sun Apr 27 2014 17:14:15 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
->>>>>>> alex/master
+Generated on Sat Jun 7 2014 12:40:14 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

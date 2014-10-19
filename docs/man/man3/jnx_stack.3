@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-.TH "jnx_stack" 3 "Wed Apr 16 2014" "jnxlibc" \" -*- nroff -*-
-=======
-.TH "jnx_stack" 3 "Sun Apr 27 2014" "jnxlibc" \" -*- nroff -*-
->>>>>>> alex/master
+.TH "jnx_stack" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -24,6 +20,9 @@ Represents the stack data structure as seen by the user\&.
 .ti -1c
 .RI "int \fBcount\fP"
 .br
+.ti -1c
+.RI "\fBjnx_thread_mutex\fP * \fBinternal_lock\fP"
+.br
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -31,6 +30,8 @@ Represents the stack data structure as seen by the user\&.
 .SH "Member Data Documentation"
 .PP 
 .SS "int jnx_stack::count"
+
+.SS "\fBjnx_thread_mutex\fP* jnx_stack::internal_lock"
 
 .SS "struct \fBjnx_snode\fP* jnx_stack::top"
 

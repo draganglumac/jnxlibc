@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-.TH "jnx_vector" 3 "Wed Apr 16 2014" "jnxlibc" \" -*- nroff -*-
-=======
-.TH "jnx_vector" 3 "Sun Apr 27 2014" "jnxlibc" \" -*- nroff -*-
->>>>>>> alex/master
+.TH "jnx_vector" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -24,6 +20,9 @@ The external structure and interface for jnx vector\&.
 .ti -1c
 .RI "\fBjnx_vector_record\fP ** \fBvector\fP"
 .br
+.ti -1c
+.RI "\fBjnx_thread_mutex\fP * \fBinternal_lock\fP"
+.br
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -31,6 +30,8 @@ The external structure and interface for jnx vector\&.
 .SH "Member Data Documentation"
 .PP 
 .SS "int jnx_vector::count"
+
+.SS "\fBjnx_thread_mutex\fP* jnx_vector::internal_lock"
 
 .SS "\fBjnx_vector_record\fP** jnx_vector::vector"
 

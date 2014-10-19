@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-.TH "jnx_thread_mutex" 3 "Wed Apr 16 2014" "jnxlibc" \" -*- nroff -*-
-=======
-.TH "jnx_thread_mutex" 3 "Sun Apr 27 2014" "jnxlibc" \" -*- nroff -*-
->>>>>>> alex/master
+.TH "jnx_thread_mutex" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -18,9 +14,14 @@ jnx_thread_mutex \-
 .ti -1c
 .RI "pthread_mutex_t \fBsystem_mutex\fP"
 .br
+.ti -1c
+.RI "int \fBis_initialized\fP"
+.br
 .in -1c
 .SH "Member Data Documentation"
 .PP 
+.SS "int jnx_thread_mutex::is_initialized"
+
 .SS "pthread_mutex_t jnx_thread_mutex::system_mutex"
 
 

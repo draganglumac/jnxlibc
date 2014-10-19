@@ -90,55 +90,68 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="jnxlist_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#ifndef __JNXLIST_H__</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#define __JNXLIST_H__</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structnode.html">   14</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structnode.html">node</a> {</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structnode.html#abd3d286f790fade45af557e383a791c1">   15</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="structnode.html#abd3d286f790fade45af557e383a791c1">_data</a>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="structnode.html#a10305404d0da070d67f1a0b6cd518cc9">   16</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structnode.html">node</a>* <a class="code" href="structnode.html#a10305404d0da070d67f1a0b6cd518cc9">prev_node</a>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structnode.html#a24c054564fa79112d4b878d2576d3b4f">   17</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structnode.html">node</a>* <a class="code" href="structnode.html#a24c054564fa79112d4b878d2576d3b4f">next_node</a>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;} <a class="code" href="jnxlist_8h.html#a27c74b8d2f7bc29a4b15dd1623acdec9">jnx_node</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structlist.html">   22</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structlist.html">list</a> {</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structlist.html#aa8b90ec221982399d1b26fe56aaad4b8">   23</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structnode.html">node</a>* <a class="code" href="structlist.html#aa8b90ec221982399d1b26fe56aaad4b8">head</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structlist.html#aa6af5353c9a8a524c48539a57a8063f3">   24</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structnode.html">node</a>* <a class="code" href="structlist.html#aa6af5353c9a8a524c48539a57a8063f3">tail</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structlist.html#a750ce957288fb3eea20e362006f8e6d0">   25</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structlist.html#a750ce957288fb3eea20e362006f8e6d0">counter</a>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;} <a class="code" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<a class="code" href="structlist.html">jnx_list</a>* <a class="code" href="jnxlist_8h.html#ad10e8f69af4e2fd86b721a93b0a7904f">jnx_list_create</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> <a class="code" href="jnxlist_8h.html#a21336d31db9839ecd6228736f54849d0">jnx_list_add</a>(<a class="code" href="structlist.html">jnx_list</a>* A, <span class="keywordtype">void</span>* _datain);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">void</span>* <a class="code" href="jnxlist_8h.html#a3d336130195aedac07e42853b187c4e5">jnx_list_remove</a>(<a class="code" href="structlist.html">jnx_list</a>** A);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">void</span> <a class="code" href="jnxlist_8h.html#ae02144d0c2c8fb946cd44228d8aa49c7">jnx_list_destroy</a>(<a class="code" href="structlist.html">jnx_list</a>** A);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="ttc" id="structnode_html"><div class="ttname"><a href="structnode.html">node</a></div><div class="ttdoc">Node represents a link in the list. </div><div class="ttdef"><b>Definition:</b> jnxlist.h:14</div></div>
-<div class="ttc" id="structnode_html_a10305404d0da070d67f1a0b6cd518cc9"><div class="ttname"><a href="structnode.html#a10305404d0da070d67f1a0b6cd518cc9">node::prev_node</a></div><div class="ttdeci">struct node * prev_node</div><div class="ttdef"><b>Definition:</b> jnxlist.h:16</div></div>
-<div class="ttc" id="structlist_html_aa8b90ec221982399d1b26fe56aaad4b8"><div class="ttname"><a href="structlist.html#aa8b90ec221982399d1b26fe56aaad4b8">list::head</a></div><div class="ttdeci">struct node * head</div><div class="ttdef"><b>Definition:</b> jnxlist.h:23</div></div>
-<div class="ttc" id="structnode_html_a24c054564fa79112d4b878d2576d3b4f"><div class="ttname"><a href="structnode.html#a24c054564fa79112d4b878d2576d3b4f">node::next_node</a></div><div class="ttdeci">struct node * next_node</div><div class="ttdef"><b>Definition:</b> jnxlist.h:17</div></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="jnxthread_8h.html">jnxthread.h</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structnode.html">   15</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structnode.html">node</a> {</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="structnode.html#abd3d286f790fade45af557e383a791c1">   16</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="structnode.html#abd3d286f790fade45af557e383a791c1">_data</a>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structnode.html#a10305404d0da070d67f1a0b6cd518cc9">   17</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structnode.html">node</a>* <a class="code" href="structnode.html#a10305404d0da070d67f1a0b6cd518cc9">prev_node</a>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structnode.html#a24c054564fa79112d4b878d2576d3b4f">   18</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structnode.html">node</a>* <a class="code" href="structnode.html#a24c054564fa79112d4b878d2576d3b4f">next_node</a>;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;} <a class="code" href="jnxlist_8h.html#a27c74b8d2f7bc29a4b15dd1623acdec9">jnx_node</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structlist.html">   23</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structlist.html">list</a> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structlist.html#aa8b90ec221982399d1b26fe56aaad4b8">   24</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structnode.html">node</a>* <a class="code" href="structlist.html#aa8b90ec221982399d1b26fe56aaad4b8">head</a>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structlist.html#aa6af5353c9a8a524c48539a57a8063f3">   25</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structnode.html">node</a>* <a class="code" href="structlist.html#aa6af5353c9a8a524c48539a57a8063f3">tail</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structlist.html#a750ce957288fb3eea20e362006f8e6d0">   26</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structlist.html#a750ce957288fb3eea20e362006f8e6d0">counter</a>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structlist.html#a2acf5241f23d91e9cb6a4cc882f0bc6e">   27</a></span>&#160;        <a class="code" href="structjnx__thread__mutex.html">jnx_thread_mutex</a> *<a class="code" href="structlist.html#a2acf5241f23d91e9cb6a4cc882f0bc6e">internal_lock</a>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <a class="code" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<a class="code" href="structlist.html">jnx_list</a>* <a class="code" href="jnxlist_8h.html#ad10e8f69af4e2fd86b721a93b0a7904f">jnx_list_create</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> <a class="code" href="jnxlist_8h.html#a21336d31db9839ecd6228736f54849d0">jnx_list_add</a>(<a class="code" href="structlist.html">jnx_list</a>* A, <span class="keywordtype">void</span>* _datain);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">void</span> <a class="code" href="jnxlist_8h.html#a9b0edd896ef1844669ca94d5f55db211">jnx_list_add_ts</a>(<a class="code" href="structlist.html">jnx_list</a>* A, <span class="keywordtype">void</span>* _datain);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">void</span>* <a class="code" href="jnxlist_8h.html#a3d336130195aedac07e42853b187c4e5">jnx_list_remove</a>(<a class="code" href="structlist.html">jnx_list</a>** A);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span>* <a class="code" href="jnxlist_8h.html#ad080c24795769a5f3ee64a0c805d34ee">jnx_list_remove_ts</a>(<a class="code" href="structlist.html">jnx_list</a>** A);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="jnxlist_8h.html#ab4d5fe8ec532ebfc99b3e70c23495c7d">jnx_list_count</a>(<a class="code" href="structlist.html">jnx_list</a> *A);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="jnxlist_8h.html#a8d8e3c91a1d06e6419f2c37318c0cd37">jnx_list_count_ts</a>(<a class="code" href="structlist.html">jnx_list</a> *A);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">void</span> <a class="code" href="jnxlist_8h.html#ae02144d0c2c8fb946cd44228d8aa49c7">jnx_list_destroy</a>(<a class="code" href="structlist.html">jnx_list</a>** A);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="ttc" id="structnode_html"><div class="ttname"><a href="structnode.html">node</a></div><div class="ttdoc">Node represents a link in the list. </div><div class="ttdef"><b>Definition:</b> jnxlist.h:15</div></div>
+<div class="ttc" id="jnxlist_8h_html_ad080c24795769a5f3ee64a0c805d34ee"><div class="ttname"><a href="jnxlist_8h.html#ad080c24795769a5f3ee64a0c805d34ee">jnx_list_remove_ts</a></div><div class="ttdeci">void * jnx_list_remove_ts(jnx_list **A)</div></div>
+<div class="ttc" id="structlist_html_a2acf5241f23d91e9cb6a4cc882f0bc6e"><div class="ttname"><a href="structlist.html#a2acf5241f23d91e9cb6a4cc882f0bc6e">list::internal_lock</a></div><div class="ttdeci">jnx_thread_mutex * internal_lock</div><div class="ttdef"><b>Definition:</b> jnxlist.h:27</div></div>
+<div class="ttc" id="structjnx__thread__mutex_html"><div class="ttname"><a href="structjnx__thread__mutex.html">jnx_thread_mutex</a></div><div class="ttdef"><b>Definition:</b> jnxthread.h:42</div></div>
+<div class="ttc" id="structnode_html_a10305404d0da070d67f1a0b6cd518cc9"><div class="ttname"><a href="structnode.html#a10305404d0da070d67f1a0b6cd518cc9">node::prev_node</a></div><div class="ttdeci">struct node * prev_node</div><div class="ttdef"><b>Definition:</b> jnxlist.h:17</div></div>
+<div class="ttc" id="structlist_html_aa8b90ec221982399d1b26fe56aaad4b8"><div class="ttname"><a href="structlist.html#aa8b90ec221982399d1b26fe56aaad4b8">list::head</a></div><div class="ttdeci">struct node * head</div><div class="ttdef"><b>Definition:</b> jnxlist.h:24</div></div>
+<div class="ttc" id="structnode_html_a24c054564fa79112d4b878d2576d3b4f"><div class="ttname"><a href="structnode.html#a24c054564fa79112d4b878d2576d3b4f">node::next_node</a></div><div class="ttdeci">struct node * next_node</div><div class="ttdef"><b>Definition:</b> jnxlist.h:18</div></div>
 <div class="ttc" id="jnxlist_8h_html_a3d336130195aedac07e42853b187c4e5"><div class="ttname"><a href="jnxlist_8h.html#a3d336130195aedac07e42853b187c4e5">jnx_list_remove</a></div><div class="ttdeci">void * jnx_list_remove(jnx_list **A)</div></div>
 <div class="ttc" id="jnxlist_8h_html_a21336d31db9839ecd6228736f54849d0"><div class="ttname"><a href="jnxlist_8h.html#a21336d31db9839ecd6228736f54849d0">jnx_list_add</a></div><div class="ttdeci">void jnx_list_add(jnx_list *A, void *_datain)</div><div class="ttdoc">Accepts a void pointer for input with list. </div></div>
+<div class="ttc" id="jnxlist_8h_html_a9b0edd896ef1844669ca94d5f55db211"><div class="ttname"><a href="jnxlist_8h.html#a9b0edd896ef1844669ca94d5f55db211">jnx_list_add_ts</a></div><div class="ttdeci">void jnx_list_add_ts(jnx_list *A, void *_datain)</div></div>
 <div class="ttc" id="jnxlist_8h_html_a27c74b8d2f7bc29a4b15dd1623acdec9"><div class="ttname"><a href="jnxlist_8h.html#a27c74b8d2f7bc29a4b15dd1623acdec9">jnx_node</a></div><div class="ttdeci">struct node jnx_node</div><div class="ttdoc">Node represents a link in the list. </div></div>
 <div class="ttc" id="jnxlist_8h_html_ae02144d0c2c8fb946cd44228d8aa49c7"><div class="ttname"><a href="jnxlist_8h.html#ae02144d0c2c8fb946cd44228d8aa49c7">jnx_list_destroy</a></div><div class="ttdeci">void jnx_list_destroy(jnx_list **A)</div></div>
-<div class="ttc" id="structlist_html"><div class="ttname"><a href="structlist.html">list</a></div><div class="ttdoc">Represents the list data structure as seen by the user. </div><div class="ttdef"><b>Definition:</b> jnxlist.h:22</div></div>
+<div class="ttc" id="jnxlist_8h_html_ab4d5fe8ec532ebfc99b3e70c23495c7d"><div class="ttname"><a href="jnxlist_8h.html#ab4d5fe8ec532ebfc99b3e70c23495c7d">jnx_list_count</a></div><div class="ttdeci">size_t jnx_list_count(jnx_list *A)</div></div>
+<div class="ttc" id="jnxlist_8h_html_a8d8e3c91a1d06e6419f2c37318c0cd37"><div class="ttname"><a href="jnxlist_8h.html#a8d8e3c91a1d06e6419f2c37318c0cd37">jnx_list_count_ts</a></div><div class="ttdeci">size_t jnx_list_count_ts(jnx_list *A)</div></div>
+<div class="ttc" id="structlist_html"><div class="ttname"><a href="structlist.html">list</a></div><div class="ttdoc">Represents the list data structure as seen by the user. </div><div class="ttdef"><b>Definition:</b> jnxlist.h:23</div></div>
 <div class="ttc" id="jnxlist_8h_html_a8df45f2a7bc113ca804817bb61053244"><div class="ttname"><a href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a></div><div class="ttdeci">struct list jnx_list</div><div class="ttdoc">Represents the list data structure as seen by the user. </div></div>
-<div class="ttc" id="structnode_html_abd3d286f790fade45af557e383a791c1"><div class="ttname"><a href="structnode.html#abd3d286f790fade45af557e383a791c1">node::_data</a></div><div class="ttdeci">void * _data</div><div class="ttdef"><b>Definition:</b> jnxlist.h:15</div></div>
-<div class="ttc" id="structlist_html_a750ce957288fb3eea20e362006f8e6d0"><div class="ttname"><a href="structlist.html#a750ce957288fb3eea20e362006f8e6d0">list::counter</a></div><div class="ttdeci">int counter</div><div class="ttdef"><b>Definition:</b> jnxlist.h:25</div></div>
+<div class="ttc" id="jnxthread_8h_html"><div class="ttname"><a href="jnxthread_8h.html">jnxthread.h</a></div></div>
+<div class="ttc" id="structnode_html_abd3d286f790fade45af557e383a791c1"><div class="ttname"><a href="structnode.html#abd3d286f790fade45af557e383a791c1">node::_data</a></div><div class="ttdeci">void * _data</div><div class="ttdef"><b>Definition:</b> jnxlist.h:16</div></div>
+<div class="ttc" id="structlist_html_a750ce957288fb3eea20e362006f8e6d0"><div class="ttname"><a href="structlist.html#a750ce957288fb3eea20e362006f8e6d0">list::counter</a></div><div class="ttdeci">int counter</div><div class="ttdef"><b>Definition:</b> jnxlist.h:26</div></div>
 <div class="ttc" id="jnxlist_8h_html_ad10e8f69af4e2fd86b721a93b0a7904f"><div class="ttname"><a href="jnxlist_8h.html#ad10e8f69af4e2fd86b721a93b0a7904f">jnx_list_create</a></div><div class="ttdeci">jnx_list * jnx_list_create(void)</div><div class="ttdoc">Returns newly created list. </div></div>
-<div class="ttc" id="structlist_html_aa6af5353c9a8a524c48539a57a8063f3"><div class="ttname"><a href="structlist.html#aa6af5353c9a8a524c48539a57a8063f3">list::tail</a></div><div class="ttdeci">struct node * tail</div><div class="ttdef"><b>Definition:</b> jnxlist.h:24</div></div>
+<div class="ttc" id="structlist_html_aa6af5353c9a8a524c48539a57a8063f3"><div class="ttname"><a href="structlist.html#aa6af5353c9a8a524c48539a57a8063f3">list::tail</a></div><div class="ttdeci">struct node * tail</div><div class="ttdef"><b>Definition:</b> jnxlist.h:25</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-<<<<<<< HEAD
-Generated on Wed Apr 16 2014 06:26:36 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
-=======
-Generated on Sun Apr 27 2014 17:14:15 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
->>>>>>> alex/master
+Generated on Sat Jun 7 2014 12:40:14 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
