@@ -35,6 +35,7 @@ jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){
   conf->pend = malloc(sizeof(struct timeval));
   gettimeofday(conf->pstart,NULL);
   conf->pcurrent = 0;
+  conf->internal_lock = jnx_thread_mutex_create();
   return conf;
 }
 void jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...){
@@ -64,7 +65,9 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
   switch(config->output) {
     case FILETYPE:
       JNXCHECK(config->log_path);
+      jnx_thread_lock(config->internal_lock);
       jnx_file_write((char*)config->log_path ? (char*)config->log_path : "default.log",buffer,strlen(buffer),"a");
+      jnx_thread_unlock(config->internal_lock);
       break;
     case CONSOLETYPE:
       printf("%s",buffer);
@@ -77,6 +80,7 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
 }
 void jnx_log_destroy(jnx_log_config **config){
   JNXCHECK(*config);
+  jnx_thread_mutex_destroy(&(*config)->internal_lock);
   free((*config)->pstart);
   free((*config)->pend);
   free(*config);
