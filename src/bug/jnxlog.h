@@ -18,6 +18,7 @@
 #ifndef __JNXLOG_H__
 #define __JNXLOG_H__
 #include <time.h>
+#include "jnxthread.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -33,6 +34,7 @@ extern "C" {
     struct timeval *pstart;
     struct timeval *pend;
     double pcurrent;
+    jnx_thread_mutex *internal_lock;
   } jnx_log_config;
 
   /** @fn jnx_log_create(const char *path, jnx_log_type output)
