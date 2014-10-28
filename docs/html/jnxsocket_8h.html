@@ -137,6 +137,8 @@ Functions</h2></td></tr>
 <tr class="separator:a89ba12b9721b5ccd91cbe1b5fdb0726a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39a58058f643306a560e9b999678d332"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a39a58058f643306a560e9b999678d332">jnx_socket_tcp_send</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *host, char *port, uint8_t *msg, ssize_t msg_len)</td></tr>
 <tr class="separator:a39a58058f643306a560e9b999678d332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae32ffc4a324902d587d5ef637c04b1e6"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#ae32ffc4a324902d587d5ef637c04b1e6">jnx_socket_tcp_send_with_receipt</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *host, char *port, uint8_t *msg, ssize_t msg_len, uint8_t **out_receipt)</td></tr>
+<tr class="separator:ae32ffc4a324902d587d5ef637c04b1e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bde499f1e4a20da0257ab17a0a28a43"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a9bde499f1e4a20da0257ab17a0a28a43">jnx_socket_udp_send</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *host, char *port, uint8_t *msg, ssize_t msg_len)</td></tr>
 <tr class="separator:a9bde499f1e4a20da0257ab17a0a28a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54c753a0a49652f338f72c285ccf3d9d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxsocket_8h.html#a54c753a0a49652f338f72c285ccf3d9d">jnx_socket_tcp_listen</a> (<a class="el" href="structjnx__socket.html">jnx_socket</a> *s, char *port, ssize_t max_connections, <a class="el" href="jnxsocket_8h.html#a3f48915b679ce34eb170a9a209e20032">tcp_socket_listener_callback</a> c)</td></tr>
@@ -309,6 +311,68 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae32ffc4a324902d587d5ef637c04b1e6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jnx_socket_tcp_send_with_receipt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__socket.html">jnx_socket</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>host</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>msg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>msg_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t **&#160;</td>
+          <td class="paramname"><em>out_receipt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>is the socket to use to send </td></tr>
+    <tr><td class="paramname">host</td><td>is the target destination </td></tr>
+    <tr><td class="paramname">port</td><td>is the target port </td></tr>
+    <tr><td class="paramname">msg</td><td>is the payload to send </td></tr>
+    <tr><td class="paramname">msg_len</td><td>is the size of payload </td></tr>
+    <tr><td class="paramname">out_receipt</td><td>returned from the target host </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>size_t of bytes sent </dd></dl>
 
 </div>
 </div>
@@ -535,11 +599,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-<<<<<<< HEAD
-Generated on Wed Apr 16 2014 06:26:36 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
-=======
-Generated on Sun Apr 27 2014 17:14:15 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
->>>>>>> alex/master
+Generated on Sat Jun 7 2014 12:40:14 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

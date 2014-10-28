@@ -94,7 +94,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>API for jnxlibc implementation of list.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &quot;<a class="el" href="jnxthread_8h_source.html">jnxthread.h</a>&quot;</code><br />
+</div>
 <p><a href="jnxlist_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -123,8 +124,16 @@ Functions</h2></td></tr>
 <tr class="memitem:a21336d31db9839ecd6228736f54849d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlist_8h.html#a21336d31db9839ecd6228736f54849d0">jnx_list_add</a> (<a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> *A, void *_datain)</td></tr>
 <tr class="memdesc:a21336d31db9839ecd6228736f54849d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a void pointer for input with list.  <a href="#a21336d31db9839ecd6228736f54849d0">More...</a><br /></td></tr>
 <tr class="separator:a21336d31db9839ecd6228736f54849d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b0edd896ef1844669ca94d5f55db211"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlist_8h.html#a9b0edd896ef1844669ca94d5f55db211">jnx_list_add_ts</a> (<a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> *A, void *_datain)</td></tr>
+<tr class="separator:a9b0edd896ef1844669ca94d5f55db211"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d336130195aedac07e42853b187c4e5"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlist_8h.html#a3d336130195aedac07e42853b187c4e5">jnx_list_remove</a> (<a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> **A)</td></tr>
 <tr class="separator:a3d336130195aedac07e42853b187c4e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad080c24795769a5f3ee64a0c805d34ee"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlist_8h.html#ad080c24795769a5f3ee64a0c805d34ee">jnx_list_remove_ts</a> (<a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> **A)</td></tr>
+<tr class="separator:ad080c24795769a5f3ee64a0c805d34ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4d5fe8ec532ebfc99b3e70c23495c7d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlist_8h.html#ab4d5fe8ec532ebfc99b3e70c23495c7d">jnx_list_count</a> (<a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> *A)</td></tr>
+<tr class="separator:ab4d5fe8ec532ebfc99b3e70c23495c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d8e3c91a1d06e6419f2c37318c0cd37"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlist_8h.html#a8d8e3c91a1d06e6419f2c37318c0cd37">jnx_list_count_ts</a> (<a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> *A)</td></tr>
+<tr class="separator:a8d8e3c91a1d06e6419f2c37318c0cd37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae02144d0c2c8fb946cd44228d8aa49c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxlist_8h.html#ae02144d0c2c8fb946cd44228d8aa49c7">jnx_list_destroy</a> (<a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> **A)</td></tr>
 <tr class="separator:ae02144d0c2c8fb946cd44228d8aa49c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -196,6 +205,64 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9b0edd896ef1844669ca94d5f55db211"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void jnx_list_add_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> *&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>_datain</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab4d5fe8ec532ebfc99b3e70c23495c7d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t jnx_list_count </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> *&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8d8e3c91a1d06e6419f2c37318c0cd37"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t jnx_list_count_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> *&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ad10e8f69af4e2fd86b721a93b0a7904f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -247,14 +314,26 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad080c24795769a5f3ee64a0c805d34ee"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* jnx_list_remove_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="jnxlist_8h.html#a8df45f2a7bc113ca804817bb61053244">jnx_list</a> **&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-<<<<<<< HEAD
-Generated on Wed Apr 16 2014 06:26:36 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
-=======
-Generated on Sun Apr 27 2014 17:14:15 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
->>>>>>> alex/master
+Generated on Sat Jun 7 2014 12:40:14 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

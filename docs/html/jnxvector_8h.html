@@ -93,7 +93,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>The API for jnxlibc's implementation of vector.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &quot;<a class="el" href="jnxthread_8h_source.html">jnxthread.h</a>&quot;</code><br />
+</div>
 <p><a href="jnxvector_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -110,26 +111,76 @@ Functions</h2></td></tr>
 <tr class="memitem:aa0902dbfdcf3d0a5d06476ebabba48c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structjnx__vector.html">jnx_vector</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#aa0902dbfdcf3d0a5d06476ebabba48c6">jnx_vector_create</a> (void)</td></tr>
 <tr class="memdesc:aa0902dbfdcf3d0a5d06476ebabba48c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that createialises internal vector structures. Call this function before you call any other function from the API.  <a href="#aa0902dbfdcf3d0a5d06476ebabba48c6">More...</a><br /></td></tr>
 <tr class="separator:aa0902dbfdcf3d0a5d06476ebabba48c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf1b882b058b0021c0ce1113c8b329ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#abf1b882b058b0021c0ce1113c8b329ad">jnx_vector_destroy</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector)</td></tr>
-<tr class="memdesc:abf1b882b058b0021c0ce1113c8b329ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the vector and its data structures.  <a href="#abf1b882b058b0021c0ce1113c8b329ad">More...</a><br /></td></tr>
-<tr class="separator:abf1b882b058b0021c0ce1113c8b329ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a621a8dd843d5cc22fa63b2ba15ec8379"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#a621a8dd843d5cc22fa63b2ba15ec8379">jnx_vector_destroy</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> **vector)</td></tr>
+<tr class="separator:a621a8dd843d5cc22fa63b2ba15ec8379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac115d1293b6a774208f76db2e6096cea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#ac115d1293b6a774208f76db2e6096cea">jnx_vector_insert</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector, void *value)</td></tr>
 <tr class="memdesc:ac115d1293b6a774208f76db2e6096cea"><td class="mdescLeft">&#160;</td><td class="mdescRight">inserts into the next position in the vector  <a href="#ac115d1293b6a774208f76db2e6096cea">More...</a><br /></td></tr>
 <tr class="separator:ac115d1293b6a774208f76db2e6096cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aa22fe7ce196287ca8bda06f44f8ad1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#a9aa22fe7ce196287ca8bda06f44f8ad1">jnx_vector_insert_ts</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector, void *value)</td></tr>
+<tr class="separator:a9aa22fe7ce196287ca8bda06f44f8ad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e7a62db0f040fd6751879f244c95240"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#a5e7a62db0f040fd6751879f244c95240">jnx_vector_insert_at</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector, int position, void *value)</td></tr>
 <tr class="memdesc:a5e7a62db0f040fd6751879f244c95240"><td class="mdescLeft">&#160;</td><td class="mdescRight">inserts into the vector at a particular position, if it doesn't exist it will be crearted  <a href="#a5e7a62db0f040fd6751879f244c95240">More...</a><br /></td></tr>
 <tr class="separator:a5e7a62db0f040fd6751879f244c95240"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6cb01a58586e2cee50c89bfccad24df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#ac6cb01a58586e2cee50c89bfccad24df">jnx_vector_insert_at_ts</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector, int position, void *value)</td></tr>
+<tr class="separator:ac6cb01a58586e2cee50c89bfccad24df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab156d30c50ea29e7d0b7467291e0b04"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#aab156d30c50ea29e7d0b7467291e0b04">jnx_vector_last</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector)</td></tr>
 <tr class="memdesc:aab156d30c50ea29e7d0b7467291e0b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the last data entry in the vector and shortens it by 1  <a href="#aab156d30c50ea29e7d0b7467291e0b04">More...</a><br /></td></tr>
 <tr class="separator:aab156d30c50ea29e7d0b7467291e0b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63a73bbd92c24456bb0b57eb1f223922"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#a63a73bbd92c24456bb0b57eb1f223922">jnx_vector_last_ts</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector)</td></tr>
+<tr class="separator:a63a73bbd92c24456bb0b57eb1f223922"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a654b8e0e5a87c2e70fb4bb3387a8e2ff"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#a654b8e0e5a87c2e70fb4bb3387a8e2ff">jnx_vector_count</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector)</td></tr>
+<tr class="separator:a654b8e0e5a87c2e70fb4bb3387a8e2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d6ffac31f59e3c9303f82ec995bf942"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#a9d6ffac31f59e3c9303f82ec995bf942">jnx_vector_count_ts</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector)</td></tr>
+<tr class="separator:a9d6ffac31f59e3c9303f82ec995bf942"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfc0fb5f733f82a0a9873b906a21b10e"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#adfc0fb5f733f82a0a9873b906a21b10e">jnx_vector_remove_at</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector, int position)</td></tr>
 <tr class="memdesc:adfc0fb5f733f82a0a9873b906a21b10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">removes an entry at position in the vector  <a href="#adfc0fb5f733f82a0a9873b906a21b10e">More...</a><br /></td></tr>
 <tr class="separator:adfc0fb5f733f82a0a9873b906a21b10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5462f31ddcf83e76b65717352fdee4e"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jnxvector_8h.html#ae5462f31ddcf83e76b65717352fdee4e">jnx_vector_remove_at_ts</a> (<a class="el" href="structjnx__vector.html">jnx_vector</a> *vector, int position)</td></tr>
+<tr class="separator:ae5462f31ddcf83e76b65717352fdee4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The API for jnxlibc's implementation of vector. </p>
 <p>#include &lt;jnxc_headers/jnxvector.h&gt; </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a654b8e0e5a87c2e70fb4bb3387a8e2ff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jnx_vector_count </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__vector.html">jnx_vector</a> *&#160;</td>
+          <td class="paramname"><em>vector</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vector</td><td>is the pointer to the vector to count </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of vector elements </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9d6ffac31f59e3c9303f82ec995bf942"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t jnx_vector_count_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__vector.html">jnx_vector</a> *&#160;</td>
+          <td class="paramname"><em>vector</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aa0902dbfdcf3d0a5d06476ebabba48c6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -148,28 +199,19 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abf1b882b058b0021c0ce1113c8b329ad"></a>
+<a class="anchor" id="a621a8dd843d5cc22fa63b2ba15ec8379"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">jnx_vector_destroy </td>
+          <td class="memname">void jnx_vector_destroy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjnx__vector.html">jnx_vector</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structjnx__vector.html">jnx_vector</a> **&#160;</td>
           <td class="paramname"><em>vector</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Deletes the vector and its data structures. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">vector</td><td>points to the vector to destroy</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section warning"><dt>Warning</dt><dd>User assumes responsibility for deleting all data entries first </dd></dl>
 
 </div>
 </div>
@@ -250,6 +292,64 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac6cb01a58586e2cee50c89bfccad24df"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void jnx_vector_insert_at_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__vector.html">jnx_vector</a> *&#160;</td>
+          <td class="paramname"><em>vector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9aa22fe7ce196287ca8bda06f44f8ad1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void jnx_vector_insert_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__vector.html">jnx_vector</a> *&#160;</td>
+          <td class="paramname"><em>vector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aab156d30c50ea29e7d0b7467291e0b04"></a>
 <div class="memitem">
 <div class="memproto">
@@ -272,6 +372,22 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>returns void* data from the last vector entry </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a63a73bbd92c24456bb0b57eb1f223922"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* jnx_vector_last_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__vector.html">jnx_vector</a> *&#160;</td>
+          <td class="paramname"><em>vector</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -311,14 +427,36 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae5462f31ddcf83e76b65717352fdee4e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* jnx_vector_remove_at_ts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjnx__vector.html">jnx_vector</a> *&#160;</td>
+          <td class="paramname"><em>vector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>position</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-<<<<<<< HEAD
-Generated on Wed Apr 16 2014 06:26:36 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
-=======
-Generated on Sun Apr 27 2014 17:14:15 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
->>>>>>> alex/master
+Generated on Sat Jun 7 2014 12:40:14 for jnxlibc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
