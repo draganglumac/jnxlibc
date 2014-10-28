@@ -27,6 +27,8 @@
 #include "jnxcheck.h"
 #include "jnxfile.h"
 
+#define MAX_SIZE 2048
+#define TIMEBUFFER 256
 jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){  
   jnx_log_config *conf = malloc(sizeof(jnx_log_config));
   conf->log_path = path;
@@ -42,7 +44,6 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
   JNXCHECK(file);
   JNXCHECK(function);
   JNXCHECK(format);
-  size_t MAX_SIZE = 2048;
   char buffer[MAX_SIZE];
   char msgbuffer[MAX_SIZE];
   memset(buffer,0,MAX_SIZE);
@@ -54,7 +55,7 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
   if(config == DEFAULT_CONTEXT) {
     time_t ptime;
     time(&ptime);
-    char pbuffer[256];
+    char pbuffer[TIMEBUFFER];
     sprintf(pbuffer,"%s",ctime(&ptime));
     pbuffer[strlen(pbuffer)-1] = '\0';
     sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",file,function,line,pbuffer, msgbuffer);
