@@ -33,8 +33,6 @@ for file in $filelist; do
         rm $current
     fi
 
-
-
 	echo "Running next test for --> ${file}"
 	`$COMPILER $file ../../src/**/*.c -I../../src/alg -I../../src/bug -I../../src/io -I../../src/ipc -I../../src/dat -I../../src/net -I../../src/sig -I../../src/sys -I../../src/thr -o ${file:0:${#file}-2} -pthread -w -rdynamic`
     ./$current

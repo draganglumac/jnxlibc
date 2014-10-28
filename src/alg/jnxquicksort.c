@@ -30,7 +30,7 @@ int choose_pivot(sortable_array *sa, int first, int last);
 void swap(sortable_array *sa, int i, int j);
 int partition(sortable_array *sa, int first, int last);
 
-void quicksort(void **array, int size, compare_function cf) {
+void jnx_quicksort(void **array, int size, compare_function cf) {
 	if (array == 0 || size <= 0) {
 		return;
 	}
