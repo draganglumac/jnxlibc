@@ -20,24 +20,32 @@
 #include <time.h>
 #include "jnxquicksort.h"
 
-void kwiksort(void **array, int first, int last, compare_function cf); 
-int choose_pivot(void **array, int first, int last, compare_function cf);
-void swap(void **array, int i, int j);
-int partition(void **array, int first, int last, compare_function cf);
+typedef struct {
+	void **array;
+	compare_function cf;
+} sortable_array;
+
+void kwiksort(sortable_array *sa, int first, int last); 
+int choose_pivot(sortable_array *sa, int first, int last);
+void swap(sortable_array *sa, int i, int j);
+int partition(sortable_array *sa, int first, int last);
 
 void quicksort(void **array, int size, compare_function cf) {
 	if (array == 0 || size <= 0) {
 		return;
 	}
-	kwiksort(array, 0, size - 1, cf);
+	sortable_array sa;
+	sa.array = array;
+	sa.cf = cf;
+	kwiksort(&sa, 0, size - 1);
 }
-void kwiksort(void **array, int first, int last, compare_function cf) {
+void kwiksort(sortable_array *sa, int first, int last) {
 	if (first >= last) {
 		return;
 	}
-	int pivot = partition(array, first, last, cf);
-	kwiksort(array, first, pivot - 1, cf);
-	kwiksort(array, pivot + 1, last, cf);
+	int pivot = partition(sa, first, last);
+	kwiksort(sa, first, pivot - 1);
+	kwiksort(sa, pivot + 1, last);
 }
 int calculate_midpoint(int first, int last) {
 	int size = last - first + 1;
@@ -48,20 +56,20 @@ int calculate_midpoint(int first, int last) {
 		return first + size/2;
 	}
 }
-int choose_median_of_three(void **array, int first, int last, compare_function cf) {
+int choose_median_of_three(sortable_array *sa, int first, int last) {
 	if (last - first > 1) {
 		int smallest = first, median = first;
 		int midpoint = calculate_midpoint(first, last);
-		if (cf(array[first], array[midpoint]) < 0) {
+		if (sa->cf(sa->array[first], sa->array[midpoint]) < 0) {
 			median = midpoint;
 		}
 		else {
 			smallest = midpoint;
 		}
-		if (cf(array[last], array[smallest]) < 0) {
+		if (sa->cf(sa->array[last], sa->array[smallest]) < 0) {
 			median = smallest;
 		}
-		else if (cf(array[last], array[median]) < 0) {
+		else if (sa->cf(sa->array[last], sa->array[median]) < 0) {
 			median = last;
 		}
 		return median;
@@ -70,30 +78,30 @@ int choose_median_of_three(void **array, int first, int last, compare_function c
 		return first;
 	}
 }
-int choose_pivot(void **array, int first, int last, compare_function cf) {
-	return choose_median_of_three(array, first, last, cf);
+int choose_pivot(sortable_array *sa, int first, int last) {
+	return choose_median_of_three(sa, first, last);
 }
-void swap(void **array, int i, int j) {
+void swap(sortable_array *sa, int i, int j) {
 	if (i != j) {
-		void *temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
+		void *temp = sa->array[i];
+		sa->array[i] = sa->array[j];
+		sa->array[j] = temp;
 	}
 }
-int partition(void **array, int first, int last, compare_function cf) {
-	int pivot = choose_pivot(array, first, last, cf);
+int partition(sortable_array *sa, int first, int last) {
+	int pivot = choose_pivot(sa, first, last);
 	if (pivot != first) {
-		swap(array, first, pivot);
+		swap(sa, first, pivot);
 	}
 	int i = first + 1, j = first + 1;
 	while (j <= last) {
-		if (cf(array[j], array[first]) < 0) {
-			swap(array, i, j);
+		if (sa->cf(sa->array[j], sa->array[first]) < 0) {
+			swap(sa, i, j);
 			i++;
 		}
 		j++;
 	}
 	pivot = i - 1;
-	swap(array, first, pivot);
+	swap(sa, first, pivot);
 	return pivot;
 }
