@@ -78,6 +78,7 @@ int main(int argc, char **argv) {
 	JNX_LOG(NULL,"Running quicksort tests...\n");
 	test_int_array();
 	test_string_array();
+	test_empty_array();
 	JNX_LOG(NULL,"Quicksort tests completed.\n");
 	return 0;
 }
