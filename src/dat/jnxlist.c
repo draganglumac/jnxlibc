@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  Alex Jones (), alexsimonjones@gmail.com
+ *         Author:  jonesax (jonesax@hush.com),
  *   Organization:
  *
  * =====================================================================================

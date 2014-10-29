@@ -1,3 +1,24 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  jnxfile.c
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  23/10/14 22:14:22
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  jonesax (joensax@hush.com),
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+
 #include "jnxfile.h"
 #include <stdio.h>
 #include <stdlib.h>

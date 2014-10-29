@@ -1,3 +1,21 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  jnxencoder.c
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  05/16/14 08:17:15
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  jonesax (jonesax@hush.com), 
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
+#
 #include <strings.h>
 #include <stdio.h>
 #include <stdint.h>

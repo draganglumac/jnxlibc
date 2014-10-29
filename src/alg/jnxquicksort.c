@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  quicksort.c
+ *       Filename:  jnxquicksort.c
  *
  *    Description:  
  *

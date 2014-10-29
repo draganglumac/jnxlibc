@@ -1,3 +1,25 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  jnxstack.c
+ *
+ *    Description:
+ *
+ *        Version:  1.0
+ *        Created:  03/03/13 19:05:31
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  jonesax (jonesax@hush.com),
+ *   Organization:
+ *
+ * =====================================================================================
+ */
+#include <stdlib.h>
+#include "jnxlist.h"
+#include "jnxlog.h"
+#include "jnxcheck.h"
+
 #include <stdlib.h>
 #include "jnxstack.h"
 #include "jnxcheck.h"

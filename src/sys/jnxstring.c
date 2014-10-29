@@ -1,3 +1,23 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  jnxstring.c
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  23/10/14 22:14:22
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  jonesax (jonesax@hush.com),
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 #include "jnxstring.h"
 #include <stdio.h>
 #include <string.h>

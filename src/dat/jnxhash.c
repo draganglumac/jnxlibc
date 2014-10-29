@@ -1,3 +1,20 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  jnxhash.c
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  23/10/14 22:14:22
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  jonesax (jonesax@hush.com),
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
 #include "jnxhash.h"
 #include "jnxcheck.h"
 int jnx_hash_string(const char* input, int map_size) {
