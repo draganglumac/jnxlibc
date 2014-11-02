@@ -44,7 +44,7 @@ jnx_vector_record *jnx_vector_record_create_empty() {
 //and it may cause a segfault if its on the stack
 void jnx_vector_destroy(jnx_vector** vector) {
   JNXCHECK(*vector);
-  int x = 0;
+  int32_t x = 0;
   for ( x = 0; x < (*vector)->count; ++x ) {
     free((*vector)->vector[x]);
   }
@@ -52,8 +52,8 @@ void jnx_vector_destroy(jnx_vector** vector) {
   free((*vector)->vector);
   free(*vector);
 }
-void jnx_vector_grow(jnx_vector **vector, int increment) {
-  int resize = (*vector)->count + increment;
+void jnx_vector_grow(jnx_vector **vector, int32_t increment) {
+  int32_t resize = (*vector)->count + increment;
   jnx_vector_record **temp = realloc((*vector)->vector,resize * sizeof(jnx_vector_record));
   if(temp == NULL) {
     JNX_LOG(DEFAULT_CONTEXT,"Error with reallocing\n");
@@ -62,17 +62,17 @@ void jnx_vector_grow(jnx_vector **vector, int increment) {
     (*vector)->vector = temp;
   }
 }
-void jnx_vector_fillspace(jnx_vector **vector,int start, int end) {
+void jnx_vector_fillspace(jnx_vector **vector,int32_t start, int32_t end) {
   while(start < end) {
     (*vector)->vector[start] = jnx_vector_record_create_empty();
     ++start;
   }
 }
-void jnx_vector_insert_at(jnx_vector *vector, int position, void *value) {
+void jnx_vector_insert_at(jnx_vector *vector, int32_t position, void *value) {
   JNXCHECK(vector);
   JNXCHECK(value);
   if(position > vector->count) {
-    int different = position - vector->count;
+    int32_t different = position - vector->count;
     jnx_vector_grow(&vector,different);
     jnx_vector_fillspace(&vector,vector->count,vector->count + different + 1);
     vector->count = vector->count + different;
@@ -84,14 +84,14 @@ void jnx_vector_insert_at(jnx_vector *vector, int position, void *value) {
     vector->vector[position]->data = value;
   }
 }
-void jnx_vector_insert_at_ts(jnx_vector *vector, int position, void *value) {
+void jnx_vector_insert_at_ts(jnx_vector *vector, int32_t position, void *value) {
   JNXCHECK(vector);
   JNXCHECK(value);
   jnx_thread_lock(vector->internal_lock);
   jnx_vector_insert_at(vector,position,value);
   jnx_thread_unlock(vector->internal_lock);
 }
-void* jnx_vector_remove_at(jnx_vector *vector,int position) {
+void* jnx_vector_remove_at(jnx_vector *vector,int32_t position) {
   JNXCHECK(vector);
   if(vector->vector[position]->used) {
     void *data = vector->vector[position]->data;
@@ -101,7 +101,7 @@ void* jnx_vector_remove_at(jnx_vector *vector,int position) {
   }
   return NULL;
 }
-void* jnx_vector_remove_at_ts(jnx_vector *vector,int position) {
+void* jnx_vector_remove_at_ts(jnx_vector *vector,int32_t position) {
   JNXCHECK(vector);
   jnx_thread_lock(vector->internal_lock);
   void *ret = jnx_vector_remove_at(vector,position);
@@ -151,8 +151,8 @@ size_t jnx_vector_count_ts(jnx_vector *vector) {
   jnx_thread_unlock(vector->internal_lock);
   return ret;
 }
-int jnx_vector_contains(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a,void *b)) {
-  int x = 0;
+int32_t jnx_vector_contains(jnx_vector *vector, void *datain, int32_t(*vector_comparison)(void *a,void *b)) {
+  int32_t x = 0;
   for ( x = 0; x < vector->count; ++x ) {
     if(vector_comparison(vector->vector[x]->data,datain)){
       return 1;
@@ -160,9 +160,9 @@ int jnx_vector_contains(jnx_vector *vector, void *datain, int(*vector_comparison
   }
   return 0;
 }
-int jnx_vector_contains_ts(jnx_vector *vector, void *datain, int(*vector_comparison)(void *a,void *b)) {
+int32_t jnx_vector_contains_ts(jnx_vector *vector, void *datain, int32_t(*vector_comparison)(void *a,void *b)) {
   jnx_thread_lock(vector->internal_lock);
-  int f = jnx_vector_contains(vector,datain,vector_comparison);
+  int32_t f = jnx_vector_contains(vector,datain,vector_comparison);
   jnx_thread_unlock(vector->internal_lock);
   return f;
 }

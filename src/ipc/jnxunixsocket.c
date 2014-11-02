@@ -32,7 +32,7 @@ jnx_unix_socket *create_unix_socket(ssize_t stype, char*socket_path) {
   jnx_unix_socket *jus= calloc(1, sizeof(jnx_unix_socket));
   jus->isclosed = 0;
   jus->islisten = 0;
-  int sock = socket(AF_UNIX, stype, 0);
+  int32_t sock = socket(AF_UNIX, stype, 0);
   if (sock == -1) {
     return NULL;
   }
@@ -107,7 +107,7 @@ ssize_t jnx_unix_datagram_socket_send(jnx_unix_socket *s, uint8_t*msg, ssize_t m
   }
   return tbytes;
 }
-int bind_stream_socket(jnx_unix_socket *s) {
+int32_t bind_stream_socket(jnx_unix_socket *s) {
   JNXCHECK(s);
   if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
     perror("jnx unix stream socket bind");
@@ -116,7 +116,7 @@ int bind_stream_socket(jnx_unix_socket *s) {
   s->islisten = 1;
   return 0;
 }
-int listen_on_stream_socket(jnx_unix_socket *s, ssize_t max_connections) {
+int32_t listen_on_stream_socket(jnx_unix_socket *s, ssize_t max_connections) {
   JNXCHECK(s);
   if (listen(s->socket, max_connections) == -1) {
     perror("jnx unix stream socket listen");
@@ -126,7 +126,7 @@ int listen_on_stream_socket(jnx_unix_socket *s, ssize_t max_connections) {
 }
 jnx_unix_socket *accept_stream_socket_connection(jnx_unix_socket *s) {
   JNXCHECK(s);
-  int remote_sock;
+  int32_t remote_sock;
   jnx_unix_socket *rs = jnx_unix_stream_socket_create("");
   socklen_t addr_len;
   if ((remote_sock = accept(s->socket,(struct sockaddr *)&(s->address), &addr_len)) == -1) {
@@ -140,7 +140,7 @@ jnx_unix_socket *accept_stream_socket_connection(jnx_unix_socket *s) {
     return rs;
   }	
 }
-int read_stream_socket(jnx_unix_socket *s, uint8_t**out, int *len) {
+int32_t read_stream_socket(jnx_unix_socket *s, uint8_t**out, int32_t *len) {
   JNXCHECK(s);
   uint8_t buffer[MAXBUFFER];
   memset(buffer,0,MAXBUFFER);
@@ -164,7 +164,7 @@ int read_stream_socket(jnx_unix_socket *s, uint8_t**out, int *len) {
   fclose(fp);
   return 0;
 }
-int jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, stream_socket_listener_callback c) {
+int32_t jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, stream_socket_listener_callback c) {
   JNXCHECK(s);
   if (bind_stream_socket(s) == -1) {
     return -1;
@@ -180,12 +180,12 @@ int jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, s
     }
 
     uint8_t*out;
-    int len;
+    int32_t len;
     if (read_stream_socket(remote_sock, &out, &len) == -1) {
       return -1;
     }
 
-    int ret = 0;
+    int32_t ret = 0;
     if ((ret = c(out, len, remote_sock)) != 0) {
       JNX_LOG(DEFAULT_CONTEXT,"Exiting unix stream socket listener with %d\n",ret);
       free(out);
@@ -198,7 +198,7 @@ int jnx_unix_stream_socket_listen(jnx_unix_socket *s, ssize_t max_connections, s
 
   return 0;
 }
-int bind_datagram_socket(jnx_unix_socket *s) {
+int32_t bind_datagram_socket(jnx_unix_socket *s) {
   JNXCHECK(s);
   if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
     perror("jnx unix datagram socket bind");
@@ -207,7 +207,7 @@ int bind_datagram_socket(jnx_unix_socket *s) {
   s->islisten = 1;
   return 0;
 }
-int receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_socket, uint8_t**out, int *len) {
+int32_t receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_socket, uint8_t**out, int32_t *len) {
   JNXCHECK(s);
 
   uint8_t buffer[MAXBUFFER];
@@ -230,7 +230,7 @@ int receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_so
   *remote_socket = rs;
   return 0;
 }
-int jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener_callback c) {
+int32_t jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener_callback c) {
   JNXCHECK(s);
   if (bind_datagram_socket(s) == -1) {
     return -1;
@@ -239,13 +239,13 @@ int jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener
   while(1) {
     jnx_unix_socket *remote = NULL;
     uint8_t*out = NULL;
-    int len = 0;
+    int32_t len = 0;
 
     if (receive_from_datagram_socket(s, &remote, &out, &len) == -1) {
       return -1;
     }
 
-    int ret = 0;
+    int32_t ret = 0;
     if ((ret = c(out, len, remote)) != 0) {
       JNX_LOG(DEFAULT_CONTEXT,"Exiting unix datagram socket listener with %d\n",ret);
       free(out);

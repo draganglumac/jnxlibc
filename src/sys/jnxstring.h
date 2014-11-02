@@ -36,7 +36,7 @@ extern "C" {
    *
    * @return returns a string on the stack which is the converted input. NULL is returned on failure
    */
-  char* jnx_string_itos(int input);
+  char* jnx_string_itos(int32_t input);
 #ifdef __cplusplus
 }
 #endif

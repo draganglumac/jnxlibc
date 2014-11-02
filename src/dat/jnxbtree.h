@@ -35,15 +35,15 @@ extern "C" {
    * 
    * Typically, these values can be -1, 0, and 1 respectivelly.
    */
-  typedef int (*compare_keys) (void*, void*);
+  typedef int32_t (*compare_keys) (void*, void*);
 
 
   /**
    * @brief Internal representation of a node in a B-tree.
    */
   typedef struct B_tree_node {
-    int count; /**< How many records are in the node. */
-    int is_leaf; /**< Is it a leaf node (set to 1) or an internal node (set to 0). */
+    int32_t count; /**< How many records are in the node. */
+    int32_t is_leaf; /**< Is it a leaf node (set to 1) or an internal node (set to 0). */
     record **records; /**< The records contained in the node. */
     struct B_tree_node **children; /**< The subtrees of the node. A leaf node has each of its subtrees set to NULL. */
   } jnx_btree_node;
@@ -53,7 +53,7 @@ extern "C" {
    * @brief Internal representation of the whole B-tree.
    */
   typedef struct B_tree {
-    int order; /**< The order of the tree, i.e. the minimum number of records a non-root node can have. */
+    int32_t order; /**< The order of the tree, i.e. the minimum number of records a non-root node can have. */
     compare_keys compare_function; /**< Callback function to compare keys. @see compare_keys */
     jnx_btree_node *root; /**< The root node of the B-tree. */
     jnx_thread_mutex *internal_lock;
@@ -77,7 +77,7 @@ extern "C" {
    *
    * @return The function returns a pointer to the new empty B-tree.
    */
-  jnx_btree* jnx_btree_create(int order, compare_keys callback);
+  jnx_btree* jnx_btree_create(int32_t order, compare_keys callback);
 
   /** @fn void jnx_btree_add(jnx_btree *tree, void *key, void *value)
    * @brief Add a record (key, value) to the B-tree.

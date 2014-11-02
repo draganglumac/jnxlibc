@@ -105,11 +105,11 @@ size_t jnx_file_write(char* path, char* data, size_t data_size,char *flags) {
   fclose(fp);
   return size;
 }
-int jnx_file_recursive_delete_callback(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf) {
+int32_t jnx_file_recursive_delete_callback(const char *fpath, const struct stat *sb, int32_t typeflag, struct FTW *ftwbuf) {
   remove(fpath);
   return 0;
 }
-int jnx_file_recursive_delete(char* path, int depth) {
+int32_t jnx_file_recursive_delete(char* path, int32_t depth) {
   JNXCHECK(path);
   JNXCHECK(depth);
   if( nftw(path,jnx_file_recursive_delete_callback, depth, FTW_DEPTH) != 0) {
@@ -118,7 +118,7 @@ int jnx_file_recursive_delete(char* path, int depth) {
   }
   return 0;
 }
-static int jnx_file_path_exists(char *path) {
+static int32_t jnx_file_path_exists(char *path) {
   JNXCHECK(path);
   size_t s = 512;
   char buffer[s];
@@ -140,7 +140,7 @@ static char *jnx_file_random_dir(char *basepath) {
   do {
     n = rand() % 10;
   } while(n == 0);
-  int i;
+  int32_t i;
   for(i = 1; i < 10; ++i) {
     n *= 10;
     n += rand() %10;
@@ -150,7 +150,7 @@ static char *jnx_file_random_dir(char *basepath) {
   sprintf(s,"%s/%zu",basepath,n);
   return s;
 }
-int jnx_file_mktempdir(char *dirtemplate, char **path) {
+int32_t jnx_file_mktempdir(char *dirtemplate, char **path) {
   JNXCHECK(dirtemplate);
   if(jnx_file_path_exists(dirtemplate)) {
     char *tempdir=jnx_file_random_dir(dirtemplate);
@@ -166,10 +166,10 @@ int jnx_file_mktempdir(char *dirtemplate, char **path) {
   }
   return 1;
 }
-int jnx_file_exists(char *file) {
+int32_t jnx_file_exists(char *file) {
   JNXCHECK(file);
   struct stat st;
-  int ret = stat(file,&st);
+  int32_t ret = stat(file,&st);
 
   if(S_ISDIR(st.st_mode)) {
     return 0;

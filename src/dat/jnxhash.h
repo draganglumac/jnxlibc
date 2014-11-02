@@ -27,8 +27,8 @@ extern "C" {
    */
   typedef struct hashel {
     jnx_list* bucket;
-    int bucket_len;
-    int used;
+    int32_t bucket_len;
+    int32_t used;
   } jnx_hash_element;
 
   /* *
@@ -71,9 +71,9 @@ extern "C" {
    *  @param key the key you want to associate with the value
    *  @param value data
    */
-  int jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value);
+  int32_t jnx_hash_put(jnx_hashmap* hashmap, const char* key, void* value);
 
-  int jnx_hash_put_ts(jnx_hashmap* hashmap, const char* key, void* value);
+  int32_t jnx_hash_put_ts(jnx_hashmap* hashmap, const char* key, void* value);
   /** @fn jnx_hash_get(jnx_hashmap* hashmap, const char *key)
    *  @brief Returns the value for a given key
    *  @param hashmap pointer to hashmap for retrieval
@@ -89,16 +89,16 @@ extern "C" {
    *  @param keys is a pointer to an array which is given for mallocing and insertion
    *  @return number of keys found
    */
-  int jnx_hash_get_keys(jnx_hashmap* hashmap,const char ***keys);
+  int32_t jnx_hash_get_keys(jnx_hashmap* hashmap,const char ***keys);
 
-  int jnx_hash_get_keys_ts(jnx_hashmap* hashmap,const char ***keys);
+  int32_t jnx_hash_get_keys_ts(jnx_hashmap* hashmap,const char ***keys);
   /** @fn jnx_hash_string(const char* input, int map_size) 
    *  @brief  Allows access to the hash string function, returning and unsigned int
    *  @param input is the string to be hashed
    *  @param map_size is used to round the remainder of the string
    *  @return hash value of the input string
    */
-  int jnx_hash_string(const char* input, int map_size);
+  int32_t jnx_hash_string(const char* input, int32_t map_size);
 #ifdef __cplusplus
 }
 #endif

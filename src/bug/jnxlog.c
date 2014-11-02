@@ -40,7 +40,7 @@ jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){
   conf->internal_lock = jnx_thread_mutex_create();
   return conf;
 }
-void jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...){
+void jnx_log(jnx_log_config *config, const char *file, const char *function,const int32_t line,const char *format,...){
   JNXCHECK(file);
   JNXCHECK(function);
   JNXCHECK(format);

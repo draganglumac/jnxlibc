@@ -77,12 +77,12 @@ JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
   }; 
   return JNX_UNKNOWN_ENDIAN;
 }
-int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family){
+int32_t jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family){
   JNXCHECK(interface);
   JNXCHECK(family);
   JNXCHECK(family == AF_INET || family == AF_INET6);
   struct ifaddrs *myaddrs, *ifa;
-  int status;
+  int32_t status;
   status = getifaddrs(&myaddrs);
   char *outaddr = NULL;
   *obuffer = NULL;
@@ -107,7 +107,7 @@ int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int
   freeifaddrs(myaddrs);
   return 0;
 }
-int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,unsigned int *out_addrfamily) {
+int32_t jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,unsigned int *out_addrfamily) {
   JNXCHECK(hint_family);
   JNXCHECK(host);
   JNXCHECK(hint_family == AF_INET || hint_family == AF_INET6);
@@ -120,7 +120,7 @@ int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,un
   hints.ai_flags |= AI_CANONNAME;
   char addrstr[100];
   void *ptr;
-  int errcode = getaddrinfo(host,NULL,&hints,&res);
+  int32_t errcode = getaddrinfo(host,NULL,&hints,&res);
   if(errcode != 0) {
     return 1;
   }
@@ -164,7 +164,7 @@ size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *pa
   }
   JNXCHECK(verb);
   unsigned int out_family;
-  int ret = jnx_network_hostname_to_ip(AF_INET,(char*)hostname,&out_ip,&out_family);
+  int32_t ret = jnx_network_hostname_to_ip(AF_INET,(char*)hostname,&out_ip,&out_family);
   JNXCHECK(ret == 0);
   jnx_socket *sock = jnx_socket_tcp_create(out_family);
   JNXCHECK(sock);

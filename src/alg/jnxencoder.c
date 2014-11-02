@@ -34,12 +34,12 @@ jnx_encoder* jnx_encoder_create() {
     'w', 'x', 'y', 'z', '0', '1', '2', '3',
     '4', '5', '6', '7', '8', '9', '+', '/'
   };
-  int mod_table[] = {0, 2, 1};
+  int32_t mod_table[] = {0, 2, 1};
   jnx_encoder *e = malloc(sizeof(jnx_encoder));
-  e->b64_mod_table = calloc(3,sizeof(int));
+  e->b64_mod_table = calloc(3,sizeof(int32_t));
   e->b64_encoding_table = calloc(65,sizeof(char));
   e->b64_decoding_table = calloc(256,sizeof(char));
-  int x,y;
+  int32_t x,y;
   for(y=0;y<256;++y) {
     e->b64_decoding_table[y] = (char)-1;
   }	
@@ -86,7 +86,7 @@ uint8_t* jnx_encoder_b64_encode(jnx_encoder *e,uint8_t *data, size_t input_lengt
     encoded_data[j++] = e->b64_encoding_table[(triple >> 0 * 6) & 0x3F];
   }
 
-  int l;
+  int32_t l;
   for(l = 0; l < e->b64_mod_table[input_length %3]; l++) {
     encoded_data[*output_length -1 -l] = '=';
   }
@@ -109,13 +109,13 @@ uint8_t *jnx_encoder_b64_decode(jnx_encoder *e, uint8_t *data,size_t input_lengt
   bzero(decoded_data,*output_length);
   if (decoded_data == NULL) return NULL;
 
-  int i,j;
+  int32_t i,j;
   for (i = 0, j = 0; i < input_length;) {
 
-    uint32_t sextet_a = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int)data[i++]];
-    uint32_t sextet_b = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int)data[i++]];
-    uint32_t sextet_c = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int)data[i++]];
-    uint32_t sextet_d = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int)data[i++]];
+    uint32_t sextet_a = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int32_t)data[i++]];
+    uint32_t sextet_b = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int32_t)data[i++]];
+    uint32_t sextet_c = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int32_t)data[i++]];
+    uint32_t sextet_d = data[i] == '=' ? 0 & i++ : e->b64_decoding_table[(int32_t)data[i++]];
 
     uint32_t triple = (sextet_a << 3 * 6)
       + (sextet_b << 2 * 6)

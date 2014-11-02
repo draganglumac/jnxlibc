@@ -33,8 +33,8 @@ extern "C" {
 #endif
   typedef struct
   {
-    int isclosed;
-    int socket;
+    int32_t isclosed;
+    int32_t socket;
     unsigned int addrfamily;
     ssize_t stype;
     char *ipaddress;
@@ -43,11 +43,11 @@ extern "C" {
   /*
    *@warning must return 0 or will break the listener loop
    */
-  typedef int (*tcp_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_socket *s);
+  typedef int32_t (*tcp_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_socket *s);
   /*
    *@warning must return 0 or will break the listener loop
    */
-  typedef int (*udp_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_socket *s);
+  typedef int32_t (*udp_socket_listener_callback)(uint8_t *payload, size_t bytesread, jnx_socket *s);
   /**
    * @fn jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily)
    * @brief creates a jnx tcp socket
@@ -81,14 +81,14 @@ extern "C" {
    */
   size_t jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s);
   /**
-   *@fn size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local)
+   *@fn size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int32_t ignore_local)
    *@brief This is function will enable the given socket to transmit multicast packets over domain
    *@param s is the socket to enable multicast sending on
    *@param interface is the IP address of the interface to use on the local machine
    *@param ignore_local is a flag to either disable local multicast loopback
    *@param returns 0 on success
    */
-  size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local);
+  size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int32_t ignore_local);
   /**
    *@fn size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface,char *group)
    *@brief This function will enable the given socket to recieve multicast packets on the given interface for the subscribed group
@@ -131,7 +131,7 @@ extern "C" {
    */
   ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len);
   /**
-   * @fn int jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
+   * @fn int32_t jnx_socket_tpc_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
    * @param s is the socket to use to send
    * @param port is the target port
    * @param max_connections are the number of connetions in the queue
@@ -140,7 +140,7 @@ extern "C" {
    */
   int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c);
   /**
-   * @fn int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
+   * @fn int32_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, socket_listener_callback c)
    * @param s is the socket to use to send
    * @param port is the target port
    * @param max_connections are the number of connetions in the queue

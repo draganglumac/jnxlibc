@@ -59,7 +59,7 @@ extern "C" {
    *  @param format is a const string for formatting the appended arguments
    *  @param ... and varadic args 
    */
-  void jnx_log(jnx_log_config *config, const char *file, const char *function,const int line,const char *format,...);
+  void jnx_log(jnx_log_config *config, const char *file, const char *function,const int32_t line,const char *format,...);
 
 #define JNX_LOG_CONTEXT(X) \
   jnx_log_config *X

@@ -53,7 +53,7 @@ extern "C" {
    *@param s is the signal pointer to act as caller
    *@param data is an optional parameter of data to pass to slots
    */
-  int jnx_signal_call(jnx_signal *s,void *data);
+  int32_t jnx_signal_call(jnx_signal *s,void *data);
 #ifdef __cplusplus
 }
 #endif

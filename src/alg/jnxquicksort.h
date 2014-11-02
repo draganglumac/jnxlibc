@@ -6,10 +6,10 @@
 #ifndef __JNXQUICKSORT_H__
 #define __JNXQUICKSORT_H__
 
-typedef int(*compare_function)(void *, void *);
+typedef int32_t(*compare_function)(void *, void *);
 
 /*
- * @fn jnx_quicksort(void **array, int size, compare_function cf);
+ * @fn jnx_quicksort(void **array, int32_t size, compare_function cf);
  * @brief Sorts the array based on the comparison function cf.
  * @param array - the array to sort, it should store data as void * pointers
  * or be cast into that type if the data structure allows it.
@@ -21,6 +21,6 @@ typedef int(*compare_function)(void *, void *);
  * The array is sorted in place and the original array will contain elements
  * in sorted order according to the order imposed by cf.
  */
-void jnx_quicksort(void **array, int size, compare_function cf);
+void jnx_quicksort(void **array, int32_t size, compare_function cf);
 
 #endif // __JNXQUICKSORT_H__

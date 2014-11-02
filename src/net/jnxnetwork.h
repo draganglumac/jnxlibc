@@ -43,7 +43,7 @@ extern "C" {
    * @param family is the family type to use - either AF_INET or AF_INET6
    * @return 0 on success 
    */
-  int jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family);
+  int32_t jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family);
   /*
    * @fn int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip, unsigned int *out_addrfamily);
    * @brief This will attempt to use your hint for AF_INET|IAF_INET6 to resolve the ip address from hostname e.g. google.com
@@ -53,7 +53,7 @@ extern "C" {
    * @param out_addrfamily is a pointer to a pointer you wish to store the found address family
    * @return 0 on success
    */
-  int jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,unsigned int *out_addrfamily);
+  int32_t jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,unsigned int *out_addrfamily);
 
 /**
  * @brief Basic HTTP Protocols 

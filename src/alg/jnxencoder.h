@@ -12,7 +12,7 @@ extern		"C" {
   typedef struct jnx_encoder {
     char *b64_encoding_table;
     char *b64_decoding_table;
-    int *b64_mod_table;
+    int32_t *b64_mod_table;
   }		jnx_encoder;
 
   /*

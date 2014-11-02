@@ -29,7 +29,7 @@ extern "C" {
    * @brief changes the terminal color 
    * @param fg_col select a color between 0-7 from JNX_COL
    */
-  void jnx_term_color(int fg_col);
+  void jnx_term_color(int32_t fg_col);
 
   /**
    * @fn jnx_term_printf_in_color(int fg_col, const char* format, ...)
@@ -38,7 +38,7 @@ extern "C" {
    * @param format formatted string
    * @param ... formatted string optional arguments
    */
-  void jnx_term_printf_in_color(int fg_col, const char* format, ...);
+  void jnx_term_printf_in_color(int32_t fg_col, const char* format, ...);
 #ifdef __cplusplus
 }
 #endif
