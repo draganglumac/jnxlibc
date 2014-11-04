@@ -47,8 +47,7 @@ IRC: freenode.net #jnxlibc
 GCC
 CMake
 ```
-Currently supported platforms:
-Linux distributions/OS X
+####Currently supported platforms: Linux distributions/OS X
 
 
 Default install location
