@@ -17,6 +17,7 @@
 [Latest travis build](https://travis-ci.org/AlexsJones/jnxlibc/builds)
 
 IRC: freenode.net #jnxlibc
+
 Email: jonesax@hush.com
 
 #Key features
