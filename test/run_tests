@@ -26,13 +26,19 @@ function run_full_suite()
 
 function run_single_test()
 {
-  echo "WIP: Run single test"
+  echo "Run single test on "$1
+  pushd test/unit
+  ./run_tests $1
+  if [ $? != 0 ]; then
+    exit 1
+  fi
+  popd
 }
 
 if [ -z "$1" ]; then 
   run_full_suite
 else
-  run_single_test
+  run_single_test $1
 fi
 
 exit 0

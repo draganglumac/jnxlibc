@@ -78,8 +78,10 @@ To run tests from root of the project folder
 ```
 ./test/run_tests
 ```
-
-
+To run an individual test
+```
+./test/run_tests test_jnxlist.c
+```
 ##Examples
 
 Sending message over network
