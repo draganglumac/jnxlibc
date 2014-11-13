@@ -1,30 +1,44 @@
 #!/bin/bash
 function echo_red()
 {
-    tput setaf 1
-    echo $1
-    tput sgr0
+  tput setaf 1
+  echo $1
+  tput sgr0
 }
 
 function echo_green()
 {
-    tput setaf 2
-    echo $1
-    tput sgr0
+  tput setaf 2
+  echo $1
+  tput sgr0
 }
 
-echo "Running unit tests..."
-pushd test/unit
-./run_tests
-if [ $? != 0 ]; then
-	exit 1
+function run_full_suite()
+{
+  echo "Running unit tests..."
+  pushd test/unit
+  ./run_tests
+  if [ $? != 0 ]; then
+    exit 1
+  fi
+  popd 
+}
+
+function run_single_test()
+{
+  echo "Run single test on "$1
+  pushd test/unit
+  ./run_tests $1
+  if [ $? != 0 ]; then
+    exit 1
+  fi
+  popd
+}
+
+if [ -z "$1" ]; then 
+  run_full_suite
+else
+  run_single_test $1
 fi
-popd 
-#echo "Running performance tests"
-#pushd test/performance
-#./run_tests
-#if [ $? != 0 ]; then
-#	exit 1
-#fi
-#popd
+
 exit 0
