@@ -5,7 +5,9 @@
 
 #ifndef __JNXQUICKSORT_H__
 #define __JNXQUICKSORT_H__
-
+#ifdef __cplusplus
+extern		"C" {
+#endif
 typedef int32_t(*compare_function)(void *, void *);
 
 /*
@@ -23,4 +25,7 @@ typedef int32_t(*compare_function)(void *, void *);
  */
 void jnx_quicksort(void **array, int32_t size, compare_function cf);
 
-#endif // __JNXQUICKSORT_H__
+#ifdef __cplusplus
+}
+#endif
+#endif
