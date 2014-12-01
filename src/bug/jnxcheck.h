@@ -31,20 +31,18 @@ extern		"C" {
   do \
   { \
     if(!(X)) {\
-      JNX_LOG(NULL,"CHECK FAILED: >%s< [%s:%s:%d]\n",#X,__FILE__,__FUNCTION__,__LINE__); \
+      JNX_LOG(NULL,"CHECK FAILED: >%s< [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
       jnxcheck_backtrace(); \
       exit(1);\
     } \
   } \
-  while(0) \
-
+  while(0) 
 #else
 #define JNXCHECK(X)\
   do { (void)sizeof(X); } while(0)
 #endif
 #define JNXFAIL(X)\
-  JNX_LOG(NULL,"CHECK FAILED WITH >%s<\n",#X); \
-  JNXCHECK(0) 
+  JNXCHECK(X) 
 #endif
 #ifdef __cplusplus
 }
