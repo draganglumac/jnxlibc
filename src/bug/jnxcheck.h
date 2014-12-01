@@ -26,12 +26,11 @@ extern		"C" {
   void jnxcheck_backtrace(void);
 
 #if !defined(RELEASE)
-
 #define JNXCHECK(X)\
   do \
   { \
     if(!(X)) {\
-      JNX_LOG(NULL,"CHECK FAILED: >%s< [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
+      JNX_LOG(NULL,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
       jnxcheck_backtrace(); \
       exit(1);\
     } \
@@ -42,7 +41,13 @@ extern		"C" {
   do { (void)sizeof(X); } while(0)
 #endif
 #define JNXFAIL(X)\
-  JNXCHECK(X) 
+  do \
+  { \
+      JNX_LOG(NULL,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
+      jnxcheck_backtrace(); \
+      exit(1);\
+  } \
+  while(0)
 #endif
 #ifdef __cplusplus
 }
