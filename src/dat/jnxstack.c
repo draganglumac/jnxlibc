@@ -30,7 +30,7 @@ jnx_stack* jnx_stack_create(void) {
   s->internal_lock = jnx_thread_mutex_create();
   return s;
 }
-int32_t jnx_stack_is_empty(jnx_stack* A) {
+jnx_int32 jnx_stack_is_empty(jnx_stack* A) {
   JNXCHECK(A);
   if ( A->top == NULL && A->count == 0 ) {
     return 1;
@@ -38,10 +38,10 @@ int32_t jnx_stack_is_empty(jnx_stack* A) {
 
   return 0;
 }
-int32_t jnx_stack_is_empty_ts(jnx_stack* A) {
+jnx_int32 jnx_stack_is_empty_ts(jnx_stack* A) {
   JNXCHECK(A);
   jnx_thread_lock(A->internal_lock);
-  int32_t ret = jnx_stack_is_empty(A);
+  jnx_int32 ret = jnx_stack_is_empty(A);
   jnx_thread_unlock(A->internal_lock);
   return ret;
 }
@@ -83,9 +83,9 @@ void* jnx_stack_pop_ts(jnx_stack* A) {
   jnx_thread_unlock(A->internal_lock);
   return ret;
 }
-int32_t jnx_stack_contains(jnx_stack *A, void *datain, int32_t (*stack_comparison)(void *a, void *b)) {
+jnx_int32 jnx_stack_contains(jnx_stack *A, void *datain, int32_t (*stack_comparison)(void *a, void *b)) {
   JNXCHECK(A);
-  int32_t f = 0;
+  jnx_int32 f = 0;
   jnx_snode *current = A->top;
   while(current) {
     if(stack_comparison(current->_data,datain)) {
@@ -96,9 +96,9 @@ int32_t jnx_stack_contains(jnx_stack *A, void *datain, int32_t (*stack_compariso
   }
   return f;
 }
-int32_t jnx_stack_contains_ts(jnx_stack *A, void *datain, int32_t (*stack_comparison)(void *a, void *b)) { 
+jnx_int32 jnx_stack_contains_ts(jnx_stack *A, void *datain, int32_t (*stack_comparison)(void *a, void *b)) { 
   jnx_thread_lock(A->internal_lock);
-  int32_t f = jnx_stack_contains(A,datain,stack_comparison);
+  jnx_int32 f = jnx_stack_contains(A,datain,stack_comparison);
   jnx_thread_unlock(A->internal_lock);
   return f;
 }

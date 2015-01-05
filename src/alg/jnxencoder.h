@@ -5,14 +5,14 @@
  */
 #ifndef __JNXENCODER_H__
 #define __JNXENCODER_H__
-#include <inttypes.h>
+#include "jnxtypes.h"
 #ifdef __cplusplus
 extern		"C" {
 #endif
   typedef struct jnx_encoder {
-    char *b64_encoding_table;
-    char *b64_decoding_table;
-    int32_t *b64_mod_table;
+    jnx_char *b64_encoding_table;
+    jnx_char *b64_decoding_table;
+    jnx_uint32 *b64_mod_table;
   }		jnx_encoder;
 
   /*
@@ -28,26 +28,26 @@ extern		"C" {
    */
   void jnx_encoder_destroy(jnx_encoder ** en);
   /*
-   * @fn uint8_t *jnx_encoder_b64_encode(jnx_encoder *e, uint8_t
+   * @fn jnx_uint8 *jnx_encoder_b64_encode(jnx_encoder *e, jnx_uint8
    * *data,size_t input_length,size_t *output_length) @brief this will
    * encode a binary string to within a 64 character range @param e the
    * jnx_encoder object to use @param data is the binary data for
    * encoding @param input_length is the total in data @param
    * output_length is a pointer that will be populated with total
-   * written data @return a mallocated uint8_t pointer that will hold
+   * written data @return a mallocated jnx_uint8 pointer that will hold
    * the data array
    */
-  uint8_t *jnx_encoder_b64_encode(jnx_encoder * e, uint8_t * data, size_t input_length, size_t * output_length);
+  jnx_uint8 *jnx_encoder_b64_encode(jnx_encoder * e, jnx_uint8 * data, size_t input_length, size_t * output_length);
   /*
-   * @fn uint8_t *jnx_encoder_b64_dencode(jnx_encoder *e, uint8_t
+   * @fn jnx_uint8 *jnx_encoder_b64_dencode(jnx_encoder *e, jnx_uint8
    * *data,size_t input_length,size_t *output_length) @brief this will
    * decode a binary string to within a 64 character range @param e the
    * jnx_encoder object to use @param data is the data for dceoding
    * @param input_length is the total in data @param output_length is a
    * pointer that will be populated with total written data @return a
-   * mallocated uint8_t pointer that will hold the data array
+   * mallocated jnx_uint8 pointer that will hold the data array
    */
-  uint8_t *jnx_encoder_b64_decode(jnx_encoder * e, uint8_t * data, size_t input_length, size_t * output_length);
+  jnx_uint8 *jnx_encoder_b64_decode(jnx_encoder * e, jnx_uint8 * data, size_t input_length, size_t * output_length);
 
 #ifdef __cplusplus
 }

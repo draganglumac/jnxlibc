@@ -6,34 +6,35 @@
 #ifndef __JNXFILE_H__
 #define __JNXFILE_H__
 #include <stddef.h>
+#include "jnxtypes.h"
 #include "jnxhash.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
   /**
-   * @brief An int32_ternal representation of the kvp node populated when 
+   * @brief An jnx_int32ernal representation of the kvp node populated when 
    *			used in key value pair retrieval from a file
    */
   typedef struct jnx_file_kvp_node {
-    char* key;
-    char* value;
+    jnx_char* key;
+    jnx_char* value;
     struct jnx_file_kvp_node* next;
   }jnx_file_kvp_node;
   /**
-   * @fn jnx_file_read(char* path, char **buffer,char *flags)
-   * @brief Function to read the contents of a text file int32_to the buffer.
+   * @fn jnx_file_read(jnx_char* path, jnx_char **buffer,jnx_char *flags)
+   * @brief Function to read the contents of a text file jnx_int32o the buffer.
    *
    * @param path path to the target file for reading
    * @param buffer that will be filled
    * @param flags are the flags passed (r,rb...)
    * @return Number of bytes read
    *
-   * @warning it is the users responsibility to manage the memory of the char*
+   * @warning it is the users responsibility to manage the memory of the jnx_char*
    */
-  size_t jnx_file_read(char* path, char **buffer,char *flags);
+  jnx_size jnx_file_read(jnx_char* path, jnx_char **buffer,jnx_char *flags);
   /**
-   * @fn jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer,char *flags)
-   * @brief Function to read a file that contains key-value pairs int32_to a linked list.
+   * @fn jnx_hashmap *jnx_file_read_kvp(jnx_char *path, jnx_size max_buffer,jnx_char *flags)
+   * @brief Function to read a file that contains key-value pairs jnx_int32o a linked list.
    *
    * @param path path to the target file for reading
    * @param delimiter the token to break the key value pairs on e.g. '='
@@ -42,22 +43,22 @@ extern "C" {
    *
    * @warning user is responsible for linked list deletion and its node/data
    */
-  jnx_hashmap *jnx_file_read_kvp(char *path, size_t max_buffer, char *delimiter);
+  jnx_hashmap *jnx_file_read_kvp(jnx_char *path, jnx_size max_buffer, jnx_char *delimiter);
 
   /**
-   * @fn jnx_file_write(char *path, char* data, size_t data_size)
-   * @brief Function to write the data buffer int32_to the text file point32_ted to by path.
+   * @fn jnx_file_write(jnx_char *path, jnx_char* data, jnx_size data_size)
+   * @brief Function to write the data buffer jnx_int32o the text file point32_ted to by path.
    *
    * @param path path to the target file for writing
-   * @param data point32_ter to the char* for writing to the file
+   * @param data pojnx_int32er to the jnx_char* for writing to the file
    * @param data_size size of data to be written
    * @param flags are the flags passed (w,r,a+ ...)
    * @return Number of bytes written on success
    */
-  size_t jnx_file_write(char* path, char* data, size_t data_size,char *flags);
+  jnx_size jnx_file_write(jnx_char* path, jnx_char* data, jnx_size data_size,jnx_char *flags);
   /**
-   * @fn jnx_file_recursive_delete(char* path, int32_t depth)
-   * @brief Function to recursively delete a directory point32_ted to by path.
+   * @fn jnx_file_recursive_delete(jnx_char* path, jnx_int32 depth)
+   * @brief Function to recursively delete a directory pojnx_int32ed to by path.
    *
    * @param path the provided path will have all its sub directories and files deleted
    * @param depth defines how deep to recursively delete in a folder structure
@@ -65,23 +66,23 @@ extern "C" {
    *
    * @warning extremely powerful and can make unrepairable changes to your file system
    */
-  int32_t jnx_file_recursive_delete(char* path, int32_t depth);
+  jnx_int32 jnx_file_recursive_delete(jnx_char* path, int32_t depth);
 
   /**
-   * @fn jnx_file_mktempdir(char *template, char **path) 
+   * @fn jnx_file_mktempdir(jnx_char *template, jnx_char **path) 
    * @brief Function to create a temporary directory on the given path
    * @param template is the path to create the directory on
-   * @param path is a point32_ter to the output buffer char point32_ter
+   * @param path is a pojnx_int32er to the output buffer jnx_char point32_ter
    * @return success on 0
    */
-  int32_t jnx_file_mktempdir(char *dirtemplate, char **path);
+  jnx_int32 jnx_file_mktempdir(jnx_char *dirtemplate, jnx_char **path);
   /**
-   * @fn jnx_file_exists(char *file)
+   * @fn jnx_file_exists(jnx_char *file)
    * @brief checks if a file exists
    * @param filepath to check 
    * @returns 1 on file existance
    */
-  int32_t jnx_file_exists(char *file);
+  jnx_int32 jnx_file_exists(jnx_char *file);
 #ifdef __cplusplus
 }
 #endif

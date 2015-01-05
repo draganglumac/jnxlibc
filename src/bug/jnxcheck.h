@@ -18,6 +18,7 @@
 #ifndef __JNX_CHECK_H__
 #define __JNX_CHECK_H__
 #include <stdio.h>
+#include "jnxtypes.h"
 #include "jnxlog.h"
 #ifdef __cplusplus
 extern		"C" {
