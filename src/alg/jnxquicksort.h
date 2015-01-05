@@ -9,10 +9,10 @@
 #ifdef __cplusplus
 extern		"C" {
 #endif
-  typedef jnx_uint32(*compare_function)(void *, void *);
+  typedef jnx_int32(*compare_function)(void *, void *);
 
   /*
-   * @fn jnx_quicksort(void **array, jnx_uint32 size, compare_function cf);
+   * @fn jnx_quicksort(void **array, jnx_int32 size, compare_function cf);
    * @brief Sorts the array based on the comparison function cf.
    * @param array - the array to sort, it should store data as void * pointers
    * or be cast into that type if the data structure allows it.
@@ -24,7 +24,7 @@ extern		"C" {
    * The array is sorted in place and the original array will contain elements
    * in sorted order according to the order imposed by cf.
    */
-  void jnx_quicksort(void **array, jnx_uint32 size, compare_function cf);
+  void jnx_quicksort(void **array, jnx_int32 size, compare_function cf);
 
 #ifdef __cplusplus
 }
