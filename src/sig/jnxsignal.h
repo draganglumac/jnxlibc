@@ -17,6 +17,7 @@
  */
 #ifndef __JNX_SIGNAL_H__
 #define __JNX_SIGNAL_H__
+#include "jnxtypes.h"
 #include "jnxlist.h"
 #include "jnxthread.h"
 #ifdef __cplusplus
@@ -53,7 +54,7 @@ extern "C" {
    *@param s is the signal pointer to act as caller
    *@param data is an optional parameter of data to pass to slots
    */
-  int32_t jnx_signal_call(jnx_signal *s,void *data);
+  jnx_int32 jnx_signal_call(jnx_signal *s,void *data);
 #ifdef __cplusplus
 }
 #endif

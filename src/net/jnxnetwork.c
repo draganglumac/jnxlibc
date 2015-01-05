@@ -38,10 +38,10 @@
 #include "jnxsocket.h"
 #include "jnxcheck.h"
 
-char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
+jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
   struct sockaddr_in *s4;
   struct sockaddr_in6 *s6;
-  char buf[64];
+  jnx_char buf[64];
   bzero(buf,64);
   if(family == ifa->ifa_addr->sa_family) {
     if(family == AF_INET) {
@@ -67,7 +67,10 @@ char* internal_address_info( struct ifaddrs *ifa,unsigned int family){
   return NULL;
 }
 JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
-  union { uint8_t c[4]; uint32_t i;} u; 
+  union { 
+    jnx_uint8 c[4]; 
+    jnx_int32 i;
+  } u; 
   u.i = 0x01020304; 
   if(0x04 == u.c[0]) { 
     return JNX_BIG_ENDIAN;
@@ -77,14 +80,14 @@ JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
   }; 
   return JNX_UNKNOWN_ENDIAN;
 }
-int32_t jnx_network_interface_to_string(char **obuffer,char *interface, unsigned int family){
+jnx_int32 jnx_network_interface_to_string(jnx_char **obuffer,jnx_char *interface, jnx_unsigned_int family){
   JNXCHECK(interface);
   JNXCHECK(family);
   JNXCHECK(family == AF_INET || family == AF_INET6);
   struct ifaddrs *myaddrs, *ifa;
-  int32_t status;
+  jnx_int32 status;
   status = getifaddrs(&myaddrs);
-  char *outaddr = NULL;
+  jnx_char *outaddr = NULL;
   *obuffer = NULL;
   if (status != 0){
     perror("getifaddrs failed!");
@@ -107,7 +110,7 @@ int32_t jnx_network_interface_to_string(char **obuffer,char *interface, unsigned
   freeifaddrs(myaddrs);
   return 0;
 }
-int32_t jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_ip,unsigned int *out_addrfamily) {
+jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,jnx_char *host, jnx_char **out_ip,jnx_unsigned_int *out_addrfamily) {
   JNXCHECK(hint_family);
   JNXCHECK(host);
   JNXCHECK(hint_family == AF_INET || hint_family == AF_INET6);
@@ -118,9 +121,9 @@ int32_t jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_i
   hints.ai_family = PF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_flags |= AI_CANONNAME;
-  char addrstr[100];
+  jnx_char addrstr[100];
   void *ptr;
-  int32_t errcode = getaddrinfo(host,NULL,&hints,&res);
+  jnx_int32 errcode = getaddrinfo(host,NULL,&hints,&res);
   if(errcode != 0) {
     return 1;
   }
@@ -147,12 +150,12 @@ int32_t jnx_network_hostname_to_ip(unsigned hint_family,char *host, char **out_i
   }
   return 0;
 }
-size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *page, char *args, uint8_t **out_reply,ssize_t *out_len) {
+size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_ssize *out_len) {
   JNXCHECK(hostname);
   JNXCHECK(page);
   JNXCHECK(type == JNX_HTTP_POST || type == JNX_HTTP_GET);
-  char *verb = NULL;
-  char *out_ip;
+  jnx_char *verb = NULL;
+  jnx_char *out_ip;
 
   switch(type) {
     case JNX_HTTP_POST:
@@ -163,12 +166,12 @@ size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *pa
       break;
   }
   JNXCHECK(verb);
-  unsigned int out_family;
-  int32_t ret = jnx_network_hostname_to_ip(AF_INET,(char*)hostname,&out_ip,&out_family);
+  jnx_unsigned_int out_family;
+  jnx_int32 ret = jnx_network_hostname_to_ip(AF_INET,(jnx_char*)hostname,&out_ip,&out_family);
   JNXCHECK(ret == 0);
   jnx_socket *sock = jnx_socket_tcp_create(out_family);
   JNXCHECK(sock);
-  char sendbuffer[2048];
+  jnx_char sendbuffer[2048];
   snprintf(sendbuffer,sizeof(sendbuffer), 
       "%s %s HTTP/1.0\r\n"
       "Host: %s\r\n"
@@ -176,22 +179,22 @@ size_t jnx_http_request(JNX_HTTP_TYPE type, const char *hostname, const char *pa
       "Content-length: %zu\r\n\r\n"
       "%s\r\n",verb, page, hostname, strlen(args),args);
 
-  ssize_t l = jnx_socket_tcp_send_with_receipt(sock,
-      (char*)hostname,"80",(uint8_t*)sendbuffer,(ssize_t)strlen(sendbuffer),out_reply);
+  jnx_ssize l = jnx_socket_tcp_send_with_receipt(sock,
+      (jnx_char*)hostname,"80",(jnx_uint8*)sendbuffer,(jnx_ssize)strlen(sendbuffer),out_reply);
   *out_len = l;  
   if(!l) {
     return JNX_HTTP_STATE_UNKNOWN;
   }
   return JNX_HTTP_STATE_OKAY;
 }
-JNX_HTTP_TYPE jnx_http_request_post(const char *hostname, const char *page, char *args,uint8_t **out_reply, ssize_t *out_len) {
-  uint8_t *reply;
+JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_ssize *out_len) {
+  jnx_uint8 *reply;
   JNX_HTTP_TYPE t = jnx_http_request(JNX_HTTP_POST,hostname,page,args,&reply,out_len);
   *out_reply = reply;
   return t;
 }
-JNX_HTTP_TYPE jnx_http_request_get(const char *hostname, const char *page, char *args,uint8_t **out_reply, ssize_t *out_len) {
-  uint8_t *reply;
+JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_ssize *out_len) {
+  jnx_uint8 *reply;
   JNX_HTTP_TYPE t = jnx_http_request(JNX_HTTP_GET,hostname,page,args,&reply,out_len);
   *out_reply = reply;
   return t;

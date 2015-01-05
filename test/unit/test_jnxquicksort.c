@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "jnxtypes.h"
 #include "jnxquicksort.h"
 #include "jnxcheck.h"
 #include "jnxlist.h"
@@ -27,33 +28,33 @@
 #define JNX_FALSE 0
 #define JNX_TRUE  1
 
-int into[10000];
-int cf_int(void *v1, void *v2) {
-	int i1 = (int) v1;
-	int i2 = (int) v2;
+jnx_int jnx_into[10000];
+jnx_int cf_jnx_int(void *v1, void *v2) {
+	jnx_int i1 = (jnx_int) v1;
+	jnx_int i2 = (jnx_int) v2;
 	return i1 - i2;
 }
 
 char *charo[13];
-int cf_string(void *v1, void *v2) {
+jnx_int cf_string(void *v1, void *v2) {
 	char *s1 = (char *) v1;
 	char *s2 = (char *) v2;
 	return strcmp(s1, s2);
 }
 
-void test_int_array() {
-	JNX_LOG(NULL,"- test_int_array");
+void test_jnx_int_array() {
+	JNX_LOG(NULL,"- test_jnx_int_array");
 	void *a[10000];
-	int i;
+	jnx_int i;
 	for (i = 0; i < 10000; i++) {
-		a[i] = (void *)(into[i]);
+		a[i] = (void *)(jnx_into[i]);
 	}
-	jnx_quicksort(a, 10000, cf_int);
+	jnx_quicksort(a, 10000, cf_jnx_int);
 	for (i = 0; i < 10000; i++) {
-		into[i] = (int) a[i];
+		jnx_into[i] = (jnx_int) a[i];
 	}
 	for (i = 0; i < 9999; i++) {
-		JNXCHECK(into[i] < into[i + 1]);
+		JNXCHECK(jnx_into[i] < jnx_into[i + 1]);
 	}
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
@@ -61,7 +62,7 @@ void test_string_array() {
 	JNX_LOG(NULL,"- test_string_array");
 	void **a = (void **) charo;
 	jnx_quicksort(a, 13, cf_string);
-	int i;
+	jnx_int i;
 	for (i = 0; i < 11; i++) {
 		JNXCHECK(strcmp(charo[i], charo[i + 1]) < 0);
 	}
@@ -74,9 +75,9 @@ void test_empty_array() {
 	JNXCHECK(a == NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
-int main(int argc, char **argv) {
+jnx_int main(jnx_int argc, char **argv) {
 	JNX_LOG(NULL,"Running quicksort tests...\n");
-	test_int_array();
+	test_jnx_int_array();
 	test_string_array();
 	test_empty_array();
 	JNX_LOG(NULL,"Quicksort tests completed.\n");
@@ -100,8 +101,8 @@ char *charo[] = {
 	"cry"
 };
 
-// data for the integer array test 
-int into[] = {
+// data for the jnx_integer array test 
+jnx_int jnx_into[] = {
 	2148,
 	9058,
 	7742,
