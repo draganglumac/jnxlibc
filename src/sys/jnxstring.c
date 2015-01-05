@@ -24,34 +24,34 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "jnxcheck.h"
-char* jnx_string_joincreate(char* destination, char* append) {
+jnx_char* jnx_string_joincreate(jnx_char* destination, jnx_char* append) {
   JNXCHECK(destination);
   JNXCHECK(append);
-  int32_t origin_len = strlen(destination);
-  int32_t append_len = strlen(append);
-  char* str = malloc(sizeof(origin_len + append_len + 1));
+  jnx_int32 origin_len = strlen(destination);
+  jnx_int32 append_len = strlen(append);
+  jnx_char* str = malloc(sizeof(origin_len + append_len + 1));
   strcpy(str, destination);
   strcat(str, append);
   return str;
 }
-void jnx_string_join(char** destination, char* buf) {
-  int32_t orig_len;
-  int32_t buf_len = strlen(buf);
+void jnx_string_join(jnx_char** destination, jnx_char* buf) {
+  jnx_int32 orig_len;
+  jnx_int32 buf_len = strlen(buf);
   if (*destination == NULL) {
     orig_len = 0;
   } else {
     orig_len = strlen(*destination);
   }
-  int32_t newsize = orig_len + buf_len + 1;
-  *destination  = (char*) realloc(*destination,newsize);
+  jnx_int32 newsize = orig_len + buf_len + 1;
+  *destination  = (jnx_char*) realloc(*destination,newsize);
   if (orig_len != 0) {
     strncpy(*destination + orig_len, buf, buf_len + 1);
   } else {
     strncpy(*destination, buf, buf_len + 1);
   }
 }
-char* jnx_string_itos(int32_t input) {
-  char *str = malloc(sizeof(int32_t));
+jnx_char* jnx_string_itos(jnx_int32 input) {
+  jnx_char *str = malloc(sizeof(jnx_int32));
   if(sprintf(str,"%d",input) > 0) {
     return str;
   } else {

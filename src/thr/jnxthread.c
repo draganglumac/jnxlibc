@@ -34,15 +34,15 @@ void jnx_thread_mutex_destroy(jnx_thread_mutex **m) {
   free(*m);
   *m = NULL;
 }
-int32_t jnx_thread_unlock(jnx_thread_mutex *m) {
+jnx_int32 jnx_thread_unlock(jnx_thread_mutex *m) {
   JNXCHECK(m);
-  int32_t ret = 0;
+  jnx_int32 ret = 0;
   ret = pthread_mutex_unlock(&m->system_mutex);
   return ret;
 }
-int32_t jnx_thread_trylock(jnx_thread_mutex *m) {
+jnx_int32 jnx_thread_trylock(jnx_thread_mutex *m) {
   JNXCHECK(m);
-  int32_t ret = 0;
+  jnx_int32 ret = 0;
   if(m->is_initialized != 1) {
     m = jnx_thread_mutex_create();
   }
@@ -78,8 +78,8 @@ jnx_thread* jnx_thread_create(entry_point e,void *args) {
   //platform specific zone//
   return thr;
 }
-int32_t jnx_thread_create_disposable(entry_point e,void *args) {
-  int32_t ret = 0;
+jnx_int32 jnx_thread_create_disposable(entry_point e,void *args) {
+  jnx_int32 ret = 0;
   //platform specific zone//
   pthread_t disposable_thr;
   pthread_attr_t *default_attr = NULL;
@@ -87,9 +87,9 @@ int32_t jnx_thread_create_disposable(entry_point e,void *args) {
   //platform specific zone//
   return ret;
 }
-int32_t jnx_thread_join(jnx_thread *thr, void **data) {
+jnx_int32 jnx_thread_join(jnx_thread *thr, void **data) {
   JNXCHECK(thr);
-  int32_t ret = 0;
+  jnx_int32 ret = 0;
   //platform specific zone//
   ret = pthread_join(thr->system_thread,data);
   //platform specific zone//

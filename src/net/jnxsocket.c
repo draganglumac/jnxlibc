@@ -34,14 +34,14 @@
 #define KILOBYTE 1024
 #define MAXBUFFER KILOBYTE * 10 
 #define MAX_UDP_BUFFER KILOBYTE * 65
-jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
+jnx_socket *create_socket(jnx_unsigned_int type,jnx_unsigned_int addrfamily) {
   JNXCHECK(addrfamily);
   JNXCHECK(type);
   JNXCHECK(type);
   JNXCHECK(addrfamily);
-  int32_t sock = socket(addrfamily,type,0);
+  jnx_int32 sock = socket(addrfamily,type,0);
   JNXCHECK(sock);
-  int32_t optval = 1;
+  jnx_int32 optval = 1;
   setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval);
   jnx_socket *s = malloc(sizeof(jnx_socket));
   s->isclosed = 0;
@@ -51,10 +51,10 @@ jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
   s->ipaddress = NULL;
   return s;
 }
-jnx_socket *jnx_socket_tcp_create(unsigned int addrfamily) {
+jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily) {
   return create_socket(SOCK_STREAM,addrfamily);
 }
-jnx_socket *jnx_socket_udp_create(unsigned int addrfamily) {
+jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily) {
   return create_socket(SOCK_DGRAM,addrfamily);
 }
 void jnx_socket_close(jnx_socket *s) {
@@ -72,22 +72,22 @@ void jnx_socket_destroy(jnx_socket **s) {
   free(*s);
   *s = NULL;
 }
-size_t jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
+jnx_size jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
   JNXCHECK(s);
   JNXCHECK(s->stype == SOCK_DGRAM);
   JNXCHECK(s->addrfamily == AF_INET);
-  int32_t optval = 1;
+  jnx_int32 optval = 1;
   if(setsockopt(s->socket,SOL_SOCKET,SO_BROADCAST,&optval, sizeof(optval)) != 0) {
     perror("setsockopt:");
     return -1;
   }
   return 0;
 }
-size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int ignore_local) {
+jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s, jnx_char *interface, int ignore_local) {
   JNXCHECK(s);
   JNXCHECK(interface);
   JNXCHECK(s->stype == SOCK_DGRAM);
-  int32_t optval = 0;
+  jnx_int32 optval = 0;
   struct in_addr localinterface;
   if(ignore_local) {
     if(setsockopt(s->socket,IPPROTO_IP,IP_MULTICAST_LOOP,&optval, sizeof(optval)) != 0) {
@@ -96,7 +96,7 @@ size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int 
     }
   }
   localinterface.s_addr = inet_addr(interface);
-  if(setsockopt(s->socket,IPPROTO_IP,IP_MULTICAST_IF,(char*)&localinterface,
+  if(setsockopt(s->socket,IPPROTO_IP,IP_MULTICAST_IF,(jnx_char*)&localinterface,
         sizeof(localinterface)) < 0) {
     perror("setsockopt:");
     return -1;
@@ -105,7 +105,7 @@ size_t jnx_socket_udp_enable_multicast_send(jnx_socket *s, char *interface, int 
   s->addrfamily = AF_UNSPEC;
   return 0;
 }
-size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, char *group) {
+jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s, jnx_char *interface, jnx_char *group) {
   JNXCHECK(s);
   JNXCHECK(interface);
   JNXCHECK(group);
@@ -113,7 +113,7 @@ size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, ch
   struct ip_mreq bgroup;
   bgroup.imr_multiaddr.s_addr = inet_addr(group);
   bgroup.imr_interface.s_addr = inet_addr(interface);
-  if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(char*)&bgroup,
+  if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(jnx_char*)&bgroup,
         sizeof(bgroup)) < 0) {
     perror("setsockopt:");
     return -1;
@@ -122,8 +122,8 @@ size_t jnx_socket_udp_enable_multicast_listen(jnx_socket *s, char *interface, ch
   s->addrfamily = AF_UNSPEC;
   return 0;
 }
-char *jnx_socket_tcp_resolve_ipaddress(int32_t socket) {
-  char ipstr[INET6_ADDRSTRLEN];
+jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket) {
+  jnx_char ipstr[INET6_ADDRSTRLEN];
   socklen_t len;
   struct sockaddr_storage addr;
   len = sizeof(addr);
@@ -144,8 +144,8 @@ char *jnx_socket_tcp_resolve_ipaddress(int32_t socket) {
   }
   return strdup(ipstr);
 }
-char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
-  char str[INET6_ADDRSTRLEN];
+jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
+  jnx_char str[INET6_ADDRSTRLEN];
   memset(str,0,INET6_ADDRSTRLEN);
   switch (((struct sockaddr*)&sa)->sa_family) {
     case AF_INET:
@@ -159,7 +159,7 @@ char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
   }
   return NULL;
 }
-ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len) {
+jnx_ssize jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -172,7 +172,7 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
 
-  int32_t rg = 0;
+  jnx_int32 rg = 0;
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
     JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
     return 0;
@@ -183,11 +183,11 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
     return 0;
   }
   freeaddrinfo(res);
-  size_t tbytes = 0;
-  size_t rbytes = msg_len;
+  jnx_size tbytes = 0;
+  jnx_size rbytes = msg_len;
 
   while(tbytes < rbytes) {
-    size_t n = write(s->socket,msg,rbytes);
+    jnx_size n = write(s->socket,msg,rbytes);
     if(n == -1) {
       perror("send:");
       return 0;
@@ -197,7 +197,7 @@ ssize_t jnx_socket_tcp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
   }
   return tbytes;
 }
-ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len,uint8_t **out_receipt) {
+jnx_ssize jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len,jnx_uint8 **out_receipt) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -206,12 +206,12 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
   JNXCHECK(s->isclosed == 0);
   JNXCHECK(s->stype == SOCK_STREAM);
   struct addrinfo hints, *res;
-  uint8_t buffer[MAXBUFFER];
+  jnx_uint8 buffer[MAXBUFFER];
   memset(&hints,0,sizeof(hints));
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
   *out_receipt = NULL;
-  int32_t rg = 0;
+  jnx_int32 rg = 0;
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
     JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
     return 0;
@@ -222,11 +222,11 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
     return 0;
   }
   freeaddrinfo(res);
-  size_t tbytes = 0;
-  size_t rbytes = msg_len;
+  jnx_size tbytes = 0;
+  jnx_size rbytes = msg_len;
 
   while(tbytes < rbytes) {
-    size_t n = write(s->socket,msg,rbytes);
+    jnx_size n = write(s->socket,msg,rbytes);
     if(n == -1) {
       perror("send:");
       return 0;
@@ -240,8 +240,8 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
     perror("tmpfile:");
     return -1;
   }
-  size_t bytesread = read(s->socket,buffer,MAXBUFFER);
-  fwrite(buffer,sizeof(uint8_t),bytesread,fp);
+  jnx_size bytesread = read(s->socket,buffer,MAXBUFFER);
+  fwrite(buffer,sizeof(jnx_uint8),bytesread,fp);
 
   while(bytesread > 0) {
     memset(buffer,0,MAXBUFFER);
@@ -252,18 +252,18 @@ ssize_t jnx_socket_tcp_send_with_receipt(jnx_socket *s, char *host, char* port, 
       return -1;
     }
     if(bytesread > 0) {
-      fwrite(buffer,sizeof(uint8_t),bytesread,fp);
+      fwrite(buffer,sizeof(jnx_uint8),bytesread,fp);
     }
   }
-  int32_t len = ftell(fp);
+  jnx_int32 len = ftell(fp);
   rewind(fp);
-  uint8_t *out = calloc(len + 1, sizeof(uint8_t));
-  fread(out,sizeof(uint8_t),len,fp);
+  jnx_uint8 *out = calloc(len + 1, sizeof(jnx_uint8));
+  fread(out,sizeof(jnx_uint8),len,fp);
   fclose(fp);
   *out_receipt = out;
   return len;
 }
-ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg, ssize_t msg_len) {
+jnx_ssize jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -279,20 +279,20 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
   hints.ai_protocol = IPPROTO_UDP;
   hints.ai_next = NULL;
 
-  int32_t rg = 0;
+  jnx_int32 rg = 0;
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
     JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
     return 0;
   }
-  size_t tbytes = 0;
-  size_t rbytes = msg_len;
+  jnx_size tbytes = 0;
+  jnx_size rbytes = msg_len;
   if(rbytes > MAX_UDP_BUFFER) {
     JNX_LOG(DEFAULT_CONTEXT,"Message exceeds max UDP packet size\n");
     freeaddrinfo(res);
     return 0;
   }
   while(tbytes < rbytes) {
-    size_t n = sendto(s->socket,msg,msg_len,0,res->ai_addr,res->ai_addrlen);
+    jnx_size n = sendto(s->socket,msg,msg_len,0,res->ai_addr,res->ai_addrlen);
     if(n == -1) {
       freeaddrinfo(res);
       perror("send:");
@@ -304,22 +304,22 @@ ssize_t jnx_socket_udp_send(jnx_socket *s, char *host, char* port, uint8_t *msg,
   freeaddrinfo(res);
   return tbytes;
 }
-int32_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tcp_socket_listener_callback c) {
+jnx_int32 jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_connections, tcp_socket_listener_callback c) {
   JNXCHECK(s);
   JNXCHECK(port);
   JNXCHECK(s->isclosed == 0);
   JNXCHECK(s->stype == SOCK_STREAM);
-  int32_t optval = 1;
+  jnx_int32 optval = 1;
   struct addrinfo hints, *res, *p;
   struct sockaddr_storage their_addr;
-  uint8_t buffer[MAXBUFFER];
+  jnx_uint8 buffer[MAXBUFFER];
   memset(&hints,0,sizeof(hints));
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
   getaddrinfo(NULL,port,&hints,&res);
   p = res;
   while(p != NULL) {
-    if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(int32_t)) == -1) {
+    if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(jnx_int32)) == -1) {
       perror("setsockopt");
       exit(1);
     }
@@ -335,7 +335,7 @@ int32_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections
   listen(s->socket,max_connections);
   while(1) {
     socklen_t addr_size = sizeof(their_addr);
-    int32_t recfd = accept(s->socket,(struct sockaddr*)&their_addr,&addr_size);
+    jnx_int32 recfd = accept(s->socket,(struct sockaddr*)&their_addr,&addr_size);
     if(recfd < 0) {
       JNX_LOG(DEFAULT_CONTEXT,"accept: %s",strerror(errno));
       perror("accept:");
@@ -347,8 +347,8 @@ int32_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections
       perror("tmpfile:");
       return -1;
     }
-    size_t bytesread = read(recfd,buffer,MAXBUFFER);
-    fwrite(buffer,sizeof(uint8_t),bytesread,fp);
+    jnx_size bytesread = read(recfd,buffer,MAXBUFFER);
+    fwrite(buffer,sizeof(jnx_uint8),bytesread,fp);
 
     while(bytesread > 0) {
       memset(buffer,0,MAXBUFFER);
@@ -359,32 +359,32 @@ int32_t jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections
         return -1;
       }
       if(bytesread > 0) {
-        fwrite(buffer,sizeof(uint8_t),bytesread,fp);
+        fwrite(buffer,sizeof(jnx_uint8),bytesread,fp);
       }
     }
-    int32_t len = ftell(fp);
+    jnx_int32 len = ftell(fp);
     rewind(fp);
-    uint8_t *out = calloc(len + 1, sizeof(uint8_t));
-    fread(out,sizeof(uint8_t),len,fp);
+    jnx_uint8 *out = calloc(len + 1, sizeof(jnx_uint8));
+    fread(out,sizeof(jnx_uint8),len,fp);
     fclose(fp);
 
-    int32_t ret = 0;
+    jnx_int32 ret = 0;
     if((ret = c(out,len,s)) != 0) {
       return 0;
     }
   }
   return 0;
 }
-int32_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, udp_socket_listener_callback c) {
+jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_connections, udp_socket_listener_callback c) {
   JNXCHECK(s);
   JNXCHECK(port);
   JNXCHECK(s->isclosed == 0);
   JNXCHECK(s->stype == SOCK_DGRAM);
-  int32_t optval = 1;
+  jnx_int32 optval = 1;
   struct addrinfo hints, *res, *p;
   struct sockaddr_storage their_addr;
   socklen_t their_len = sizeof(their_addr);
-  uint8_t buffer[MAX_UDP_BUFFER];
+  jnx_uint8 buffer[MAX_UDP_BUFFER];
   memset(&hints,0,sizeof(struct addrinfo));
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
@@ -392,7 +392,7 @@ int32_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections
   getaddrinfo(NULL,port,&hints,&res);
   p = res;
   while(p != NULL) {
-    if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(int32_t)) == -1) {
+    if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(jnx_int32)) == -1) {
       perror("setsockopt");
       exit(1);
     }
@@ -406,14 +406,14 @@ int32_t jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections
   freeaddrinfo(res);
   while(1) {
     memset(buffer,0,MAX_UDP_BUFFER);
-    size_t bytesread = recvfrom(s->socket,buffer,MAX_UDP_BUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
+    jnx_size bytesread = recvfrom(s->socket,buffer,MAX_UDP_BUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
 
     if(bytesread == -1) {
       perror("recvcfrom:");
       return -1;
     }
-    int32_t ret = 0;
-    uint8_t *outbuffer = malloc(bytesread * sizeof(uint8_t));
+    jnx_int32 ret = 0;
+    jnx_uint8 *outbuffer = malloc(bytesread * sizeof(jnx_uint8));
     memcpy(outbuffer,buffer,bytesread);
     if((ret = c(outbuffer,bytesread,s)) != 0) {
       return 0;

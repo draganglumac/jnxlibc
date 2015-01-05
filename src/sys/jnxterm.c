@@ -32,13 +32,13 @@
 #define JNX_TERM_REVERSE   7
 #define JNX_TERM_HIDDEN    8
 
-void text_and_background_color(int32_t attr, int32_t fg, int32_t bg) {
+void text_and_background_color(jnx_int32 attr, jnx_int32 fg, jnx_int32 bg) {
   printf("%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
 }
-void text_color(int32_t attr, int32_t fg) {
+void text_color(jnx_int32 attr, jnx_int32 fg) {
   printf("%c[%d;%dm", 0x1B, attr, fg + 30);
 }
-int32_t get_width() {
+jnx_int32 get_width() {
   struct winsize w;
   ioctl(0, TIOCGWINSZ, &w);
   printf("columns %d\n", w.ws_col);
@@ -47,12 +47,12 @@ int32_t get_width() {
 void jnx_term_default() {
   printf("%c[0m", 0x1B);
 }
-void jnx_term_color(int32_t fg_col) {
+void jnx_term_color(jnx_int32 fg_col) {
   if ( JNX_COL_BLACK <= fg_col && fg_col <= JNX_COL_WHITE ) {
     text_color(JNX_TERM_RESET, fg_col);
   }
 }
-void jnx_term_printf_in_color(int32_t fg_col, const char* format, ...) {
+void jnx_term_printf_in_color(jnx_int32 fg_col, const char* format, ...) {
   jnx_term_color(fg_col);
 
   va_list ap;

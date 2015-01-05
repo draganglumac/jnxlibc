@@ -29,7 +29,7 @@
 
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256
-jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){  
+jnx_log_config* jnx_log_create(const jnx_char *path,jnx_log_type output){  
   jnx_log_config *conf = malloc(sizeof(jnx_log_config));
   conf->log_path = path;
   conf->output = output;
@@ -40,12 +40,12 @@ jnx_log_config* jnx_log_create(const char *path,jnx_log_type output){
   conf->internal_lock = jnx_thread_mutex_create();
   return conf;
 }
-void jnx_log(jnx_log_config *config, const char *file, const char *function,const int32_t line,const char *format,...){
+void jnx_log(jnx_log_config *config, const jnx_char *file, const jnx_char *function,const jnx_uint32 line,const jnx_char *format,...){
   JNXCHECK(file);
   JNXCHECK(function);
   JNXCHECK(format);
-  char buffer[MAX_SIZE];
-  char msgbuffer[MAX_SIZE];
+  jnx_char buffer[MAX_SIZE];
+  jnx_char msgbuffer[MAX_SIZE];
   memset(buffer,0,MAX_SIZE);
   memset(msgbuffer,0,MAX_SIZE);
   va_list ap;
@@ -55,7 +55,7 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
   if(config == DEFAULT_CONTEXT) {
     time_t ptime;
     time(&ptime);
-    char pbuffer[TIMEBUFFER];
+    jnx_char pbuffer[TIMEBUFFER];
     sprintf(pbuffer,"%s",ctime(&ptime));
     pbuffer[strlen(pbuffer)-1] = '\0';
     sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",file,function,line,pbuffer, msgbuffer);
@@ -67,7 +67,7 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
     case FILETYPE:
       JNXCHECK(config->log_path);
       jnx_thread_lock(config->internal_lock);
-      jnx_file_write((char*)config->log_path ? (char*)config->log_path : "default.log",buffer,strlen(buffer),"a");
+      jnx_file_write((jnx_char*)config->log_path ? (jnx_char*)config->log_path : "default.log",buffer,strlen(buffer),"a");
       jnx_thread_unlock(config->internal_lock);
       break;
     case CONSOLETYPE:
@@ -75,7 +75,7 @@ void jnx_log(jnx_log_config *config, const char *file, const char *function,cons
       break;
   }
   gettimeofday(config->pend,NULL);
-  double elapsed_time = ((*config->pend).tv_sec - (*config->pstart).tv_sec) * 1000.0;
+  jnx_double elapsed_time = ((*config->pend).tv_sec - (*config->pstart).tv_sec) * 1000.0;
   elapsed_time += ((*config->pend).tv_usec - (*config->pstart).tv_usec) / 1000.0;
   config->pcurrent = elapsed_time;
 }

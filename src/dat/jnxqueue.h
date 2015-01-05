@@ -20,6 +20,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include "jnxtypes.h"
 #include "jnxlist.h"
 #include "jnxthread.h"
   typedef struct jnx_queue {

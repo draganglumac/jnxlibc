@@ -5,6 +5,7 @@
  */
 #ifndef __JNXLIST_H__
 #define __JNXLIST_H__
+#include "jnxtypes.h"
 #include "jnxthread.h"
 #ifdef __cplusplus
 extern		"C" {
@@ -23,7 +24,7 @@ extern		"C" {
   typedef struct list {
     struct node *head;
     struct node *tail;
-    int32_t counter;
+    jnx_int32 counter;
     jnx_thread_mutex *internal_lock;
   }		jnx_list;
 
@@ -67,16 +68,16 @@ extern		"C" {
 
   size_t jnx_list_count_ts(jnx_list * A);
 
-  /** @fn jnx_list_contains(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b))
+  /** @fn jnx_list_contains(jnx_list *A, void *datain, jnx_int32 (*list_comparison)(void *a,void *b))
    *  @brief checks whether a list contains a specific value
    *  @param A is a pointer to the list 
    *  @param datain is the value to check the list for
    *  @param list_comparison is a functor callback for comparison, 1 is a positive find, 0 is a negative
    *  @return either 1 on success or 0 on failure
    */
-  int32_t jnx_list_contains(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b));
+  jnx_int32 jnx_list_contains(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b));
 
-  int32_t jnx_list_contains_ts(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b));
+  jnx_int32 jnx_list_contains_ts(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b));
   /** @fn jnx_list_destroy(jnx_list* A)
    * @brief  Deletes the list node structure and list, not data inside
    * @param A is a pointer the pointer of list to destroy
