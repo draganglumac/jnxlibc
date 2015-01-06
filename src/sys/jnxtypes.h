@@ -48,6 +48,11 @@ typedef struct jnx_vector3D {
 }jnx_vector3D;
 
 typedef size_t jnx_size;
+
+#ifdef __APPLE__
+typedef size_t jnx_ssize;
+#else
 typedef ssize_t jnx_ssize;
+#endif
 typedef double jnx_double;
 #endif
