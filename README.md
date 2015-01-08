@@ -38,7 +38,7 @@ Email: jonesax@hush.com
 - First port of call: [Wiki](https://github.com/AlexsJones/jnxlibc/wiki/A-library-tour)
 - MAN  docs/man
 - HTML docs/html ([Here](http://htmlpreview.github.io/?https://raw.github.com/AlexsJones/jnxlibc/master/docs/html/files.html))
-- [Loads of lovely tests in C!](setup/test)
+- [Loads of lovely tests in C!](test)
 - Code reviewing
 
 #Installation
