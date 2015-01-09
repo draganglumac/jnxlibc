@@ -159,7 +159,7 @@ jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
   }
   return NULL;
 }
-jnx_ssize jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len) {
+jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -197,7 +197,7 @@ jnx_ssize jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx
   }
   return tbytes;
 }
-jnx_ssize jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len,jnx_uint8 **out_receipt) {
+jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len,jnx_uint8 **out_receipt) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -263,7 +263,7 @@ jnx_ssize jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_ch
   *out_receipt = out;
   return len;
 }
-jnx_ssize jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len) {
+jnx_size jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -304,7 +304,7 @@ jnx_ssize jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx
   freeaddrinfo(res);
   return tbytes;
 }
-jnx_int32 jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_connections, tcp_socket_listener_callback c) {
+jnx_int32 jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback c) {
   JNXCHECK(s);
   JNXCHECK(port);
   JNXCHECK(s->isclosed == 0);
@@ -375,7 +375,7 @@ jnx_int32 jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_con
   }
   return 0;
 }
-jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_connections, udp_socket_listener_callback c) {
+jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback c) {
   JNXCHECK(s);
   JNXCHECK(port);
   JNXCHECK(s->isclosed == 0);

@@ -40,7 +40,7 @@ extern "C" {
     jnx_uint32 islisten;
     jnx_uint32 socket;
     jnx_unix_socket_address address;
-    jnx_ssize stype;
+    jnx_size stype;
   } jnx_unix_socket;
 
   /*
@@ -77,30 +77,30 @@ extern "C" {
    */
   void jnx_unix_socket_destroy(jnx_unix_socket **s);
   /**
-   * @fn jnx_unix_stream_socket_send((jnx_unix_socket *s,, jnx_uint8*msg, jnx_ssize msg_len)
+   * @fn jnx_unix_stream_socket_send((jnx_unix_socket *s,, jnx_uint8*msg, jnx_size msg_len)
    * @param s is the socket to use to send
    * @param msg is the payload to send
    * @param msg_len is the size of payload
    * @return jnx_size of bytes sent
    */
-  jnx_ssize jnx_unix_stream_socket_send(jnx_unix_socket *s, jnx_uint8 *msg, jnx_ssize msg_len);
+  jnx_size jnx_unix_stream_socket_send(jnx_unix_socket *s, jnx_uint8 *msg, jnx_size msg_len);
   /**
-   * @fn jnx_unix_datagram_socket_send(jnx_unix_socket *s, jnx_uint8*msg, jnx_ssize msg_len)
+   * @fn jnx_unix_datagram_socket_send(jnx_unix_socket *s, jnx_uint8*msg, jnx_size msg_len)
    * @param s is the socket to use to send
    * @param msg is the payload to send
    * @param msg_len is the size of payload
    * @return jnx_size of bytes sent
    */
-  jnx_ssize jnx_unix_datagram_socket_send(jnx_unix_socket *s, jnx_uint8*msg, jnx_ssize msg_len);
+  jnx_size jnx_unix_datagram_socket_send(jnx_unix_socket *s, jnx_uint8*msg, jnx_size msg_len);
   /**
-   * @fn jnx_uint32 jnx_unix_stream_socket_listen(jnx_unix_socket *s,  jnx_ssize max_connections, stream_socket_listener_callback c)
+   * @fn jnx_uint32 jnx_unix_stream_socket_listen(jnx_unix_socket *s,  jnx_size max_connections, stream_socket_listener_callback c)
    * @param max_connections are the number of connetions in the queue
    * @param c is the function pojnx_uint32er callback for received messages
    * @return -1 on error
    */
-  jnx_uint32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_ssize max_connections, stream_socket_listener_callback c);
+  jnx_uint32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connections, stream_socket_listener_callback c);
   /**
-   * @fn jnx_uint32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, jnx_ssize max_connections, datagram_socket_listener_callback c)
+   * @fn jnx_uint32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, jnx_size max_connections, datagram_socket_listener_callback c)
    * @param s is the socket to use to send
    * @param c is the function pojnx_uint32er callback for received messages
    * @return -1 on error

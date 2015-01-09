@@ -70,7 +70,7 @@ typedef enum JNX_HTTP_STATE {
   JNX_HTTP_STATE_UNKNOWN
 } JNX_HTTP_STATE;
 /* 
- * @fn size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply, jnx_ssize *out_len)
+ * @fn size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply, jnx_size *out_len)
  * @brief creates an http request defined within the JNX_HTTP_TYPE (JNX_HTTP_GET or JNX_HTTP_POST)
  * @param type will specify the type of http request. Either JNX_HTTP_GET or JNX_HTTP_POST
  * @param hostname is the host domain to connect to.
@@ -80,11 +80,11 @@ typedef enum JNX_HTTP_STATE {
  * @params out_len is the length of outward reply
  * @return message length sent in bytes 
  */
-size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_ssize *out_len);
+size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_size *out_len);
 
-JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_ssize *out_len);
+JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len);
 
-JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_ssize *out_len);
+JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len);
 
 #ifdef __cplusplus
 }

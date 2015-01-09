@@ -36,7 +36,7 @@ extern "C" {
     jnx_int32 isclosed;
     jnx_int32 socket;
     jnx_unsigned_int addrfamily;
-    jnx_ssize stype;
+    jnx_size stype;
     jnx_char *ipaddress;
   } jnx_socket;
 
@@ -99,7 +99,7 @@ extern "C" {
    */
   jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s, jnx_char *interface, jnx_char *group);
   /**
-   * @fn jnx_socket_tcp_send((jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len)
+   * @fn jnx_socket_tcp_send((jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len)
    * @param s is the socket to use to send
    * @param host is the target destination
    * @param port is the target port
@@ -107,9 +107,9 @@ extern "C" {
    * @param msg_len is the size of payload
    * @return jnx_size of bytes sent
    */
-  jnx_ssize jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len);
+  jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
   /**
-   * @fn jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len,jnx_uint8 **out_receipt)
+   * @fn jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len,jnx_uint8 **out_receipt)
    * @param s is the socket to use to send
    * @param host is the target destination
    * @param port is the target port
@@ -118,9 +118,9 @@ extern "C" {
    * @param out_receipt returned from the target host
    * @return jnx_size of bytes sent
    */
-  jnx_ssize jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len,jnx_uint8 **out_receipt);
+  jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len,jnx_uint8 **out_receipt);
   /**
-   * @fn jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len)
+   * @fn jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len)
    * @param s is the socket to use to send
    * @param host is the target destination
    * @param port is the target port
@@ -129,25 +129,25 @@ extern "C" {
    * @warning UDP header is 16bit which means 65k is the max file transmission size
    * @return jnx_size of bytes sent
    */
-  jnx_ssize jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_ssize msg_len);
+  jnx_size jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
   /**
-   * @fn jnx_int32 jnx_socket_tpc_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_connections, socket_listener_callback c)
+   * @fn jnx_int32 jnx_socket_tpc_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, socket_listener_callback c)
    * @param s is the socket to use to send
    * @param port is the target port
    * @param max_connections are the number of connetions in the queue
    * @param c is the function pointer callback for received messages
    * @return -1 on error
    */
-  int jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_connections, tcp_socket_listener_callback c);
+  int jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback c);
   /**
-   * @fn jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_connections, socket_listener_callback c)
+   * @fn jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, socket_listener_callback c)
    * @param s is the socket to use to send
    * @param port is the target port
    * @param max_connections are the number of connetions in the queue
    * @param c is the function pointer callback for received messages
    * @return -1 on error
    */
-  int jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_ssize max_connections, udp_socket_listener_callback c);
+  int jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback c);
 #ifdef __cplusplus
 }
 #endif

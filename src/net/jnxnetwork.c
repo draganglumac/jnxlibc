@@ -150,7 +150,7 @@ jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,jnx_char *host, jnx_ch
   }
   return 0;
 }
-size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_ssize *out_len) {
+size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_size *out_len) {
   JNXCHECK(hostname);
   JNXCHECK(page);
   JNXCHECK(type == JNX_HTTP_POST || type == JNX_HTTP_GET);
@@ -179,21 +179,21 @@ size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_
       "Content-length: %zu\r\n\r\n"
       "%s\r\n",verb, page, hostname, strlen(args),args);
 
-  jnx_ssize l = jnx_socket_tcp_send_with_receipt(sock,
-      (jnx_char*)hostname,"80",(jnx_uint8*)sendbuffer,(jnx_ssize)strlen(sendbuffer),out_reply);
+  jnx_size l = jnx_socket_tcp_send_with_receipt(sock,
+      (jnx_char*)hostname,"80",(jnx_uint8*)sendbuffer,(jnx_size)strlen(sendbuffer),out_reply);
   *out_len = l;  
   if(!l) {
     return JNX_HTTP_STATE_UNKNOWN;
   }
   return JNX_HTTP_STATE_OKAY;
 }
-JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_ssize *out_len) {
+JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len) {
   jnx_uint8 *reply;
   JNX_HTTP_TYPE t = jnx_http_request(JNX_HTTP_POST,hostname,page,args,&reply,out_len);
   *out_reply = reply;
   return t;
 }
-JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_ssize *out_len) {
+JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len) {
   jnx_uint8 *reply;
   JNX_HTTP_TYPE t = jnx_http_request(JNX_HTTP_GET,hostname,page,args,&reply,out_len);
   *out_reply = reply;
