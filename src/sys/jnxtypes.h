@@ -48,6 +48,6 @@ typedef struct jnx_vector3D {
 }jnx_vector3D;
 
 typedef size_t jnx_size;
-
+typedef ssize_t jnx_ssize;
 typedef double jnx_double;
 #endif
