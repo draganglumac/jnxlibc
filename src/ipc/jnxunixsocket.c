@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/un.h>
 #include <arpa/inet.h>
 #include "jnxunixsocket.h"
 #include "jnxcheck.h"
@@ -145,7 +146,7 @@ jnx_uint32 read_stream_socket(jnx_unix_socket *s, jnx_uint8**out, jnx_uint32 *le
   jnx_uint8 buffer[MAXBUFFER];
   memset(buffer,0,MAXBUFFER);
   FILE *fp = tmpfile();
-  jnx_size bytesread = 0;
+  jnx_ssize bytesread = 0;
   while ((bytesread = read(s->socket, buffer, MAXBUFFER)) > 0) {
     fwrite(buffer, sizeof(jnx_uint8), bytesread, fp);
     bzero(buffer, MAXBUFFER);
