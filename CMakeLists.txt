@@ -17,6 +17,7 @@ include_directories(${PROJECT_INC_DIR}src/sig)
 include_directories(${PROJECT_INC_DIR}src/sys)
 include_directories(${PROJECT_INC_DIR}src/thr)
 
+execute_process(COMMAND ./run_tests WORKING_DIRECTORY test/unit) 
 set(CMAKE_C_FLAGS "-Wall")
 set(CMAKE_C_FLAGS_DEBUG "-g -rdynamic")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
