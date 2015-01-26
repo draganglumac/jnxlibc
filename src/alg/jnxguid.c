@@ -20,16 +20,26 @@
 #include "jnxcheck.h"
 jnx_guid_state jnx_guid_create(jnx_guid *guid) {
   JNXCHECK(guid);
-  jnx_int fd = JNX_OPEN("/dev/urandom",O_RDONLY);
-  jnx_int rlen = 0;
-  while(rlen < sizeof guid->guid) {
-    jnx_ssize r = JNX_READ(fd, guid->guid + rlen, (sizeof guid->guid) - rlen);
-    if(rlen <= 0) {
+  jnx_int fd=JNX_OPEN("/dev/urandom",O_RDONLY);
+  jnx_int rlen=0;
+  while(rlen<sizeof guid->guid) {
+    jnx_ssize r=JNX_READ(fd, guid->guid + rlen, (sizeof guid->guid) - rlen);
+    if(rlen<=0) {
       return JNX_GUID_STATE_FAILURE;
     }
-    rlen += r;
+    rlen+=r;
   }
   JNX_CLOSE(fd);
+  return JNX_GUID_STATE_SUCCESS;
+}
+jnx_guid_state jnx_guid_compare(jnx_guid *ga, jnx_guid *gb) {
+  jnx_int alen=0;
+  while(alen<sizeof ga->guid){
+    if(ga->guid[alen] != gb->guid[alen]) {
+      return JNX_GUID_STATE_FAILURE;
+    }
+    alen+=1;
+  }
   return JNX_GUID_STATE_SUCCESS;
 }
 void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr) {

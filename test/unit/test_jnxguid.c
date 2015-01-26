@@ -23,9 +23,7 @@
 #include "jnxlog.h"
 #include "jnxguid.h"
 
-int main(int args, char **argv) {
-  JNX_LOG(NULL,"Running test for jnxguid");
-
+void test_generate_guid() {
   jnx_guid g;
   jnx_guid_state s = jnx_guid_create(&g); 
   JNXCHECK(g.guid);  
@@ -33,5 +31,23 @@ int main(int args, char **argv) {
   jnx_char *ostr;
   jnx_guid_to_string(&g,&ostr);
   JNX_LOG(NULL,"GUID -> %s\n",ostr);
+
+}
+void test_compare_guid() {
+
+  jnx_guid g;
+  jnx_guid_create(&g); 
+  jnx_guid h;
+  jnx_guid_create(&h); 
+
+  JNXCHECK(jnx_guid_compare(&g,&h) == JNX_GUID_STATE_FAILURE);
+
+  JNXCHECK(jnx_guid_compare(&g,&g) == JNX_GUID_STATE_SUCCESS);
+}
+int main(int args, char **argv) {
+  JNX_LOG(NULL,"Running test for jnxguid");
+
+  test_generate_guid();
+  test_compare_guid();
   return 0;
 }

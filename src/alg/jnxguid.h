@@ -37,6 +37,8 @@ extern		"C" {
    * @return jnx_guid_state JNX_GUID_STATE_SUCCESS or JNX_GUID_STATE_FAILURE
    */
   jnx_guid_state jnx_guid_create(jnx_guid *guid);
+
+  jnx_guid_state jnx_guid_compare(jnx_guid *ga, jnx_guid *gb); 
   /**@fn jnx_guid_string(jnx_guid *guid,jnx_char **outstr);
    * @brief populates a string from a guid structure
    * @param guid is a structure to retrieve the guid string from
