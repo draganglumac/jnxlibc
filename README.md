@@ -54,7 +54,7 @@ CMake
 Default install location
 ```
 git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
-cmake .
+cmake .   #or use cmake . -DRUN_TESTS=ON 
 make
 sudo make install
 ```
@@ -75,6 +75,10 @@ Use `-ljnxcs` for static library
 
 ###Tests
 
+To run tests at compile time
+```
+cmake . -DRUN_TESTS=ON
+```
 To run tests from root of the project folder
 ```
 ./test/run_tests
