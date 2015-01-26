@@ -17,13 +17,16 @@ include_directories(${PROJECT_INC_DIR}src/sig)
 include_directories(${PROJECT_INC_DIR}src/sys)
 include_directories(${PROJECT_INC_DIR}src/thr)
 
-execute_process(COMMAND ./run_tests WORKING_DIRECTORY test/unit) 
+option(RUN_TESTS "Run jnxlibc tests" OFF)
+if(RUN_TESTS)
+  execute_process(COMMAND ./run_tests WORKING_DIRECTORY test/unit)
+endif()
 set(CMAKE_C_FLAGS "-Wall")
 set(CMAKE_C_FLAGS_DEBUG "-g -rdynamic")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
 
 IF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64") 
-	ADD_DEFINITIONS(-fPIC) 
+  ADD_DEFINITIONS(-fPIC) 
 ENDIF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
 
 add_library(jnxcs STATIC ${RAW_SRC}) 
