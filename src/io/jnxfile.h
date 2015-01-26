@@ -8,9 +8,21 @@
 #include <stddef.h>
 #include "jnxtypes.h"
 #include "jnxhash.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/*
+ * In preparation for splitting out platform functions
+ */
+#define JNX_OPEN open
+#define JNX_READ read
+#define JNX_CLOSE close
+  
   /**
    * @brief An jnx_int32ernal representation of the kvp node populated when 
    *			used in key value pair retrieval from a file
