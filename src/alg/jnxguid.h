@@ -38,7 +38,21 @@ extern		"C" {
    */
   jnx_guid_state jnx_guid_create(jnx_guid *guid);
 
+  /**@fn jnx_guid_compare(jnx_guid *ga, jnx_guid *gb);
+   * @brief compares two guids and on success returns JNX_GUID_STATE_SUCCESS
+   * @param ga the first guid
+   * @param gb the second guid to compares
+   * @return jnx_guid_state
+   */
   jnx_guid_state jnx_guid_compare(jnx_guid *ga, jnx_guid *gb); 
+  
+  /**@fn jnx_guid_compare_raw(jnx_uint8 *ga, jnx_uint8 *gb);
+   * @brief compares two guids and on success returns JNX_GUID_STATE_SUCCESS
+   * @param ga the first array of jnx_uint8
+   * @param gb the second array of jnx_uint8
+   * @return jnx_guid_state
+   */
+  jnx_guid_state jnx_guid_compare_raw(jnx_uint8 *ga, jnx_uint8 *gb); 
   /**@fn jnx_guid_string(jnx_guid *guid,jnx_char **outstr);
    * @brief populates a string from a guid structure
    * @param guid is a structure to retrieve the guid string from

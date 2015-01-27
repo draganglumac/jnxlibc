@@ -33,9 +33,12 @@ jnx_guid_state jnx_guid_create(jnx_guid *guid) {
   return JNX_GUID_STATE_SUCCESS;
 }
 jnx_guid_state jnx_guid_compare(jnx_guid *ga, jnx_guid *gb) {
+  return jnx_guid_compare_raw(ga->guid,gb->guid);
+}
+jnx_guid_state jnx_guid_compare_raw(jnx_uint8 *ga, jnx_uint8 *gb) {
   jnx_int alen=0;
-  while(alen<sizeof ga->guid){
-    if(ga->guid[alen] != gb->guid[alen]) {
+  while(alen<sizeof ga){
+    if(ga[alen] != gb[alen]) {
       return JNX_GUID_STATE_FAILURE;
     }
     alen+=1;

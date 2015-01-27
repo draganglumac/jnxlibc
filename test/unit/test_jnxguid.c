@@ -43,6 +43,11 @@ void test_compare_guid() {
   JNXCHECK(jnx_guid_compare(&g,&h) == JNX_GUID_STATE_FAILURE);
 
   JNXCHECK(jnx_guid_compare(&g,&g) == JNX_GUID_STATE_SUCCESS);
+
+  JNXCHECK(jnx_guid_compare_raw(g.guid,h.guid) == JNX_GUID_STATE_FAILURE);
+
+  JNXCHECK(jnx_guid_compare_raw(g.guid,g.guid) == JNX_GUID_STATE_SUCCESS);
+
 }
 int main(int args, char **argv) {
   JNX_LOG(NULL,"Running test for jnxguid");
