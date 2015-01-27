@@ -45,7 +45,7 @@ extern		"C" {
    * @return jnx_guid_state
    */
   jnx_guid_state jnx_guid_compare(jnx_guid *ga, jnx_guid *gb); 
-  
+
   /**@fn jnx_guid_compare_raw(jnx_uint8 *ga, jnx_uint8 *gb);
    * @brief compares two guids and on success returns JNX_GUID_STATE_SUCCESS
    * @param ga the first array of jnx_uint8
