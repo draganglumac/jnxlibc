@@ -47,12 +47,11 @@ void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr) {
   JNXCHECK(guid->guid);
 
   jnx_int rlen=0;
-  jnx_char obuffer[120]={};
+  jnx_char obuffer[33]={};
   while(rlen<sizeof guid->guid) {
-    jnx_uint8 current = guid->guid[rlen]; 
-    jnx_char str[20]={};
-    sprintf(str,"%u",current);
-    strcat(obuffer,str); 
+    jnx_char current[3]; 
+    sprintf(current,"%02x",guid->guid[rlen]);
+    strncat(obuffer,current,4); 
     ++rlen;
   }
 
