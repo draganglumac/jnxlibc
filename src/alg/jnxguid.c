@@ -45,9 +45,17 @@ jnx_guid_state jnx_guid_compare(jnx_guid *ga, jnx_guid *gb) {
 void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr) {
   JNXCHECK(guid);
   JNXCHECK(guid->guid);
-  *outstr = malloc(sizeof(jnx_char) * 17);
-  bzero(*outstr,19);
-  memcpy(*outstr,"{",1);
-  memcpy(*outstr + 1,guid->guid,16);
-  memcpy(*outstr + 17,"}",1);
+
+  jnx_int rlen=0;
+  jnx_char obuffer[120]={};
+  while(rlen<sizeof guid->guid) {
+    jnx_uint8 current = guid->guid[rlen]; 
+    jnx_char str[20]={};
+    sprintf(str,"%u",current);
+    strcat(obuffer,str); 
+    ++rlen;
+  }
+
+  *outstr = malloc(sizeof obuffer);
+  memcpy(*outstr,obuffer,sizeof obuffer);
 }
