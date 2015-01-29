@@ -44,10 +44,12 @@ extern "C" {
    *@warning must return 0 or will break the listener loop
    */
   typedef jnx_int32 (*tcp_socket_listener_callback)(jnx_uint8 *payload, jnx_size bytesread, jnx_socket *s);
+  typedef jnx_int32 (*tcp_socket_listener_callback_with_context)(jnx_uint8 *payload, jnx_size bytesread, jnx_socket *s, void *context);
   /*
    *@warning must return 0 or will break the listener loop
    */
   typedef jnx_int32 (*udp_socket_listener_callback)(jnx_uint8 *payload, jnx_size bytesread, jnx_socket *s);
+  typedef jnx_int32 (*udp_socket_listener_callback_with_context)(jnx_uint8 *payload, jnx_size bytesread, jnx_socket *s, void *context);
   /**
    * @fn jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily)
    * @brief creates a jnx tcp socket
@@ -148,6 +150,27 @@ extern "C" {
    * @return -1 on error
    */
   int jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback c);
+  /**
+   * @fn jnx_int32 jnx_socket_tpc_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, socket_listener_callback c)
+   * @param s is the socket to use to send
+   * @param port is the target port
+   * @param max_connections are the number of connetions in the queue
+   * @param c is the function pointer callback for received messages
+   * @param context is the data to pass to the callback as contextual information
+   * @return -1 on error
+   */
+  int jnx_socket_tcp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback_with_context c, void *context);
+  /**
+   * @fn jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, socket_listener_callback c)
+   * @param s is the socket to use to send
+   * @param port is the target port
+   * @param max_connections are the number of connetions in the queue
+   * @param c is the function pointer callback for received messages
+   * @param context is the data to pass to the callback as contextual information
+   * @return -1 on error
+   */
+  int jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback_with_context c, void *context);
+
 #ifdef __cplusplus
 }
 #endif

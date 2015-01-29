@@ -305,6 +305,9 @@ jnx_size jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_
   return tbytes;
 }
 jnx_int32 jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback c) {
+	return jnx_socket_tcp_listen_with_context(s, port, max_connections, (tcp_socket_listener_callback_with_context) c, NULL);
+}
+jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback_with_context c, void *context) {
   JNXCHECK(s);
   JNXCHECK(port);
   JNXCHECK(s->isclosed == 0);
@@ -369,13 +372,24 @@ jnx_int32 jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_size max_conn
     fclose(fp);
 
     jnx_int32 ret = 0;
-    if((ret = c(out,len,s)) != 0) {
-      return 0;
-    }
+	if(NULL != context) {
+	  if((ret = c(out,len,s,context)) != 0) {
+		return 0;
+	  }
+	}
+	else {
+	  tcp_socket_listener_callback cb = (tcp_socket_listener_callback) c;
+      if((ret = cb(out,len,s)) != 0) {
+        return 0;
+      }
+	}
   }
   return 0;
 }
 jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback c) {
+	return jnx_socket_udp_listen_with_context(s, port, max_connections, (udp_socket_listener_callback_with_context) c, NULL);
+}
+jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback_with_context c, void *context) {
   JNXCHECK(s);
   JNXCHECK(port);
   JNXCHECK(s->isclosed == 0);
@@ -415,9 +429,17 @@ jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_conn
     jnx_int32 ret = 0;
     jnx_uint8 *outbuffer = malloc(bytesread * sizeof(jnx_uint8));
     memcpy(outbuffer,buffer,bytesread);
-    if((ret = c(outbuffer,bytesread,s)) != 0) {
-      return 0;
-    }
+    if(context != NULL) {
+	  if((ret = c(outbuffer,bytesread,s,context)) != 0) {
+        return 0;
+      }
+	}
+	else {
+	  udp_socket_listener_callback cb = (udp_socket_listener_callback) c;
+	  if((ret = cb(outbuffer,bytesread,s)) != 0) {
+        return 0;
+      }
+	}
   }
   return -1;
 }
