@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include "jnxencoder.h"
 #include "jnxcheck.h"
-
+#include "jnxlog.h"
 jnx_encoder* jnx_encoder_create() {
 
   char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -36,14 +36,14 @@ jnx_encoder* jnx_encoder_create() {
   jnx_uint32 mod_table[] = {0, 2, 1};
   jnx_encoder *e = malloc(sizeof(jnx_encoder));
   e->b64_mod_table = calloc(3,sizeof(jnx_uint32));
-  e->b64_encoding_table = calloc(65,sizeof(char));
-  e->b64_decoding_table = calloc(256,sizeof(char));
+  e->b64_encoding_table = calloc(65,sizeof(jnx_char));
+  e->b64_decoding_table = calloc(256,sizeof(jnx_char));
   jnx_uint32 x,y;
   for(y=0;y<256;++y) {
-    e->b64_decoding_table[y] = (char)-1;
+    e->b64_decoding_table[y] = (jnx_char)-1;
   }	
   for(x=0;x<65;++x) {
-    char current = encoding_table[x];
+    jnx_char current = encoding_table[x];
     e->b64_encoding_table[x] = current;
     e->b64_decoding_table[(unsigned char)e->b64_encoding_table[x]] = x;
   }
@@ -64,7 +64,8 @@ jnx_uint8* jnx_encoder_b64_encode(jnx_encoder *e,jnx_uint8 *data, size_t input_l
   JNXCHECK(data);
   JNXCHECK(input_length);
   *output_length = 4 * ((input_length + 2) / 3);
-  jnx_uint8 *encoded_data = malloc(((*output_length) +1) * sizeof (char));
+  JNX_LOG(NULL,"Output length %zu\n",*output_length);
+  jnx_uint8 *encoded_data = malloc(((*output_length) +1) * sizeof (jnx_char));
   if (encoded_data == NULL) return NULL;
 
   int i,j;
@@ -127,5 +128,4 @@ jnx_uint8 *jnx_encoder_b64_decode(jnx_encoder *e, jnx_uint8 *data,size_t input_l
   }
   return decoded_data;
 }
-
 
