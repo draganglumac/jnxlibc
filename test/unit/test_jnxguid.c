@@ -59,7 +59,7 @@ void test_string() {
   jnx_guid_from_string(ostr,&f);
 
   char *ostrtwo;
-  jnx_guid_to_string(&g,&ostrtwo);
+  jnx_guid_to_string(&f,&ostrtwo);
   JNX_LOG(NULL,"GUID B=>%s",ostrtwo);
 
   JNXCHECK(jnx_guid_compare(&g,&f) == JNX_GUID_STATE_SUCCESS);

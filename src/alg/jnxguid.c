@@ -97,8 +97,5 @@ int jnx_guid_convert_hex(jnx_uint8 *data, jnx_char *hexstring,jnx_size len)
 }
 void jnx_guid_from_string(jnx_char *str, jnx_guid *guid) {
   JNXCHECK(guid);
-
-  jnx_uint8 o[16];
-  jnx_guid_convert_hex(&o,str,16);
-  *guid->guid = o;
+  jnx_guid_convert_hex(guid->guid,str,16);
 }
