@@ -59,6 +59,9 @@ extern		"C" {
    * @outstr is a double pointer to null string to pass in
    */
   void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr);
+
+
+  void jnx_guid_from_string(jnx_char *str, jnx_guid *guid);
 #ifdef __cplusplus
 }
 #endif

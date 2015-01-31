@@ -56,6 +56,7 @@ jnx_guid_state jnx_guid_compare_raw(jnx_uint8 *ga, jnx_uint8 *gb) {
   jnx_int alen=0;
   while(alen<sizeof ga){
     if(ga[alen] != gb[alen]) {
+      JNX_LOG(NULL,"Comparison failed on loop %d of %x and %x failed",alen,ga[alen],gb[alen]);
       return JNX_GUID_STATE_FAILURE;
     }
     alen+=1;
@@ -75,4 +76,29 @@ void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr) {
   }
   *outstr = malloc(sizeof obuffer);
   memcpy(*outstr,obuffer,sizeof obuffer);
+}
+int jnx_guid_convert_hex(jnx_uint8 *data, jnx_char *hexstring,jnx_size len)
+{
+  jnx_char *pos = hexstring;
+  jnx_char *endptr;
+  jnx_size count = 0;
+  if ((hexstring[0] == '\0') || (strlen(hexstring) % 2)) {
+    return -1;
+  }
+  for(count = 0; count < len; count++) {
+    jnx_char buf[5] = {'0', 'x', pos[0], pos[1], 0};
+    data[count] = strtol(buf, &endptr, 0);
+    pos += 2 * sizeof(jnx_char);
+    if (endptr[0] != '\0') {
+      return -1;
+    }
+  }
+  return 0;
+}
+void jnx_guid_from_string(jnx_char *str, jnx_guid *guid) {
+  JNXCHECK(guid);
+
+  jnx_uint8 o[16];
+  jnx_guid_convert_hex(&o,str,16);
+  *guid->guid = o;
 }
