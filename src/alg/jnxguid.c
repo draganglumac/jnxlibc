@@ -61,7 +61,6 @@ jnx_guid_state jnx_guid_compare_raw(jnx_uint8 *ga, jnx_uint8 *gb) {
 void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr) {
   JNXCHECK(guid);
   JNXCHECK(guid->guid);
-
   jnx_int rlen=0;
   jnx_char obuffer[33]={};
   while(rlen< sizeof guid->guid) {
@@ -72,19 +71,4 @@ void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr) {
   }
   *outstr = malloc(sizeof obuffer);
   memcpy(*outstr,obuffer,sizeof obuffer);
-}
-void jnx_guid_from_string(jnx_char *str, jnx_guid *oguid) {
-  JNXCHECK(str);
-  //rebase from base 16 into base 10 
-  JNXCHECK(strlen(str) == 32);
-  jnx_uint8 o[16];
-  jnx_size c = 0;
-  jnx_char *p = str;
-  for(c=0;c<sizeof(o)/sizeof(o[0]);++c) {
-    char buf[10];
-    sprintf(buf,"%c%c",p[0],p[1]);
-    o[c] = strtol(buf,NULL,10);
-    p += 2 * sizeof(jnx_char);
-  }
-  memcpy(o,oguid->guid,16);
 }
