@@ -53,12 +53,20 @@ extern		"C" {
    * @return jnx_guid_state
    */
   jnx_guid_state jnx_guid_compare_raw(jnx_uint8 *ga, jnx_uint8 *gb); 
-  /**@fn jnx_guid_string(jnx_guid *guid,jnx_char **outstr);
+  /**@fn jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr);
    * @brief populates a string from a guid structure
    * @param guid is a structure to retrieve the guid string from
    * @outstr is a double pointer to null string to pass in
    */
   void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr);
+
+  /**@fn jnx_guid_from_string(jnx_char *str, jnx_guid **oguid);
+   * @brief turns a string back into a guid
+   * @param str to be converted into a guid
+   * @param oguid is a ref to the out guid
+   */
+  void jnx_guid_from_string(jnx_char *str, jnx_guid *oguid);
+
 #ifdef __cplusplus
 }
 #endif
