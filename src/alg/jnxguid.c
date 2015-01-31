@@ -20,7 +20,11 @@
 #include "jnxcheck.h"
 
 jnx_int jnx_guid_get_fd() {
-  return JNX_OPEN("/dev/urandom",O_RDONLY);
+  jnx_int fd = JNX_OPEN("/dev/urandom",O_RDONLY);
+  if(fd == -1) {
+    fd = JNX_OPEN("/dev/random",O_RDONLY);
+  }
+  return fd;
 }
 jnx_int jnx_guid_get_random_bytes(void *buf, jnx_size bytes) {
 
