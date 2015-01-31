@@ -87,7 +87,7 @@ int jnx_guid_convert_hex(jnx_uint8 *data, jnx_char *hexstring,jnx_size len) {
   }
   return 0;
 }
-void jnx_guid_from_string(jnx_char *str, jnx_guid *guid) {
+void jnx_guid_from_string(jnx_char *str, jnx_guid *oguid) {
   JNXCHECK(guid);
   jnx_guid_convert_hex(guid->guid,str,16);
 }

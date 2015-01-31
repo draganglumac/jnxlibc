@@ -59,9 +59,13 @@ extern		"C" {
    * @outstr is a double pointer to null string to pass in
    */
   void jnx_guid_to_string(jnx_guid *guid,jnx_char **outstr);
-
-
-  void jnx_guid_from_string(jnx_char *str, jnx_guid *guid);
+  /**@fn jnx_guid_from_string(jnx_char *str, jnx_guid *guid);
+   * @brief converts a 32 byte string into a 16 byte guid
+   * @warning must not contains dashes, just hex decimal
+   * @param str hexdecimal string for conversion
+   * @param oguid out ref pointer for populated struct
+   */
+  void jnx_guid_from_string(jnx_char *str, jnx_guid *oguid);
 #ifdef __cplusplus
 }
 #endif
