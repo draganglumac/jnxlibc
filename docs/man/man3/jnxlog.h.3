@@ -1,128 +1,183 @@
-.TH "jnxlog.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxlog.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
 jnxlog.h \- 
-.PP
-Simple logger that allows program output to be captured to file\&. It allows one log file per process only\&.  
-
 .SH SYNOPSIS
 .br
 .PP
-\fC#include <stdarg\&.h>\fP
+\fC#include <time\&.h>\fP
+.br
+\fC#include 'jnxtypes\&.h'\fP
+.br
+\fC#include 'jnxthread\&.h'\fP
 .br
 
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBjnx_log_config\fP"
+.br
+.in -1c
 .SS "Macros"
 
 .in +1c
 .ti -1c
-.RI "#define \fBMAX_LOG_SIZE\fP   2048"
+.RI "#define \fBDEFAULT_CONTEXT\fP   NULL"
 .br
 .ti -1c
-.RI "#define \fBMAX_ARG_SIZE\fP   1024"
+.RI "#define \fBJNX_LOG_CONTEXT\fP(X)   \fBjnx_log_config\fP *X"
 .br
 .ti -1c
-.RI "#define \fBLOGTEMPLATE\fP   '[%s][%s][%s:%s:%d]'"
+.RI "#define \fBJNX_LOG\fP(CONFIG,  FORMATTER, \&.\&.\&.)   \fBjnx_log\fP(CONFIG,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);"
 .br
+.RI "\fIa macro for logging that auto completes file,function,line information \fP"
 .ti -1c
-.RI "#define \fBJCRITICAL\fP   'CRITICAL'"
+.RI "#define \fBJNX_LOG_CREATE\fP(PATH,  OUTPUT)   \fBjnx_log_create\fP(PATH,OUTPUT);"
 .br
+.RI "\fIcreates a log context \fP"
 .ti -1c
-.RI "#define \fBJALERT\fP   'ALERT'"
+.RI "#define \fBJNX_LOG_DESTROY\fP(X)   \fBjnx_log_destroy\fP(X);"
 .br
-.ti -1c
-.RI "#define \fBJCAUTION\fP   'CAUTION'"
-.br
-.ti -1c
-.RI "#define \fBJNOTICE\fP   'NOTICE'"
-.br
-.ti -1c
-.RI "#define \fBJDEBUG\fP   'DEBUG'"
-.br
-.ti -1c
-.RI "#define \fBJNORMAL\fP   'NORMAL'"
-.br
-.ti -1c
-.RI "#define \fBJNX_LOGC\fP(LEVEL, X,\&.\&.\&.)   \fBjnx_log\fP(LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)"
-.br
-.RI "\fIlog to console \fP"
+.RI "\fIdestroys the provided log context \fP"
 .in -1c
 .SS "Typedefs"
 
 .in +1c
 .ti -1c
-.RI "typedef enum \fBJNX_LOG_LEVEL\fP \fBJNX_LOG_LEVEL\fP"
+.RI "typedef enum \fBjnx_log_type\fP \fBjnx_log_type\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBjnx_log_config\fP \fBjnx_log_config\fP"
 .br
 .in -1c
 .SS "Enumerations"
 
 .in +1c
 .ti -1c
-.RI "enum \fBJNX_LOG_LEVEL\fP { \fBJLOG_CRITICAL\fP, \fBJLOG_ALERT\fP, \fBJLOG_CAUTION\fP, \fBJLOG_NOTICE\fP, \fBJLOG_DEBUG\fP, \fBJLOG_NORMAL\fP }"
+.RI "enum \fBjnx_log_type\fP { \fBCONSOLETYPE\fP, \fBFILETYPE\fP }"
 .br
 .in -1c
 .SS "Functions"
 
 .in +1c
 .ti -1c
-.RI "size_t \fBjnx_log\fP (\fBJNX_LOG_LEVEL\fP level, const char *file, const char *function, const int line, const char *format,\&.\&.\&.)"
+.RI "\fBjnx_log_config\fP * \fBjnx_log_create\fP (const \fBjnx_char\fP *path, \fBjnx_log_type\fP output)"
+.br
+.RI "\fIcreates a log context for the given logtype \fP"
+.ti -1c
+.RI "void \fBjnx_log_destroy\fP (\fBjnx_log_config\fP **config)"
+.br
+.RI "\fIdestroys the current log context \fP"
+.ti -1c
+.RI "void \fBjnx_log\fP (\fBjnx_log_config\fP *config, const \fBjnx_char\fP *file, const \fBjnx_char\fP *function, const \fBjnx_uint32\fP line, const \fBjnx_char\fP *format,\&.\&.\&.)"
 .br
 .in -1c
-.SH "Detailed Description"
-.PP 
-Simple logger that allows program output to be captured to file\&. It allows one log file per process only\&. 
-
-#include <jnxc_headers/jnxlog\&.h> 
 .SH "Macro Definition Documentation"
 .PP 
-.SS "#define JALERT   'ALERT'"
+.SS "#define DEFAULT_CONTEXT   NULL"
 
-.SS "#define JCAUTION   'CAUTION'"
-
-.SS "#define JCRITICAL   'CRITICAL'"
-
-.SS "#define JDEBUG   'DEBUG'"
-
-.SS "#define JNORMAL   'NORMAL'"
-
-.SS "#define JNOTICE   'NOTICE'"
-
-.SS "#define JNX_LOGC(LEVEL, X, \&.\&.\&.)   \fBjnx_log\fP(LEVEL,__FILE__,__FUNCTION__,__LINE__,X, ## __VA_ARGS__)"
+.SS "JNX_LOG(CONFIG, FORMATTER,  \&.\&.\&.)   \fBjnx_log\fP(CONFIG,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);"
 
 .PP
-log to console JNX_LOGC 
-.SS "#define LOGTEMPLATE   '[%s][%s][%s:%s:%d]'"
+a macro for logging that auto completes file,function,line information 
+.PP
+\fBParameters:\fP
+.RS 4
+\fICONFIG\fP is the context to use, can be DEFAULT_CONTEXT or NULL 
+.br
+\fIFORMATTER\fP is the const jnx_char* formatter for displaying the subsequent args 
+.br
+\fI\&.\&.\&.\fP any optional arguments to be rendered by the formatter 
+.RE
+.PP
 
-.SS "#define MAX_ARG_SIZE   1024"
+.SS "#define JNX_LOG_CONTEXT(X)   \fBjnx_log_config\fP *X"
 
-.SS "#define MAX_LOG_SIZE   2048"
+.SS "JNX_LOG_CREATE(PATH, OUTPUT)   \fBjnx_log_create\fP(PATH,OUTPUT);"
+
+.PP
+creates a log context 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIPATH\fP is an optional value for log output path when using OUTPUT=FILETYPE, can be NULL 
+.br
+\fIOUTPUT\fP is the context output can be either FILETYPE or CONSOLETYPE, CONSOLETYPE can be NULL 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+JNX_LOG_CONTEXT which is a macro surrounding \fBjnx_log_config\fP 
+.RE
+.PP
+
+.SS "JNX_LOG_DESTROY(X)   \fBjnx_log_destroy\fP(X);"
+
+.PP
+destroys the provided log context 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIX\fP is a pointer to pointer of log context 
+.RE
+.PP
 
 .SH "Typedef Documentation"
 .PP 
-.SS "typedef enum \fBJNX_LOG_LEVEL\fP  \fBJNX_LOG_LEVEL\fP"
+.SS "typedef struct \fBjnx_log_config\fP  \fBjnx_log_config\fP"
+
+.SS "typedef enum \fBjnx_log_type\fP  \fBjnx_log_type\fP"
 
 .SH "Enumeration Type Documentation"
 .PP 
-.SS "enum \fBJNX_LOG_LEVEL\fP"
+.SS "enum \fBjnx_log_type\fP"
 
 .PP
 \fBEnumerator\fP
 .in +1c
 .TP
-\fB\fIJLOG_CRITICAL \fP\fP
+\fB\fICONSOLETYPE \fP\fP
 .TP
-\fB\fIJLOG_ALERT \fP\fP
-.TP
-\fB\fIJLOG_CAUTION \fP\fP
-.TP
-\fB\fIJLOG_NOTICE \fP\fP
-.TP
-\fB\fIJLOG_DEBUG \fP\fP
-.TP
-\fB\fIJLOG_NORMAL \fP\fP
+\fB\fIFILETYPE \fP\fP
 .SH "Function Documentation"
 .PP 
-.SS "size_t jnx_log (\fBJNX_LOG_LEVEL\fPlevel, const char *file, const char *function, const intline, const char *format, \&.\&.\&.)"
+.SS "void jnx_log (\fBjnx_log_config\fP * config, const \fBjnx_char\fP * file, const \fBjnx_char\fP * function, const \fBjnx_uint32\fP line, const \fBjnx_char\fP * format,  \&.\&.\&.)"
+
+.SS "jnx_log_create (const \fBjnx_char\fP * path, \fBjnx_log_type\fP output)"
+
+.PP
+creates a log context for the given logtype 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIpath\fP is the filepath to set for an output of FILETYPE, can be NULL if using CONSOLETYPE 
+.br
+\fIoutput\fP defines the logger type, either FILETYPE or CONSOLETYPE 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+\fBjnx_log_config\fP which is the current log context 
+.RE
+.PP
+
+.SS "jnx_log_destroy (\fBjnx_log_config\fP ** config)"
+
+.PP
+destroys the current log context 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIconfig\fP is a pointer to pointer of current log context 
+.RE
+.PP
+\fBWarning:\fP
+.RS 4
+passing a null object will trigger an assertion 
+.RE
+.PP
 
 .SH "Author"
 .PP 

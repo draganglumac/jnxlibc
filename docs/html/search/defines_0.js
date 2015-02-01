@@ -1,20 +1,4 @@
 var searchData=
 [
-  ['jalert',['JALERT',['../jnxlog_8h.html#ad7e06134c86c72c41cd73da06a068614',1,'jnxlog.h']]],
-  ['jcaution',['JCAUTION',['../jnxlog_8h.html#afbe9157f058a0ce067fc2b5ce7937880',1,'jnxlog.h']]],
-  ['jcritical',['JCRITICAL',['../jnxlog_8h.html#a0cdb0f2c9d06bdc537409a48a47c1902',1,'jnxlog.h']]],
-  ['jdebug',['JDEBUG',['../jnxlog_8h.html#a04145652d35ba82dac2dd6d8d16e24a3',1,'jnxlog.h']]],
-  ['jnormal',['JNORMAL',['../jnxlog_8h.html#af08e1954170069c9647a367474b102c0',1,'jnxlog.h']]],
-  ['jnotice',['JNOTICE',['../jnxlog_8h.html#ad864d7cd0a7ba57cc7f1f579783faa51',1,'jnxlog.h']]],
-  ['jnx_5fcol_5fblack',['JNX_COL_BLACK',['../jnxterm_8h.html#af7603750bdda10479eab29bbb1cf2cb1',1,'jnxterm.h']]],
-  ['jnx_5fcol_5fblue',['JNX_COL_BLUE',['../jnxterm_8h.html#ab75645eee7b019a5f8c16bce903fcf21',1,'jnxterm.h']]],
-  ['jnx_5fcol_5fcyan',['JNX_COL_CYAN',['../jnxterm_8h.html#a7d3b9ab65994137e181d7a13b6eff232',1,'jnxterm.h']]],
-  ['jnx_5fcol_5fgreen',['JNX_COL_GREEN',['../jnxterm_8h.html#af6da088b409b6975a98d7167a60e8c35',1,'jnxterm.h']]],
-  ['jnx_5fcol_5fmagenta',['JNX_COL_MAGENTA',['../jnxterm_8h.html#aec59fee384ada6302e3978e6ffbe8d5f',1,'jnxterm.h']]],
-  ['jnx_5fcol_5fred',['JNX_COL_RED',['../jnxterm_8h.html#ad1c495da7a090e65fc0328da6e70a0de',1,'jnxterm.h']]],
-  ['jnx_5fcol_5fwhite',['JNX_COL_WHITE',['../jnxterm_8h.html#a9519006e3a4022cdcf21bac53ecf2454',1,'jnxterm.h']]],
-  ['jnx_5fcol_5fyellow',['JNX_COL_YELLOW',['../jnxterm_8h.html#aec34f0389c8e3250def08197fad5feed',1,'jnxterm.h']]],
-  ['jnx_5flogc',['JNX_LOGC',['../jnxlog_8h.html#a36f4deda4a38dbd9750e34d6bc282a05',1,'jnxlog.h']]],
-  ['jnxcheck',['JNXCHECK',['../jnxcheck_8h.html#a099dda9c8628eb9311ddfa82bc427294',1,'jnxcheck.h']]],
-  ['jnxfail',['JNXFAIL',['../jnxcheck_8h.html#a434186d96554495fd7d8648dbb3d2ab3',1,'jnxcheck.h']]]
+  ['default_5fcontext',['DEFAULT_CONTEXT',['../jnxlog_8h.html#a65482022daa21b4f2424677e9f3c2f65',1,'jnxlog.h']]]
 ];

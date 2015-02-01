@@ -1,4 +1,4 @@
-.TH "jnxthread.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxthread.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,6 +6,8 @@ jnxthread.h \-
 .SH SYNOPSIS
 .br
 .PP
+\fC#include 'jnxtypes\&.h'\fP
+.br
 \fC#include <pthread\&.h>\fP
 .br
 
@@ -26,12 +28,10 @@ jnxthread.h \-
 
 .in +1c
 .ti -1c
-.RI "typedef struct 
-.br
-\fBjnx_thread_attributes\fP \fBjnx_thread_attributes\fP"
+.RI "typedef struct \fBjnx_thread_attributes\fP \fBjnx_thread_attributes\fP"
 .br
 .ti -1c
-.RI "typedef void *( \fBentry_point\fP )(void *)"
+.RI "typedef void *( \fBentry_point\fP) (void *)"
 .br
 .ti -1c
 .RI "typedef struct \fBjnx_thread\fP \fBjnx_thread\fP"
@@ -50,33 +50,33 @@ jnxthread.h \-
 .RI "void \fBjnx_thread_mutex_destroy\fP (\fBjnx_thread_mutex\fP **m)"
 .br
 .ti -1c
-.RI "int \fBjnx_thread_unlock\fP (\fBjnx_thread_mutex\fP *m)"
+.RI "\fBjnx_int32\fP \fBjnx_thread_unlock\fP (\fBjnx_thread_mutex\fP *m)"
 .br
 .ti -1c
 .RI "void \fBjnx_thread_lock\fP (\fBjnx_thread_mutex\fP *m)"
 .br
 .RI "\fIblocking function that will wait for the mutex to unlock \fP"
 .ti -1c
-.RI "int \fBjnx_thread_trylock\fP (\fBjnx_thread_mutex\fP *m)"
+.RI "\fBjnx_int32\fP \fBjnx_thread_trylock\fP (\fBjnx_thread_mutex\fP *m)"
 .br
 .ti -1c
 .RI "\fBjnx_thread\fP * \fBjnx_thread_create\fP (\fBentry_point\fP e, void *args)"
 .br
 .RI "\fIjnx_thread_create will create and start a new thread, adding to the pool \fP"
 .ti -1c
-.RI "int \fBjnx_thread_create_disposable\fP (\fBentry_point\fP e, void *args)"
+.RI "\fBjnx_int32\fP \fBjnx_thread_create_disposable\fP (\fBentry_point\fP e, void *args)"
 .br
 .RI "\fIjnx_thread_create will create and start a new thread but does not add to pool \fP"
 .ti -1c
 .RI "void \fBjnx_thread_handle_destroy\fP (\fBjnx_thread\fP *thr)"
 .br
 .ti -1c
-.RI "int \fBjnx_thread_join\fP (\fBjnx_thread\fP *thr, void **data)"
+.RI "\fBjnx_int32\fP \fBjnx_thread_join\fP (\fBjnx_thread\fP *thr, void **data)"
 .br
 .in -1c
 .SH "Typedef Documentation"
 .PP 
-.SS "typedef void*( entry_point)(void *)"
+.SS "typedef void*( entry_point) (void *)"
 
 .SS "typedef struct \fBjnx_thread\fP \fBjnx_thread\fP"
 
@@ -86,16 +86,16 @@ jnxthread.h \-
 
 .SH "Function Documentation"
 .PP 
-.SS "\fBjnx_thread\fP * jnx_thread_create (\fBentry_point\fPe, void *args)"
+.SS "\fBjnx_thread\fP * jnx_thread_create (\fBentry_point\fP e, void * args)"
 
 .PP
 jnx_thread_create will create and start a new thread, adding to the pool 
 .PP
 \fBParameters:\fP
 .RS 4
-\fIentry_point\fP is the function pointer the thread starts with 
+\fIentry_point\fP is the function pojnx_int32er the thread starts with 
 .br
-\fIargs\fP are the arguments to pass the function pointer 
+\fIargs\fP are the arguments to pass the function pojnx_int32er 
 .RE
 .PP
 \fBReturns:\fP
@@ -104,16 +104,16 @@ jnx_thread_create will create and start a new thread, adding to the pool
 .RE
 .PP
 
-.SS "int jnx_thread_create_disposable (\fBentry_point\fPe, void *args)"
+.SS "\fBjnx_int32\fP jnx_thread_create_disposable (\fBentry_point\fP e, void * args)"
 
 .PP
 jnx_thread_create will create and start a new thread but does not add to pool 
 .PP
 \fBParameters:\fP
 .RS 4
-\fIentry_point\fP is the function pointer the thread starts with 
+\fIentry_point\fP is the function pojnx_int32er the thread starts with 
 .br
-\fIargs\fP are the arguments to pass the function pointer 
+\fIargs\fP are the arguments to pass the function pojnx_int32er 
 .RE
 .PP
 \fBReturns:\fP
@@ -122,11 +122,11 @@ error code if any
 .RE
 .PP
 
-.SS "void jnx_thread_handle_destroy (\fBjnx_thread\fP *thr)"
+.SS "void jnx_thread_handle_destroy (\fBjnx_thread\fP * thr)"
 
-.SS "int jnx_thread_join (\fBjnx_thread\fP *thr, void **data)"
+.SS "\fBjnx_int32\fP jnx_thread_join (\fBjnx_thread\fP * thr, void ** data)"
 
-.SS "jnx_thread_lock (\fBjnx_thread_mutex\fP *m)"
+.SS "jnx_thread_lock (\fBjnx_thread_mutex\fP * m)"
 
 .PP
 blocking function that will wait for the mutex to unlock 
@@ -139,11 +139,11 @@ blocking function that will wait for the mutex to unlock
 
 .SS "\fBjnx_thread_mutex\fP* jnx_thread_mutex_create ()"
 
-.SS "void jnx_thread_mutex_destroy (\fBjnx_thread_mutex\fP **m)"
+.SS "void jnx_thread_mutex_destroy (\fBjnx_thread_mutex\fP ** m)"
 
-.SS "int jnx_thread_trylock (\fBjnx_thread_mutex\fP *m)"
+.SS "\fBjnx_int32\fP jnx_thread_trylock (\fBjnx_thread_mutex\fP * m)"
 
-.SS "int jnx_thread_unlock (\fBjnx_thread_mutex\fP *m)"
+.SS "\fBjnx_int32\fP jnx_thread_unlock (\fBjnx_thread_mutex\fP * m)"
 
 .SH "Author"
 .PP 

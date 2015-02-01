@@ -1,17 +1,25 @@
-.TH "jnxfile.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxfile.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-jnxfile.h \- 
-.PP
-File manipulation, read/write, kvp plucking and recursive deletion\&.  
+jnxfile.h \- File manipulation, read/write, kvp plucking and recursive deletion\&.  
 
 .SH SYNOPSIS
 .br
 .PP
 \fC#include <stddef\&.h>\fP
 .br
+\fC#include 'jnxtypes\&.h'\fP
+.br
 \fC#include 'jnxhash\&.h'\fP
+.br
+\fC#include <sys/types\&.h>\fP
+.br
+\fC#include <sys/stat\&.h>\fP
+.br
+\fC#include <fcntl\&.h>\fP
+.br
+\fC#include <unistd\&.h>\fP
 .br
 
 .SS "Classes"
@@ -20,7 +28,20 @@ File manipulation, read/write, kvp plucking and recursive deletion\&.
 .ti -1c
 .RI "struct \fBjnx_file_kvp_node\fP"
 .br
-.RI "\fIAn internal representation of the kvp node populated when used in key value pair retrieval from a file\&. \fP"
+.RI "\fIAn jnx_int32ernal representation of the kvp node populated when used in key value pair retrieval from a file\&. \fP"
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBJNX_OPEN\fP   open"
+.br
+.ti -1c
+.RI "#define \fBJNX_READ\fP   read"
+.br
+.ti -1c
+.RI "#define \fBJNX_CLOSE\fP   close"
+.br
 .in -1c
 .SS "Typedefs"
 
@@ -28,32 +49,32 @@ File manipulation, read/write, kvp plucking and recursive deletion\&.
 .ti -1c
 .RI "typedef struct \fBjnx_file_kvp_node\fP \fBjnx_file_kvp_node\fP"
 .br
-.RI "\fIAn internal representation of the kvp node populated when used in key value pair retrieval from a file\&. \fP"
+.RI "\fIAn jnx_int32ernal representation of the kvp node populated when used in key value pair retrieval from a file\&. \fP"
 .in -1c
 .SS "Functions"
 
 .in +1c
 .ti -1c
-.RI "size_t \fBjnx_file_read\fP (char *path, char **buffer, char *flags)"
+.RI "\fBjnx_size\fP \fBjnx_file_read\fP (\fBjnx_char\fP *path, \fBjnx_char\fP **buffer, \fBjnx_char\fP *flags)"
 .br
-.RI "\fIFunction to read the contents of a text file into the buffer\&. \fP"
+.RI "\fIFunction to read the contents of a text file jnx_int32o the buffer\&. \fP"
 .ti -1c
-.RI "\fBjnx_hashmap\fP * \fBjnx_file_read_kvp\fP (char *path, size_t max_buffer, char *delimiter)"
+.RI "\fBjnx_hashmap\fP * \fBjnx_file_read_kvp\fP (\fBjnx_char\fP *path, \fBjnx_size\fP max_buffer, \fBjnx_char\fP *delimiter)"
 .br
-.RI "\fIFunction to read a file that contains key-value pairs into a linked list\&. \fP"
+.RI "\fIFunction to read a file that contains key-value pairs jnx_int32o a linked list\&. \fP"
 .ti -1c
-.RI "size_t \fBjnx_file_write\fP (char *path, char *data, size_t data_size, char *flags)"
+.RI "\fBjnx_size\fP \fBjnx_file_write\fP (\fBjnx_char\fP *path, \fBjnx_char\fP *data, \fBjnx_size\fP data_size, \fBjnx_char\fP *flags)"
 .br
 .ti -1c
-.RI "int \fBjnx_file_recursive_delete\fP (char *path, int depth)"
+.RI "\fBjnx_int32\fP \fBjnx_file_recursive_delete\fP (\fBjnx_char\fP *path, int32_t depth)"
 .br
-.RI "\fIFunction to recursively delete a directory pointed to by path\&. \fP"
+.RI "\fIFunction to recursively delete a directory pojnx_int32ed to by path\&. \fP"
 .ti -1c
-.RI "int \fBjnx_file_mktempdir\fP (char *dirtemplate, char **path)"
+.RI "\fBjnx_int32\fP \fBjnx_file_mktempdir\fP (\fBjnx_char\fP *dirtemplate, \fBjnx_char\fP **path)"
 .br
 .RI "\fIFunction to create a temporary directory on the given path\&. \fP"
 .ti -1c
-.RI "int \fBjnx_file_exists\fP (char *file)"
+.RI "\fBjnx_int32\fP \fBjnx_file_exists\fP (\fBjnx_char\fP *file)"
 .br
 .RI "\fIchecks if a file exists \fP"
 .in -1c
@@ -62,15 +83,23 @@ File manipulation, read/write, kvp plucking and recursive deletion\&.
 File manipulation, read/write, kvp plucking and recursive deletion\&. 
 
 #include <jnxc_headers/jnxfile\&.h> 
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define JNX_CLOSE   close"
+
+.SS "#define JNX_OPEN   open"
+
+.SS "#define JNX_READ   read"
+
 .SH "Typedef Documentation"
 .PP 
 .SS "typedef struct \fBjnx_file_kvp_node\fP \fBjnx_file_kvp_node\fP"
 
 .PP
-An internal representation of the kvp node populated when used in key value pair retrieval from a file\&. 
+An jnx_int32ernal representation of the kvp node populated when used in key value pair retrieval from a file\&. 
 .SH "Function Documentation"
 .PP 
-.SS "jnx_file_exists (char *file)"
+.SS "jnx_file_exists (\fBjnx_char\fP * file)"
 
 .PP
 checks if a file exists 
@@ -86,7 +115,7 @@ checks if a file exists
 .RE
 .PP
 
-.SS "jnx_file_mktempdir (char *template, char **path)"
+.SS "jnx_file_mktempdir (\fBjnx_char\fP * template, \fBjnx_char\fP ** path)"
 
 .PP
 Function to create a temporary directory on the given path\&. 
@@ -95,7 +124,7 @@ Function to create a temporary directory on the given path\&.
 .RS 4
 \fItemplate\fP is the path to create the directory on 
 .br
-\fIpath\fP is a pointer to the output buffer char pointer 
+\fIpath\fP is a pojnx_int32er to the output buffer jnx_char point32_ter 
 .RE
 .PP
 \fBReturns:\fP
@@ -104,10 +133,10 @@ success on 0
 .RE
 .PP
 
-.SS "jnx_file_read (char *path, char **buffer, char *flags)"
+.SS "jnx_file_read (\fBjnx_char\fP * path, \fBjnx_char\fP ** buffer, \fBjnx_char\fP * flags)"
 
 .PP
-Function to read the contents of a text file into the buffer\&. 
+Function to read the contents of a text file jnx_int32o the buffer\&. 
 .PP
 \fBParameters:\fP
 .RS 4
@@ -125,14 +154,14 @@ Number of bytes read
 .PP
 \fBWarning:\fP
 .RS 4
-it is the users responsibility to manage the memory of the char* 
+it is the users responsibility to manage the memory of the jnx_char* 
 .RE
 .PP
 
-.SS "\fBjnx_hashmap\fP * jnx_file_read_kvp (char *path, size_tmax_buffer, char *flags)"
+.SS "\fBjnx_hashmap\fP * jnx_file_read_kvp (\fBjnx_char\fP * path, \fBjnx_size\fP max_buffer, \fBjnx_char\fP * flags)"
 
 .PP
-Function to read a file that contains key-value pairs into a linked list\&. 
+Function to read a file that contains key-value pairs jnx_int32o a linked list\&. 
 .PP
 \fBParameters:\fP
 .RS 4
@@ -154,10 +183,10 @@ user is responsible for linked list deletion and its node/data
 .RE
 .PP
 
-.SS "jnx_file_recursive_delete (char *path, intdepth)"
+.SS "jnx_file_recursive_delete (\fBjnx_char\fP * path, int32_t depth)"
 
 .PP
-Function to recursively delete a directory pointed to by path\&. 
+Function to recursively delete a directory pojnx_int32ed to by path\&. 
 .PP
 \fBParameters:\fP
 .RS 4
@@ -177,7 +206,7 @@ extremely powerful and can make unrepairable changes to your file system
 .RE
 .PP
 
-.SS "size_t jnx_file_write (char *path, char *data, size_tdata_size, char *flags)"
+.SS "\fBjnx_size\fP jnx_file_write (\fBjnx_char\fP * path, \fBjnx_char\fP * data, \fBjnx_size\fP data_size, \fBjnx_char\fP * flags)"
 
 .SH "Author"
 .PP 

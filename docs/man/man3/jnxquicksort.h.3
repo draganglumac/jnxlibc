@@ -1,0 +1,42 @@
+.TH "jnxquicksort.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jnxquicksort.h \- The API for sorting arrays of void* data items that can be ordered, via Quicksort algorithm with median-of-three pivot choice strategy\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'jnxtypes\&.h'\fP
+.br
+
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBjnx_int32\fP(* \fBcompare_function\fP) (void *, void *)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBjnx_quicksort\fP (void **array, \fBjnx_int32\fP size, \fBcompare_function\fP cf)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+The API for sorting arrays of void* data items that can be ordered, via Quicksort algorithm with median-of-three pivot choice strategy\&. 
+
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef \fBjnx_int32\fP(* compare_function) (void *, void *)"
+
+.SH "Function Documentation"
+.PP 
+.SS "void jnx_quicksort (void ** array, \fBjnx_int32\fP size, \fBcompare_function\fP cf)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

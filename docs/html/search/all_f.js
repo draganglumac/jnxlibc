@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['record',['record',['../jnxbtree_8h.html#a61cff5d8b9ca7f09ea7b091fc16bbc90',1,'jnxbtree.h']]],
-  ['records',['records',['../structB__tree__node.html#acc7f5545ca0c0ec3a4c9ed822716a423',1,'B_tree_node']]],
-  ['root',['root',['../structB__tree.html#a448a20ce2aab9ae4df7759be37b5584b',1,'B_tree']]]
+  ['order',['order',['../structB__tree.html#a66ef0f2e7f43c73f897ca9833913ed75',1,'B_tree']]],
+  ['origin_5fkey',['origin_key',['../structbucketel.html#ab3d6e44110bb7d09cf3e97bfc7e080b2',1,'bucketel']]],
+  ['origin_5fvalue',['origin_value',['../structbucketel.html#a9d4b77c45fb4827a5b4fd4b7cca1bbc8',1,'bucketel']]],
+  ['output',['output',['../structjnx__log__config.html#ab1e6d4c690ae35f9318bd29366cc3b5f',1,'jnx_log_config']]]
 ];

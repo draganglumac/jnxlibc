@@ -1,4 +1,4 @@
-.TH "jnx_encoder" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnx_encoder" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -12,22 +12,22 @@ jnx_encoder \-
 
 .in +1c
 .ti -1c
-.RI "char * \fBb64_encoding_table\fP"
+.RI "\fBjnx_char\fP * \fBb64_encoding_table\fP"
 .br
 .ti -1c
-.RI "char * \fBb64_decoding_table\fP"
+.RI "\fBjnx_char\fP * \fBb64_decoding_table\fP"
 .br
 .ti -1c
-.RI "int * \fBb64_mod_table\fP"
+.RI "\fBjnx_uint32\fP * \fBb64_mod_table\fP"
 .br
 .in -1c
 .SH "Member Data Documentation"
 .PP 
-.SS "char* jnx_encoder::b64_decoding_table"
+.SS "\fBjnx_char\fP* jnx_encoder::b64_decoding_table"
 
-.SS "char* jnx_encoder::b64_encoding_table"
+.SS "\fBjnx_char\fP* jnx_encoder::b64_encoding_table"
 
-.SS "int* jnx_encoder::b64_mod_table"
+.SS "\fBjnx_uint32\fP* jnx_encoder::b64_mod_table"
 
 
 .SH "Author"

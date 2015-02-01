@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['next',['next',['../structjnx__file__kvp__node.html#afac4811a98116e3519933de7909e9c36',1,'jnx_file_kvp_node']]],
-  ['next_5fnode',['next_node',['../structnode.html#a24c054564fa79112d4b878d2576d3b4f',1,'node::next_node()'],['../structjnx__snode.html#a81b06ca5f206971b676979a11c39c166',1,'jnx_snode::next_node()']]],
-  ['node',['node',['../structnode.html',1,'']]]
+  ['list',['list',['../structlist.html',1,'list'],['../structjnx__queue.html#a0d5a11a1aeb86d49d4c1adfb9e618cdd',1,'jnx_queue::list()']]],
+  ['log_5fpath',['log_path',['../structjnx__log__config.html#a9ca95533596e564cc7f82875a0e08053',1,'jnx_log_config']]]
 ];
