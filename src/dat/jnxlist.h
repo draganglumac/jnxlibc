@@ -75,9 +75,9 @@ extern		"C" {
    *  @param list_comparison is a functor callback for comparison, 1 is a positive find, 0 is a negative
    *  @return either 1 on success or 0 on failure
    */
-  jnx_int32 jnx_list_contains(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b));
+  jnx_int32 jnx_list_contains(jnx_list *A, void *datain, jnx_int32 (*list_comparison)(void *a,void *b));
 
-  jnx_int32 jnx_list_contains_ts(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b));
+  jnx_int32 jnx_list_contains_ts(jnx_list *A, void *datain, jnx_int32 (*list_comparison)(void *a,void *b));
   /** @fn jnx_list_destroy(jnx_list* A)
    * @brief  Deletes the list node structure and list, not data inside
    * @param A is a pointer the pointer of list to destroy

@@ -118,7 +118,7 @@ jnx_size jnx_list_count_ts(jnx_list *A) {
 	jnx_thread_unlock(A->internal_lock);
 	return count;
 }
-jnx_int32 jnx_list_contains(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b) ){
+jnx_int32 jnx_list_contains(jnx_list *A, void *datain, jnx_int32 (*list_comparison)(void *a,void *b) ){
 	JNXCHECK(A);
 	JNXCHECK(datain);
 	JNXCHECK(list_comparison);
@@ -133,7 +133,7 @@ jnx_int32 jnx_list_contains(jnx_list *A, void *datain, int32_t (*list_comparison
 	}
 	return f;
 }
-jnx_int32 jnx_list_contains_ts(jnx_list *A, void *datain, int32_t (*list_comparison)(void *a,void *b) ){
+jnx_int32 jnx_list_contains_ts(jnx_list *A, void *datain, jnx_int32 (*list_comparison)(void *a,void *b) ){
 	jnx_thread_lock(A->internal_lock);
 	jnx_int32 f = jnx_list_contains(A,datain,list_comparison);
 	jnx_thread_unlock(A->internal_lock);
