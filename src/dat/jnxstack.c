@@ -19,7 +19,6 @@
 #include "jnxlist.h"
 #include "jnxlog.h"
 #include "jnxcheck.h"
-
 #include <stdlib.h>
 #include "jnxstack.h"
 #include "jnxcheck.h"
