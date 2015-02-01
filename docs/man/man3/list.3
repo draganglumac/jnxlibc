@@ -1,10 +1,8 @@
-.TH "list" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "list" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-list \- 
-.PP
-Represents the list data structure as seen by the user\&.  
+list \- Represents the list data structure as seen by the user\&.  
 
 .SH SYNOPSIS
 .br
@@ -21,7 +19,7 @@ Represents the list data structure as seen by the user\&.
 .RI "struct \fBnode\fP * \fBtail\fP"
 .br
 .ti -1c
-.RI "int \fBcounter\fP"
+.RI "\fBjnx_int32\fP \fBcounter\fP"
 .br
 .ti -1c
 .RI "\fBjnx_thread_mutex\fP * \fBinternal_lock\fP"
@@ -32,7 +30,7 @@ Represents the list data structure as seen by the user\&.
 Represents the list data structure as seen by the user\&. 
 .SH "Member Data Documentation"
 .PP 
-.SS "int list::counter"
+.SS "\fBjnx_int32\fP list::counter"
 
 .SS "struct \fBnode\fP* list::head"
 

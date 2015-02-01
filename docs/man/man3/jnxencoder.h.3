@@ -1,4 +1,4 @@
-.TH "jnxencoder.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxencoder.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,7 +6,7 @@ jnxencoder.h \-
 .SH SYNOPSIS
 .br
 .PP
-\fC#include <inttypes\&.h>\fP
+\fC#include 'jnxtypes\&.h'\fP
 .br
 
 .SS "Classes"
@@ -33,25 +33,25 @@ jnxencoder.h \-
 .RI "void \fBjnx_encoder_destroy\fP (\fBjnx_encoder\fP **en)"
 .br
 .ti -1c
-.RI "uint8_t * \fBjnx_encoder_b64_encode\fP (\fBjnx_encoder\fP *e, uint8_t *data, size_t input_length, size_t *output_length)"
+.RI "\fBjnx_uint8\fP * \fBjnx_encoder_b64_encode\fP (\fBjnx_encoder\fP *e, \fBjnx_uint8\fP *data, size_t input_length, size_t *output_length)"
 .br
 .ti -1c
-.RI "uint8_t * \fBjnx_encoder_b64_decode\fP (\fBjnx_encoder\fP *e, uint8_t *data, size_t input_length, size_t *output_length)"
+.RI "\fBjnx_uint8\fP * \fBjnx_encoder_b64_decode\fP (\fBjnx_encoder\fP *e, \fBjnx_uint8\fP *data, size_t input_length, size_t *output_length)"
 .br
 .in -1c
 .SH "Typedef Documentation"
 .PP 
-.SS "typedef struct \fBjnx_encoder\fP \fBjnx_encoder\fP"
+.SS "typedef struct \fBjnx_encoder\fP		 \fBjnx_encoder\fP"
 
 .SH "Function Documentation"
 .PP 
-.SS "uint8_t* jnx_encoder_b64_decode (\fBjnx_encoder\fP *e, uint8_t *data, size_tinput_length, size_t *output_length)"
+.SS "\fBjnx_uint8\fP* jnx_encoder_b64_decode (\fBjnx_encoder\fP * e, \fBjnx_uint8\fP * data, size_t input_length, size_t * output_length)"
 
-.SS "uint8_t* jnx_encoder_b64_encode (\fBjnx_encoder\fP *e, uint8_t *data, size_tinput_length, size_t *output_length)"
+.SS "\fBjnx_uint8\fP* jnx_encoder_b64_encode (\fBjnx_encoder\fP * e, \fBjnx_uint8\fP * data, size_t input_length, size_t * output_length)"
 
 .SS "\fBjnx_encoder\fP* jnx_encoder_create ()"
 
-.SS "void jnx_encoder_destroy (\fBjnx_encoder\fP **en)"
+.SS "void jnx_encoder_destroy (\fBjnx_encoder\fP ** en)"
 
 .SH "Author"
 .PP 

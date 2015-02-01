@@ -1,4 +1,4 @@
-.TH "jnxqueue.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxqueue.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,6 +6,8 @@ jnxqueue.h \-
 .SH SYNOPSIS
 .br
 .PP
+\fC#include 'jnxtypes\&.h'\fP
+.br
 \fC#include 'jnxlist\&.h'\fP
 .br
 \fC#include 'jnxthread\&.h'\fP
@@ -64,7 +66,7 @@ jnxqueue.h \-
 
 .SH "Function Documentation"
 .PP 
-.SS "size_t jnx_queue_count (\fBjnx_queue\fP *q)"
+.SS "size_t jnx_queue_count (\fBjnx_queue\fP * q)"
 
 .PP
 get the queue size 
@@ -80,7 +82,7 @@ the size of queue, 0 on empty or error
 .RE
 .PP
 
-.SS "size_t jnx_queue_count_ts (\fBjnx_queue\fP *q)"
+.SS "size_t jnx_queue_count_ts (\fBjnx_queue\fP * q)"
 
 .SS "\fBjnx_queue\fP * jnx_queue_create ()"
 
@@ -93,7 +95,7 @@ a pointer to \fBjnx_queue\fP
 .RE
 .PP
 
-.SS "void jnx_queue_destroy (\fBjnx_queue\fP **q)"
+.SS "void jnx_queue_destroy (\fBjnx_queue\fP ** q)"
 
 .PP
 destroys a \fBjnx_queue\fP 
@@ -104,7 +106,7 @@ destroys a \fBjnx_queue\fP
 .RE
 .PP
 
-.SS "void * jnx_queue_pop (\fBjnx_queue\fP *q)"
+.SS "void * jnx_queue_pop (\fBjnx_queue\fP * q)"
 
 .PP
 pops the first available item off of the queue 
@@ -120,9 +122,9 @@ the first queue item or NULL on error
 .RE
 .PP
 
-.SS "void* jnx_queue_pop_ts (\fBjnx_queue\fP *q)"
+.SS "void* jnx_queue_pop_ts (\fBjnx_queue\fP * q)"
 
-.SS "void jnx_queue_push (\fBjnx_queue\fP *q, void *data)"
+.SS "void jnx_queue_push (\fBjnx_queue\fP * q, void * data)"
 
 .PP
 pushes an item onto the queue 
@@ -135,7 +137,7 @@ pushes an item onto the queue
 .RE
 .PP
 
-.SS "void jnx_queue_push_ts (\fBjnx_queue\fP *q, void *data)"
+.SS "void jnx_queue_push_ts (\fBjnx_queue\fP * q, void * data)"
 
 .SH "Author"
 .PP 

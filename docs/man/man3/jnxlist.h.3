@@ -1,14 +1,14 @@
-.TH "jnxlist.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxlist.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-jnxlist.h \- 
-.PP
-API for jnxlibc implementation of list\&.  
+jnxlist.h \- API for jnxlibc implementation of list\&.  
 
 .SH SYNOPSIS
 .br
 .PP
+\fC#include 'jnxtypes\&.h'\fP
+.br
 \fC#include 'jnxthread\&.h'\fP
 .br
 
@@ -44,23 +44,38 @@ API for jnxlibc implementation of list\&.
 .br
 .RI "\fIReturns newly created list\&. \fP"
 .ti -1c
-.RI "void \fBjnx_list_add\fP (\fBjnx_list\fP *A, void *_datain)"
+.RI "void \fBjnx_list_add\fP (\fBjnx_list\fP *A, void *datain)"
 .br
 .RI "\fIAccepts a void pointer for input with list\&. \fP"
 .ti -1c
-.RI "void \fBjnx_list_add_ts\fP (\fBjnx_list\fP *A, void *_datain)"
+.RI "void \fBjnx_list_add_ts\fP (\fBjnx_list\fP *A, void *datain)"
 .br
 .ti -1c
 .RI "void * \fBjnx_list_remove\fP (\fBjnx_list\fP **A)"
 .br
+.RI "\fIRemoves the structure from list but returns the data for the user to handle\&. \fP"
 .ti -1c
 .RI "void * \fBjnx_list_remove_ts\fP (\fBjnx_list\fP **A)"
+.br
+.ti -1c
+.RI "void * \fBjnx_list_remove_front\fP (\fBjnx_list\fP **A)"
+.br
+.RI "\fIremoves jnx_node structure from the list and returns data to the user \fP"
+.ti -1c
+.RI "void * \fBjnx_list_remove_front_ts\fP (\fBjnx_list\fP **A)"
 .br
 .ti -1c
 .RI "size_t \fBjnx_list_count\fP (\fBjnx_list\fP *A)"
 .br
 .ti -1c
 .RI "size_t \fBjnx_list_count_ts\fP (\fBjnx_list\fP *A)"
+.br
+.ti -1c
+.RI "\fBjnx_int32\fP \fBjnx_list_contains\fP (\fBjnx_list\fP *A, void *datain, int32_t(*list_comparison)(void *a, void *b))"
+.br
+.RI "\fIchecks whether a list contains a specific value \fP"
+.ti -1c
+.RI "\fBjnx_int32\fP \fBjnx_list_contains_ts\fP (\fBjnx_list\fP *A, void *datain, int32_t(*list_comparison)(void *a, void *b))"
 .br
 .ti -1c
 .RI "void \fBjnx_list_destroy\fP (\fBjnx_list\fP **A)"
@@ -73,17 +88,17 @@ API for jnxlibc implementation of list\&.
 #include <jnxc_headers/jnxlist\&.h> 
 .SH "Typedef Documentation"
 .PP 
-.SS "typedef struct \fBlist\fP  \fBjnx_list\fP"
+.SS "typedef struct \fBlist\fP		 \fBjnx_list\fP"
 
 .PP
 Represents the list data structure as seen by the user\&. 
-.SS "typedef struct \fBnode\fP  \fBjnx_node\fP"
+.SS "typedef struct \fBnode\fP		 \fBjnx_node\fP"
 
 .PP
 Node represents a link in the list\&. 
 .SH "Function Documentation"
 .PP 
-.SS "jnx_list_add (\fBjnx_list\fP *A, void *_datain)"
+.SS "jnx_list_add (\fBjnx_list\fP * A, void * datain)"
 
 .PP
 Accepts a void pointer for input with list\&. 
@@ -92,15 +107,37 @@ Accepts a void pointer for input with list\&.
 .RS 4
 \fIA\fP is the target list 
 .br
-\fI_datain\fP is the data to insert 
+\fIdatain\fP is the data to insert 
 .RE
 .PP
 
-.SS "void jnx_list_add_ts (\fBjnx_list\fP *A, void *_datain)"
+.SS "void jnx_list_add_ts (\fBjnx_list\fP * A, void * datain)"
 
-.SS "size_t jnx_list_count (\fBjnx_list\fP *A)"
+.SS "jnx_list_contains (\fBjnx_list\fP * A, void * datain, int32_t(*)(void *a, void *b) list_comparison)"
 
-.SS "size_t jnx_list_count_ts (\fBjnx_list\fP *A)"
+.PP
+checks whether a list contains a specific value 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIA\fP is a pointer to the list 
+.br
+\fIdatain\fP is the value to check the list for 
+.br
+\fIlist_comparison\fP is a functor callback for comparison, 1 is a positive find, 0 is a negative 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+either 1 on success or 0 on failure 
+.RE
+.PP
+
+.SS "\fBjnx_int32\fP jnx_list_contains_ts (\fBjnx_list\fP * A, void * datain, int32_t(*)(void *a, void *b) list_comparison)"
+
+.SS "size_t jnx_list_count (\fBjnx_list\fP * A)"
+
+.SS "size_t jnx_list_count_ts (\fBjnx_list\fP * A)"
 
 .SS "jnx_list_create (void)"
 
@@ -113,11 +150,43 @@ jnx_list* to a newly created list of 0 length
 .RE
 .PP
 
-.SS "void jnx_list_destroy (\fBjnx_list\fP **A)"
+.SS "void jnx_list_destroy (\fBjnx_list\fP ** A)"
 
-.SS "void* jnx_list_remove (\fBjnx_list\fP **A)"
+.SS "jnx_list_remove (\fBjnx_list\fP ** A)"
 
-.SS "void* jnx_list_remove_ts (\fBjnx_list\fP **A)"
+.PP
+Removes the structure from list but returns the data for the user to handle\&. 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIA\fP is a pointer to the pointer of the list to remove the last link of 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+void* to data, NULL on failure or end of list 
+.RE
+.PP
+
+.SS "jnx_list_remove_front (\fBjnx_list\fP ** A)"
+
+.PP
+removes jnx_node structure from the list and returns data to the user 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIA\fP is a pointer to pointer of the list to remove the first link of 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+void* to data, NULL on failure or end of list 
+.RE
+.PP
+
+.SS "void* jnx_list_remove_front_ts (\fBjnx_list\fP ** A)"
+
+.SS "void* jnx_list_remove_ts (\fBjnx_list\fP ** A)"
 
 .SH "Author"
 .PP 

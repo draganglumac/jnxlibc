@@ -1,54 +1,40 @@
-.TH "jnxstring.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxstring.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-jnxstring.h \- 
-.PP
-manipulate char* by joining  
+jnxstring.h \- manipulate jnx_char* by joining  
 
 .SH SYNOPSIS
 .br
 .PP
+\fC#include 'jnxtypes\&.h'\fP
+.br
+
 .SS "Functions"
 
 .in +1c
 .ti -1c
-.RI "char * \fBjnx_string_joincreate\fP (char *destination, char *buf)"
+.RI "\fBjnx_char\fP * \fBjnx_string_joincreate\fP (\fBjnx_char\fP *destination, \fBjnx_char\fP *buf)"
 .br
 .RI "\fIFunction that joins destination and buf and returns the new string\&. \fP"
 .ti -1c
-.RI "void \fBjnx_string_join\fP (char **destination, char *buf)"
+.RI "void \fBjnx_string_join\fP (\fBjnx_char\fP **destination, \fBjnx_char\fP *buf)"
 .br
 .RI "\fIFunction that appends buf to destination without recreating any strings\&. \fP"
 .ti -1c
-.RI "char * \fBjnx_string_itos\fP (int input)"
+.RI "\fBjnx_char\fP * \fBjnx_string_itos\fP (\fBjnx_int32\fP input)"
 .br
-.RI "\fIFunction that convets passed in integer to its string representation\&. \fP"
 .in -1c
 .SH "Detailed Description"
 .PP 
-manipulate char* by joining 
+manipulate jnx_char* by joining 
 
 #include <jnxc_headers/jnxstring\&.h> 
 .SH "Function Documentation"
 .PP 
-.SS "jnx_string_itos (intinput)"
+.SS "\fBjnx_char\fP* jnx_string_itos (\fBjnx_int32\fP input)"
 
-.PP
-Function that convets passed in integer to its string representation\&. 
-.PP
-\fBParameters:\fP
-.RS 4
-\fIinput\fP requires an int input for conversion
-.RE
-.PP
-\fBReturns:\fP
-.RS 4
-returns a string on the stack which is the converted input\&. NULL is returned on failure 
-.RE
-.PP
-
-.SS "jnx_string_join (char **destination, char *buf)"
+.SS "jnx_string_join (\fBjnx_char\fP ** destination, \fBjnx_char\fP * buf)"
 
 .PP
 Function that appends buf to destination without recreating any strings\&. 
@@ -61,7 +47,7 @@ Function that appends buf to destination without recreating any strings\&.
 .RE
 .PP
 
-.SS "jnx_string_joincreate (char *destination, char *buf)"
+.SS "jnx_string_joincreate (\fBjnx_char\fP * destination, \fBjnx_char\fP * buf)"
 
 .PP
 Function that joins destination and buf and returns the new string\&. 
@@ -75,7 +61,7 @@ Function that joins destination and buf and returns the new string\&.
 .PP
 \fBReturns:\fP
 .RS 4
-returns a new char* string
+returns a new jnx_char* string
 .RE
 .PP
 \fBWarning:\fP

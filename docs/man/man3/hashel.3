@@ -1,10 +1,8 @@
-.TH "hashel" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "hashel" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-hashel \- 
-.PP
-Internal container for key value pair lists\&.  
+hashel \- Internal container for key value pair lists\&.  
 
 .SH SYNOPSIS
 .br
@@ -18,10 +16,10 @@ Internal container for key value pair lists\&.
 .RI "\fBjnx_list\fP * \fBbucket\fP"
 .br
 .ti -1c
-.RI "int \fBbucket_len\fP"
+.RI "\fBjnx_int32\fP \fBbucket_len\fP"
 .br
 .ti -1c
-.RI "int \fBused\fP"
+.RI "\fBjnx_int32\fP \fBused\fP"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -31,9 +29,9 @@ Internal container for key value pair lists\&.
 .PP 
 .SS "\fBjnx_list\fP* hashel::bucket"
 
-.SS "int hashel::bucket_len"
+.SS "\fBjnx_int32\fP hashel::bucket_len"
 
-.SS "int hashel::used"
+.SS "\fBjnx_int32\fP hashel::used"
 
 
 .SH "Author"

@@ -1,14 +1,15 @@
-.TH "jnxterm.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxterm.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-jnxterm.h \- 
-.PP
-terminal manipulation of colours, stdout and loading spinnders  
+jnxterm.h \- terminal manipulation of colours, stdout and loading spinnders  
 
 .SH SYNOPSIS
 .br
 .PP
+\fC#include 'jnxtypes\&.h'\fP
+.br
+
 .SS "Macros"
 
 .in +1c
@@ -45,13 +46,11 @@ terminal manipulation of colours, stdout and loading spinnders
 .br
 .RI "\fIresets to default terminal colors \fP"
 .ti -1c
-.RI "void \fBjnx_term_color\fP (int fg_col)"
+.RI "void \fBjnx_term_color\fP (\fBjnx_int32\fP fg_col)"
 .br
-.RI "\fIchanges the terminal color \fP"
 .ti -1c
-.RI "void \fBjnx_term_printf_in_color\fP (int fg_col, const char *format,\&.\&.\&.)"
+.RI "void \fBjnx_term_printf_in_color\fP (\fBjnx_int32\fP fg_col, const char *format,\&.\&.\&.)"
 .br
-.RI "\fIprints a single line in selected color \fP"
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -78,35 +77,13 @@ terminal manipulation of colours, stdout and loading spinnders
 
 .SH "Function Documentation"
 .PP 
-.SS "jnx_term_color (intfg_col)"
-
-.PP
-changes the terminal color 
-.PP
-\fBParameters:\fP
-.RS 4
-\fIfg_col\fP select a color between 0-7 from JNX_COL 
-.RE
-.PP
+.SS "void jnx_term_color (\fBjnx_int32\fP fg_col)"
 
 .SS "jnx_term_default ()"
 
 .PP
 resets to default terminal colors 
-.SS "jnx_term_printf_in_color (intfg_col, const char *format, \&.\&.\&.)"
-
-.PP
-prints a single line in selected color 
-.PP
-\fBParameters:\fP
-.RS 4
-\fIfg_col\fP select a color between 0-7 from JNX_COL 
-.br
-\fIformat\fP formatted string 
-.br
-\fI\&.\&.\&.\fP formatted string optional arguments 
-.RE
-.PP
+.SS "void jnx_term_printf_in_color (\fBjnx_int32\fP fg_col, const char * format,  \&.\&.\&.)"
 
 .SH "Author"
 .PP 

@@ -1,10 +1,8 @@
-.TH "jnxhash.h" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "jnxhash.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-jnxhash.h \- 
-.PP
-API for jnxlibc's implementation of hashmap\&.  
+jnxhash.h \- API for jnxlibc's implementation of hashmap\&.  
 
 .SH SYNOPSIS
 .br
@@ -13,7 +11,9 @@ API for jnxlibc's implementation of hashmap\&.
 .br
 \fC#include <stdlib\&.h>\fP
 .br
-\fC#include <assert\&.h>\fP
+\fC#include 'jnxcheck\&.h'\fP
+.br
+\fC#include 'jnxtypes\&.h'\fP
 .br
 \fC#include 'jnxlist\&.h'\fP
 .br
@@ -60,41 +60,40 @@ API for jnxlibc's implementation of hashmap\&.
 .RI "void \fBjnx_hash_destroy_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP)"
 .br
 .ti -1c
-.RI "void * \fBjnx_hash_delete_value\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, char *key)"
+.RI "void * \fBjnx_hash_delete_value\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, \fBjnx_char\fP *key)"
 .br
 .RI "\fIremoves the key and returns the value for an entry \fP"
 .ti -1c
-.RI "void * \fBjnx_hash_delete_value_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, char *key)"
+.RI "void * \fBjnx_hash_delete_value_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, \fBjnx_char\fP *key)"
 .br
 .ti -1c
-.RI "\fBjnx_hashmap\fP * \fBjnx_hash_create\fP (unsigned int size)"
+.RI "\fBjnx_hashmap\fP * \fBjnx_hash_create\fP (\fBjnx_unsigned_int\fP size)"
 .br
 .RI "\fIReturns a newly created hashmap\&. \fP"
 .ti -1c
-.RI "int \fBjnx_hash_put\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const char *key, void *value)"
+.RI "\fBjnx_int32\fP \fBjnx_hash_put\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const \fBjnx_char\fP *key, void *value)"
 .br
 .RI "\fIGiven a key and value this hashs and stores\&. \fP"
 .ti -1c
-.RI "int \fBjnx_hash_put_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const char *key, void *value)"
+.RI "\fBjnx_int32\fP \fBjnx_hash_put_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const \fBjnx_char\fP *key, void *value)"
 .br
 .ti -1c
-.RI "void * \fBjnx_hash_get\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const char *key)"
+.RI "void * \fBjnx_hash_get\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const \fBjnx_char\fP *key)"
 .br
 .RI "\fIReturns the value for a given key\&. \fP"
 .ti -1c
-.RI "void * \fBjnx_hash_get_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const char *key)"
+.RI "void * \fBjnx_hash_get_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const \fBjnx_char\fP *key)"
 .br
 .ti -1c
-.RI "int \fBjnx_hash_get_keys\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const char ***keys)"
+.RI "\fBjnx_int32\fP \fBjnx_hash_get_keys\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const \fBjnx_char\fP ***keys)"
 .br
 .RI "\fIReturns the number of keys found, and mallocs keys array and inserts keys\&. \fP"
 .ti -1c
-.RI "int \fBjnx_hash_get_keys_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const char ***keys)"
+.RI "\fBjnx_int32\fP \fBjnx_hash_get_keys_ts\fP (\fBjnx_hashmap\fP *\fBhashmap\fP, const \fBjnx_char\fP ***keys)"
 .br
 .ti -1c
-.RI "int \fBjnx_hash_string\fP (const char *input, int map_size)"
+.RI "\fBjnx_int32\fP \fBjnx_hash_string\fP (const \fBjnx_char\fP *input, \fBjnx_int32\fP map_size)"
 .br
-.RI "\fIAllows access to the hash string function, returning and unsigned int\&. \fP"
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -115,14 +114,14 @@ Internal container for key value pair lists\&.
 
 .SH "Function Documentation"
 .PP 
-.SS "jnx_hash_create (unsigned intsize)"
+.SS "jnx_hash_create (\fBjnx_unsigned_int\fP size)"
 
 .PP
 Returns a newly created hashmap\&. 
 .PP
 \fBParameters:\fP
 .RS 4
-\fIsize\fP createial size for the hashmap, unsigned int i\&.e 1024 
+\fIsize\fP createial size for the hashmap, jnx_unsigned_int i\&.e 1024 
 .RE
 .PP
 \fBReturns:\fP
@@ -131,7 +130,7 @@ newly created hashmap with size
 .RE
 .PP
 
-.SS "jnx_hash_delete_value (\fBjnx_hashmap\fP *hashmap, char *key)"
+.SS "jnx_hash_delete_value (\fBjnx_hashmap\fP * hashmap, \fBjnx_char\fP * key)"
 
 .PP
 removes the key and returns the value for an entry 
@@ -149,13 +148,13 @@ pointer to value
 .RE
 .PP
 
-.SS "void* jnx_hash_delete_value_ts (\fBjnx_hashmap\fP *hashmap, char *key)"
+.SS "void* jnx_hash_delete_value_ts (\fBjnx_hashmap\fP * hashmap, \fBjnx_char\fP * key)"
 
-.SS "void jnx_hash_destroy (\fBjnx_hashmap\fP **hashmap)"
+.SS "void jnx_hash_destroy (\fBjnx_hashmap\fP ** hashmap)"
 
-.SS "void jnx_hash_destroy_ts (\fBjnx_hashmap\fP *hashmap)"
+.SS "void jnx_hash_destroy_ts (\fBjnx_hashmap\fP * hashmap)"
 
-.SS "jnx_hash_get (\fBjnx_hashmap\fP *hashmap, const char *key)"
+.SS "jnx_hash_get (\fBjnx_hashmap\fP * hashmap, const \fBjnx_char\fP * key)"
 
 .PP
 Returns the value for a given key\&. 
@@ -173,7 +172,7 @@ void pointer to the data from value
 .RE
 .PP
 
-.SS "jnx_hash_get_keys (\fBjnx_hashmap\fP *hashmap, const char ***keys)"
+.SS "jnx_hash_get_keys (\fBjnx_hashmap\fP * hashmap, const \fBjnx_char\fP *** keys)"
 
 .PP
 Returns the number of keys found, and mallocs keys array and inserts keys\&. 
@@ -191,11 +190,11 @@ number of keys found
 .RE
 .PP
 
-.SS "int jnx_hash_get_keys_ts (\fBjnx_hashmap\fP *hashmap, const char ***keys)"
+.SS "\fBjnx_int32\fP jnx_hash_get_keys_ts (\fBjnx_hashmap\fP * hashmap, const \fBjnx_char\fP *** keys)"
 
-.SS "void* jnx_hash_get_ts (\fBjnx_hashmap\fP *hashmap, const char *key)"
+.SS "void* jnx_hash_get_ts (\fBjnx_hashmap\fP * hashmap, const \fBjnx_char\fP * key)"
 
-.SS "jnx_hash_put (\fBjnx_hashmap\fP *hashmap, const char *key, void *value)"
+.SS "jnx_hash_put (\fBjnx_hashmap\fP * hashmap, const \fBjnx_char\fP * key, void * value)"
 
 .PP
 Given a key and value this hashs and stores\&. 
@@ -210,25 +209,9 @@ Given a key and value this hashs and stores\&.
 .RE
 .PP
 
-.SS "int jnx_hash_put_ts (\fBjnx_hashmap\fP *hashmap, const char *key, void *value)"
+.SS "\fBjnx_int32\fP jnx_hash_put_ts (\fBjnx_hashmap\fP * hashmap, const \fBjnx_char\fP * key, void * value)"
 
-.SS "jnx_hash_string (const char *input, intmap_size)"
-
-.PP
-Allows access to the hash string function, returning and unsigned int\&. 
-.PP
-\fBParameters:\fP
-.RS 4
-\fIinput\fP is the string to be hashed 
-.br
-\fImap_size\fP is used to round the remainder of the string 
-.RE
-.PP
-\fBReturns:\fP
-.RS 4
-hash value of the input string 
-.RE
-.PP
+.SS "\fBjnx_int32\fP jnx_hash_string (const \fBjnx_char\fP * input, \fBjnx_int32\fP map_size)"
 
 .SH "Author"
 .PP 

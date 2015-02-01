@@ -1,4 +1,4 @@
-.TH "hashmap" 3 "Sat Jun 7 2014" "jnxlibc" \" -*- nroff -*-
+.TH "hashmap" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -15,10 +15,10 @@ hashmap \-
 .RI "\fBjnx_hash_element\fP * \fBdata\fP"
 .br
 .ti -1c
-.RI "unsigned int \fBsize\fP"
+.RI "\fBjnx_unsigned_int\fP \fBsize\fP"
 .br
 .ti -1c
-.RI "unsigned int \fBused_up\fP"
+.RI "\fBjnx_unsigned_int\fP \fBused_up\fP"
 .br
 .ti -1c
 .RI "\fBjnx_thread_mutex\fP * \fBinternal_lock\fP"
@@ -30,9 +30,9 @@ hashmap \-
 
 .SS "\fBjnx_thread_mutex\fP* hashmap::internal_lock"
 
-.SS "unsigned int hashmap::size"
+.SS "\fBjnx_unsigned_int\fP hashmap::size"
 
-.SS "unsigned int hashmap::used_up"
+.SS "\fBjnx_unsigned_int\fP hashmap::used_up"
 
 
 .SH "Author"
