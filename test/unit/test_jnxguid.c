@@ -48,21 +48,20 @@ void test_compare_guid() {
 }
 void test_string() {
 
-  jnx_guid g;
-  jnx_guid_create(&g); 
-
-  char *ostr;
-  jnx_guid_to_string(&g,&ostr);
-  JNX_LOG(NULL,"GUID A=>%s",ostr);
-
-  jnx_guid f;
-  jnx_guid_from_string(ostr,&f);
-
-  char *ostrtwo;
-  jnx_guid_to_string(&f,&ostrtwo);
-  JNX_LOG(NULL,"GUID B=>%s",ostrtwo);
-
-  JNXCHECK(jnx_guid_compare(&g,&f) == JNX_GUID_STATE_SUCCESS);
+  jnx_int i;
+  for(i=0;i<5;++i) {
+    jnx_guid g;
+    jnx_guid_create(&g); 
+    char *ostr;
+    jnx_guid_to_string(&g,&ostr);
+    JNX_LOG(NULL,"GUID A=>%s",ostr);
+    jnx_guid f;
+    jnx_guid_from_string(ostr,&f);
+    char *ostrtwo;
+    jnx_guid_to_string(&f,&ostrtwo);
+    JNX_LOG(NULL,"GUID B=>%s",ostrtwo);
+    JNXCHECK(jnx_guid_compare(&g,&f) == JNX_GUID_STATE_SUCCESS);
+  }
 }
 int main(int args, char **argv) {
   JNX_LOG(NULL,"Running test for jnxguid");
