@@ -2,7 +2,7 @@ language: c
 compiler:
     - gcc
     - clang
-script: cmake .
+script: cmake . -DRUN_TESTS=ON
 notifications:
     email:
         recipients:
