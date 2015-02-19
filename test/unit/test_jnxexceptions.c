@@ -26,23 +26,31 @@
 int main(int argc, char** argv)
 {
   JNX_LOG(NULL,"Running test_jnxexception tests");
-  jnx_try {
-    printf("In Try Statement\n");
-    jnx_throw( BAR_EXCEPTION );
-  }
-  jnx_catch( FOO_EXCEPTION ) {
-    
-    return 1;
-  }
-  jnx_catch( BAR_EXCEPTION ) {
-    JNX_LOG(NULL,"Correct exception caught");
-    return 0;
-  }
-  jnx_catch( BAZ_EXCEPTION ) {
-    
-    return 1;
-  }
-  jnx_try_end;
 
-  return 1;
+  int ar[3] = { 1,2,3};
+  int c;
+  for(c=0;c<3;++c) {
+
+    int current_exception = ar[c];
+    jnx_try {
+      jnx_throw( ar[c] );
+    }
+    jnx_catch( FOO_EXCEPTION ) {
+      JNX_LOG(NULL,"First exception fired correctly");
+      JNXCHECK(current_exception == FOO_EXCEPTION);
+      break;
+    }
+    jnx_catch( BAR_EXCEPTION ) {
+      JNX_LOG(NULL,"Second exception fired correctly");
+      JNXCHECK(current_exception == BAR_EXCEPTION);
+      break;
+    }
+    jnx_catch( BAZ_EXCEPTION ) {
+      JNX_LOG(NULL,"Third exception fired correctly");
+      JNXCHECK(current_exception == BAZ_EXCEPTION);
+      break;
+    }
+    jnx_try_end;
+  }
+  return 0;
 }
