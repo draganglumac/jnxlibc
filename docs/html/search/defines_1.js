@@ -1,6 +1,20 @@
 var searchData=
 [
-  ['max_5farg_5fsize',['MAX_ARG_SIZE',['../jnxlog_8h.html#a79d0e990c7280f3356391dab6824a745',1,'jnxlog.h']]],
-  ['max_5flog_5fsize',['MAX_LOG_SIZE',['../jnxlog_8h.html#ab6bc945ce840e4f0a16ec0fb12acc1a0',1,'jnxlog.h']]],
-  ['max_5ftrace',['MAX_TRACE',['../jnxdebug_8h.html#a61466023ed32f84aca4ca0c6942b8753',1,'jnxdebug.h']]]
+  ['jnx_5fclose',['JNX_CLOSE',['../jnxfile_8h.html#aaf101629b986ffdcda31516b339986f0',1,'jnxfile.h']]],
+  ['jnx_5fcol_5fblack',['JNX_COL_BLACK',['../jnxterm_8h.html#af7603750bdda10479eab29bbb1cf2cb1',1,'jnxterm.h']]],
+  ['jnx_5fcol_5fblue',['JNX_COL_BLUE',['../jnxterm_8h.html#ab75645eee7b019a5f8c16bce903fcf21',1,'jnxterm.h']]],
+  ['jnx_5fcol_5fcyan',['JNX_COL_CYAN',['../jnxterm_8h.html#a7d3b9ab65994137e181d7a13b6eff232',1,'jnxterm.h']]],
+  ['jnx_5fcol_5fgreen',['JNX_COL_GREEN',['../jnxterm_8h.html#af6da088b409b6975a98d7167a60e8c35',1,'jnxterm.h']]],
+  ['jnx_5fcol_5fmagenta',['JNX_COL_MAGENTA',['../jnxterm_8h.html#aec59fee384ada6302e3978e6ffbe8d5f',1,'jnxterm.h']]],
+  ['jnx_5fcol_5fred',['JNX_COL_RED',['../jnxterm_8h.html#ad1c495da7a090e65fc0328da6e70a0de',1,'jnxterm.h']]],
+  ['jnx_5fcol_5fwhite',['JNX_COL_WHITE',['../jnxterm_8h.html#a9519006e3a4022cdcf21bac53ecf2454',1,'jnxterm.h']]],
+  ['jnx_5fcol_5fyellow',['JNX_COL_YELLOW',['../jnxterm_8h.html#aec34f0389c8e3250def08197fad5feed',1,'jnxterm.h']]],
+  ['jnx_5flog',['JNX_LOG',['../jnxlog_8h.html#af1764d49224e042d5a9fa899f64a7e7a',1,'jnxlog.h']]],
+  ['jnx_5flog_5fcontext',['JNX_LOG_CONTEXT',['../jnxlog_8h.html#a34dc6ef18a128193c765b5722a2a7f5b',1,'jnxlog.h']]],
+  ['jnx_5flog_5fcreate',['JNX_LOG_CREATE',['../jnxlog_8h.html#a8575ca89477bbdd555a367ee4f0ae1ab',1,'jnxlog.h']]],
+  ['jnx_5flog_5fdestroy',['JNX_LOG_DESTROY',['../jnxlog_8h.html#a7fe11b445096f9d974af3d2625882b19',1,'jnxlog.h']]],
+  ['jnx_5fopen',['JNX_OPEN',['../jnxfile_8h.html#adfb77bce83e2cf0b7527b7527f01e3df',1,'jnxfile.h']]],
+  ['jnx_5fread',['JNX_READ',['../jnxfile_8h.html#abad1af50f982d34ffb7e38d7d4dbf6b9',1,'jnxfile.h']]],
+  ['jnxcheck',['JNXCHECK',['../jnxcheck_8h.html#a099dda9c8628eb9311ddfa82bc427294',1,'jnxcheck.h']]],
+  ['jnxfail',['JNXFAIL',['../jnxcheck_8h.html#a434186d96554495fd7d8648dbb3d2ab3',1,'jnxcheck.h']]]
 ];

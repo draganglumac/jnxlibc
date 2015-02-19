@@ -1,6 +1,13 @@
 # Compiled Object files
 # test/test_*
+install*
+jnxc_headers
+*Cache.txt
+*.dylib
+*.a
+*.cmake
 docs/xml
+*.dSYM
 *.dSYM
 *.slo
 *.lo
@@ -22,7 +29,6 @@ Makefile
 *.la
 *.a
 *.bin
-CMakelists.txt
 *.swo
 *.swp
 tags

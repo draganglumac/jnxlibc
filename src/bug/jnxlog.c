@@ -1,87 +1,89 @@
 /*
  * =====================================================================================
  *
- *       Filename:  jnx_log.c
+ *       Filename:  jnxlog.c
  *
- *    Description:
+ *    Description:  
  *
  *        Version:  1.0
- *        Created:  02/20/13 10:17:02
+ *        Created:  18/08/2014 18:34:40
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  Alex Jones (alexsimonjones@gmail.com),
- *   Organization:
+ *         Author:  jonesax (jonesax@hush.com), 
+ *   Organization:  
  *
  * =====================================================================================
  */
-#include <sys/file.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "jnxlog.h"
-#include "jnxcheck.h"
-#include "jnxthread.h"
+#include <sys/time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <stdio.h>
-#include <time.h>
 #include <unistd.h>
-char* jnx_get_time() {
-	time_t t;
-	char *buf;
-	time(&t);
-	buf = (char*)malloc(strlen(ctime(&t)) +1);
-	snprintf(buf,strlen(ctime(&t)),"%s",ctime(&t));
-	return buf;
-}
-size_t jnx_log(JNX_LOG_LEVEL level, const char *file, const char *function,const int line,const char *format,...)
-{    
-	JNXCHECK(file);
-	JNXCHECK(function);
-	if((strlen(format) *sizeof(const char)) > MAX_LOG_SIZE) {
-		JNX_LOGC(JLOG_ALERT,"Exceeding max log length - truncating data\n");
-	}
-	char output[MAX_LOG_SIZE];
-	char buffer[MAX_ARG_SIZE];
-	char tempbuff[MAX_LOG_SIZE];
-	bzero(tempbuff,MAX_LOG_SIZE);
-	bzero(buffer,MAX_ARG_SIZE);
-	bzero(output,MAX_LOG_SIZE);
-	char *_time = jnx_get_time();
-	char *warning_level = NULL;
-	switch(level) {
-		case JLOG_CRITICAL:
-			warning_level = JCRITICAL;
-			break;
-		case JLOG_ALERT:
-			warning_level = JALERT;
-			break;
-		case JLOG_CAUTION:
-			warning_level = JCAUTION;
-			break;
-		case JLOG_NOTICE:
-			warning_level = JNOTICE;
-			break;
-		case JLOG_DEBUG:
-			warning_level = JDEBUG;
-			break;
-		case JLOG_NORMAL:
-			warning_level = JNORMAL;
-			break;
-		default:
-			warning_level = JNORMAL;
-	}	
-	sprintf(tempbuff,LOGTEMPLATE,_time,warning_level,file,function,line);
-	strcpy(output,tempbuff);	
-	va_list ap;
-	va_start(ap,format);
-	vsprintf(buffer,format,ap);
-	va_end(ap);
-	strcat(output,buffer);
-	free(_time);
-	size_t bytec = 0;
-	bytec = strlen(output);
-	printf("%s",output);
-	return bytec;
-}
+#include <stdarg.h>
+#include "jnxlog.h"
+#include "jnxcheck.h"
+#include "jnxfile.h"
 
+#define MAX_SIZE 2048
+#define TIMEBUFFER 256
+jnx_log_config* jnx_log_create(const jnx_char *path,jnx_log_type output){  
+  jnx_log_config *conf = malloc(sizeof(jnx_log_config));
+  conf->log_path = path;
+  conf->output = output;
+  conf->pstart = malloc(sizeof(struct timeval));
+  conf->pend = malloc(sizeof(struct timeval));
+  gettimeofday(conf->pstart,NULL);
+  conf->pcurrent = 0;
+  conf->internal_lock = jnx_thread_mutex_create();
+  return conf;
+}
+void jnx_log(jnx_log_config *config, const jnx_char *file, const jnx_char *function,const jnx_uint32 line,const jnx_char *format,...){
+  JNXCHECK(file);
+  JNXCHECK(function);
+  JNXCHECK(format);
+  jnx_char buffer[MAX_SIZE];
+  jnx_char msgbuffer[MAX_SIZE];
+  memset(buffer,0,MAX_SIZE);
+  memset(msgbuffer,0,MAX_SIZE);
+  va_list ap;
+  va_start(ap,format);
+  vsprintf(msgbuffer,format,ap);
+  va_end(ap);
+  if(config == DEFAULT_CONTEXT) {
+    time_t ptime;
+    time(&ptime);
+    jnx_char pbuffer[TIMEBUFFER];
+    sprintf(pbuffer,"%s",ctime(&ptime));
+    pbuffer[strlen(pbuffer)-1] = '\0';
+    sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",file,function,line,pbuffer, msgbuffer);
+    printf("%s",buffer);
+    return;
+  }
+  sprintf(buffer,"[%s][%s:%d][t:%f]%s\n",file,function,line,config ? config->pcurrent : 0, msgbuffer);
+  switch(config->output) {
+    case FILETYPE:
+      JNXCHECK(config->log_path);
+      jnx_thread_lock(config->internal_lock);
+      jnx_file_write((jnx_char*)config->log_path ? (jnx_char*)config->log_path : "default.log",buffer,strlen(buffer),"a");
+      jnx_thread_unlock(config->internal_lock);
+      break;
+    case CONSOLETYPE:
+      printf("%s",buffer);
+      break;
+  }
+  gettimeofday(config->pend,NULL);
+  jnx_double elapsed_time = ((*config->pend).tv_sec - (*config->pstart).tv_sec) * 1000.0;
+  elapsed_time += ((*config->pend).tv_usec - (*config->pstart).tv_usec) / 1000.0;
+  config->pcurrent = elapsed_time;
+}
+void jnx_log_destroy(jnx_log_config **config){
+  JNXCHECK(*config);
+  jnx_thread_mutex_destroy(&(*config)->internal_lock);
+  free((*config)->pstart);
+  free((*config)->pend);
+  free(*config);
+  *config = NULL;
+}

@@ -1,0 +1,58 @@
+.TH "jnxencoder.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jnxencoder.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'jnxtypes\&.h'\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBjnx_encoder\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBjnx_encoder\fP \fBjnx_encoder\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBjnx_encoder\fP * \fBjnx_encoder_create\fP ()"
+.br
+.ti -1c
+.RI "void \fBjnx_encoder_destroy\fP (\fBjnx_encoder\fP **en)"
+.br
+.ti -1c
+.RI "\fBjnx_uint8\fP * \fBjnx_encoder_b64_encode\fP (\fBjnx_encoder\fP *e, \fBjnx_uint8\fP *data, size_t input_length, size_t *output_length)"
+.br
+.ti -1c
+.RI "\fBjnx_uint8\fP * \fBjnx_encoder_b64_decode\fP (\fBjnx_encoder\fP *e, \fBjnx_uint8\fP *data, size_t input_length, size_t *output_length)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBjnx_encoder\fP		 \fBjnx_encoder\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "\fBjnx_uint8\fP* jnx_encoder_b64_decode (\fBjnx_encoder\fP * e, \fBjnx_uint8\fP * data, size_t input_length, size_t * output_length)"
+
+.SS "\fBjnx_uint8\fP* jnx_encoder_b64_encode (\fBjnx_encoder\fP * e, \fBjnx_uint8\fP * data, size_t input_length, size_t * output_length)"
+
+.SS "\fBjnx_encoder\fP* jnx_encoder_create ()"
+
+.SS "void jnx_encoder_destroy (\fBjnx_encoder\fP ** en)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

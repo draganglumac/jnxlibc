@@ -1,0 +1,50 @@
+.TH "jnx_log_config" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jnx_log_config \- 
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include 'jnxlog\&.h'\fP
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "const \fBjnx_char\fP * \fBlog_path\fP"
+.br
+.ti -1c
+.RI "\fBjnx_log_type\fP \fBoutput\fP"
+.br
+.ti -1c
+.RI "struct timeval * \fBpstart\fP"
+.br
+.ti -1c
+.RI "struct timeval * \fBpend\fP"
+.br
+.ti -1c
+.RI "\fBjnx_double\fP \fBpcurrent\fP"
+.br
+.ti -1c
+.RI "\fBjnx_thread_mutex\fP * \fBinternal_lock\fP"
+.br
+.in -1c
+.SH "Member Data Documentation"
+.PP 
+.SS "\fBjnx_thread_mutex\fP* jnx_log_config::internal_lock"
+
+.SS "const \fBjnx_char\fP* jnx_log_config::log_path"
+
+.SS "\fBjnx_log_type\fP jnx_log_config::output"
+
+.SS "\fBjnx_double\fP jnx_log_config::pcurrent"
+
+.SS "struct timeval* jnx_log_config::pend"
+
+.SS "struct timeval* jnx_log_config::pstart"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

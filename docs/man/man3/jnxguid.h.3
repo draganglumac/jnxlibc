@@ -1,0 +1,132 @@
+.TH "jnxguid.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jnxguid.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'jnxtypes\&.h'\fP
+.br
+\fC#include 'jnxfile\&.h'\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBjnx_guid\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef enum \fBjnx_guid_state\fP \fBjnx_guid_state\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBjnx_guid\fP \fBjnx_guid\fP"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBjnx_guid_state\fP { \fBJNX_GUID_STATE_SUCCESS\fP, \fBJNX_GUID_STATE_FAILURE\fP }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBjnx_guid_state\fP \fBjnx_guid_create\fP (\fBjnx_guid\fP *guid)"
+.br
+.RI "\fIgenerates a guid based off of /dev/urandom noise \fP"
+.ti -1c
+.RI "\fBjnx_guid_state\fP \fBjnx_guid_compare\fP (\fBjnx_guid\fP *ga, \fBjnx_guid\fP *gb)"
+.br
+.RI "\fIcompares two guids and on success returns JNX_GUID_STATE_SUCCESS \fP"
+.ti -1c
+.RI "\fBjnx_guid_state\fP \fBjnx_guid_compare_raw\fP (\fBjnx_uint8\fP *ga, \fBjnx_uint8\fP *gb)"
+.br
+.RI "\fIcompares two guids and on success returns JNX_GUID_STATE_SUCCESS \fP"
+.ti -1c
+.RI "void \fBjnx_guid_to_string\fP (\fBjnx_guid\fP *guid, \fBjnx_char\fP **outstr)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBjnx_guid\fP \fBjnx_guid\fP"
+
+.SS "typedef enum \fBjnx_guid_state\fP \fBjnx_guid_state\fP"
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBjnx_guid_state\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIJNX_GUID_STATE_SUCCESS \fP\fP
+.TP
+\fB\fIJNX_GUID_STATE_FAILURE \fP\fP
+.SH "Function Documentation"
+.PP 
+.SS "jnx_guid_compare (\fBjnx_guid\fP * ga, \fBjnx_guid\fP * gb)"
+
+.PP
+compares two guids and on success returns JNX_GUID_STATE_SUCCESS 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIga\fP the first guid 
+.br
+\fIgb\fP the second guid to compares 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+jnx_guid_state 
+.RE
+.PP
+
+.SS "jnx_guid_compare_raw (\fBjnx_uint8\fP * ga, \fBjnx_uint8\fP * gb)"
+
+.PP
+compares two guids and on success returns JNX_GUID_STATE_SUCCESS 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIga\fP the first array of jnx_uint8 
+.br
+\fIgb\fP the second array of jnx_uint8 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+jnx_guid_state 
+.RE
+.PP
+
+.SS "\fBjnx_guid_state\fP jnx_guid_create (\fBjnx_guid\fP * guid)"
+
+.PP
+generates a guid based off of /dev/urandom noise 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIguid\fP can be a pointer from a stack intialized structure 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+jnx_guid_state JNX_GUID_STATE_SUCCESS or JNX_GUID_STATE_FAILURE 
+.RE
+.PP
+
+.SS "void jnx_guid_to_string (\fBjnx_guid\fP * guid, \fBjnx_char\fP ** outstr)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

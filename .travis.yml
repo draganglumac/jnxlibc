@@ -2,7 +2,8 @@ language: c
 compiler:
     - gcc
     - clang
-script: ./setup/build_and_install SKIP_INSTALL
+before_script: cmake . -DRUN_TESTS=ON
+script: make
 notifications:
     email:
         recipients:
@@ -10,3 +11,8 @@ notifications:
             - dragan.glumac@gmail.com
         on_sucess: [never]
         on_failure: [always] # default: always
+    irc:
+        channels:
+            - "chat.freenode.net#jnxlibc"
+    on_sucess: [always]
+    on_failure: [always] # default: always

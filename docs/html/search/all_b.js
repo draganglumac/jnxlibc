@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['max_5farg_5fsize',['MAX_ARG_SIZE',['../jnxlog_8h.html#a79d0e990c7280f3356391dab6824a745',1,'jnxlog.h']]],
-  ['max_5flog_5fsize',['MAX_LOG_SIZE',['../jnxlog_8h.html#ab6bc945ce840e4f0a16ec0fb12acc1a0',1,'jnxlog.h']]],
-  ['max_5ftrace',['MAX_TRACE',['../jnxdebug_8h.html#a61466023ed32f84aca4ca0c6942b8753',1,'jnxdebug.h']]]
+  ['key',['key',['../structB__tree__record.html#ad8160201fba6eea57765fb6e204667a4',1,'B_tree_record::key()'],['../structjnx__file__kvp__node.html#ac9c0e94b0dc0ae26fbed40be4eeb8ef1',1,'jnx_file_kvp_node::key()']]]
 ];

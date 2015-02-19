@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-.TH "jnx_queue" 3 "Wed Apr 16 2014" "jnxlibc" \" -*- nroff -*-
-=======
-.TH "jnx_queue" 3 "Sun Apr 27 2014" "jnxlibc" \" -*- nroff -*-
->>>>>>> alex/master
+.TH "jnx_queue" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -18,9 +14,14 @@ jnx_queue \-
 .ti -1c
 .RI "\fBjnx_list\fP * \fBlist\fP"
 .br
+.ti -1c
+.RI "\fBjnx_thread_mutex\fP * \fBinternal_lock\fP"
+.br
 .in -1c
 .SH "Member Data Documentation"
 .PP 
+.SS "\fBjnx_thread_mutex\fP* jnx_queue::internal_lock"
+
 .SS "\fBjnx_list\fP* jnx_queue::list"
 
 

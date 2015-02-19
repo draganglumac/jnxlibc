@@ -1,0 +1,72 @@
+.TH "jnxcheck.h" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jnxcheck.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include 'jnxtypes\&.h'\fP
+.br
+\fC#include 'jnxlog\&.h'\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAXSTACKFRAMES\fP   20"
+.br
+.ti -1c
+.RI "#define \fBJNXCHECK\fP(X)"
+.br
+.ti -1c
+.RI "#define \fBJNXFAIL\fP(X)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBjnxcheck_backtrace\fP (void)"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define JNXCHECK(X)"
+\fBValue:\fP
+.PP
+.nf
+do \
+  { \
+    if(!(X)) {\\
+      JNX_LOG(NULL,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \\
+      jnxcheck_backtrace(); \
+      exit(1);\
+    } \
+  } \
+  while(0)
+.fi
+.SS "#define JNXFAIL(X)"
+\fBValue:\fP
+.PP
+.nf
+do \
+  { \\
+      JNX_LOG(NULL,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \\
+      jnxcheck_backtrace(); \
+      exit(1);\
+  } \
+  while(0)
+.fi
+.SS "#define MAXSTACKFRAMES   20"
+
+.SH "Function Documentation"
+.PP 
+.SS "void jnxcheck_backtrace (void)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for jnxlibc from the source code\&.

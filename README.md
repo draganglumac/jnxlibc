@@ -1,64 +1,99 @@
-![jnx Icon](http://i.imgur.com/w6M1lJP.png) 
+
  jnxlibc
 =======
-[![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.png)](https://travis-ci.org/AlexsJones/jnxlibc)
+[![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master)](https://travis-ci.org/AlexsJones/jnxlibc)
+[![License](http://img.shields.io/badge/license-GPLv3-green.svg)](http://img.shields.io/badge/license-GPLv3-green.svg)
+[![Dev](http://img.shields.io/badge/development-active-green.svg)](http://img.shields.io/badge/development-active-green.svg)
 
-[Test Driven](setup/test) C library for reliable networking, data structures and utility functionality.
-Constantly in development and refinement to make it as memory/thread safe as possible whilst maintaining
-no dependencies and low foot print.
 
-####For a solid snapshot of the library check out the releases
-https://github.com/AlexsJones/jnxlibc/releases
+>A modern C library that provides a useful self contained API that has built in testing and just works.
+>Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library and tool for learning.
 
+[Latest release](https://github.com/AlexsJones/jnxlibc/releases)
+
+[Latest iOS arm7 release](https://www.dropbox.com/sh/yrmpg4s54haobvk/AAACzIDXYKS7b7CZURzZb6Qaa?dl=0)
+
+[Latest travis build](https://travis-ci.org/AlexsJones/jnxlibc/builds)
+
+IRC: freenode.net #jnxlibc
+
+Email: jonesax@hush.com
 
 #Key features
-- Lightweight data structures with thread-safe API (hash, list, vector, btree, stack, queue) 
-- Socket implmentation supporting multiple transport and IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP & UDP
-- Network utilities (get IP from hostname, resolve hostname from IP, interface to IP)
-- Threading interface above POSIX
-- Signals & Slots
-- Interprocess communication
+- Lightweight data structures with thread-safe API (`hash, list, vector, btree, stack, queue`) 
+- `Socket` implmentation supporting multiple transport and `IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP & UDP`
+- `Network` utilities (get IP from hostname, resolve hostname from IP, interface to IP)
+- `Threading` interface above POSIX (Ambition to extend x-platform)
+- `Signals` & `Slots`
+- `Interprocess communication`
 - Verbose terminal logging
-- Easy to use file read/write functions
-- Fast and easy base64 encoding/decoding
+- Easy to use `file read/write` functions
+- Fast and easy `base64 encoding/decoding`
 - Auto generated documentation and logical API
-- Almost total test coverage
+- Almost total test coverage (Unit tests/ Performance tests)
+- Armv7 framework version available [Here](https://github.com/AlexsJones/jnxlibc_ios)
 
 #Documentation & Examples
 
+- First port of call: [Wiki](https://github.com/AlexsJones/jnxlibc/wiki/A-library-tour)
 - MAN  docs/man
 - HTML docs/html ([Here](http://htmlpreview.github.io/?https://raw.github.com/AlexsJones/jnxlibc/master/docs/html/files.html))
-- [Loads of lovely tests in C!](setup/test)
+- [Loads of lovely tests in C!](test)
 - Code reviewing
 
 #Installation
 
-Currently supported platforms:
-Linux distributions/OS X
+###Dependencies
+```
+GCC
+CMake
+```
+####Currently supported platforms: Linux distributions/OS X
 
-Arch linux users
-````
-yaourt jnxlibc 
-````
 
-Grab this repo.
-````
-./setup/build_and_install
+Default install location
+```
+git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
+cmake .   #or use cmake . -DRUN_TESTS=ON 
+make
+sudo make install
+```
+Custom install location
+```
+git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
+cmake . -DCMAKE_INSTALL_PREFIX=/Users/alexjo/Projects/jnxlibc/build/ 
+make
+sudo make install
+```
 
-Use -ljnxc when building your project
+Use `-ljnxc` when building your project for shared library
+Use `-ljnxcs` for static library
 
-````
 ####Flags
 
 -DRELEASE (Sets library for release mode optimisations) 
 
+###Tests
+
+To run tests at compile time
+```
+cmake . -DRUN_TESTS=ON
+```
+To run tests from root of the project folder
+```
+./test/run_tests
+```
+To run an individual test
+```
+./test/run_tests test_jnxlist.c
+```
 ##Examples
 
 Sending message over network
 ```C
 jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
 jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
-jnx_socket_close(tcp_sock);
+jnx_socket_close(udp_sock);
 
 ```
 Using a binary tree

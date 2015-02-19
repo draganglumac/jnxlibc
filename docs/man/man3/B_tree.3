@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-.TH "B_tree" 3 "Wed Apr 16 2014" "jnxlibc" \" -*- nroff -*-
-=======
-.TH "B_tree" 3 "Sun Apr 27 2014" "jnxlibc" \" -*- nroff -*-
->>>>>>> alex/master
+.TH "B_tree" 3 "Sun Feb 1 2015" "jnxlibc" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-B_tree \- 
-.PP
-Internal representation of the whole B-tree\&.  
+B_tree \- Internal representation of the whole B-tree\&.  
 
 .SH SYNOPSIS
 .br
@@ -19,13 +13,16 @@ Internal representation of the whole B-tree\&.
 
 .in +1c
 .ti -1c
-.RI "int \fBorder\fP"
+.RI "\fBjnx_int32\fP \fBorder\fP"
 .br
 .ti -1c
 .RI "\fBcompare_keys\fP \fBcompare_function\fP"
 .br
 .ti -1c
 .RI "\fBjnx_btree_node\fP * \fBroot\fP"
+.br
+.ti -1c
+.RI "\fBjnx_thread_mutex\fP * \fBinternal_lock\fP"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -42,7 +39,9 @@ Callback function to compare keys\&.
 .RE
 .PP
 
-.SS "int B_tree::order"
+.SS "\fBjnx_thread_mutex\fP* B_tree::internal_lock"
+
+.SS "\fBjnx_int32\fP B_tree::order"
 The order of the tree, i\&.e\&. the minimum number of records a non-root node can have\&. 
 .SS "\fBjnx_btree_node\fP* B_tree::root"
 The root node of the B-tree\&. 
