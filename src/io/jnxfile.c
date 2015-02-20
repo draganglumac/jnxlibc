@@ -147,7 +147,7 @@ static jnx_char *jnx_file_random_dir(jnx_char *basepath) {
   }
 
   jnx_char *s = malloc(sizeof(jnx_char) * 256);
-  sprintf(s,"%s/%zu",basepath,n);
+  sprintf(s,"%s/%ld",basepath,n);
   return s;
 }
 jnx_int32 jnx_file_mktempdir(jnx_char *dirtemplate, jnx_char **path) {
