@@ -52,7 +52,7 @@ int main(int argc, char** argv)
     jnx_finally {
       JNX_LOG(NULL,"Hit finally clause");
     }
-    jnx_try_end;
+    jnx_try_end
   }
   return 0;
 }
