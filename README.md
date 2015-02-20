@@ -91,12 +91,16 @@ To run an individual test
 ```
 ##Examples
 
-Sending message over network
+Sending message over network with exception handling.
 ```C
 jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
-jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
-jnx_socket_close(udp_sock);
-
+jnx_try {
+ jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
+} catch( NETWORK_EXCEPTION ) {
+ JNX_LOG(DEFAULT_CONTEXT, "Failure in UDP network send!");
+} finally {
+ jnx_socket_close(udp_sock);
+}
 ```
 Using a binary tree
 ```C
