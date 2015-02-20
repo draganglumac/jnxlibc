@@ -26,6 +26,8 @@ Email: jonesax@hush.com
 - `Threading` interface above POSIX (Ambition to extend x-platform)
 - `Signals` & `Slots`
 - `Interprocess communication`
+- `Try/Catch/Finally` exception handling
+- Built in assertions with Debug/Release flexibility
 - Verbose terminal logging
 - Easy to use `file read/write` functions
 - Fast and easy `base64 encoding/decoding`
@@ -89,12 +91,17 @@ To run an individual test
 ```
 ##Examples
 
-Sending message over network
+Sending message over network with exception handling.
 ```C
 jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
-jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
-jnx_socket_close(udp_sock);
-
+jnx_try {
+ jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
+} jnx_catch( NETWORK_EXCEPTION ) {
+ JNX_LOG(DEFAULT_CONTEXT, "Failure in UDP network send!");
+} jnx_finally {
+ jnx_socket_close(udp_sock);
+}
+jnx_try_end
 ```
 Using a binary tree
 ```C
