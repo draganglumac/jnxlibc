@@ -18,6 +18,7 @@
 #ifndef __JNX_CHECK_H__
 #define __JNX_CHECK_H__
 #include <stdio.h>
+#include <setjmp.h>
 #include "jnxtypes.h"
 #include "jnxlog.h"
 #ifdef __cplusplus
@@ -44,12 +45,19 @@ extern		"C" {
 #define JNXFAIL(X)\
   do \
   { \
-      JNX_LOG(NULL,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
-      jnxcheck_backtrace(); \
-      exit(1);\
+    JNX_LOG(NULL,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
+    jnxcheck_backtrace(); \
+    exit(1);\
   } \
   while(0)
 #endif
+#define jnx_try do{ jmp_buf ex_buf__; \
+  switch( setjmp(ex_buf__) )\
+  { case 0: while(1){
+#define jnx_catch(x) break; case x:
+#define jnx_finally break; } default:{
+#define jnx_try_end } } }while(0)
+#define jnx_throw(x) longjmp(ex_buf__, x)
 #ifdef __cplusplus
 }
 #endif
