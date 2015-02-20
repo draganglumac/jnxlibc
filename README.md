@@ -96,11 +96,12 @@ Sending message over network with exception handling.
 jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
 jnx_try {
  jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
-} catch( NETWORK_EXCEPTION ) {
+} jnx_catch( NETWORK_EXCEPTION ) {
  JNX_LOG(DEFAULT_CONTEXT, "Failure in UDP network send!");
-} finally {
+} jnx_finally {
  jnx_socket_close(udp_sock);
 }
+jnx_try_end
 ```
 Using a binary tree
 ```C
