@@ -26,6 +26,8 @@ Email: jonesax@hush.com
 - `Threading` interface above POSIX (Ambition to extend x-platform)
 - `Signals` & `Slots`
 - `Interprocess communication`
+- `Try/Catch/Finally` exception handling
+- Built in assertions with Debug/Release flexibility
 - Verbose terminal logging
 - Easy to use `file read/write` functions
 - Fast and easy `base64 encoding/decoding`
