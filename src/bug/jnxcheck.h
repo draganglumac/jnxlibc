@@ -51,34 +51,34 @@ extern		"C" {
   } \
   while(0)
 #endif
-/*
- * @brief: JNX_EXCEPTION is the default case for exceptions when using try/catch
- *         This exception can also be replaced with -1
- *
- * @warning: The general rule is user created exceptions will decrement in value 
- */
+  /*
+   * @brief: JNX_EXCEPTION is the default case for exceptions when using try/catch
+   *         This exception can also be replaced with -1
+   *
+   * @warning: The general rule is user created exceptions will decrement in value 
+   */
 #define JNX_EXCEPTION (-1)
-/*
- * @brief: To create a try/catch block jnx_try must be followed by jnx_try_end
- * @example:
- *      jnx_try {
- *
- *      }jnx_catch( JNX_EXCEPTION ) {
- *
- *      }jnx_finally {
- *
- *      }
- *      jnx_try_end
- */
+  /*
+   * @brief: To create a try/catch block jnx_try must be followed by jnx_try_end
+   * @example:
+   *      jnx_try {
+   *
+   *      }jnx_catch( JNX_EXCEPTION ) {
+   *
+   *      }jnx_finally {
+   *
+   *      }
+   *      jnx_try_end
+   */
 #define jnx_try do{ jmp_buf ex_buf__; \
   switch( setjmp(ex_buf__) )\
   { case 0: while(1){
 #define jnx_catch(x) break; case x:
 #define jnx_finally break; } default:{
-#define jnx_try_end } } }while(0)
-/*
- * @brief: jnx_throw can be used at any point to jump to the last setjmp point
- */
+#define jnx_try_end } } }while(0);
+  /*
+   * @brief: jnx_throw can be used at any point to jump to the last setjmp point
+   */
 #define jnx_throw(x) longjmp(ex_buf__, x)
 #ifdef __cplusplus
 }
