@@ -73,8 +73,11 @@ extern		"C" {
 #define jnx_try do{ jmp_buf ex_buf__; \
   switch( setjmp(ex_buf__) )\
   { case 0: while(1){
+
 #define jnx_catch(x) break; case x:
+
 #define jnx_finally break; } default:{
+
 #define jnx_try_end } } }while(0);
   /*
    * @brief: jnx_throw can be used at any point to jump to the last setjmp point
