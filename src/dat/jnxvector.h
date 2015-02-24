@@ -84,15 +84,15 @@ extern "C" {
   jnx_size jnx_vector_count_ts(jnx_vector *vector);
 
   /**
-   * @fn jnx_vector_fetch_at(jnx_vector *vector, jnx_int32 position)
-   * @brief fetches an entry at position in the vector
+   * @fn jnx_vector_get_at(jnx_vector *vector, jnx_int32 position)
+   * @brief getes an entry at position in the vector
    * @param vector pointer to the target vector
    * @param position target position
    * @return returns the value, returns NULL on error 
    */
-  void* jnx_vector_fetch_at(jnx_vector *vector,jnx_int32 position);
+  void* jnx_vector_get_at(jnx_vector *vector,jnx_int32 position);
 
-  void* jnx_vector_fetch_at_ts(jnx_vector *vector,jnx_int32 position);
+  void* jnx_vector_get_at_ts(jnx_vector *vector,jnx_int32 position);
   /**
    * @fn jnx_vector_remove_at(jnx_vector *vector, jnx_int32 position)
    * @brief removes an entry at position in the vector
