@@ -19,7 +19,7 @@ extern "C" {
     void *data;
   }jnx_vector_record;
   /** 
-   * @brief The external structure and jnx_int32erface for jnx vector
+   * @brief The external structure and interface for jnx vector
    */
   typedef struct{
     jnx_int32 count;
@@ -38,7 +38,7 @@ extern "C" {
   /**
    * @fn jnx_vector_destroy(jnx_vector* vector)
    * @brief Deletes the vector and its data structures
-   * @param vector pojnx_int32s to the vector to destroy
+   * @param vector pointer to the vector to destroy
    *
    * @warning User assumes responsibility for deleting all data entries first
    */
@@ -47,7 +47,7 @@ extern "C" {
   /**
    * @fn jnx_vector_insert(jnx_vector *vector, void *value)
    * @brief inserts jnx_int32o the next position in the vector
-   * @param vector pojnx_int32s to the vector to insert int32_to
+   * @param vector pointer to the vector to insert int32_to
    * @param value value for insertion cast jnx_int32o void*
    */
   void jnx_vector_insert(jnx_vector *vector, void *value);
@@ -66,7 +66,7 @@ extern "C" {
   /**
    * @fn jnx_vector_last(jnx_vector *vector)
    * @brief returns the last data entry in the vector and shortens it by 1
-   * @param vector pojnx_int32s to the vector to use
+   * @param vector pointer to the vector to use
    *
    * @return returns void* data from the last vector entry
    */
@@ -76,16 +76,27 @@ extern "C" {
 
   /**
    * @fn jnx_vector_count(jnx_vector *vector);
-   * @param vector is the pojnx_int32er to the vector to count
+   * @param vector is the pointer to the vector to count
    * @return number of vector elements
    */
   jnx_size jnx_vector_count(jnx_vector *vector);
 
   jnx_size jnx_vector_count_ts(jnx_vector *vector);
+
+  /**
+   * @fn jnx_vector_fetch_at(jnx_vector *vector, jnx_int32 position)
+   * @brief fetches an entry at position in the vector
+   * @param vector pointer to the target vector
+   * @param position target position
+   * @return returns the value, returns NULL on error 
+   */
+  void* jnx_vector_fetch_at(jnx_vector *vector,jnx_int32 position);
+
+  void* jnx_vector_fetch_at_ts(jnx_vector *vector,jnx_int32 position);
   /**
    * @fn jnx_vector_remove_at(jnx_vector *vector, jnx_int32 position)
    * @brief removes an entry at position in the vector
-   * @param vector pojnx_int32s to the target vector
+   * @param vector pointer to the target vector
    * @param position target position
    * @return returns the value, returns NULL on error 
    */
@@ -96,7 +107,7 @@ extern "C" {
   /**
    * @fn jnx_vector_contains(jnx_vector *vector, void *datain, jnx_int32(*vector_comparison)(void *a, void *b))
    * @brief checks whether a list contains a specific value
-   * @param vector is a pojnx_int32er to the jnx_vector_contains
+   * @param vector is a pointer to the jnx_vector_contains
    * @param datain iis the value to check the vector for
    * @param vector_comparison is the functor callback for comparison, 1 is a positive find, 0 is a negative
    * @return either 1 on success or 0 on failure

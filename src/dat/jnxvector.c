@@ -91,6 +91,21 @@ void jnx_vector_insert_at_ts(jnx_vector *vector, jnx_int32 position, void *value
   jnx_vector_insert_at(vector,position,value);
   jnx_thread_unlock(vector->internal_lock);
 }
+void* jnx_vector_fetch_at(jnx_vector *vector,jnx_int32 position) {
+  JNXCHECK(vector);
+  if(vector->vector[position]->used) {
+    void *data = vector->vector[position]->data;
+    return data;
+  }
+  return NULL;
+}
+void* jnx_vector_fetch_at_ts(jnx_vector *vector,jnx_int32 position) {
+  JNXCHECK(vector);
+  jnx_thread_lock(vector->internal_lock);
+  void *ret = jnx_vector_fetch_at(vector,position);
+  jnx_thread_unlock(vector->internal_lock);
+  return ret;
+}
 void* jnx_vector_remove_at(jnx_vector *vector,jnx_int32 position) {
   JNXCHECK(vector);
   if(vector->vector[position]->used) {
