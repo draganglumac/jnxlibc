@@ -106,6 +106,8 @@ void test_get() {
   JNXCHECK(jnx_vector_contains(vector,"Hello",vector_compare) == 1);
   char *str = (char*)jnx_vector_get_at(vector,0);
   JNXCHECK(strcmp("Hello",str) == 0);
+  char *str2 = (char*)jnx_vector_get_at(vector,0);
+  JNXCHECK(strcmp("Hello",str2) == 0);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv) {
