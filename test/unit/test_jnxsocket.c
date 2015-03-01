@@ -52,10 +52,19 @@ static int tcp_ip6_complete = 0;
 static jnx_socket *tcp_ipv6_listener;
 
 ///////////////////TCP IPV4 /////////////////////////////
+void assert_tcp(char *msg) {
+  assert(strcmp(msg,"hi") == 0
+      || strcmp(msg,"bye") == 0
+      || strcmp(msg,"once more for good measure") == 0
+      || strcmp(msg,"STOP") == 0);
+}
 int tcplistenipv4_callback(char *msg, size_t size,jnx_socket *s) {
-  assert(strcmp(msg,"hi") == 0);
-  tcp_ip4_complete = 1;
-  return 1;
+  assert_tcp(msg);
+  if (strcmp(msg, "STOP") == 0) {
+    tcp_ip4_complete = 1;
+    return 1;
+  }
+  return 0; 
 }
 void *test_tcp_listen_ipv4(void *args) {
   tcp_socket_listener_callback c = tcplistenipv4_callback;
@@ -64,7 +73,7 @@ void *test_tcp_listen_ipv4(void *args) {
   return 0;
 }
 void setup_tcp_listen_ipv4_test() {
-  JNX_LOG(NULL,"Starting TCP IPV4 test\n");
+  JNX_LOG(NULL,"Starting TCP IPV4 test");
   pthread_t worker;
   pthread_create(&worker,NULL,test_tcp_listen_ipv4,NULL);
 
@@ -72,6 +81,13 @@ void setup_tcp_listen_ipv4_test() {
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_tcp_create(AF_INET);
   size_t bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"hi",strlen("hi"));
+  printf("."); fflush(stdout); sleep(1);
+  bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"bye",strlen("bye"));
+  printf("."); fflush(stdout); sleep(1);
+  bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"once more for good measure",strlen("once more for good measure"));
+  printf("."); fflush(stdout); sleep(1);
+  bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"STOP",strlen("STOP"));
+  printf(".\n");
   jnx_socket_destroy(&s);
   time_t st;
   time(&st);
@@ -88,9 +104,12 @@ void setup_tcp_listen_ipv4_test() {
 
 ///////////////////TCP IPV6 /////////////////////////////
 int tcplistenipv6_callback(char *msg, size_t size,jnx_socket *s) {
-  assert(strcmp(msg,"hi") == 0);
-  tcp_ip6_complete = 1;
-  return 1;
+  assert_tcp(msg);
+  if (strcmp(msg, "STOP") == 0) {
+    tcp_ip6_complete = 1;
+    return 1;
+  }
+  return 0;
 }
 void *test_tcp_listen_ipv6(void *args) {
   tcp_socket_listener_callback c = tcplistenipv6_callback;
@@ -99,7 +118,7 @@ void *test_tcp_listen_ipv6(void *args) {
   return 0;
 }
 void setup_tcp_listen_ipv6_test() {
-  JNX_LOG(NULL,"Starting TCP IPV6 test\n");
+  JNX_LOG(NULL,"Starting TCP IPV6 test");
   pthread_t worker;
   pthread_create(&worker,NULL,test_tcp_listen_ipv6,NULL);
 
@@ -107,6 +126,13 @@ void setup_tcp_listen_ipv6_test() {
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_tcp_create(AF_INET6);
   size_t bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"hi",strlen("hi"));
+  printf("."); fflush(stdout); sleep(1);
+  bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"bye",strlen("bye"));
+  printf("."); fflush(stdout); sleep(1);
+  bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"once more for good measure",strlen("once more for good measure"));
+  printf("."); fflush(stdout); sleep(1);
+  bytes = jnx_socket_tcp_send(s,"localhost",TESTPORT,"STOP",strlen("STOP"));
+  printf(".\n");
   jnx_socket_destroy(&s);
   time_t st;
   time(&st);
