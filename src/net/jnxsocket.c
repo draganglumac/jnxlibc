@@ -45,6 +45,7 @@ jnx_socket *create_socket(jnx_unsigned_int type,jnx_unsigned_int addrfamily) {
   setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval);
   jnx_socket *s = malloc(sizeof(jnx_socket));
   s->isclosed = 0;
+  s->isconnected = 0;
   s->addrfamily = addrfamily;
   s->socket = sock;
   s->stype = type;
@@ -177,10 +178,13 @@ jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_
     JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
     return 0;
   }
-  if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
-    perror("connect:");
-    freeaddrinfo(res);
-    return 0;
+  if(!s->isconnected) {
+    if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
+      perror("connect:");
+      freeaddrinfo(res);
+      return 0;
+    }
+    s->isconnected = 1;
   }
   freeaddrinfo(res);
   jnx_size tbytes = 0;
@@ -304,8 +308,55 @@ jnx_size jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_
   freeaddrinfo(res);
   return tbytes;
 }
+
+typedef struct {
+  jnx_socket *s;
+  int recfd;
+  tcp_socket_listener_callback_with_context c;
+  void *context;
+} tcp_handler_data;
+static void *jnx_tcp_handler(void *data) {
+  tcp_handler_data *pd = (tcp_handler_data *) data;
+  jnx_socket *s = pd->s;
+  int recfd = pd->recfd;
+  tcp_socket_listener_callback_with_context c = pd->c;
+  void *context = pd->context;
+
+  jnx_uint8 buffer[MAXBUFFER];
+  memset(buffer,0,MAXBUFFER);
+  jnx_size bytesread = read(recfd,buffer,MAXBUFFER);
+  if(bytesread == -1) {
+    perror("read:");
+    return 0;
+  }
+  while(bytesread > 0) {
+    jnx_int32 ret = 0;
+    if(NULL != context) {
+      if((ret = c(buffer,bytesread,s,context)) != 0) {
+        close(recfd);
+        return 0;
+      }
+    }
+    else {
+      tcp_socket_listener_callback cb = (tcp_socket_listener_callback) c;
+      if((ret = cb(buffer,bytesread,s)) != 0) {
+        close(recfd);
+        return 0;
+      }
+    } 
+    memset(buffer,0,MAXBUFFER);
+    bytesread = read(recfd,buffer,MAXBUFFER);
+    if(bytesread == -1) {
+      perror("read:");
+      return 0;
+    }
+  }
+  close(recfd);
+  return 0;
+}
+
 jnx_int32 jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback c) {
-	return jnx_socket_tcp_listen_with_context(s, port, max_connections, (tcp_socket_listener_callback_with_context) c, NULL);
+  return jnx_socket_tcp_listen_with_context(s, port, max_connections, (tcp_socket_listener_callback_with_context) c, NULL);
 }
 jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback_with_context c, void *context) {
   JNXCHECK(s);
@@ -315,7 +366,6 @@ jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_
   jnx_int32 optval = 1;
   struct addrinfo hints, *res, *p;
   struct sockaddr_storage their_addr;
-  jnx_uint8 buffer[MAXBUFFER];
   memset(&hints,0,sizeof(hints));
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
@@ -344,50 +394,17 @@ jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_
       perror("accept:");
       return -1;
     }
-    memset(buffer,0,MAXBUFFER);
-    FILE *fp = tmpfile();
-    if(fp == NULL) {
-      perror("tmpfile:");
-      return -1;
-    }
-    jnx_size bytesread = read(recfd,buffer,MAXBUFFER);
-    fwrite(buffer,sizeof(jnx_uint8),bytesread,fp);
-
-    while(bytesread > 0) {
-      memset(buffer,0,MAXBUFFER);
-      bytesread = read(recfd,buffer,MAXBUFFER);
-      if(bytesread == -1) {
-        perror("read:");
-        fclose(fp);
-        return -1;
-      }
-      if(bytesread > 0) {
-        fwrite(buffer,sizeof(jnx_uint8),bytesread,fp);
-      }
-    }
-    jnx_int32 len = ftell(fp);
-    rewind(fp);
-    jnx_uint8 *out = calloc(len + 1, sizeof(jnx_uint8));
-    fread(out,sizeof(jnx_uint8),len,fp);
-    fclose(fp);
-
-    jnx_int32 ret = 0;
-	if(NULL != context) {
-	  if((ret = c(out,len,s,context)) != 0) {
-		return 0;
-	  }
-	}
-	else {
-	  tcp_socket_listener_callback cb = (tcp_socket_listener_callback) c;
-      if((ret = cb(out,len,s)) != 0) {
-        return 0;
-      }
-	}
+    tcp_handler_data *data = malloc(sizeof(tcp_handler_data));
+    data->s = s;
+    data->recfd = recfd;
+    data->c = c;
+    data->context = context;
+    jnx_thread_create_disposable(jnx_tcp_handler, (void *) data);
   }
   return 0;
 }
 jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback c) {
-	return jnx_socket_udp_listen_with_context(s, port, max_connections, (udp_socket_listener_callback_with_context) c, NULL);
+  return jnx_socket_udp_listen_with_context(s, port, max_connections, (udp_socket_listener_callback_with_context) c, NULL);
 }
 jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback_with_context c, void *context) {
   JNXCHECK(s);
@@ -430,16 +447,16 @@ jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_
     jnx_uint8 *outbuffer = malloc(bytesread * sizeof(jnx_uint8));
     memcpy(outbuffer,buffer,bytesread);
     if(context != NULL) {
-	  if((ret = c(outbuffer,bytesread,s,context)) != 0) {
+      if((ret = c(outbuffer,bytesread,s,context)) != 0) {
         return 0;
       }
-	}
-	else {
-	  udp_socket_listener_callback cb = (udp_socket_listener_callback) c;
-	  if((ret = cb(outbuffer,bytesread,s)) != 0) {
+    }
+    else {
+      udp_socket_listener_callback cb = (udp_socket_listener_callback) c;
+      if((ret = cb(outbuffer,bytesread,s)) != 0) {
         return 0;
       }
-	}
+    }
   }
   return -1;
 }

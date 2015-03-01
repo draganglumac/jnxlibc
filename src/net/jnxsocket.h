@@ -34,6 +34,7 @@ extern "C" {
   typedef struct
   {
     jnx_int32 isclosed;
+    jnx_int32 isconnected;
     jnx_int32 socket;
     jnx_unsigned_int addrfamily;
     jnx_size stype;
