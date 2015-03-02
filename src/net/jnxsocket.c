@@ -343,14 +343,14 @@ static void *jnx_tcp_handler(void *data) {
   while(bytesread > 0) {
     jnx_int32 ret = 0;
     if(NULL != context) {
-      if((ret = c(buffer,bytesread,s,context)) != 0) {
+      if((ret = c(buffer,bytesread,s,recfd,context)) != 0) {
         close(recfd);
         return 0;
       }
     }
     else {
       tcp_socket_listener_callback cb = (tcp_socket_listener_callback) c;
-      if((ret = cb(buffer,bytesread,s)) != 0) {
+      if((ret = cb(buffer,bytesread,s,recfd)) != 0) {
         close(recfd);
         return 0;
       }

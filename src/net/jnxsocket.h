@@ -45,9 +45,9 @@ extern "C" {
    *@warning must return 0 or will break the listener loop
    */
   typedef jnx_int32 (*tcp_socket_listener_callback)(jnx_uint8 *payload,\
-    jnx_size bytesread, jnx_socket *s);
+    jnx_size bytesread, jnx_socket *s, int connected_socket);
   typedef jnx_int32 (*tcp_socket_listener_callback_with_context)(jnx_uint8 *payload,\
-    jnx_size bytesread, jnx_socket *s, void *context);
+    jnx_size bytesread, jnx_socket* s, int connected_socket, void *context);
   /*
    *@warning must return 0 or will break the listener loop
    */
