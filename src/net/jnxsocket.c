@@ -172,12 +172,14 @@ jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
   JNXCHECK(msg_len);
   JNXCHECK(s->isclosed == 0);
   JNXCHECK(s->stype == SOCK_STREAM);
+  JNXCHECK(s->addrfamily == AF_INET || s->addrfamily == AF_INET6);
   struct addrinfo hints, *res;
   memset(&hints,0,sizeof(hints));
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
 
   jnx_int32 rg = 0;
+
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
     JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
     return 0;
@@ -304,6 +306,7 @@ jnx_size jnx_socket_udp_send(jnx_socket *s,\
     return 0;
   }
   while(tbytes < rbytes) {
+
     jnx_size n = sendto(s->socket,msg,msg_len,0,res->ai_addr,res->ai_addrlen);
     if(n == -1) {
       freeaddrinfo(res);
@@ -464,7 +467,8 @@ jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port,\
       return -1;
     }
     jnx_int32 ret = 0;
-    jnx_uint8 *outbuffer = malloc(bytesread * sizeof(jnx_uint8));
+    jnx_uint8 *outbuffer = malloc((bytesread + 1) * sizeof(jnx_uint8));
+    memset(outbuffer,0,bytesread + 1);
     memcpy(outbuffer,buffer,bytesread);
     if(context != NULL) {
       if((ret = c(outbuffer,bytesread,s,context)) != 0) {
