@@ -34,7 +34,8 @@
 #define KILOBYTE 1024
 #define MAXBUFFER KILOBYTE * 10 
 #define MAX_UDP_BUFFER KILOBYTE * 65
-jnx_socket *create_socket(jnx_unsigned_int type,jnx_unsigned_int addrfamily) {
+jnx_socket *create_socket(jnx_unsigned_int type,\
+  jnx_unsigned_int addrfamily) {
   JNXCHECK(addrfamily);
   JNXCHECK(type);
   JNXCHECK(type);
@@ -84,7 +85,8 @@ jnx_size jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
   }
   return 0;
 }
-jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s, jnx_char *interface, int ignore_local) {
+jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s,\
+  jnx_char *interface, int ignore_local) {
   JNXCHECK(s);
   JNXCHECK(interface);
   JNXCHECK(s->stype == SOCK_DGRAM);
@@ -106,7 +108,8 @@ jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s, jnx_char *interface
   s->addrfamily = AF_UNSPEC;
   return 0;
 }
-jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s, jnx_char *interface, jnx_char *group) {
+jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s,\
+  jnx_char *interface, jnx_char *group) {
   JNXCHECK(s);
   JNXCHECK(interface);
   JNXCHECK(group);
@@ -160,7 +163,8 @@ jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
   }
   return NULL;
 }
-jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
+jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
+  jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -201,7 +205,9 @@ jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_
   }
   return tbytes;
 }
-jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len,jnx_uint8 **out_receipt) {
+jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
+  jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
+  jnx_size msg_len,jnx_uint8 **out_receipt) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -267,7 +273,9 @@ jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s, jnx_char *host, jnx_cha
   *out_receipt = out;
   return len;
 }
-jnx_size jnx_socket_udp_send(jnx_socket *s, jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
+jnx_size jnx_socket_udp_send(jnx_socket *s,\
+  jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
+  jnx_size msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -355,10 +363,16 @@ static void *jnx_tcp_handler(void *data) {
   return 0;
 }
 
-jnx_int32 jnx_socket_tcp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback c) {
-  return jnx_socket_tcp_listen_with_context(s, port, max_connections, (tcp_socket_listener_callback_with_context) c, NULL);
+jnx_int32 jnx_socket_tcp_listen(jnx_socket *s,\
+  jnx_char* port, jnx_size max_connections,\
+  tcp_socket_listener_callback c) {
+  return jnx_socket_tcp_listen_with_context(s, port,
+    max_connections,
+    (tcp_socket_listener_callback_with_context) c, NULL);
 }
-jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_size max_connections, tcp_socket_listener_callback_with_context c, void *context) {
+jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s,\
+  jnx_char* port, jnx_size max_connections,\
+  tcp_socket_listener_callback_with_context c, void *context) {
   JNXCHECK(s);
   JNXCHECK(port);
   JNXCHECK(s->isclosed == 0);
@@ -403,10 +417,14 @@ jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_
   }
   return 0;
 }
-jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback c) {
-  return jnx_socket_udp_listen_with_context(s, port, max_connections, (udp_socket_listener_callback_with_context) c, NULL);
+jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port,\
+  jnx_size max_connections, udp_socket_listener_callback c) {
+  return jnx_socket_udp_listen_with_context(s, port, max_connections,\
+    (udp_socket_listener_callback_with_context) c, NULL);
 }
-jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_size max_connections, udp_socket_listener_callback_with_context c, void *context) {
+jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port,\
+  jnx_size max_connections,\
+  udp_socket_listener_callback_with_context c, void *context) {
   JNXCHECK(s);
   JNXCHECK(port);
   JNXCHECK(s->isclosed == 0);
@@ -423,7 +441,8 @@ jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_
   getaddrinfo(NULL,port,&hints,&res);
   p = res;
   while(p != NULL) {
-    if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(jnx_int32)) == -1) {
+    if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR,
+      &optval,sizeof(jnx_int32)) == -1) {
       perror("setsockopt");
       exit(1);
     }
@@ -437,7 +456,8 @@ jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port, jnx_
   freeaddrinfo(res);
   while(1) {
     memset(buffer,0,MAX_UDP_BUFFER);
-    jnx_size bytesread = recvfrom(s->socket,buffer,MAX_UDP_BUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
+    jnx_size bytesread = recvfrom(s->socket,buffer,
+      MAX_UDP_BUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
 
     if(bytesread == -1) {
       perror("recvcfrom:");
