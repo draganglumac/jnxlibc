@@ -53,12 +53,13 @@ static jnx_socket *tcp_ipv6_listener;
 
 ///////////////////TCP IPV4 /////////////////////////////
 void assert_tcp(char *msg) {
+  JNX_LOG(0, "[DEBUG] msg=%s\n", msg);
   assert(strcmp(msg,"hi") == 0
       || strcmp(msg,"bye") == 0
       || strcmp(msg,"once more for good measure") == 0
       || strcmp(msg,"STOP") == 0);
 }
-int tcplistenipv4_callback(char *msg, size_t size,jnx_socket *s) {
+int tcplistenipv4_callback(char *msg, size_t size,jnx_socket *s,int connected_sockfd) {
   assert_tcp(msg);
   if (strcmp(msg, "STOP") == 0) {
     tcp_ip4_complete = 1;
@@ -103,7 +104,7 @@ void setup_tcp_listen_ipv4_test() {
 }
 
 ///////////////////TCP IPV6 /////////////////////////////
-int tcplistenipv6_callback(char *msg, size_t size,jnx_socket *s) {
+int tcplistenipv6_callback(char *msg, size_t size,jnx_socket *s,int connected_sockfd) {
   assert_tcp(msg);
   if (strcmp(msg, "STOP") == 0) {
     tcp_ip6_complete = 1;
