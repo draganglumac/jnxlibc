@@ -386,6 +386,7 @@ jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s,\
   memset(&hints,0,sizeof(hints));
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
+  hints.ai_flags = AI_PASSIVE;
   JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
   p = res;
   while(p != NULL) {
