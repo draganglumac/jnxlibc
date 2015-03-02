@@ -247,33 +247,12 @@ jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
     rbytes = msg_len - tbytes;
   }
   memset(buffer,0,MAXBUFFER);
-  FILE *fp = tmpfile();
-  if(fp == NULL) {
-    perror("tmpfile:");
-    return -1;
-  }
-  jnx_size bytesread = read(s->socket,buffer,MAXBUFFER);
-  fwrite(buffer,sizeof(jnx_uint8),bytesread,fp);
-
-  while(bytesread > 0) {
-    memset(buffer,0,MAXBUFFER);
-    bytesread = read(s->socket,buffer,MAXBUFFER);
-    if(bytesread == -1) {
-      perror("read:");
-      fclose(fp);
-      return -1;
-    }
-    if(bytesread > 0) {
-      fwrite(buffer,sizeof(jnx_uint8),bytesread,fp);
-    }
-  }
-  jnx_int32 len = ftell(fp);
-  rewind(fp);
-  jnx_uint8 *out = calloc(len + 1, sizeof(jnx_uint8));
-  fread(out,sizeof(jnx_uint8),len,fp);
-  fclose(fp);
+  jnx_size bytes_read = read(s->socket,buffer,MAXBUFFER);
+  jnx_uint8 *out = calloc(bytes_read + 1, sizeof(jnx_uint8));
+  memset(out,0,bytes_read + 1);
+  memcpy(out,buffer,bytes_read + 1);
   *out_receipt = out;
-  return len;
+  return bytes_read;
 }
 jnx_size jnx_socket_udp_send(jnx_socket *s,\
   jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
