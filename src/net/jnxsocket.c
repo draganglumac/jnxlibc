@@ -43,7 +43,7 @@ jnx_socket *create_socket(jnx_unsigned_int type,\
   jnx_int32 sock = socket(addrfamily,type,0);
   JNXCHECK(sock);
   jnx_int32 optval = 1;
-  setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval);
+  JNXCHECK(setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval) == 0);
   jnx_socket *s = malloc(sizeof(jnx_socket));
   s->isclosed = 0;
   s->isconnected = 0;
@@ -386,7 +386,7 @@ jnx_int32 jnx_socket_tcp_listen_with_context(jnx_socket *s,\
   memset(&hints,0,sizeof(hints));
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
-  getaddrinfo(NULL,port,&hints,&res);
+  JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
   p = res;
   while(p != NULL) {
     if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, &optval,sizeof(jnx_int32)) == -1) {
@@ -441,7 +441,7 @@ jnx_int32 jnx_socket_udp_listen_with_context(jnx_socket *s, jnx_char* port,\
   hints.ai_family = s->addrfamily;
   hints.ai_socktype = s->stype;
   hints.ai_flags = AI_PASSIVE;
-  getaddrinfo(NULL,port,&hints,&res);
+  JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
   p = res;
   while(p != NULL) {
     if (setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR,
