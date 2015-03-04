@@ -64,7 +64,6 @@ jnx_uint8* jnx_encoder_b64_encode(jnx_encoder *e,jnx_uint8 *data, size_t input_l
   JNXCHECK(data);
   JNXCHECK(input_length);
   *output_length = 4 * ((input_length + 2) / 3);
-  JNX_LOG(NULL,"Output length %zu\n",*output_length);
   jnx_uint8 *encoded_data = malloc(((*output_length) +1) * sizeof (jnx_char));
   if (encoded_data == NULL) return NULL;
 
