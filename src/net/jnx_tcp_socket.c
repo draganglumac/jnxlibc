@@ -21,8 +21,6 @@
 #include "jnxcheck.h"
 #include "jnxsocket.h"
 #include "jnx_tcp_socket.h"
-#define KILOBYTE 1024
-#define MAXBUFFER KILOBYTE * 10 
 
 jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily) {
   return create_socket(SOCK_STREAM,addrfamily);

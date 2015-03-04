@@ -31,6 +31,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#define KILOBYTE 1024
+#define MAXBUFFER KILOBYTE * 10 
+#define MAX_UDP_BUFFER KILOBYTE * 65
   typedef struct
   {
     jnx_int32 isclosed;

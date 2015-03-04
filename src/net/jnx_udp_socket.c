@@ -21,9 +21,6 @@
 #include "jnxlog.h"
 #include "jnxcheck.h"
 #include "jnx_udp_socket.h"
-#define KILOBYTE 1024
-#define MAXBUFFER KILOBYTE * 10 
-#define MAX_UDP_BUFFER KILOBYTE * 65
 
 jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily) {
   return create_socket(SOCK_DGRAM,addrfamily);

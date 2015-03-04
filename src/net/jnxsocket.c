@@ -31,9 +31,6 @@
 #include "jnxlog.h"
 #include "jnxcheck.h"
 #include "jnxsocket.h"
-#define KILOBYTE 1024
-#define MAXBUFFER KILOBYTE * 10 
-#define MAX_UDP_BUFFER KILOBYTE * 65
 jnx_socket *create_socket(jnx_unsigned_int type,\
     jnx_unsigned_int addrfamily) {
   JNXCHECK(addrfamily);
