@@ -34,10 +34,6 @@ jnx_udp_listener* jnx_socket_udp_listener_create(char *port,
   jnx_udp_listener *l = malloc(sizeof(jnx_udp_listener));
   l->socket = jnx_socket_udp_create(family);
   struct addrinfo hints, *res, *p;
-  memset (&hints, 0, sizeof (struct addrinfo));
-  struct sockaddr_storage their_addr;
-  socklen_t their_len = sizeof(their_addr);
-  jnx_uint8 buffer[MAX_UDP_BUFFER];
   memset(&hints,0,sizeof(struct addrinfo));
   hints.ai_family = family;
   hints.ai_socktype = l->socket->stype;
@@ -53,7 +49,7 @@ jnx_udp_listener* jnx_socket_udp_listener_create(char *port,
     }
     if (bind(l->socket->socket, p->ai_addr, p->ai_addrlen) == -1) {
       perror("server: bind");
-      return -1;
+      exit(1);
     }
     break;
     p= p->ai_next;
@@ -79,7 +75,7 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
     memset(outbuffer,0,bytesread + 1);
     memcpy(outbuffer,buffer,bytesread);
    
-    if((ret = c(outbuffer,bytesread,listener->socket)) != 0) {
+    if((ret = callback(outbuffer,bytesread,listener->socket)) != 0) {
         return;
     }
    
