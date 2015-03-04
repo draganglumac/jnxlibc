@@ -49,13 +49,18 @@ jnx_udp_listener* jnx_socket_udp_listener_create(char *port,
     }
     if (bind(l->socket->socket, p->ai_addr, p->ai_addrlen) == -1) {
       perror("server: bind");
-      exit(1);
+      JNXFAIL("bind failure");
     }
     break;
     p= p->ai_next;
   }
   freeaddrinfo(res);
   return l;
+}
+void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener) {
+  jnx_socket_destroy(&(*listener)->socket);
+  free(*listener);
+  *listener = NULL;
 }
 void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
       jnx_udp_listener_callback callback) {
@@ -78,7 +83,6 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
     if((ret = callback(outbuffer,bytesread,listener->socket)) != 0) {
         return;
     }
-   
 }
 jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s,\
   jnx_char *interface, int ignore_local) {
