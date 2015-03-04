@@ -1,21 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  main.c
- *
- *    Description:
- *
- *        Version:  1.0
- *        Created:  02/21/14 18:00:40
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  jonesax (),
- *   Organization:
- *
- * =====================================================================================
- */
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "jnxlog.h"
@@ -34,10 +16,18 @@ void *worker(void *args) {
   jnx_socket *t = jnx_socket_udp_create(AF_INET);
   jnx_socket_udp_send(t,"127.0.0.1",port,"ping",5);
 }
+void *worker_ipv6(void *args) {
+  char *port = (char*)args;
+  jnx_socket *t = jnx_socket_udp_create(AF_INET6);
+  jnx_socket_udp_send(t,"::1",port,"ping",5);
+}
 void fire_threaded_udp_packet(char *port) {
   jnx_thread_create_disposable(worker,port);
 }
-void test_udp_listener_callback(const jnx_uint8 *payload,
+void fire_threaded_udp_packet_ipv6(char *port) {
+  jnx_thread_create_disposable(worker_ipv6,port);
+}
+void test_udp_listener_callback(jnx_uint8 *payload,
     jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket){
   JNX_LOG(NULL,"test_udp_listener_callback achieved");
   test_udp_listener_complete = 1;
@@ -47,8 +37,21 @@ void test_udp_listener() {
  jnx_udp_listener *listener = 
     jnx_socket_udp_listener_create(TESTPORT,AF_INET,100);
 
-  
   fire_threaded_udp_packet(TESTPORT);
+  int x = 0;
+  while(x < 5) {
+  jnx_socket_udp_listener_tick(listener,test_udp_listener_callback);
+  if(test_udp_listener_complete)break;
+  ++x;
+}
+  jnx_socket_udp_listener_destroy(&listener);
+  JNXCHECK(test_udp_listener_complete);
+  JNXCHECK(listener == NULL);
+}
+void test_udp_listener_ipv6() {
+ jnx_udp_listener *listener = 
+    jnx_socket_udp_listener_create(TESTPORT,AF_INET6,100);
+  fire_threaded_udp_packet_ipv6(TESTPORT);
   int x = 0;
   while(x < 5) {
   jnx_socket_udp_listener_tick(listener,test_udp_listener_callback);
@@ -61,9 +64,9 @@ void test_udp_listener() {
 }
 int main(int argc, char **argv) {
   JNX_LOG(NULL,"Starting network tests\n");
-  
+ 
   test_udp_listener();
-
-
+  test_udp_listener_complete = 0;
+  test_udp_listener_ipv6();
   return 0;
 }

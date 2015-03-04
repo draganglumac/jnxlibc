@@ -1,21 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  main.c
- *
- *    Description:
- *
- *        Version:  1.0
- *        Created:  02/21/14 18:00:40
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  jonesax (),
- *   Organization:
- *
- * =====================================================================================
- */
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "jnxlog.h"
