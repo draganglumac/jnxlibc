@@ -12,10 +12,13 @@
 extern "C" {
 #endif
 
-typedef jnx_int32 (*udp_socket_listener_callback)(jnx_uint8 *payload, jnx_size bytesread,\
-    jnx_socket *s);
-typedef jnx_int32 (*udp_socket_listener_callback_with_context)(jnx_uint8 *payload, jnx_size bytesread,\
-    jnx_socket *s, void *context);
+  typedef struct jnx_udp_listener {
+    jnx_socket *socket;
+  }jnx_udp_listener;
+
+  typedef jnx_int32 (*jnx_udp_listener_callback)(jnx_uint8 *payload, \
+      jnx_size bytes_read, jnx_socket *s);
+
   /**
    * @fn jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily)
    * @brief creates a jnx udp socket
@@ -23,6 +26,15 @@ typedef jnx_int32 (*udp_socket_listener_callback_with_context)(jnx_uint8 *payloa
    * @return jnx_socket
    */
   jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily);
+  
+  jnx_udp_listener* jnx_socket_udp_listener_create(char *port,
+      unsigned int family, int max_connections);
+
+  void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener);
+
+  void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
+      jnx_udp_listener_callback callback);
+
   /**
    * @fn jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa);
    * @brief if successful it will return a string displaying the readable IP address
@@ -73,30 +85,6 @@ typedef jnx_int32 (*udp_socket_listener_callback_with_context)(jnx_uint8 *payloa
    */
   jnx_size jnx_socket_udp_send(jnx_socket *s, jnx_char *host,\
     jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
-   /**
-   * @fn jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port,
-    jnx_size max_connections, socket_listener_callback c)
-   * @param s is the socket to use to send
-   * @param port is the target port
-   * @param max_connections are the number of connetions in the queue
-   * @param c is the function pointer callback for received messages
-   * @return -1 on error
-   */
-  int jnx_socket_udp_listen(jnx_socket *s, jnx_char* port,\
-    jnx_size max_connections, udp_socket_listener_callback c);
-   /**
-   * @fn jnx_int32 jnx_socket_udp_listen(jnx_socket *s, jnx_char* port,
-    jnx_size max_connections, socket_listener_callback c)
-   * @param s is the socket to use to send
-   * @param port is the target port
-   * @param max_connections are the number of connetions in the queue
-   * @param c is the function pointer callback for received messages
-   * @param context is the data to pass to the callback as contextual information
-   * @return -1 on error
-   */
-  int jnx_socket_udp_listen_with_context(jnx_socket *s,\
-    jnx_char* port, jnx_size max_connections,\
-    udp_socket_listener_callback_with_context c, void *context);
 
 #ifdef __cplusplus
 }
