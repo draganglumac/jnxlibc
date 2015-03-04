@@ -16,7 +16,7 @@ extern "C" {
     jnx_socket *socket;
   }jnx_udp_listener;
 
-  typedef jnx_int32 (*jnx_udp_listener_callback)(jnx_uint8 *payload, \
+  typedef void (*jnx_udp_listener_callback)(const jnx_uint8 *payload, \
       jnx_size bytes_read, jnx_socket *s);
 
   /**

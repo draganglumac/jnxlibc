@@ -40,7 +40,7 @@ jnx_udp_listener* jnx_socket_udp_listener_create(char *port,
   p = res;
   while(p != NULL) {
     if (setsockopt(l->socket->socket, SOL_SOCKET, SO_REUSEADDR,
-      &optval,sizeof(jnx_int32)) == -1) {
+          &optval,sizeof(jnx_int32)) == -1) {
       perror("setsockopt");
       exit(1);
     }
@@ -60,29 +60,27 @@ void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener) {
   *listener = NULL;
 }
 void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
-      jnx_udp_listener_callback callback) {
-    jnx_char buffer[MAX_UDP_BUFFER];
-    memset(buffer,0,MAX_UDP_BUFFER);
-    struct sockaddr_storage their_addr;
-    socklen_t their_len = sizeof(their_addr);
-    jnx_size bytesread = recvfrom(listener->socket->socket,buffer,
+    jnx_udp_listener_callback callback) {
+  jnx_char buffer[MAX_UDP_BUFFER];
+  memset(buffer,0,MAX_UDP_BUFFER);
+  struct sockaddr_storage their_addr;
+  socklen_t their_len = sizeof(their_addr);
+  jnx_size bytesread = recvfrom(listener->socket->socket,buffer,
       MAX_UDP_BUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
 
-    if(bytesread == -1) {
-      perror("recvcfrom:");
-      JNXFAIL("Unable to read bytes from recfrom");
-    }
-    jnx_int32 ret = 0;
-    jnx_uint8 *outbuffer = malloc((bytesread + 1) * sizeof(jnx_uint8));
-    memset(outbuffer,0,bytesread + 1);
-    memcpy(outbuffer,buffer,bytesread);
-   
-    if((ret = callback(outbuffer,bytesread,listener->socket)) != 0) {
-        return;
-    }
+  if(bytesread == -1) {
+    perror("recvcfrom:");
+    JNXFAIL("Unable to read bytes from recfrom");
+  }
+  jnx_uint8 *outbuffer = malloc((bytesread + 1) * sizeof(jnx_uint8));
+  memset(outbuffer,0,bytesread + 1);
+  memcpy(outbuffer,buffer,bytesread);
+
+  callback(outbuffer,bytesread,listener->socket);
+  free(outbuffer);
 }
 jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s,\
-  jnx_char *interface, int ignore_local) {
+    jnx_char *interface, int ignore_local) {
   JNXCHECK(s);
   JNXCHECK(interface);
   JNXCHECK(s->stype == SOCK_DGRAM);
@@ -105,7 +103,7 @@ jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s,\
   return 0;
 }
 jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s,\
-  jnx_char *interface, jnx_char *group) {
+    jnx_char *interface, jnx_char *group) {
   JNXCHECK(s);
   JNXCHECK(interface);
   JNXCHECK(group);
@@ -123,8 +121,8 @@ jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s,\
   return 0;
 }
 jnx_size jnx_socket_udp_send(jnx_socket *s,\
-  jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
-  jnx_size msg_len) {
+    jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
+    jnx_size msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);

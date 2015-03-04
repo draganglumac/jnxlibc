@@ -28,11 +28,8 @@ extern "C" {
     jnx_int poll_timeout;
   }jnx_tcp_listener;
 
-  typedef jnx_int32 (*jnx_tcp_listener_callback)(jnx_uint8 *payload, \
+  typedef void (*jnx_tcp_listener_callback)(const jnx_uint8 *payload, \
       jnx_size bytes_read, jnx_socket *s, int connected_socket);
-
-  typedef jnx_int32 (*tcp_socket_listener_callback_with_context)(jnx_uint8 *payload,\
-      jnx_size bytesread, jnx_socket* s, int connected_socket, void *context);
 
   /**
    * @fn jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily)

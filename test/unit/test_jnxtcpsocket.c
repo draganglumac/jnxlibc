@@ -37,7 +37,7 @@ void *worker(void *args) {
 void fire_threaded_tcp_packet(char *port) {
   jnx_thread_create_disposable(worker,port);
 }
-jnx_int32 test_tcp_listener_callback(jnx_uint8 *payload,
+void test_tcp_listener_callback(jnx_uint8 *payload,
     jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket){
   JNX_LOG(NULL,"test_tcp_listener_callback achieved");
   test_tcp_listener_complete = 1;

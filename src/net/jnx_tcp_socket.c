@@ -131,11 +131,8 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
         jnx_uint8 *outbuffer = malloc((rc + 1) * sizeof(jnx_uint8));
         memset(outbuffer,0,rc + 1);
         memcpy(outbuffer,buffer,rc);
-        if(callback(outbuffer,rc,listener->socket,listener->ufds[i].fd)
-            != 0){
-          JNX_LOG(0,"Callback return failed!");
-          return;
-        }
+        callback(outbuffer,rc,listener->socket,listener->ufds[i].fd);
+        free(outbuffer);
       }
       if(close_conn) {
         close(listener->ufds[i].fd);
