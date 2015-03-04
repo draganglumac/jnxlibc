@@ -270,4 +270,3 @@ jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
   *out_receipt = out;
   return bytes_read;
 }
-

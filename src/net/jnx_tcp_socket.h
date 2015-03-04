@@ -20,12 +20,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
   typedef struct jnx_tcp_listener {
     jnx_socket *socket;
     struct pollfd ufds[200];
     jnx_int nfds;
     jnx_int poll_timeout;
   }jnx_tcp_listener;
+
   typedef jnx_int32 (*jnx_tcp_listener_callback)(jnx_uint8 *payload, \
       jnx_size bytes_read, jnx_socket *s, int connected_socket);
 
@@ -40,16 +42,14 @@ extern "C" {
    * @return jnx_socket
    */
   jnx_socket *jnx_socket_tcp_create(unsigned int family);
-
-  void jnx_socket_tcp_listener_destroy(jnx_tcp_listener **listener);
-
+  
   jnx_tcp_listener* jnx_socket_tcp_listener_create(char *port,
       unsigned int family, int max_connections);
 
+  void jnx_socket_tcp_listener_destroy(jnx_tcp_listener **listener);
 
   void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
       jnx_tcp_listener_callback callback);
-
 
   jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket);
   /**
