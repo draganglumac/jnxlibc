@@ -71,6 +71,20 @@ extern "C" {
   void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
       jnx_tcp_listener_callback callback, void *args);
 
+  /**
+   *@fn jnx_socket_tcp_listener_tick(jnx_tcp_listener *listener,
+   * jnx_tcp_listener_callback, void *args)
+   *@brief auto tick will block and loop automatically for the user
+   *user to accept and recv incoming network data.
+   *@warning BLOCKING
+   *@param listener is the current instantiated listener
+   *@param callback is passed into the tick representing the function
+   *to return received data too
+   *@param args are the context arguments to pass to the receiver function 
+   *can be null
+   */
+  void jnx_socket_tcp_listener_auto_tick(jnx_tcp_listener *listener,jnx_tcp_listener_callback callback, void *args);
+
   jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket);
   /**
    * @fn jnx_socket_tcp_send((jnx_socket *s, jnx_char *host, jnx_char* port,

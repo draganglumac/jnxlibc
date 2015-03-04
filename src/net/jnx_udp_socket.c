@@ -79,6 +79,12 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
   callback(outbuffer,bytesread,args);
   free(outbuffer);
 }
+void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener, jnx_udp_listener_callback callback, void *args) {
+  while(1) {
+    jnx_socket_udp_listener_tick(listener,callback,
+        args);
+  }
+}
 jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s,\
     jnx_char *interface, int ignore_local) {
   JNXCHECK(s);

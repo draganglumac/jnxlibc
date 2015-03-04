@@ -48,6 +48,7 @@ extern "C" {
    *@brief tick will need to be called manually by the user to accept and recv
    *incoming network data. It has been designed for use in a loop 
    *and to provide max user control
+   *@warning NONBLOCKING
    *@param listener is the current instantiated listener
    *@param callback is passed into the tick representing the function
    *to return received data too
@@ -56,7 +57,20 @@ extern "C" {
    */
   void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
       jnx_udp_listener_callback callback, void *args);
-
+  /**
+   *@fn jnx_socket_udp_listener_tick(jnx_udp_listener *listener,
+   * jnx_udp_listener_callback, void *args)
+   *@brief auto tick will block and loop automatically for the user
+   *user to accept and recv incoming network data.
+   *@warning BLOCKING
+   *@param listener is the current instantiated listener
+   *@param callback is passed into the tick representing the function
+   *to return received data too
+   *@param args are the context arguments to pass to the receiver function 
+   *can be null
+   */
+  void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener,
+      jnx_udp_listener_callback callback, void *args);
   /**
    * @fn jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa);
    * @brief if successful it will return a string displaying 

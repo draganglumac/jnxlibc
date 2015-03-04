@@ -152,6 +152,12 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
     }
   }
 }
+void jnx_socket_tcp_listener_auto_tick(jnx_tcp_listener *listener,jnx_tcp_listener_callback callback, void *args) {
+  while(1){
+    jnx_socket_tcp_listener_tick(listener,callback,
+        args);  
+  }
+}
 jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket) {
   jnx_char ipstr[INET6_ADDRSTRLEN];
   socklen_t len;
