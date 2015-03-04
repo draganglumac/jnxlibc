@@ -34,8 +34,8 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(char *port,
   jnx_tcp_listener *l = malloc(sizeof(jnx_tcp_listener));
   l->socket = jnx_socket_tcp_create(family);
   memset (&hints, 0, sizeof (struct addrinfo));
-  hints.ai_family = AF_UNSPEC;
-  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_family = family;
+  hints.ai_socktype = l->socket->stype;
   hints.ai_flags = AI_PASSIVE;
   s = getaddrinfo (NULL, port, &hints, &result);
   if (s != 0)
