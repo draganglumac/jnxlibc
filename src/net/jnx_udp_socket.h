@@ -23,7 +23,12 @@ typedef jnx_int32 (*udp_socket_listener_callback_with_context)(jnx_uint8 *payloa
    * @return jnx_socket
    */
   jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily);
-   
+  /**
+   * @fn jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa);
+   * @brief if successful it will return a string displaying the readable IP address
+   * @param sa is the sockaddr_stoage to pass through from the accept call
+   * @return jnx_char string or NULL on error
+   */   
   jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa);
   /**
    *@fn jnx_size jnx_socket_udp_enable_broadcast(socket *s)

@@ -34,7 +34,6 @@ extern "C" {
   typedef jnx_int32 (*tcp_socket_listener_callback_with_context)(jnx_uint8 *payload,\
       jnx_size bytesread, jnx_socket* s, int connected_socket, void *context);
 
-
   /**
    * @fn jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily)
    * @brief creates a jnx tcp socket
@@ -42,7 +41,15 @@ extern "C" {
    * @return jnx_socket
    */
   jnx_socket *jnx_socket_tcp_create(unsigned int family);
-  
+    /**
+   * @fn jnx_tcp_listener *jnx_socket_tcp_listener_create(char *port,
+   unsigned int family, int max_connections);
+   * @brief creates a non-blocking async multiplexing TCP server that needs to be ticked
+   * @param port is the listening port to bind too locally
+   * @param family is the address family type (e.g. AF_INET,AF_INET6)
+   * @param max_connections indicate the size of listener backlog (must not exceed ufds fd count)
+   * @return jnx_tcp_listener
+   */
   jnx_tcp_listener* jnx_socket_tcp_listener_create(char *port,
       unsigned int family, int max_connections);
 
