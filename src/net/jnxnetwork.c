@@ -20,11 +20,11 @@
 #include <assert.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <sys/types.h>
 #include <ifaddrs.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/types.h>
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <string.h>
@@ -209,9 +209,9 @@ JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname,
   return t;
 }
 void jnx_network_fetch_local_ipv4(jnx_char *buffer, address_mapping filter) {
- struct ifaddrs *ifap;
-  if (0 != getifaddrs(&ifap)) {
-    JNX_LOG(0, "[ERROR] Couldn't get descriptions of network interfaces.");
+ struct ifaddrs *ifap = 0;
+  if (getifaddrs(&ifap) == -1) {
+    perror("getifaddrs");
     exit(1);
   }
   struct ifaddrs *current = ifap;
