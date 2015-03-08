@@ -117,15 +117,18 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
   jnx_char buffer[MAX_UDP_BUFFER];
   memset(buffer,0,MAX_UDP_BUFFER);
   struct sockaddr_storage their_addr;
-  socklen_t their_len = sizeof(their_addr);
+  socklen_t their_len=0;
   jnx_size bytesread = recvfrom(listener->socket->socket,buffer,
-      MAX_UDP_BUFFER,0,NULL,NULL);
+      MAX_UDP_BUFFER,0,(struct sockaddr*)&their_addr,&their_len);
   if(bytesread > 0) {
+    jnx_char *incoming_address = jnx_socket_udp_resolve_ipaddress(their_addr);
+    if(incoming_address){
+      JNX_LOG(0,"Incoming data from %s",incoming_address); 
+      free(incoming_address);
+    }
     jnx_uint8 *outbuffer = malloc((bytesread + 1) * sizeof(jnx_uint8));
-
     memset(outbuffer,0,bytesread + 1);
     memcpy(outbuffer,buffer,bytesread);
-
     callback(outbuffer,bytesread,args);
     free(outbuffer);
   }
