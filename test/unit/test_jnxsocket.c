@@ -19,14 +19,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "jnxlog.h"
+#include "jnxcheck.h"
 #include "jnxsocket.h"
+#include "jnxthread.h"
 #include <assert.h>
 #include <pthread.h>
 
 #define TESTPORT "8831"
+#define TESTPORT1 "8832"
+#define TESTPORT2 "8833"
+#define TESTPORT3 "8834"
+#define TESTPORT4 "8835"
 
 void test_create() {
-  JNX_LOG(NULL,"Test creation of socket\n");
+  JNX_LOG(NULL,"Test creation of socket");
   jnx_socket *a = jnx_socket_tcp_create(AF_INET);
   assert(a);
   jnx_socket *b = jnx_socket_tcp_create(AF_INET6);
@@ -115,7 +121,7 @@ int tcplistenipv6_callback(char *msg, size_t size,jnx_socket *s,int connected_so
 void *test_tcp_listen_ipv6(void *args) {
   tcp_socket_listener_callback c = tcplistenipv6_callback;
   tcp_ipv6_listener = jnx_socket_tcp_create(AF_INET6);
-  jnx_socket_tcp_listen(tcp_ipv6_listener,TESTPORT,100,c);
+  jnx_socket_tcp_listen(tcp_ipv6_listener,TESTPORT1,100,c);
   return 0;
 }
 void setup_tcp_listen_ipv6_test() {
@@ -126,13 +132,13 @@ void setup_tcp_listen_ipv6_test() {
   sleep(2);
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_tcp_create(AF_INET6);
-  size_t bytes = jnx_socket_tcp_send(s,"::1",TESTPORT,"hi",strlen("hi"));
+  size_t bytes = jnx_socket_tcp_send(s,"::1",TESTPORT1,"hi",strlen("hi"));
   printf("."); fflush(stdout); sleep(1);
-  bytes = jnx_socket_tcp_send(s,"::1",TESTPORT,"bye",strlen("bye"));
+  bytes = jnx_socket_tcp_send(s,"::1",TESTPORT1,"bye",strlen("bye"));
   printf("."); fflush(stdout); sleep(1);
-  bytes = jnx_socket_tcp_send(s,"::1",TESTPORT,"once more for good measure",strlen("once more for good measure"));
+  bytes = jnx_socket_tcp_send(s,"::1",TESTPORT1,"once more for good measure",strlen("once more for good measure"));
   printf("."); fflush(stdout); sleep(1);
-  bytes = jnx_socket_tcp_send(s,"::1",TESTPORT,"STOP",strlen("STOP"));
+  bytes = jnx_socket_tcp_send(s,"::1",TESTPORT1,"STOP",strlen("STOP"));
   printf(".\n");
   jnx_socket_destroy(&s);
   time_t st;
@@ -163,18 +169,18 @@ int udplistenipv4_callback(char *msg, size_t size,jnx_socket *s) {
 void *test_udp_listen_ipv4(void *args) {
   udp_socket_listener_callback c = udplistenipv4_callback;
   udp_ipv4_listener = jnx_socket_udp_create(AF_INET);
-  jnx_socket_udp_listen(udp_ipv4_listener,TESTPORT,100,c);
+  jnx_socket_udp_listen(udp_ipv4_listener,TESTPORT2,100,c);
   return 0;
 }
 void setup_udp_listen_ipv4_test() {
-  JNX_LOG(NULL,"Starting UDP IPV4 test\n");
+  JNX_LOG(NULL,"Starting UDP IPV4 test");
   pthread_t worker;
   pthread_create(&worker,NULL,test_udp_listen_ipv4,NULL);
 
   sleep(2);
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_udp_create(AF_INET);
-  size_t bytes = jnx_socket_udp_send(s,"127.0.0.1",TESTPORT,"hi",strlen("hi"));
+  size_t bytes = jnx_socket_udp_send(s,"127.0.0.1",TESTPORT2,"hi",strlen("hi"));
   jnx_socket_destroy(&s);
   time_t st;
   time(&st);
@@ -197,18 +203,18 @@ int  udplistenipv6_callback(char *msg, size_t size,jnx_socket *s) {
 void *test_udp_listen_ipv6(void *args) {
   udp_socket_listener_callback c = udplistenipv6_callback;
   udp_ipv6_listener = jnx_socket_udp_create(AF_INET6);
-  jnx_socket_udp_listen(udp_ipv6_listener,TESTPORT,100,c);
+  jnx_socket_udp_listen(udp_ipv6_listener,TESTPORT3,100,c);
   return 0;
 }
 void setup_udp_listen_ipv6_test() {
-  JNX_LOG(NULL,"Starting UDP IPV6 test\n");
+  JNX_LOG(NULL,"Starting UDP IPV6 test");
   pthread_t worker;
   pthread_create(&worker,NULL,test_udp_listen_ipv6,NULL);
 
   sleep(2);
   //listener setup lets send a message
   jnx_socket *s = jnx_socket_udp_create(AF_INET6);
-  size_t bytes = jnx_socket_udp_send(s,"::1",TESTPORT,"hi",strlen("hi"));
+  size_t bytes = jnx_socket_udp_send(s,"::1",TESTPORT3,"hi",strlen("hi"));
   jnx_socket_destroy(&s);
 
   time_t st;
@@ -223,6 +229,33 @@ void setup_udp_listen_ipv6_test() {
   }
   jnx_socket_destroy(&udp_ipv6_listener);
 }
+////////////////TEST RECEIPT (TCP)///////////////////////
+jnx_uint32 test_receipt_ipv4_listener_callback(jnx_uint8 *msg,jnx_size bytes,
+    jnx_socket *s, int connected_sockfd) {
+
+  write(connected_sockfd,"Hello",6);
+  return 1;
+}
+void *bootstrap_listener(void *args) {
+  jnx_socket *listener = (jnx_socket *)args;
+  jnx_socket_tcp_listen(listener,TESTPORT4,1,test_receipt_ipv4_listener_callback);
+
+}
+void test_receipt_ipv4() {
+  JNX_LOG(NULL,"Starting test_receipt IPV4");
+  jnx_socket *listener = jnx_socket_tcp_create(AF_INET);
+  jnx_thread_create_disposable(bootstrap_listener,listener);
+  
+  sleep(1);
+  
+  jnx_socket *sender = jnx_socket_tcp_create(AF_INET);
+  jnx_char *received;
+  jnx_size bytes_read = jnx_socket_tcp_send_with_receipt(sender,
+      "127.0.0.1",TESTPORT4,"Something",10,&received);
+
+  JNXCHECK(strcmp(received,"Hello") == 0);
+
+}
 int main(int argc, char **argv) {
   JNX_LOG(NULL,"Starting network tests\n");
   test_create();
@@ -231,5 +264,7 @@ int main(int argc, char **argv) {
 
   setup_udp_listen_ipv4_test();
   setup_udp_listen_ipv6_test();
+
+  test_receipt_ipv4();
   return 0;
 }
