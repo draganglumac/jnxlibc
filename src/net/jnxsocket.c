@@ -38,7 +38,6 @@ jnx_socket *create_socket(jnx_unsigned_int type,\
   jnx_unsigned_int addrfamily) {
   JNXCHECK(addrfamily);
   JNXCHECK(type);
-  JNXCHECK(type);
   JNXCHECK(addrfamily);
   jnx_int32 sock = socket(addrfamily,type,0);
   JNXCHECK(sock);
