@@ -33,7 +33,7 @@ jnx_unix_socket *create_unix_socket(jnx_size stype, jnx_char*socket_path) {
   jnx_unix_socket *jus= calloc(1, sizeof(jnx_unix_socket));
   jus->isclosed = 0;
   jus->islisten = 0;
-  jnx_uint32 sock = socket(AF_UNIX, stype, 0);
+  jnx_int32 sock = socket(AF_UNIX, stype, 0);
   if (sock == -1) {
     return NULL;
   }
@@ -108,7 +108,7 @@ jnx_size jnx_unix_datagram_socket_send(jnx_unix_socket *s, jnx_uint8*msg, jnx_si
   }
   return tbytes;
 }
-jnx_uint32 bind_stream_socket(jnx_unix_socket *s) {
+jnx_int32 bind_stream_socket(jnx_unix_socket *s) {
   JNXCHECK(s);
   if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
     perror("jnx unix stream socket bind");
@@ -117,7 +117,7 @@ jnx_uint32 bind_stream_socket(jnx_unix_socket *s) {
   s->islisten = 1;
   return 0;
 }
-jnx_uint32 listen_on_stream_socket(jnx_unix_socket *s, jnx_size max_connections) {
+jnx_int32 listen_on_stream_socket(jnx_unix_socket *s, jnx_size max_connections) {
   JNXCHECK(s);
   if (listen(s->socket, max_connections) == -1) {
     perror("jnx unix stream socket listen");
@@ -141,7 +141,7 @@ jnx_unix_socket *accept_stream_socket_connection(jnx_unix_socket *s) {
     return rs;
   }	
 }
-jnx_uint32 read_stream_socket(jnx_unix_socket *s, jnx_uint8**out, jnx_uint32 *len) {
+jnx_int32 read_stream_socket(jnx_unix_socket *s, jnx_uint8**out, jnx_uint32 *len) {
   JNXCHECK(s);
   jnx_uint8 buffer[MAXBUFFER];
   memset(buffer,0,MAXBUFFER);
@@ -165,7 +165,8 @@ jnx_uint32 read_stream_socket(jnx_unix_socket *s, jnx_uint8**out, jnx_uint32 *le
   fclose(fp);
   return 0;
 }
-jnx_uint32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connections, stream_socket_listener_callback c) {
+
+jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_size max_connections, stream_socket_listener_callback_with_context cc, void *context) {
   JNXCHECK(s);
   if (bind_stream_socket(s) == -1) {
     return -1;
@@ -187,11 +188,22 @@ jnx_uint32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connec
     }
 
     jnx_uint32 ret = 0;
-    if ((ret = c(out, len, remote_sock)) != 0) {
-      JNX_LOG(DEFAULT_CONTEXT,"Exiting unix stream socket listener with %d\n",ret);
-      free(out);
-      jnx_unix_socket_destroy(&remote_sock);
-      return 0;
+    if (context == NULL) {
+      stream_socket_listener_callback c = (stream_socket_listener_callback) cc;
+      if ((ret = c(out, len, remote_sock)) != 0) {
+        JNX_LOG(DEFAULT_CONTEXT,"Exiting unix stream socket listener with %d\n",ret);
+        free(out);
+        jnx_unix_socket_destroy(&remote_sock);
+        return 0;
+      }
+    }
+    else {
+      if ((ret = cc(out, len, remote_sock, context)) != 0) {
+        JNX_LOG(DEFAULT_CONTEXT,"Exiting unix stream socket listener with %d\n",ret);
+        free(out);
+        jnx_unix_socket_destroy(&remote_sock);
+        return 0;
+      }
     }
     free(out);
     jnx_unix_socket_destroy(&remote_sock);
@@ -199,7 +211,12 @@ jnx_uint32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connec
 
   return 0;
 }
-jnx_uint32 bind_datagram_socket(jnx_unix_socket *s) {
+jnx_int32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connections, stream_socket_listener_callback c) {
+  return jnx_unix_stream_socket_listen_with_context(
+      s, max_connections,
+      (stream_socket_listener_callback_with_context) c, NULL);
+}
+jnx_int32 bind_datagram_socket(jnx_unix_socket *s) {
   JNXCHECK(s);
   if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
     perror("jnx unix datagram socket bind");
@@ -208,7 +225,7 @@ jnx_uint32 bind_datagram_socket(jnx_unix_socket *s) {
   s->islisten = 1;
   return 0;
 }
-jnx_uint32 receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_socket, jnx_uint8**out, jnx_uint32 *len) {
+jnx_int32 receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **remote_socket, jnx_uint8**out, jnx_uint32 *len) {
   JNXCHECK(s);
 
   jnx_uint8 buffer[MAXBUFFER];
@@ -231,7 +248,7 @@ jnx_uint32 receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **re
   *remote_socket = rs;
   return 0;
 }
-jnx_uint32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener_callback c) {
+jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datagram_socket_listener_callback_with_context cc, void *context) {
   JNXCHECK(s);
   if (bind_datagram_socket(s) == -1) {
     return -1;
@@ -247,14 +264,30 @@ jnx_uint32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_l
     }
 
     jnx_uint32 ret = 0;
-    if ((ret = c(out, len, remote)) != 0) {
-      JNX_LOG(DEFAULT_CONTEXT,"Exiting unix datagram socket listener with %d\n",ret);
-      free(out);
-      jnx_unix_socket_destroy(&remote);
-      return 0;
+    if (context == NULL) {
+      datagram_socket_listener_callback c = (datagram_socket_listener_callback) cc;
+      if ((ret = c(out, len, remote)) != 0) {
+        JNX_LOG(DEFAULT_CONTEXT,"Exiting unix datagram socket listener with %d\n",ret);
+        free(out);
+        jnx_unix_socket_destroy(&remote);
+        return 0;
+      }
+    }
+    else {
+      if ((ret = cc(out, len, remote, context)) != 0) {
+        JNX_LOG(DEFAULT_CONTEXT,"Exiting unix datagram socket listener with %d\n",ret);
+        free(out);
+        jnx_unix_socket_destroy(&remote);
+        return 0;
+      }
+
     }
     free(out);
     jnx_unix_socket_destroy(&remote);
   }
   return 0;
+}
+jnx_int32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener_callback c) {
+  return jnx_unix_datagram_socket_listen_with_context(
+      s, (datagram_socket_listener_callback_with_context) c, NULL);
 }
