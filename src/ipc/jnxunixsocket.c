@@ -166,7 +166,7 @@ jnx_int32 read_stream_socket(jnx_unix_socket *s, jnx_uint8**out, jnx_uint32 *len
   return 0;
 }
 
-jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_size max_connections, stream_unix_socket_listener_callback_with_context cc, void *context) {
+jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_size max_connections, stream_socket_listener_callback_with_context cc, void *context) {
   JNXCHECK(s);
   if (bind_stream_socket(s) == -1) {
     return -1;
@@ -189,7 +189,7 @@ jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_siz
 
     jnx_uint32 ret = 0;
     if (context == NULL) {
-      stream_unix_socket_listener_callback c = (stream_unix_socket_listener_callback) cc;
+      stream_socket_listener_callback c = (stream_socket_listener_callback) cc;
       if ((ret = c(out, len, remote_sock)) != 0) {
         JNX_LOG(DEFAULT_CONTEXT,"Exiting unix stream socket listener with %d\n",ret);
         free(out);
@@ -211,10 +211,10 @@ jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_siz
 
   return 0;
 }
-jnx_int32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connections, stream_unix_socket_listener_callback c) {
+jnx_int32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connections, stream_socket_listener_callback c) {
   return jnx_unix_stream_socket_listen_with_context(
       s, max_connections,
-      (stream_unix_socket_listener_callback_with_context) c, NULL);
+      (stream_socket_listener_callback_with_context) c, NULL);
 }
 jnx_int32 bind_datagram_socket(jnx_unix_socket *s) {
   JNXCHECK(s);
@@ -248,7 +248,7 @@ jnx_int32 receive_from_datagram_socket(jnx_unix_socket *s, jnx_unix_socket **rem
   *remote_socket = rs;
   return 0;
 }
-jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datagram_unix_socket_listener_callback_with_context cc, void *context) {
+jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datagram_socket_listener_callback_with_context cc, void *context) {
   JNXCHECK(s);
   if (bind_datagram_socket(s) == -1) {
     return -1;
@@ -265,7 +265,7 @@ jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datag
 
     jnx_uint32 ret = 0;
     if (context == NULL) {
-      datagram_unix_socket_listener_callback c = (datagram_unix_socket_listener_callback) cc;
+      datagram_socket_listener_callback c = (datagram_socket_listener_callback) cc;
       if ((ret = c(out, len, remote)) != 0) {
         JNX_LOG(DEFAULT_CONTEXT,"Exiting unix datagram socket listener with %d\n",ret);
         free(out);
@@ -287,7 +287,7 @@ jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datag
   }
   return 0;
 }
-jnx_int32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_unix_socket_listener_callback c) {
+jnx_int32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener_callback c) {
   return jnx_unix_datagram_socket_listen_with_context(
-      s, (datagram_unix_socket_listener_callback_with_context) c, NULL);
+      s, (datagram_socket_listener_callback_with_context) c, NULL);
 }
