@@ -46,13 +46,13 @@ extern "C" {
   /*
    *@warning must return 0 or will break the listener loop
    */
-  typedef jnx_int32 (*stream_socket_listener_callback_with_context)(jnx_uint8 *payload, jnx_size bytesread, jnx_unix_socket *remote_sock, void *context);
-  typedef jnx_int32 (*stream_socket_listener_callback)(jnx_uint8 *payload, jnx_size bytesread, jnx_unix_socket *remote_sock);
+  typedef jnx_int32 (*stream_unix_socket_listener_callback_with_context)(jnx_uint8 *payload, jnx_size bytesread, jnx_unix_socket *remote_sock, void *context);
+  typedef jnx_int32 (*stream_unix_socket_listener_callback)(jnx_uint8 *payload, jnx_size bytesread, jnx_unix_socket *remote_sock);
   /*
    *@warning must return 0 or will break the listener loop
    */
-  typedef jnx_int32 (*datagram_socket_listener_callback_with_context)(jnx_uint8 *payload, jnx_size bytesread, jnx_unix_socket *remote_sock, void *context);
-  typedef jnx_int32 (*datagram_socket_listener_callback)(jnx_uint8 *payload, jnx_size bytesread, jnx_unix_socket *remote_sock);
+  typedef jnx_int32 (*datagram_unix_socket_listener_callback_with_context)(jnx_uint8 *payload, jnx_size bytesread, jnx_unix_socket *remote_sock, void *context);
+  typedef jnx_int32 (*datagram_unix_socket_listener_callback)(jnx_uint8 *payload, jnx_size bytesread, jnx_unix_socket *remote_sock);
   /**
    * @fn jnx_unix_socket *jnx_unix_stream_socket_create(unsigned jnx_uint32 addrfamily)
    * @brief creates a jnx stream socket
@@ -101,14 +101,14 @@ extern "C" {
    * @param context is context that gets passed to the callback
    * @return -1 on error
    */
-  jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_size max_connections, stream_socket_listener_callback_with_context c, void *context);
+  jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_size max_connections, stream_unix_socket_listener_callback_with_context c, void *context);
   /**
    * @fn jnx_uint32 jnx_unix_stream_socket_listen(jnx_unix_socket *s,  jnx_size max_connections, stream_socket_listener_callback c)
    * @param max_connections are the number of connetions in the queue
    * @param c is the function pointer callback for received messages
    * @return -1 on error
    */
-  jnx_int32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connections, stream_socket_listener_callback c);
+  jnx_int32 jnx_unix_stream_socket_listen(jnx_unix_socket *s, jnx_size max_connections, stream_unix_socket_listener_callback c);
   /**
    * @fn jnx_uint32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, jnx_size max_connections, datagram_socket_listener_callback c)
    * @param s is the socket to use to send
@@ -116,14 +116,14 @@ extern "C" {
    * @param context is context that gets passed to the callback
    * @return -1 on error
    */
-  jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datagram_socket_listener_callback_with_context c, void *context);
+  jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datagram_unix_socket_listener_callback_with_context c, void *context);
   /**
    * @fn jnx_uint32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, jnx_size max_connections, datagram_socket_listener_callback c)
    * @param s is the socket to use to send
    * @param c is the function pojnx_uint32er callback for received messages
    * @return -1 on error
    */
-  jnx_int32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_socket_listener_callback c);
+  jnx_int32 jnx_unix_datagram_socket_listen(jnx_unix_socket *s, datagram_unix_socket_listener_callback c);
 #ifdef __cplusplus
 }
 #endif
