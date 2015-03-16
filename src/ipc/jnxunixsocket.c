@@ -129,7 +129,7 @@ jnx_unix_socket *accept_stream_socket_connection(jnx_unix_socket *s) {
   JNXCHECK(s);
   jnx_uint32 remote_sock;
   jnx_unix_socket *rs = jnx_unix_stream_socket_create("");
-  socklen_t addr_len;
+  socklen_t addr_len = sizeof(s->address);
   if ((remote_sock = accept(s->socket,(struct sockaddr *)&(s->address), &addr_len)) == -1) {
     perror("jnx unix stream socket accept");
     jnx_unix_socket_destroy(&rs);
