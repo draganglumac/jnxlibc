@@ -39,7 +39,7 @@ jnx_unix_socket *create_unix_socket(jnx_size stype, jnx_char*socket_path) {
   }
   jus->socket = sock;
   (jus->address).sun_family = AF_UNIX;
-  strncpy((jus->address).sun_path, socket_path, sizeof((jus->address).sun_path) - 1);
+  strncpy((jus->address).sun_path, socket_path, strlen(socket_path));
   jus->stype = stype;
   return jus;
 }
