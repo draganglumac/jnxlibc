@@ -29,7 +29,7 @@ extern "C" {
   }jnx_tcp_listener;
 
   typedef void (*jnx_tcp_listener_callback)(const jnx_uint8 *payload, \
-      jnx_size bytes_read, jnx_socket *s, int connected_socket);
+      jnx_size bytes_read, int connected_socket, void *args);
 
   /**
    * @fn jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily)
@@ -53,7 +53,7 @@ extern "C" {
   void jnx_socket_tcp_listener_destroy(jnx_tcp_listener **listener);
 
   void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
-      jnx_tcp_listener_callback callback);
+      jnx_tcp_listener_callback callback, void *args);
 
   jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket);
   /**

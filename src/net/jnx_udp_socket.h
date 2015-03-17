@@ -17,7 +17,7 @@ extern "C" {
   }jnx_udp_listener;
 
   typedef void (*jnx_udp_listener_callback)(const jnx_uint8 *payload, \
-      jnx_size bytes_read, jnx_socket *s);
+      jnx_size bytes_read, void *args);
 
   /**
    * @fn jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily)
@@ -33,7 +33,7 @@ extern "C" {
   void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener);
 
   void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
-      jnx_udp_listener_callback callback);
+      jnx_udp_listener_callback callback, void *args);
 
   /**
    * @fn jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa);

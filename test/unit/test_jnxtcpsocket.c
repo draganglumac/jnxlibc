@@ -28,7 +28,7 @@ void fire_threaded_tcp_packet_ipv6(char *port) {
   jnx_thread_create_disposable(worker_ipv6,port);
 }
 void test_tcp_listener_callback(jnx_uint8 *payload,
-    jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket){
+    jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
   JNX_LOG(NULL,"test_tcp_listener_callback achieved");
   test_tcp_listener_complete = 1;
   return 0;
@@ -40,7 +40,7 @@ void test_tcp_listener() {
   fire_threaded_tcp_packet(TESTPORT);
   int x = 0;
   while(x < 5) {
-  jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback);
+  jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback,NULL);
   if(test_tcp_listener_complete)break;
   ++x;
 }
@@ -54,7 +54,7 @@ void test_tcp_listener_ipv6() {
   fire_threaded_tcp_packet_ipv6(TESTPORT);
   int x = 0;
   while(x < 5) {
-  jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback);
+  jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback,NULL);
   if(test_tcp_listener_complete)break;
   ++x;
 }

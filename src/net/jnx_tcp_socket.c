@@ -70,7 +70,7 @@ void jnx_socket_tcp_listener_destroy(jnx_tcp_listener **listener) {
   *listener = NULL;
 }
 void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
-    jnx_tcp_listener_callback callback) {
+    jnx_tcp_listener_callback callback, void *args) {
   jnx_int rv = poll(listener->ufds,listener->nfds,listener->poll_timeout); 
   if (rv == -1) {
     perror("poll"); // error occurred in poll()
@@ -131,7 +131,7 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
         jnx_uint8 *outbuffer = malloc((rc + 1) * sizeof(jnx_uint8));
         memset(outbuffer,0,rc + 1);
         memcpy(outbuffer,buffer,rc);
-        callback(outbuffer,rc,listener->socket,listener->ufds[i].fd);
+        callback(outbuffer,rc,listener->ufds[i].fd,args);
         free(outbuffer);
       }
       if(close_conn) {

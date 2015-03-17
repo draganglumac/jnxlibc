@@ -60,7 +60,7 @@ void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener) {
   *listener = NULL;
 }
 void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
-    jnx_udp_listener_callback callback) {
+    jnx_udp_listener_callback callback, void *args) {
   jnx_char buffer[MAX_UDP_BUFFER];
   memset(buffer,0,MAX_UDP_BUFFER);
   struct sockaddr_storage their_addr;
@@ -76,7 +76,7 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
   memset(outbuffer,0,bytesread + 1);
   memcpy(outbuffer,buffer,bytesread);
 
-  callback(outbuffer,bytesread,listener->socket);
+  callback(outbuffer,bytesread,args);
   free(outbuffer);
 }
 jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s,\
