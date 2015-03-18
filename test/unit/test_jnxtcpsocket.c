@@ -63,10 +63,11 @@ void test_tcp_listener_ipv6() {
   JNXCHECK(listener == NULL);
 }
 int main(int argc, char **argv) {
-  JNX_LOG(NULL,"Starting network tests\n");
- 
+  JNX_LOG(NULL,"Starting tcp socket tests");
+  JNX_LOG(NULL,"Testing TCP Listener");
   test_tcp_listener();
   test_tcp_listener_complete = 0;
+  JNX_LOG(NULL,"Testing TCP Listener IPV6");
   test_tcp_listener_ipv6();
   return 0;
 }
