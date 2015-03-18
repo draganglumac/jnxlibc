@@ -25,8 +25,8 @@
 jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily) {
   return create_socket(SOCK_DGRAM,addrfamily);
 }
-jnx_udp_listener* jnx_socket_udp_listener_create(char *port,
-    unsigned int family, int max_connections) {
+jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
+    jnx_unsigned_int family, jnx_int max_connections) {
   JNXCHECK(max_connections <= 200);
   jnx_udp_listener *l = malloc(sizeof(jnx_udp_listener));
   l->socket = jnx_socket_udp_create(family);

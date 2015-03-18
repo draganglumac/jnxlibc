@@ -37,8 +37,8 @@ extern "C" {
    * @param addrfamily this is the address family to use (e.g. AF_INET)
    * @return jnx_socket
    */
-  jnx_socket *jnx_socket_tcp_create(unsigned int family);
-    /**
+  jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int family);
+  /**
    * @fn jnx_tcp_listener *jnx_socket_tcp_listener_create(char *port,
    unsigned int family, int max_connections);
    * @brief creates a non-blocking async multiplexing TCP server that needs to be ticked
@@ -47,11 +47,27 @@ extern "C" {
    * @param max_connections indicate the size of listener backlog (must not exceed ufds fd count)
    * @return jnx_tcp_listener
    */
-  jnx_tcp_listener* jnx_socket_tcp_listener_create(char *port,
-      unsigned int family, int max_connections);
+  jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
+      jnx_unsigned_int family, jnx_int max_connections);
 
+  /**
+   *@fn void jnx_socket_tcp_listener_destroy(jnx_tcp_listener **listener)
+   *@brief destroys and closes socket for the tcp listener
+   *@param listener is a pointer to pointer of the current listener
+   */
   void jnx_socket_tcp_listener_destroy(jnx_tcp_listener **listener);
-
+  /**
+   *@fn jnx_socket_tcp_listener_tick(jnx_tcp_listener *listener,
+   * jnx_tcp_listener_callback, void *args)
+   *@brief tick will need to be called manually by the user to accept and recv
+   *incoming network data. It has been designed for use in a loop 
+   *and to provide max user control
+   *@param listener is the current instantiated listener
+   *@param callback is passed into the tick representing the function
+   *to return received data too
+   *@param args are the context arguments to pass to the receiver function 
+   *can be null
+   */   
   void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
       jnx_tcp_listener_callback callback, void *args);
 

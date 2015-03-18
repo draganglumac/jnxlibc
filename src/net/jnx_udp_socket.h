@@ -26,12 +26,34 @@ extern "C" {
    * @return jnx_socket
    */
   jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily);
-
-  jnx_udp_listener* jnx_socket_udp_listener_create(char *port,
-      unsigned int family, int max_connections);
-
+  /**
+   *@fn jnx_udp_listener *jnx_socket_udp_listener_create(char *port,
+   *jnx_unsigned_int family, int max_connections)
+   *@brief Creates a listener that can be ticked and retrieve incoming network traffic
+   *@param family is the address family to use (AF_INET/AF_INET6)
+   *@param max connections is the maximum backlog size on the listener
+   *@return pointer to a listener on success
+   */
+  jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
+      jnx_unsigned_int family, jnx_int max_connections);
+  /**
+   *@fn void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener)
+   *@brief destroys and closes socket for the udp listener
+   *@param listener is a pointer to pointer of the current listener
+   */
   void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener);
-
+  /**
+   *@fn jnx_socket_udp_listener_tick(jnx_udp_listener *listener,
+   * jnx_udp_listener_callback, void *args)
+   *@brief tick will need to be called manually by the user to accept and recv
+   *incoming network data. It has been designed for use in a loop 
+   *and to provide max user control
+   *@param listener is the current instantiated listener
+   *@param callback is passed into the tick representing the function
+   *to return received data too
+   *@param args are the context arguments to pass to the receiver function 
+   *can be null
+   */
   void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
       jnx_udp_listener_callback callback, void *args);
 
