@@ -16,9 +16,9 @@ extern "C" {
     jnx_socket *socket;
   }jnx_udp_listener;
 
-  typedef void (*jnx_udp_listener_callback)(const jnx_uint8 *payload, \
+  typedef jnx_int (*jnx_udp_listener_callback)(const jnx_uint8 *payload, \
       jnx_size bytes_read, void *args);
-
+  
   /**
    * @fn jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily)
    * @brief creates a jnx udp socket
@@ -29,7 +29,8 @@ extern "C" {
   /**
    *@fn jnx_udp_listener *jnx_socket_udp_listener_create(char *port,
    *jnx_unsigned_int family, int max_connections)
-   *@brief Creates a listener that can be ticked and retrieve incoming network traffic
+   *@brief Creates a listener that can be 
+   *ticked and retrieve incoming network traffic
    *@param family is the address family to use (AF_INET/AF_INET6)
    *@param max connections is the maximum backlog size on the listener
    *@return pointer to a listener on success
@@ -54,8 +55,9 @@ extern "C" {
    *to return received data too
    *@param args are the context arguments to pass to the receiver function 
    *can be null
+   *@returns 0 on success, -1 on failure
    */
-  void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
+  jnx_int jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
       jnx_udp_listener_callback callback, void *args);
   /**
    *@fn jnx_socket_udp_listener_tick(jnx_udp_listener *listener,
@@ -64,7 +66,8 @@ extern "C" {
    *user to accept and recv incoming network data.
    *@warning BLOCKING
    *@param listener is the current instantiated listener
-   *@param callback is passed into the tick representing the function
+   *@param callback is passed into the tick representing the function and to cancel
+   *the listener return -1 to exit or 0 to continue listening
    *to return received data too
    *@param args are the context arguments to pass to the receiver function 
    *can be null

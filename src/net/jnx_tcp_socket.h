@@ -41,10 +41,12 @@ extern "C" {
   /**
    * @fn jnx_tcp_listener *jnx_socket_tcp_listener_create(char *port,
    unsigned int family, int max_connections);
-   * @brief creates a non-blocking async multiplexing TCP server that needs to be ticked
+   * @brief creates a non-blocking 
+   * async multiplexing TCP server that needs to be ticked
    * @param port is the listening port to bind too locally
    * @param family is the address family type (e.g. AF_INET,AF_INET6)
-   * @param max_connections indicate the size of listener backlog (must not exceed ufds fd count)
+   * @param max_connections indicate the size 
+   * of listener backlog (must not exceed ufds fd count)
    * @return jnx_tcp_listener
    */
   jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
@@ -83,7 +85,8 @@ extern "C" {
    *@param args are the context arguments to pass to the receiver function 
    *can be null
    */
-  void jnx_socket_tcp_listener_auto_tick(jnx_tcp_listener *listener,jnx_tcp_listener_callback callback, void *args);
+  void jnx_socket_tcp_listener_auto_tick(jnx_tcp_listener *listener,\
+      jnx_tcp_listener_callback callback, void *args);
 
   jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket);
   /**
@@ -110,7 +113,8 @@ extern "C" {
    * @return jnx_size of bytes sent
    */
   jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
-      jnx_char *host, jnx_char* port, jnx_uint8 *msg, jnx_size msg_len,jnx_uint8 **out_receipt);
+      jnx_char *host, jnx_char* port, jnx_uint8 *msg, \
+      jnx_size msg_len,jnx_uint8 **out_receipt);
 #ifdef __cplusplus
 }
 #endif
