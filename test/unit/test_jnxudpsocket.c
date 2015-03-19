@@ -44,7 +44,7 @@ void test_udp_listener_callback(jnx_uint8 *payload,
 }
 void test_udp_listener() {
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_create(TESTPORT,AF_INET,100);
+    jnx_socket_udp_listener_create(TESTPORT,AF_INET);
 
   fire_threaded_udp_packet(TESTPORT);
   int x = 0;
@@ -59,7 +59,7 @@ void test_udp_listener() {
 }
 void test_udp_listener_ipv6() {
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_create(TESTPORT,AF_INET6,100);
+    jnx_socket_udp_listener_create(TESTPORT,AF_INET6);
   fire_threaded_udp_packet_ipv6(TESTPORT);
   int x = 0;
   while(x < 5) {
@@ -74,7 +74,7 @@ void test_udp_listener_ipv6() {
 
 void test_udp_broadcast(){
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_create(TESTPORT,AF_INET,100);
+    jnx_socket_udp_listener_create(TESTPORT,AF_INET);
 
   jnx_socket_udp_enable_broadcast_send_or_listen(listener->socket);
 
@@ -90,6 +90,32 @@ void test_udp_broadcast(){
   JNXCHECK(test_udp_listener_complete);
   JNXCHECK(listener == NULL);
 }
+void test_blocking_listener_callback(jnx_uint8 *payload,
+    jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
+  test_udp_listener_complete = 1;
+}
+void worker_blocking_listener(void *args) {
+  jnx_udp_listener **listener = args;
+  *listener = jnx_socket_udp_listener_create(TESTPORT,
+      AF_INET);
+  jnx_socket_udp_listener_auto_tick(*listener,test_blocking_listener_callback,
+      NULL);
+}
+void test_udp_blocking_listener() {
+  jnx_udp_listener *listener;
+
+  jnx_thread_create_disposable(worker_blocking_listener,&listener);
+  sleep(1);
+  fire_threaded_udp_packet(TESTPORT);
+  clock_t start = clock(),diff;
+  jnx_float msec = 0;
+  while(msec < 500 && !test_udp_listener_complete){
+    diff = clock();
+    msec = (diff - start) * 1000 / CLOCKS_PER_SEC;
+  }
+  listener->hint_exit = 1;
+  JNXCHECK(test_udp_listener_complete);
+}
 int main(int argc, char **argv) {
   JNX_LOG(NULL,"Starting udp socket tests");
   JNX_LOG(NULL,"Testing UDP Listener");
@@ -100,5 +126,8 @@ int main(int argc, char **argv) {
   test_udp_listener_complete = 0;
   JNX_LOG(NULL,"Testing UDP broadcast");
   test_udp_broadcast(); 
+  test_udp_listener_complete = 0;
+  JNX_LOG(NULL,"Test UDP blocking listener");
+  test_udp_blocking_listener();
   return 0;
 }

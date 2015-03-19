@@ -33,11 +33,10 @@ extern "C" {
    *@brief Creates a listener that can be 
    *ticked and retrieve incoming network traffic
    *@param family is the address family to use (AF_INET/AF_INET6)
-   *@param max connections is the maximum backlog size on the listener
    *@return pointer to a listener on success
    */
   jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
-      jnx_unsigned_int family, jnx_int max_connections);
+      jnx_unsigned_int family);
   /**
    *@fn void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener)
    *@brief destroys and closes socket for the udp listener
