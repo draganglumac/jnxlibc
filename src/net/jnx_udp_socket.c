@@ -30,6 +30,7 @@ jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
   JNXCHECK(max_connections <= 200);
   jnx_udp_listener *l = malloc(sizeof(jnx_udp_listener));
   l->socket = jnx_socket_udp_create(family);
+  l->hint_exit = 0;
   struct addrinfo hints, *res, *p;
   memset(&hints,0,sizeof(struct addrinfo));
   hints.ai_family = family;
@@ -79,8 +80,9 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
   callback(outbuffer,bytesread,args);
   free(outbuffer);
 }
-void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener, jnx_udp_listener_callback callback, void *args) {
-  while(1) {
+void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener, 
+    jnx_udp_listener_callback callback, void *args) {
+  while(!listener->hint_exit){
     jnx_socket_udp_listener_tick(listener,callback,
         args);
   }

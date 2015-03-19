@@ -14,9 +14,10 @@ extern "C" {
 
   typedef struct jnx_udp_listener {
     jnx_socket *socket;
+    jnx_int hint_exit;
   }jnx_udp_listener;
 
-  typedef jnx_int (*jnx_udp_listener_callback)(const jnx_uint8 *payload, \
+  typedef void (*jnx_udp_listener_callback)(const jnx_uint8 *payload, \
       jnx_size bytes_read, void *args);
   
   /**
@@ -57,7 +58,7 @@ extern "C" {
    *can be null
    *@returns 0 on success, -1 on failure
    */
-  jnx_int jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
+  void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
       jnx_udp_listener_callback callback, void *args);
   /**
    *@fn jnx_socket_udp_listener_tick(jnx_udp_listener *listener,

@@ -26,6 +26,7 @@ extern "C" {
     struct pollfd ufds[200];
     jnx_int nfds;
     jnx_int poll_timeout;
+    jnx_int hint_exit;
   }jnx_tcp_listener;
 
   typedef void (*jnx_tcp_listener_callback)(const jnx_uint8 *payload, \
