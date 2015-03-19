@@ -31,7 +31,6 @@ void test_tcp_listener_callback(jnx_uint8 *payload,
     jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
   JNX_LOG(NULL,"test_tcp_listener_callback achieved");
   test_tcp_listener_complete = 1;
-  return 0;
 }
 void test_tcp_listener() {
   jnx_tcp_listener *listener = 
