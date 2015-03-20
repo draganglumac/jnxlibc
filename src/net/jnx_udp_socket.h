@@ -37,6 +37,12 @@ extern "C" {
    */
   jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
       jnx_unsigned_int family);
+  
+  jnx_udp_listener* jnx_socket_udp_listener_broadcast_create(jnx_char *port,
+      jnx_unsigned_int family);
+  
+  jnx_udp_listener* jnx_socket_udp_listener_multicast_create(jnx_char *port,
+      jnx_unsigned_int family, jnx_char *bgroup);
   /**
    *@fn void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener)
    *@brief destroys and closes socket for the udp listener
@@ -90,31 +96,17 @@ extern "C" {
    */
   jnx_size jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s);
   /**
-   *@fn jnx_size jnx_socket_udp_enable_multicast_send
-   (jnx_socket *s, jnx_char *interface, jnx_int32 ignore_local)
-   *@brief This is function will enable the given socket to 
-   *transmit multicast packets over domain
-   *@param s is the socket to enable multicast sending on
-   *@param interface is the IP address of the interface 
-   *to use on the local machine
-   *@param ignore_local is a flag to either disable local multicast loopback
-   *@param returns 0 on success
-   */
-  jnx_size jnx_socket_udp_enable_multicast_send(jnx_socket *s,\
-      jnx_char *interface, jnx_int32 ignore_local);
-  /**
    *@fn jnx_size jnx_socket_udp_enable_multicast_listen
    (jnx_socket *s, jnx_char *interface,jnx_char *group)
    *@brief This function will enable the given socket to 
    recieve multicast packets on the given interface for the subscribed group
    *@param s is the socket to enable multicast listening on
-   *@param interface is the IP address of the interface 
    *to use on the local machine
    *@param group is the multicast group to subscribe too
    *@return returns 0 on success
    */
   jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s,\
-      jnx_char *interface, jnx_char *group);
+    jnx_char *group);
   /**
    * @fn jnx_socket_udp_send(jnx_socket *s, jnx_char *host,
    jnx_char* port, jnx_uint8 *msg, jnx_size msg_len)

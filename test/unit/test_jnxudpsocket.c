@@ -8,7 +8,8 @@
 #include "jnxthread.h"
 #include <time.h>
 #define TESTPORT "9092"
-
+#define TESTPORT2 "9093"
+#define BGROUP "225.1.1.1"
 static int test_udp_listener_complete = 0;
 
 void *worker(void *args) {
@@ -27,6 +28,11 @@ void *worker_broadcast(void *args) {
   jnx_socket_udp_enable_broadcast_send_or_listen(t);
   jnx_socket_udp_send(t,"127.0.0.1",port,"ping",5);
 }
+void *worker_multicast(void *args) {
+  char *port = (char*)args;
+  jnx_socket *t = jnx_socket_udp_create(AF_INET);
+  jnx_socket_udp_send(t,BGROUP,port,"ping",5);
+}
 void fire_threaded_udp_packet(char *port) {
   jnx_thread_create_disposable(worker,port);
 }
@@ -35,6 +41,9 @@ void fire_threaded_udp_packet_ipv6(char *port) {
 }
 void fire_threaded_udp_packet_broadcast(char *port) {
   jnx_thread_create_disposable(worker_broadcast,port);
+}
+void fire_threaded_udp_packet_multicast(char *port) {
+  jnx_thread_create_disposable(worker_multicast,port);
 }
 void test_udp_listener_callback(jnx_uint8 *payload,
     jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
@@ -73,10 +82,7 @@ void test_udp_listener_ipv6() {
 
 void test_udp_broadcast(){
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_create(TESTPORT,AF_INET);
-
-  jnx_socket_udp_enable_broadcast_send_or_listen(listener->socket);
-
+    jnx_socket_udp_listener_broadcast_create(TESTPORT,AF_INET);
 
   fire_threaded_udp_packet_broadcast(TESTPORT);
   int x = 0;
@@ -113,14 +119,32 @@ void test_udp_blocking_listener() {
     msec = (diff - start) * 1000 / CLOCKS_PER_SEC;
   }
   listener->hint_exit = 1;
+  jnx_socket_udp_listener_destroy(&listener);
   JNXCHECK(test_udp_listener_complete);
+  JNXCHECK(listener == NULL);
+}
+void test_udp_multicast(){
+  jnx_udp_listener *listener = 
+    jnx_socket_udp_listener_multicast_create(TESTPORT2,AF_INET,BGROUP);
+  
+  fire_threaded_udp_packet_multicast(TESTPORT2);
+  int x = 0;
+  while(x < 5) {
+    jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
+    if(test_udp_listener_complete)break;
+    ++x;
+  }
+  jnx_socket_udp_listener_destroy(&listener);
+  JNXCHECK(test_udp_listener_complete);
+  JNXCHECK(listener == NULL);
+
 }
 int main(int argc, char **argv) {
   JNX_LOG(NULL,"Starting udp socket tests");
-  JNX_LOG(NULL,"Testing UDP Listener");
+  JNX_LOG(NULL,"Testing UDP listener");
   test_udp_listener();
   test_udp_listener_complete = 0;
-  JNX_LOG(NULL,"Testing UDP Listener IPV6");
+  JNX_LOG(NULL,"Testing UDP listener IPV6");
   test_udp_listener_ipv6();
   test_udp_listener_complete = 0;
   JNX_LOG(NULL,"Testing UDP broadcast");
@@ -128,5 +152,8 @@ int main(int argc, char **argv) {
   test_udp_listener_complete = 0;
   JNX_LOG(NULL,"Test UDP blocking listener");
   test_udp_blocking_listener();
+  test_udp_listener_complete = 0;
+  JNX_LOG(NULL,"Test UDP multicast listener");
+  test_udp_multicast();
   return 0;
 }
