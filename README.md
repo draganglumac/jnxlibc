@@ -56,7 +56,7 @@ CMake
 Default install location
 ```
 git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
-cmake .   #or use cmake . -DRUN_TESTS=ON 
+cmake .   #or use cmake . -DRUN_TESTS=ON  #release on or off with -DRELEASE=OFF 
 make
 sudo make install
 ```

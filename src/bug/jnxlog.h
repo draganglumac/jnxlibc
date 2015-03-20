@@ -71,7 +71,11 @@ extern "C" {
    * @param FORMATTER is the const jnx_char* formatter for displaying the subsequent args
    * @param ... any optional arguments to be rendered by the formatter
    */
+#ifndef DEBUG
+#define JNX_LOG(CONFIG,FORMATTER,...)
+#else
 #define JNX_LOG(CONFIG,FORMATTER, ...) jnx_log(CONFIG,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__); 
+#endif
   /**@fn JNX_LOG_CREATE(PATH,OUTPUT)
    * @brief creates a log context
    * @param PATH is an optional value for log output path when using OUTPUT=FILETYPE, can be NULL
