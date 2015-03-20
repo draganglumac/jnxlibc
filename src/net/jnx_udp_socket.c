@@ -171,7 +171,11 @@ jnx_size jnx_socket_udp_send(jnx_socket *s,\
   freeaddrinfo(res);
   return tbytes;
 }
-
+ jnx_size jnx_socket_udp_broadcast_send(jnx_socket *s, jnx_char *host,\
+jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
+  jnx_socket_udp_enable_broadcast_send_or_listen(s);
+  return jnx_socket_udp_send(s,host,port,msg,msg_len);
+}
 jnx_size jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
   JNXCHECK(s);
   JNXCHECK(s->stype == SOCK_DGRAM);
