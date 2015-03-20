@@ -37,24 +37,6 @@ jnx_size internal_jnx_socket_udp_enable_multicast_listen(jnx_socket *s,
     perror("setsockopt:");
     return -1;
   }
-
-  return 0;
-}
-jnx_size internal_jnx_socket_udp_enable_multicast_send(jnx_socket *s,
-    jnx_char *group) {
-  JNXCHECK(s);
-  JNXCHECK(group);
-  JNXCHECK(s->stype == SOCK_DGRAM);
-  struct in_addr localInterface;
-  JNX_LOG(0,"Attempting to assign multicast send address %s",group);
-  localInterface.s_addr = inet_addr(group);
-  JNX_LOG(0,"internal_jnx_socket_udp_enable_multicast_send");
-  if(setsockopt(s->socket, IPPROTO_IP, IP_MULTICAST_IF, (char *)&localInterface, sizeof(localInterface)) < 0)
-  {
-    perror("Setting local interface error");
-    return -1;
-  }
- 
   return 0;
 }
 jnx_size internal_jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
@@ -208,7 +190,7 @@ jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
 }
 jnx_size jnx_socket_udp_multicast_send(jnx_socket *s, jnx_char *group,\
   jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
-  internal_jnx_socket_udp_enable_multicast_send(s,group);
+  //internal_jnx_socket_udp_enable_multicast_send(s,group);
   return jnx_socket_udp_send(s,group,port,msg,msg_len);
 }
 jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {

@@ -144,7 +144,7 @@ void test_udp_multicast(){
   jnx_udp_listener *listener = 
     jnx_socket_udp_listener_multicast_create(TESTPORT2,AF_INET,ip,BGROUP);
   
- // fire_threaded_udp_packet_multicast(TESTPORT2);
+  fire_threaded_udp_packet_multicast(TESTPORT2);
   int x = 0;
   while(x < 5) {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
