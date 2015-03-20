@@ -103,39 +103,12 @@ extern "C" {
    * @return jnx_char string or NULL
    */   
   jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa);
-  /**
-   *@fn jnx_size jnx_socket_udp_enable_broadcast(socket *s)
-   *@brief this IPV4 option will enable udp broadcasting
-   *@param s is the socket object to enable broadcasting
-   *@return 0 on success, -1 on error
-   */
-  jnx_size jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s);
-  /**
-   *@fn jnx_size jnx_socket_udp_enable_multicast_listen
-   (jnx_socket *s, jnx_char *interface,jnx_char *group)
-   *@brief This function will enable the given socket to 
-   recieve multicast packets on the given interface for the subscribed group
-   *@param s is the socket to enable multicast listening on
-   *to use on the local machine
-   *@param group is the multicast group to subscribe too
-   *@return returns 0 on success
-   */
-  jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s,\
-    jnx_char *group);
-  /**
-   * @fn jnx_socket_udp_send(jnx_socket *s, jnx_char *host,
-   jnx_char* port, jnx_uint8 *msg, jnx_size msg_len)
-   * @param s is the socket to use to send
-   * @param host is the target destination
-   * @param port is the target port
-   * @param msg is the payload to send
-   * @param msg_len is the size of payload
-   * @warning UDP header is 16bit which means 65k is the
-   * max file transmission size
-   * @return jnx_size of bytes sent
-   */
+
   jnx_size jnx_socket_udp_send(jnx_socket *s, jnx_char *host,\
       jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
+      
+  jnx_size jnx_socket_udp_broadcast_send(jnx_socket *s, jnx_char *host,\
+    jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
 
 #ifdef __cplusplus
 }
