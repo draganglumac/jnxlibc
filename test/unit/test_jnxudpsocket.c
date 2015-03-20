@@ -44,6 +44,7 @@ void *worker_multicast(void *args) {
   jnx_socket *t = jnx_socket_udp_create(AF_INET);
   char *ip = calloc(16,sizeof(jnx_char));
   jnx_network_fetch_local_ipv4(ip,filter_local_ip_address);
+  JNX_LOG(0,"Using IP => %s",ip);
   jnx_socket_udp_multicast_send(t,ip,port,BGROUP,"ping",5);
 }
 void fire_threaded_udp_packet(char *port) {
@@ -139,6 +140,7 @@ void test_udp_blocking_listener() {
 void test_udp_multicast(){
   char *ip = calloc(16,sizeof(jnx_char));
   jnx_network_fetch_local_ipv4(ip,filter_local_ip_address);
+  JNX_LOG(0,"Using IP => %s",ip);
   jnx_udp_listener *listener = 
     jnx_socket_udp_listener_multicast_create(TESTPORT2,AF_INET,ip,BGROUP);
   
