@@ -21,7 +21,35 @@
 #include "jnxlog.h"
 #include "jnxcheck.h"
 #include "jnx_udp_socket.h"
+jnx_size internal_jnx_socket_udp_enable_multicast_listen(jnx_socket *s,
+    jnx_char *group) {
+  JNXCHECK(s);
+  JNXCHECK(group);
+  JNXCHECK(s->stype == SOCK_DGRAM);
+  struct ip_mreq bgroup;
 
+  bgroup.imr_multiaddr.s_addr = inet_addr(group);
+  bgroup.imr_interface.s_addr = htonl(INADDR_ANY);
+  if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(jnx_char*)&bgroup,
+        sizeof(bgroup)) < 0) {
+    perror("setsockopt:");
+    return -1;
+  }
+  //Note: This is due to bug in getaddrinfo
+  s->addrfamily = AF_UNSPEC;
+  return 0;
+}
+jnx_size internal_jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
+  JNXCHECK(s);
+  JNXCHECK(s->stype == SOCK_DGRAM);
+  JNXCHECK(s->addrfamily == AF_INET);
+  jnx_int32 optval = 1;
+  if(setsockopt(s->socket,SOL_SOCKET,SO_BROADCAST,&optval, sizeof(optval)) != 0) {
+    perror("setsockopt:");
+    return -1;
+  }
+  return 0;
+}
 jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily) {
   return create_socket(SOCK_DGRAM,addrfamily);
 }
@@ -41,12 +69,12 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
 
   if(broadcast) {
     JNX_LOG(NULL,"Created broadcast listener");
-    jnx_socket_udp_enable_broadcast_send_or_listen(l->socket); 
+    internal_jnx_socket_udp_enable_broadcast_send_or_listen(l->socket); 
   }
   if(multicast) {
     JNXCHECK(bgroup);
     JNX_LOG(NULL,"Created multicast listener");
-    jnx_socket_udp_enable_multicast_listen(l->socket,bgroup);
+    internal_jnx_socket_udp_enable_multicast_listen(l->socket,bgroup);
   }
   while(p != NULL) {
     if (setsockopt(l->socket->socket, SOL_SOCKET, SO_REUSEADDR,
@@ -109,24 +137,6 @@ void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener,
         args);
   }
 }
-jnx_size jnx_socket_udp_enable_multicast_listen(jnx_socket *s,
-    jnx_char *group) {
-  JNXCHECK(s);
-  JNXCHECK(group);
-  JNXCHECK(s->stype == SOCK_DGRAM);
-  struct ip_mreq bgroup;
-
-  bgroup.imr_multiaddr.s_addr = inet_addr(group);
-  bgroup.imr_interface.s_addr = htonl(INADDR_ANY);
-  if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(jnx_char*)&bgroup,
-        sizeof(bgroup)) < 0) {
-    perror("setsockopt:");
-    return -1;
-  }
-  //Note: This is due to bug in getaddrinfo
-  s->addrfamily = AF_UNSPEC;
-  return 0;
-}
 jnx_size jnx_socket_udp_send(jnx_socket *s,\
     jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
     jnx_size msg_len) {
@@ -173,19 +183,8 @@ jnx_size jnx_socket_udp_send(jnx_socket *s,\
 }
  jnx_size jnx_socket_udp_broadcast_send(jnx_socket *s, jnx_char *host,\
 jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
-  jnx_socket_udp_enable_broadcast_send_or_listen(s);
+  internal_jnx_socket_udp_enable_broadcast_send_or_listen(s);
   return jnx_socket_udp_send(s,host,port,msg,msg_len);
-}
-jnx_size jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
-  JNXCHECK(s);
-  JNXCHECK(s->stype == SOCK_DGRAM);
-  JNXCHECK(s->addrfamily == AF_INET);
-  jnx_int32 optval = 1;
-  if(setsockopt(s->socket,SOL_SOCKET,SO_BROADCAST,&optval, sizeof(optval)) != 0) {
-    perror("setsockopt:");
-    return -1;
-  }
-  return 0;
 }
 jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
   jnx_char str[INET6_ADDRSTRLEN];

@@ -25,8 +25,7 @@ void *worker_ipv6(void *args) {
 void *worker_broadcast(void *args) {
   char *port = (char*)args;
   jnx_socket *t = jnx_socket_udp_create(AF_INET);
-  jnx_socket_udp_enable_broadcast_send_or_listen(t);
-  jnx_socket_udp_send(t,"127.0.0.1",port,"ping",5);
+  jnx_socket_udp_broadcast_send(t,"127.0.0.1",port,"ping",5);
 }
 void *worker_multicast(void *args) {
   char *port = (char*)args;
