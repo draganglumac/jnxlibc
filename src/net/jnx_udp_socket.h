@@ -110,8 +110,8 @@ extern "C" {
   jnx_size jnx_socket_udp_broadcast_send(jnx_socket *s, jnx_char *host,\
     jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
 
-  jnx_size jnx_socket_udp_multicast_send(jnx_socket *s, jnx_char *host,\
-    jnx_char* port, jnx_char *bgroup, jnx_uint8 *msg, jnx_size msg_len);
+  jnx_size jnx_socket_udp_multicast_send(jnx_socket *s, jnx_char *group,\
+    jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
 
 
 #ifdef __cplusplus
