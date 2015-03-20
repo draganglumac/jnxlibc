@@ -57,7 +57,7 @@ extern "C" {
    *@return pointer to a listener on success
    */
   jnx_udp_listener* jnx_socket_udp_listener_multicast_create(jnx_char *port,
-      jnx_unsigned_int family, jnx_char *bgroup);
+      jnx_unsigned_int family, jnx_char *ip, jnx_char *bgroup);
   /**
    *@fn void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener)
    *@brief destroys and closes socket for the udp listener
@@ -109,6 +109,10 @@ extern "C" {
       
   jnx_size jnx_socket_udp_broadcast_send(jnx_socket *s, jnx_char *host,\
     jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
+
+  jnx_size jnx_socket_udp_multicast_send(jnx_socket *s, jnx_char *host,\
+    jnx_char* port, jnx_char *bgroup, jnx_uint8 *msg, jnx_size msg_len);
+
 
 #ifdef __cplusplus
 }

@@ -7,11 +7,23 @@
 #include <assert.h>
 #include "jnxthread.h"
 #include <time.h>
+#include "jnxnetwork.h"
 #define TESTPORT "9092"
 #define TESTPORT2 "9093"
 #define BGROUP "225.1.1.1"
 static int test_udp_listener_complete = 0;
-
+// Broadcast address IPv4
+static struct sockaddr *filter_broadcast_address(struct ifaddrs *addr) {
+struct sockaddr *ip = addr->ifa_addr;
+struct sockaddr *netmask = addr->ifa_netmask;
+((struct sockaddr_in *) ip)->sin_addr.s_addr |= ~(((struct sockaddr_in *) netmask)->sin_addr.s_addr);
+return ip;
+}
+// Local IP address IPv4
+static struct sockaddr *filter_local_ip_address(struct ifaddrs *addr) {
+struct sockaddr *ip = addr->ifa_addr;
+return ip;
+}
 void *worker(void *args) {
   char *port = (char*)args;
   jnx_socket *t = jnx_socket_udp_create(AF_INET);
@@ -30,7 +42,9 @@ void *worker_broadcast(void *args) {
 void *worker_multicast(void *args) {
   char *port = (char*)args;
   jnx_socket *t = jnx_socket_udp_create(AF_INET);
-  jnx_socket_udp_send(t,BGROUP,port,"ping",5);
+  char *ip = calloc(16,sizeof(jnx_char));
+  jnx_network_fetch_local_ipv4(ip,filter_local_ip_address);
+  jnx_socket_udp_multicast_send(t,ip,port,BGROUP,"ping",5);
 }
 void fire_threaded_udp_packet(char *port) {
   jnx_thread_create_disposable(worker,port);
@@ -123,8 +137,10 @@ void test_udp_blocking_listener() {
   JNXCHECK(listener == NULL);
 }
 void test_udp_multicast(){
+  char *ip = calloc(16,sizeof(jnx_char));
+  jnx_network_fetch_local_ipv4(ip,filter_local_ip_address);
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_multicast_create(TESTPORT2,AF_INET,BGROUP);
+    jnx_socket_udp_listener_multicast_create(TESTPORT2,AF_INET,ip,BGROUP);
   
   fire_threaded_udp_packet_multicast(TESTPORT2);
   int x = 0;

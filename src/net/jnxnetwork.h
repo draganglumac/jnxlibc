@@ -56,6 +56,9 @@ extern "C" {
    */
   jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,jnx_char *host, jnx_char **out_ip,jnx_unsigned_int *out_addrfamily);
 
+  typedef struct sockaddr*(*address_mapping)(struct ifaddrs *);
+
+  void jnx_network_fetch_local_ipv4(jnx_char *buffer, address_mapping filter);
 /**
  * @brief Basic HTTP Protocols 
  */
