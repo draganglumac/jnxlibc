@@ -29,7 +29,7 @@ extern "C" {
   jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily);
   /**
    *@fn jnx_udp_listener *jnx_socket_udp_listener_create(char *port,
-   *jnx_unsigned_int family, int max_connections)
+   *jnx_unsigned_int family)
    *@brief Creates a listener that can be 
    *ticked and retrieve incoming network traffic
    *@param family is the address family to use (AF_INET/AF_INET6)
@@ -37,10 +37,25 @@ extern "C" {
    */
   jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
       jnx_unsigned_int family);
-  
+    /**
+   *@fn jnx_udp_listener *jnx_socket_udp_listener_broadcast_create(char *port,
+   *jnx_unsigned_int family)
+   *@brief Creates a listener that can be 
+   *ticked and retrieve incoming network traffic whilst listening for broadcasts
+   *@param family is the address family to use (AF_INET/AF_INET6)
+   *@return pointer to a listener on success
+   */
   jnx_udp_listener* jnx_socket_udp_listener_broadcast_create(jnx_char *port,
       jnx_unsigned_int family);
-  
+    /**
+   *@fn jnx_udp_listener *jnx_socket_udp_listener_multicast_create(char *port,
+   *jnx_unsigned_int family, int max_connections)
+   *@brief Creates a listener that can be 
+   *ticked and retrieve incoming network traffic and subscribes to the group
+   *@param family is the address family to use (AF_INET/AF_INET6)
+   *@param bgroup is the subscription group for multicasts
+   *@return pointer to a listener on success
+   */
   jnx_udp_listener* jnx_socket_udp_listener_multicast_create(jnx_char *port,
       jnx_unsigned_int family, jnx_char *bgroup);
   /**
