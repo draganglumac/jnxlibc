@@ -35,7 +35,7 @@
 #include <stdlib.h>
 #include "jnxnetwork.h"
 #include "jnxlog.h"
-#include "jnxsocket.h"
+#include "jnx_tcp_socket.h"
 #include "jnxcheck.h"
 
 jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
@@ -80,7 +80,8 @@ JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
   }; 
   return JNX_UNKNOWN_ENDIAN;
 }
-jnx_int32 jnx_network_interface_to_string(jnx_char **obuffer,jnx_char *interface, jnx_unsigned_int family){
+jnx_int32 jnx_network_interface_to_string(jnx_char **obuffer,
+    jnx_char *interface, jnx_unsigned_int family){
   JNXCHECK(interface);
   JNXCHECK(family);
   JNXCHECK(family == AF_INET || family == AF_INET6);
@@ -110,7 +111,8 @@ jnx_int32 jnx_network_interface_to_string(jnx_char **obuffer,jnx_char *interface
   freeifaddrs(myaddrs);
   return 0;
 }
-jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,jnx_char *host, jnx_char **out_ip,jnx_unsigned_int *out_addrfamily) {
+jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,
+    jnx_char *host, jnx_char **out_ip,jnx_unsigned_int *out_addrfamily) {
   JNXCHECK(hint_family);
   JNXCHECK(host);
   JNXCHECK(hint_family == AF_INET || hint_family == AF_INET6);
@@ -150,7 +152,9 @@ jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,jnx_char *host, jnx_ch
   }
   return 0;
 }
-size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_size *out_len) {
+size_t jnx_http_request(JNX_HTTP_TYPE type, 
+    const jnx_char *hostname, 
+    const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_size *out_len) {
   JNXCHECK(hostname);
   JNXCHECK(page);
   JNXCHECK(type == JNX_HTTP_POST || type == JNX_HTTP_GET);
@@ -180,22 +184,50 @@ size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_
       "%s\r\n",verb, page, hostname, strlen(args),args);
 
   jnx_size l = jnx_socket_tcp_send_with_receipt(sock,
-      (jnx_char*)hostname,"80",(jnx_uint8*)sendbuffer,(jnx_size)strlen(sendbuffer),out_reply);
+      (jnx_char*)hostname,"80",(jnx_uint8*)sendbuffer,
+      (jnx_size)strlen(sendbuffer),out_reply);
   *out_len = l;  
   if(!l) {
     return JNX_HTTP_STATE_UNKNOWN;
   }
   return JNX_HTTP_STATE_OKAY;
 }
-JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len) {
+JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, 
+    const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len) {
   jnx_uint8 *reply;
-  JNX_HTTP_TYPE t = jnx_http_request(JNX_HTTP_POST,hostname,page,args,&reply,out_len);
+  JNX_HTTP_TYPE t = 
+    jnx_http_request(JNX_HTTP_POST,hostname,page,args,&reply,out_len);
   *out_reply = reply;
   return t;
 }
-JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len) {
+JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname, 
+    const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len) {
   jnx_uint8 *reply;
-  JNX_HTTP_TYPE t = jnx_http_request(JNX_HTTP_GET,hostname,page,args,&reply,out_len);
+  JNX_HTTP_TYPE t = 
+    jnx_http_request(JNX_HTTP_GET,hostname,page,args,&reply,out_len);
   *out_reply = reply;
   return t;
+}
+void jnx_network_fetch_local_ipv4(jnx_char *buffer, address_mapping filter) {
+ struct ifaddrs *ifap;
+  if (0 != getifaddrs(&ifap)) {
+    JNX_LOG(0, "[ERROR] Couldn't get descriptions of network interfaces.");
+    exit(1);
+  }
+  struct ifaddrs *current = ifap;
+  while (0 != current) {
+    struct sockaddr *ip = current->ifa_addr;
+    if (ip->sa_family == AF_INET) {
+      char *aip = inet_ntoa(((struct sockaddr_in *) ip)->sin_addr);
+      if (strcmp("127.0.0.1", aip) == 0) { // skip loopback interface
+        current = current->ifa_next;
+        continue;
+      }
+      char *ip_str = inet_ntoa(((struct sockaddr_in *) filter(current))->sin_addr);
+      strncpy(buffer, ip_str, strlen(ip_str) + 1);
+      break;
+    }
+    current = current->ifa_next;
+  }
+  freeifaddrs(ifap);
 }

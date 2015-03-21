@@ -56,6 +56,9 @@ extern "C" {
    */
   jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,jnx_char *host, jnx_char **out_ip,jnx_unsigned_int *out_addrfamily);
 
+  typedef struct sockaddr*(*address_mapping)(struct ifaddrs *);
+
+  void jnx_network_fetch_local_ipv4(jnx_char *buffer, address_mapping filter);
 /**
  * @brief Basic HTTP Protocols 
  */
@@ -80,11 +83,14 @@ typedef enum JNX_HTTP_STATE {
  * @params out_len is the length of outward reply
  * @return message length sent in bytes 
  */
-size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_size *out_len);
+size_t jnx_http_request(JNX_HTTP_TYPE type, const jnx_char *hostname, 
+    const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_size *out_len);
 
-JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len);
+JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, 
+    const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len);
 
-JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname, const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len);
+JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname,
+    const jnx_char *page, jnx_char *args,jnx_uint8 **out_reply, jnx_size *out_len);
 
 #ifdef __cplusplus
 }

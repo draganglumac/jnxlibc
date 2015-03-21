@@ -56,7 +56,7 @@ CMake
 Default install location
 ```
 git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
-cmake .   #or use cmake . -DRUN_TESTS=ON 
+cmake .   #or use cmake . -DRUN_TESTS=ON  #release on or off with -DRELEASE=OFF 
 make
 sudo make install
 ```
@@ -90,7 +90,28 @@ To run an individual test
 ./test/run_tests test_jnxlist.c
 ```
 ##Examples
+Listeners that can be manually ticked
+```C
+void test_tcp_listener_callback(jnx_uint8 *payload,
+ jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
+ JNX_LOG(NULL,"test_tcp_listener_callback achieved");
+ test_tcp_listener_complete = 1;
+}
+void test_tcp_listener() {
+ jnx_tcp_listener *listener =
+ jnx_socket_tcp_listener_create(TESTPORT,AF_INET,100);
+ int x = 0;
+ while(x < 5) {
+  jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback,NULL);
+   if(test_tcp_listener_complete)break;
+  ++x;
+}
+ jnx_socket_tcp_listener_destroy(&listener);
+ JNXCHECK(test_tcp_listener_complete);
+ JNXCHECK(listener == NULL);
+}
 
+```
 Sending message over network with exception handling.
 ```C
 jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);

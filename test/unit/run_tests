@@ -25,7 +25,7 @@ function test_against_file()
 {
   file=$1
   echo "Compiling $file"
-  `$COMPILER $file ../../src/**/*.c -I../../src/alg -I../../src/bug -I../../src/io -I../../src/ipc -I../../src/dat -I../../src/net -I../../src/sig -I../../src/sys -I../../src/thr -o ${file:0:${#file}-2} -pthread -w -rdynamic`
+  `$COMPILER $file ../../src/**/*.c -I../../src/alg -I../../src/bug -I../../src/io -I../../src/ipc -I../../src/dat -I../../src/net -I../../src/sig -I../../src/sys -I../../src/thr -o ${file:0:${#file}-2} -pthread -w -rdynamic -DDEBUG`
   ./$current
   out=$?
   if [ ! $out -eq 0 ]; then
