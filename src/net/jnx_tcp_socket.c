@@ -84,10 +84,6 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
     if(listener->ufds[i].revents == 0) {
       continue;
     }
-    if(listener->ufds[i].revents != POLLIN) {
-      JNXFAIL("There shouldn't be a descriptor in this state");
-      exit(0);
-    }
     if(listener->ufds[i].fd == listener->socket->socket) {
       int new_fd = -1;
       do{
@@ -153,7 +149,8 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
     }
   }
 }
-void jnx_socket_tcp_listener_auto_tick(jnx_tcp_listener *listener,jnx_tcp_listener_callback callback, void *args) {
+void jnx_socket_tcp_listener_auto_tick(jnx_tcp_listener *listener,
+    jnx_tcp_listener_callback callback, void *args) {
   while(!listener->hint_exit){
     jnx_socket_tcp_listener_tick(listener,callback,
         args);  
