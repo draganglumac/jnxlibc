@@ -168,8 +168,7 @@ int main(int argc, char **argv) {
   JNX_LOG(NULL,"Test UDP blocking listener");
   test_udp_blocking_listener();
   test_udp_listener_complete = 0;
-//  JNX_LOG(NULL,"Test UDP multicast listener");
-  JNX_LOG(NULL,"Warning multicast test disabled!")
-//  test_udp_multicast();
+  JNX_LOG(NULL,"Test UDP multicast listener");
+  test_udp_multicast();
   return 0;
 }
