@@ -78,7 +78,6 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
       perror("server: bind");
       JNXFAIL("bind failure");
     }
-    break;
     p= p->ai_next;
   }
   if(broadcast) {
