@@ -69,6 +69,13 @@ sudo make install
 Use `-ljnxc` when building your project for shared library
 Use `-ljnxcs` for static library
 
+####Library Debug information
+```
+cmake . -DDEBUG #Show all debugging information
+cmake . -DINFO
+cmake . -DWARN  #Show only debugging information of level warn and above
+cmake . -DERROR
+cmake . -DPANIC #Only show complete system meltdown level messages
 ####Flags
 
 -DRELEASE (Sets library for release mode optimisations) 
