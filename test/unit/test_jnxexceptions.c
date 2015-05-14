@@ -24,7 +24,7 @@
 
 int main(int argc, char** argv)
 {
-  JNX_LOG(NULL,"Running test_jnxexception tests");
+  JNXLOG(LDEBUG,"Running test_jnxexception tests");
 
   int ar[3] = { -1,-2,-3};
   int c;
@@ -35,22 +35,22 @@ int main(int argc, char** argv)
       jnx_throw( ar[c] );
     }
     jnx_catch( JNX_EXCEPTION ) {
-      JNX_LOG(NULL,"Default system exception fired correctly");
+      JNXLOG(LDEBUG,"Default system exception fired correctly");
       JNXCHECK(current_exception == JNX_EXCEPTION);
       break;
     }
     jnx_catch( FOO_EXCEPTION ) {
-      JNX_LOG(NULL,"First exception fired correctly");
+      JNXLOG(LDEBUG,"First exception fired correctly");
       JNXCHECK(current_exception == FOO_EXCEPTION);
       break;
     }
     jnx_catch( BAR_EXCEPTION ) {
-      JNX_LOG(NULL,"Second exception fired correctly");
+      JNXLOG(LDEBUG,"Second exception fired correctly");
       JNXCHECK(current_exception == BAR_EXCEPTION);
       break;
     }
     jnx_finally {
-      JNX_LOG(NULL,"Hit finally clause");
+      JNXLOG(LDEBUG,"Hit finally clause");
     }
     jnx_try_end
   }

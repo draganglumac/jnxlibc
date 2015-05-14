@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2015-05-14 14:56]
+ *     Last Modified       :     [2015-05-14 15:09]
  *     Description         :      
  **********************************************************************************/
 

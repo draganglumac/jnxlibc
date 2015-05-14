@@ -56,7 +56,7 @@ void jnx_vector_grow(jnx_vector **vector, jnx_int32 increment) {
   jnx_int32 resize = (*vector)->count + increment;
   jnx_vector_record **temp = realloc((*vector)->vector,resize * sizeof(jnx_vector_record));
   if(temp == NULL) {
-    JNX_LOG(DEFAULT_CONTEXT,"Error with reallocing\n");
+    JNXLOG(LDEBUG,"Error with reallocing\n");
     exit(0);
   } else {
     (*vector)->vector = temp;
@@ -139,7 +139,7 @@ void jnx_vector_insert_ts(jnx_vector *vector, void *value) {
 void *jnx_vector_last(jnx_vector *vector) {
   JNXCHECK(vector);
   if(vector->count == 0) {
-    JNX_LOG(DEFAULT_CONTEXT,"Cannot pop from an empty vector\n");
+    JNXLOG(LDEBUG,"Cannot pop from an empty vector\n");
     return NULL;
   }
   void *data = vector->vector[vector->count -1 ]->data;

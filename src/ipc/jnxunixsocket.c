@@ -191,7 +191,7 @@ jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_siz
     if (context == NULL) {
       stream_socket_listener_callback c = (stream_socket_listener_callback) cc;
       if ((ret = c(out, len, remote_sock)) != 0) {
-        JNX_LOG(DEFAULT_CONTEXT,"Exiting unix stream socket listener with %d\n",ret);
+        JNXLOG(LDEBUG,"Exiting unix stream socket listener with %d\n",ret);
         free(out);
         jnx_unix_socket_destroy(&remote_sock);
         return 0;
@@ -199,7 +199,7 @@ jnx_int32 jnx_unix_stream_socket_listen_with_context(jnx_unix_socket *s, jnx_siz
     }
     else {
       if ((ret = cc(out, len, remote_sock, context)) != 0) {
-        JNX_LOG(DEFAULT_CONTEXT,"Exiting unix stream socket listener with %d\n",ret);
+        JNXLOG(LDEBUG,"Exiting unix stream socket listener with %d\n",ret);
         free(out);
         jnx_unix_socket_destroy(&remote_sock);
         return 0;
@@ -267,7 +267,7 @@ jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datag
     if (context == NULL) {
       datagram_socket_listener_callback c = (datagram_socket_listener_callback) cc;
       if ((ret = c(out, len, remote)) != 0) {
-        JNX_LOG(DEFAULT_CONTEXT,"Exiting unix datagram socket listener with %d\n",ret);
+        JNXLOG(LDEBUG,"Exiting unix datagram socket listener with %d\n",ret);
         free(out);
         jnx_unix_socket_destroy(&remote);
         return 0;
@@ -275,7 +275,7 @@ jnx_int32 jnx_unix_datagram_socket_listen_with_context(jnx_unix_socket *s, datag
     }
     else {
       if ((ret = cc(out, len, remote, context)) != 0) {
-        JNX_LOG(DEFAULT_CONTEXT,"Exiting unix datagram socket listener with %d\n",ret);
+        JNXLOG(LDEBUG,"Exiting unix datagram socket listener with %d\n",ret);
         free(out);
         jnx_unix_socket_destroy(&remote);
         return 0;

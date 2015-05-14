@@ -2,7 +2,7 @@
  *     File Name           :     jnxlog.h
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:01]
- *     Last Modified       :     [2015-05-14 14:59]
+ *     Last Modified       :     [2015-05-14 15:09]
  *     Description         :      
  **********************************************************************************/
 #ifndef __JNXLOG_H__
@@ -24,7 +24,6 @@ extern "C" {
 
 #define JNXLOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
 
-#define JNX_LOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
 #ifdef __cplusplus
 }
 #endif

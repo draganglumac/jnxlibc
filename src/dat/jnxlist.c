@@ -141,7 +141,7 @@ jnx_int32 jnx_list_contains_ts(jnx_list *A, void *datain, jnx_int32 (*list_compa
 }
 void jnx_list_destroy(jnx_list** A) {
   if((*A) == NULL) {
-    JNX_LOG(DEFAULT_CONTEXT,"jnx_list_destroy: No list\n");
+    JNXLOG(LDEBUG,"jnx_list_destroy: No list\n");
     return;
   }
   if((*A)->head == NULL) {

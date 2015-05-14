@@ -31,7 +31,7 @@ jnx_size internal_jnx_socket_udp_enable_multicast_listen(jnx_socket *s,
   struct ip_mreq bgroup;
   bgroup.imr_multiaddr.s_addr = inet_addr(group);
   bgroup.imr_interface.s_addr = inet_addr(ip);
-  JNX_LOG(0,"internal_jnx_socket_udp_enable_multicast_listen");
+  JNXLOG(0,"internal_jnx_socket_udp_enable_multicast_listen");
   if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(jnx_char*)&bgroup,
         sizeof(bgroup)) < 0) {
     perror("setsockopt:");
@@ -81,13 +81,13 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
     p= p->ai_next;
   }
   if(broadcast) {
-    JNX_LOG(NULL,"Creating broadcast listener");
+    JNXLOG(LDEBUG,"Creating broadcast listener");
     internal_jnx_socket_udp_enable_broadcast_send_or_listen(l->socket); 
   }
   if(multicast) {
     JNXCHECK(bgroup);
     JNXCHECK(ip);
-    JNX_LOG(NULL,"Creating multicast listener %s %s",ip,bgroup);
+    JNXLOG(LDEBUG,"Creating multicast listener %s %s",ip,bgroup);
     internal_jnx_socket_udp_enable_multicast_listen(l->socket,ip,bgroup);
   }
   freeaddrinfo(res);
@@ -122,7 +122,7 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
   if(bytesread > 0) {
     jnx_char *incoming_address = jnx_socket_udp_resolve_ipaddress(their_addr);
     if(incoming_address){
-      JNX_LOG(0,"Incoming data from %s",incoming_address); 
+      JNXLOG(0,"Incoming data from %s",incoming_address); 
       free(incoming_address);
     }
     jnx_uint8 *outbuffer = malloc((bytesread + 1) * sizeof(jnx_uint8));
@@ -159,13 +159,13 @@ jnx_size jnx_socket_udp_send(jnx_socket *s,\
 
   jnx_int32 rg = 0;
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-    JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
+    JNXLOG(LDEBUG,"%s\n",gai_strerror(rg));
     return 0;
   }
   jnx_size tbytes = 0;
   jnx_size rbytes = msg_len;
   if(rbytes > MAX_UDP_BUFFER) {
-    JNX_LOG(DEFAULT_CONTEXT,"Message exceeds max UDP packet size\n");
+    JNXLOG(LDEBUG,"Message exceeds max UDP packet size\n");
     freeaddrinfo(res);
     return 0;
   }

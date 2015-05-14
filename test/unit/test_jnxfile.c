@@ -47,7 +47,7 @@ void test_jnx_file() {
     char a = *buffer;
     char b = *test_string;
     if(a != b) {
-      JNX_LOG(NULL,"%X %X do not match\n",a,b);
+      JNXLOG(LDEBUG,"%X %X do not match\n",a,b);
     }
     assert(a == b);
     test_string++;
@@ -64,14 +64,14 @@ void test_jnx_dir() {
   free(path);
 }
 int main(int args, char **argv) {
-  JNX_LOG(NULL,"Running file tests...\n");
-  JNX_LOG(NULL,"- test recursive delete");
+  JNXLOG(LDEBUG,"Running file tests...\n");
+  JNXLOG(LDEBUG,"- test recursive delete");
   test_recursive_delete();
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-  JNX_LOG(NULL,"- test file read");
+  JNXLOG(LDEBUG,"- test file read");
   test_jnx_file();
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-  JNX_LOG(NULL,"- test temp directory");
+  JNXLOG(LDEBUG,"- test temp directory");
   test_jnx_dir();
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
   return 0;

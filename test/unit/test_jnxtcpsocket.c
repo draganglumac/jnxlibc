@@ -29,7 +29,7 @@ void fire_threaded_tcp_packet_ipv6(char *port) {
 }
 void test_tcp_listener_callback(jnx_uint8 *payload,
     jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
-  JNX_LOG(NULL,"test_tcp_listener_callback achieved");
+  JNXLOG(LDEBUG,"test_tcp_listener_callback achieved");
   test_tcp_listener_complete = 1;
 }
 void test_tcp_listener() {
@@ -88,14 +88,14 @@ void test_tcp_blocking_listener() {
   JNXCHECK(test_tcp_listener_complete);
 }
 int main(int argc, char **argv) {
-  JNX_LOG(NULL,"Starting tcp socket tests");
-  JNX_LOG(NULL,"Testing TCP Listener");
+  JNXLOG(LDEBUG,"Starting tcp socket tests");
+  JNXLOG(LDEBUG,"Testing TCP Listener");
   test_tcp_listener();
   test_tcp_listener_complete = 0;
-  JNX_LOG(NULL,"Testing TCP Listener IPV6");
+  JNXLOG(LDEBUG,"Testing TCP Listener IPV6");
   test_tcp_listener_ipv6();
   test_tcp_listener_complete = 0;
-  JNX_LOG(NULL,"Test TCP blocking listener");
+  JNXLOG(LDEBUG,"Test TCP blocking listener");
   test_tcp_blocking_listener();
   return 0;
 }

@@ -23,9 +23,9 @@
 #include "jnxstring.h"
 #include "jnxterm.h"
 int main(int args, char **argv) {
-  JNX_LOG(NULL,"Running test for jnxstring\n");
+  JNXLOG(LDEBUG,"Running test for jnxstring\n");
 
-  JNX_LOG(NULL,"- test_string_join");
+  JNXLOG(LDEBUG,"- test_string_join");
   char *temp = malloc(256);
   strcpy(temp,"foo");
   jnx_string_join(&temp,"bar");
@@ -36,6 +36,6 @@ int main(int args, char **argv) {
   char *expected_output="15";
   char *actual_output = jnx_string_itos(a);
   assert(strcmp(expected_output,actual_output) == 0);
-  JNX_LOG(NULL,"String tests completed\n");
+  JNXLOG(LDEBUG,"String tests completed\n");
   return 0;
 }

@@ -98,7 +98,7 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
         jnx_char *incoming_address = jnx_socket_tcp_resolve_ipaddress(
             new_fd);
         if(incoming_address){
-          JNX_LOG(0,"Incoming connection from %s on fd %d",incoming_address);
+          JNXLOG(0,"Incoming connection from %s on fd %d",incoming_address);
           free(incoming_address);
         }
         listener->ufds[listener->nfds].fd = new_fd;
@@ -107,7 +107,7 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
       }while(new_fd != -1);
     }else {
       jnx_int rc = 0;
-      JNX_LOG(0,"Descriptor is readable %d",listener->ufds[i].fd);
+      JNXLOG(0,"Descriptor is readable %d",listener->ufds[i].fd);
       close_conn = 0;
       compress_array = 0;
       char buffer[MAXBUFFER];
@@ -120,7 +120,7 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
         }
       }
       if(rc == 0) {
-        JNX_LOG(0,"Connection closed on fd %d",listener->ufds[i].fd);
+        JNXLOG(0,"Connection closed on fd %d",listener->ufds[i].fd);
         close_conn = 1;
       }
       /* Send callback */
@@ -196,7 +196,7 @@ jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
   jnx_int32 rg = 0;
 
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-    JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
+    JNXLOG(LDEBUG,"%s\n",gai_strerror(rg));
     return 0;
   }
   if(!s->isconnected) {
@@ -240,7 +240,7 @@ jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
   *out_receipt = NULL;
   jnx_int32 rg = 0;
   if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-    JNX_LOG(DEFAULT_CONTEXT,"%s\n",gai_strerror(rg));
+    JNXLOG(LDEBUG,"%s\n",gai_strerror(rg));
     return 0;
   }
   if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {

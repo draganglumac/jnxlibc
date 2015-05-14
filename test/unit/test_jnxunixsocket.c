@@ -77,7 +77,7 @@ void run_error_test(void(*test)(), char *expected_error, int expected_err_size) 
 
 // Tests
 void test_create_and_destroy() {
-	JNX_LOG(NULL,"Test creation of unix sockets");
+	JNXLOG(LDEBUG,"Test creation of unix sockets");
 
 	jnx_unix_socket *a = jnx_unix_stream_socket_create("stream_a");
 	(a, "stream_a", SOCK_STREAM);
@@ -106,7 +106,7 @@ void stream_send_fails() {
 	jnx_unix_socket_destroy(&s);
 }
 void test_negative_send_stream_scenarios() {
-	JNX_LOG(NULL,"Test negative send stream scenarios");
+	JNXLOG(LDEBUG,"Test negative send stream scenarios");
 	fflush(stdout);
 	run_error_test(stream_send_connect_fails, "jnx unix stream socket connect:", 31);
 	run_error_test(stream_send_fails, "jnx unix stream socket send:", 28);
@@ -120,7 +120,7 @@ void datagram_send_fails() {
 	jnx_unix_socket_destroy(&s);
 }
 void test_negative_send_datagram_scenarios() {
-	JNX_LOG(NULL,"Test negative send datagram scenarios");
+	JNXLOG(LDEBUG,"Test negative send datagram scenarios");
 	fflush(stdout);
 	run_error_test(datagram_send_fails, "jnx unix datagram socket sendto:", 32);
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
@@ -161,7 +161,7 @@ void stream_read_fails() {
 	jnx_unix_socket_destroy(&s);
 }
 void test_negative_stream_listen_scenarios() {
-	JNX_LOG(NULL,"Test negative stream listen and receive scenarios");
+	JNXLOG(LDEBUG,"Test negative stream listen and receive scenarios");
 	fflush(stdout);
 	run_error_test(stream_bind_fails, "jnx unix stream socket bind:", 28);
 	run_error_test(stream_listen_fails, "jnx unix stream socket listen:", 30);
@@ -180,7 +180,7 @@ int stream_callback(char *out, size_t len, jnx_unix_socket *rs) {
 		return 5;
 }
 void test_stream_ipc_comms() {
-	JNX_LOG(NULL,"Test unix stream socket inter-process communication.\n");
+	JNXLOG(LDEBUG,"Test unix stream socket inter-process communication.\n");
 	fflush(stdout);
 	remove("stream_sun");
 	jnx_unix_socket *ss = jnx_unix_stream_socket_create("stream_sun");
@@ -218,7 +218,7 @@ int check_binary_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 	return 11;
 }
 void test_binary_data_in_stream_ipc_comms() {
-	JNX_LOG(NULL, "Test binary data sent and received via stream socket\n");
+	JNXLOG(LDEBUG, "Test binary data sent and received via stream socket\n");
 	fflush(stdout);
 	remove("binary_stream");
 	jnx_unix_socket *ss = jnx_unix_stream_socket_create("binary_stream");
@@ -256,7 +256,7 @@ int check_large_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 		return 4;	
 }
 void test_large_data_in_stream_ipc_comms() {
-	JNX_LOG(NULL, "Test large data sent and received via stream socket\n");
+	JNXLOG(LDEBUG, "Test large data sent and received via stream socket\n");
 	fflush(stdout);
 	remove("large_stream");
 	jnx_unix_socket *ss = jnx_unix_stream_socket_create("large_stream");
@@ -315,7 +315,7 @@ void datagram_receive_fails() {
 	assert(rs == NULL);
 }
 void test_negative_datagram_listen_scenarios() {
-	JNX_LOG(NULL,"Test negative datagram listen scenarios");
+	JNXLOG(LDEBUG,"Test negative datagram listen scenarios");
 	fflush(stdout);
 	run_error_test(datagram_bind_fails, "jnx unix datagram socket bind:", 30);
 	run_error_test(datagram_receive_fails, "jnx unix datagram socket recvfrom:", 34);
@@ -332,7 +332,7 @@ int datagram_callback(char *out, size_t len, jnx_unix_socket *rs) {
 		return 5;
 }
 void test_datagram_ipc_comms() {
-	JNX_LOG(NULL,"Test unix datagram socket inter-process communication.\n");
+	JNXLOG(LDEBUG,"Test unix datagram socket inter-process communication.\n");
 	fflush(stdout);
 	remove("datagram_sun");
 	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("datagram_sun");
@@ -360,7 +360,7 @@ void test_datagram_ipc_comms() {
 	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_binary_data_in_datagram_ipc_comms() {
-	JNX_LOG(NULL, "Test binary data sent and received via datagram socket\n");
+	JNXLOG(LDEBUG, "Test binary data sent and received via datagram socket\n");
 	fflush(stdout);
 	remove("binary_datagram");
 	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("binary_datagram");
@@ -399,7 +399,7 @@ int check_large_datagram(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 		return 4;	
 }
 void test_large_data_in_datagram_ipc_comms() {
-	JNX_LOG(NULL, "Test large data sent and received via datagram socket\n");
+	JNXLOG(LDEBUG, "Test large data sent and received via datagram socket\n");
 	fflush(stdout);
 	remove("large_datagram");
 	jnx_unix_socket *ss = jnx_unix_datagram_socket_create("large_datagram");
@@ -436,7 +436,7 @@ void test_large_data_in_datagram_ipc_comms() {
 
 // Test runner
 int main(int argc, char **argv) {
-	JNX_LOG(NULL,"Starting unix socket tests\n");
+	JNXLOG(LDEBUG,"Starting unix socket tests\n");
 	test_stream_ipc_comms();
 	test_binary_data_in_stream_ipc_comms();
 	test_large_data_in_stream_ipc_comms();

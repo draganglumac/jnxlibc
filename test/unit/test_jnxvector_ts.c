@@ -28,7 +28,7 @@ typedef struct {
 } teststruct;
 
 void test_complex_insertion() {
-  JNX_LOG(NULL,"- test_complex_insertion");
+  JNXLOG(LDEBUG,"- test_complex_insertion");
   jnx_vector *vector = jnx_vector_create();
   int spread[5] = { 1, 200, 412, 55, 65 };
   //we are testing to see how well the vector handles distribution and reallocation on demand
@@ -45,7 +45,7 @@ void test_complex_insertion() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_sequential_insertion() {
-  JNX_LOG(NULL,"- test_sequential_insertion");
+  JNXLOG(LDEBUG,"- test_sequential_insertion");
   jnx_vector *vector = jnx_vector_create();
 
   int x = 0;
@@ -62,7 +62,7 @@ void test_sequential_insertion() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_insert_position() {
-  JNX_LOG(NULL,"- test_insert_position");
+  JNXLOG(LDEBUG,"- test_insert_position");
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert_at_ts(vector,15,"Test");
   jnx_vector_insert_at_ts(vector,100,"Derp");
@@ -73,7 +73,7 @@ void test_insert_position() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_remove_position() {
-  JNX_LOG(NULL,"- test_remove_position");
+  JNXLOG(LDEBUG,"- test_remove_position");
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert_ts(vector,"Hello");
   jnx_vector_insert_at_ts(vector,90,"Bye");
@@ -91,7 +91,7 @@ int vector_compare(void *A, void *B) {
   return 0;
 }
 void test_contains() {
-  JNX_LOG(NULL,"- test_contain");
+  JNXLOG(LDEBUG,"- test_contain");
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert_ts(vector,"Hello");
   
@@ -100,7 +100,7 @@ void test_contains() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_get() {
-  JNX_LOG(NULL,"- test_get");
+  JNXLOG(LDEBUG,"- test_get");
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert(vector,"Hello");
   JNXCHECK(jnx_vector_contains(vector,"Hello",vector_compare) == 1);
@@ -109,13 +109,13 @@ void test_get() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv) {
-  JNX_LOG(NULL,"Running vector tests...\n");
+  JNXLOG(LDEBUG,"Running vector tests...\n");
   test_insert_position();
   test_remove_position();
   test_sequential_insertion();
   test_complex_insertion();
   test_contains();
   test_get();
-  JNX_LOG(NULL,"Vector tests completed.\n");
+  JNXLOG(LDEBUG,"Vector tests completed.\n");
   return 0;
 }

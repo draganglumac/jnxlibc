@@ -43,7 +43,7 @@ jnx_int cf_string(void *v1, void *v2) {
 }
 
 void test_jnx_int_array() {
-	JNX_LOG(NULL,"- test_jnx_int_array");
+	JNXLOG(LDEBUG,"- test_jnx_int_array");
 	void *a[10000];
 	jnx_int i;
 	for (i = 0; i < 10000; i++) {
@@ -59,7 +59,7 @@ void test_jnx_int_array() {
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_string_array() {
-	JNX_LOG(NULL,"- test_string_array");
+	JNXLOG(LDEBUG,"- test_string_array");
 	void **a = (void **) charo;
 	jnx_quicksort(a, 13, cf_string);
 	jnx_int i;
@@ -69,18 +69,18 @@ void test_string_array() {
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_empty_array() {
-	JNX_LOG(NULL,"- test_empty_array");
+	JNXLOG(LDEBUG,"- test_empty_array");
 	void **a = NULL;
 	jnx_quicksort(a, 0, cf_string);
 	JNXCHECK(a == NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 jnx_int main(jnx_int argc, char **argv) {
-	JNX_LOG(NULL,"Running quicksort tests...\n");
+	JNXLOG(LDEBUG,"Running quicksort tests...\n");
 	test_jnx_int_array();
 	test_string_array();
 	test_empty_array();
-	JNX_LOG(NULL,"Quicksort tests completed.\n");
+	JNXLOG(LDEBUG,"Quicksort tests completed.\n");
 	return 0;
 }
 

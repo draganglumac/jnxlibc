@@ -32,7 +32,7 @@ extern		"C" {
   do \
   { \
     if(!(X)) {\
-      JNX_LOG(NULL,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
+      JNXLOG(LERROR,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
       jnxcheck_backtrace(); \
       exit(1);\
     } \
@@ -45,7 +45,7 @@ extern		"C" {
 #define JNXFAIL(X)\
   do \
   { \
-    JNX_LOG(NULL,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
+    JNXLOG(LERROR,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
     jnxcheck_backtrace(); \
     exit(1);\
   } \

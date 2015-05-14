@@ -27,26 +27,26 @@ struct foo {
 } foo;
 
 void test_list_creation() {
-  JNX_LOG(NULL,"- test_list_creation");
+  JNXLOG(LDEBUG,"- test_list_creation");
   jnx_list *secondlist = jnx_list_create();
   JNXCHECK(secondlist != NULL);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
   struct foo *f = malloc(sizeof(foo));
   f->number = 10;
-  JNX_LOG(NULL,"- test_list_insertion");
+  JNXLOG(LDEBUG,"- test_list_insertion");
   jnx_list_add_ts(secondlist,(void*)f);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-  JNX_LOG(NULL,"- test_list_removal");
+  JNXLOG(LDEBUG,"- test_list_removal");
   struct foo *output = (struct foo*)jnx_list_remove_ts(&secondlist);
   JNXCHECK(output->number == 10);
   free(output);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
-  JNX_LOG(NULL,"- test_list_deletion");
+  JNXLOG(LDEBUG,"- test_list_deletion");
   jnx_list_destroy(&secondlist);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
 void test_list_index() {
-  JNX_LOG(NULL,"- test_list_sequence");
+  JNXLOG(LDEBUG,"- test_list_sequence");
   jnx_list *j = jnx_list_create();
   int count = 6;
   char *ar[] = { "A", "B", "C", "D", "E", "F" };
@@ -64,7 +64,7 @@ void test_list_index() {
   JNXCHECK(j == NULL);
 }
 void test_data_removal() {
-  JNX_LOG(NULL,"- test_data_removal");
+  JNXLOG(LDEBUG,"- test_data_removal");
   char *test_string = "AABBCC";
   jnx_list *list = jnx_list_create();
   int count = 10;
@@ -101,7 +101,7 @@ void test_list_tail() {
   jnx_list_destroy(&l);
 }
 void test_removal_front() {
-  JNX_LOG(NULL,"- test_removal_front\n");
+  JNXLOG(LDEBUG,"- test_removal_front\n");
   jnx_list *l = jnx_list_create();
   int count = 3;
   char *ar[] = { "A", "B", "C" };
@@ -136,13 +136,13 @@ void test_contains() {
 
 }
 int main(int args, char **argv) {
-  JNX_LOG(NULL,"Running list tests...\n");
+  JNXLOG(LDEBUG,"Running list tests...\n");
   test_list_creation();
   test_data_removal();
   test_list_index();
   test_list_tail();
   test_removal_front();
   test_contains();
-  JNX_LOG(NULL,"List tests completed.\n");
+  JNXLOG(LDEBUG,"List tests completed.\n");
   return 0;
 }

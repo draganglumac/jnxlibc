@@ -29,7 +29,7 @@ char *B = "TestB";
 char *C = "TestC";
 char *ar[] = { "A","B","C"};
 void test_stack_grow() {
-  JNX_LOG(NULL,"- test_stack_grow");
+  JNXLOG(LDEBUG,"- test_stack_grow");
   jnx_stack *s = jnx_stack_create();
   JNXCHECK(s);
   jnx_stack_push_ts(s,A);
@@ -40,7 +40,7 @@ void test_stack_grow() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 void test_stack_pop() {
-  JNX_LOG(NULL,"- test_stack_pop");
+  JNXLOG(LDEBUG,"- test_stack_pop");
   jnx_stack *s = jnx_stack_create();
   JNXCHECK(s);
   jnx_stack_push_ts(s,ar[0]);
@@ -62,7 +62,7 @@ int compare_func(void *a, void *b) {
   return 0;
 }
 void test_contains(){
-  JNX_LOG(NULL,"- test_stack_contains");
+  JNXLOG(LDEBUG,"- test_stack_contains");
   jnx_stack *s = jnx_stack_create();
   jnx_stack_push_ts(s,ar[0]);
   JNXCHECK(jnx_stack_contains_ts(s,ar[0],compare_func) == 1);
@@ -70,10 +70,10 @@ void test_contains(){
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 int main(int argc, char **argv) {
-  JNX_LOG(NULL,"Running stack tests...\n");
+  JNXLOG(LDEBUG,"Running stack tests...\n");
   test_stack_grow();
   test_stack_pop();
   test_contains();
-  JNX_LOG(NULL,"Stack tests completed.\n");
+  JNXLOG(LDEBUG,"Stack tests completed.\n");
   return 0;
 }

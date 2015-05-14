@@ -23,12 +23,12 @@
 #include "jnxlog.h"
 #include "jnxterm.h"
 int main(int args, char **argv) {
-  JNX_LOG(NULL,"Running network tests...\n");
+  JNXLOG(LDEBUG,"Running network tests...\n");
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
-  JNX_LOG(NULL,"- displaying endianness\n");
+  JNXLOG(LDEBUG,"- displaying endianness\n");
 
-  JNX_LOG(NULL,"BIG ENDIAN %s\n",jnx_network_get_endianness() == JNX_BIG_ENDIAN ? "YES" : "NO");
-  JNX_LOG(NULL,"LITTLE ENDIAN %s\n",jnx_network_get_endianness() == JNX_LITTLE_ENDIAN ? "YES" : "NO");
+  JNXLOG(LDEBUG,"BIG ENDIAN %s\n",jnx_network_get_endianness() == JNX_BIG_ENDIAN ? "YES" : "NO");
+  JNXLOG(LDEBUG,"LITTLE ENDIAN %s\n",jnx_network_get_endianness() == JNX_LITTLE_ENDIAN ? "YES" : "NO");
 
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
   return 0;

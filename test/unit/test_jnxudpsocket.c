@@ -58,7 +58,7 @@ void fire_threaded_udp_packet_multicast(char *port) {
 }
 void test_udp_listener_callback(jnx_uint8 *payload,
     jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
-  JNX_LOG(NULL,"test_udp_listener_callback achieved");
+  JNXLOG(LDEBUG,"test_udp_listener_callback achieved");
   test_udp_listener_complete = 1;
 }
 void test_udp_listener() {
@@ -138,7 +138,7 @@ void test_udp_multicast(){
   char *ip = calloc(16,sizeof(jnx_char));
   jnx_network_fetch_local_ipv4(ip,filter_local_ip_address);
   
-  JNX_LOG(0,"Using IP => %s",ip);
+  JNXLOG(LDEBUG,"Using IP => %s",ip);
   jnx_udp_listener *listener = 
     jnx_socket_udp_listener_multicast_create(TESTPORT2,AF_INET,ip,BGROUP);
   
@@ -155,20 +155,20 @@ void test_udp_multicast(){
 
 }
 int main(int argc, char **argv) {
-  JNX_LOG(NULL,"Starting udp socket tests");
-  JNX_LOG(NULL,"Testing UDP listener");
+  JNXLOG(LDEBUG,"Starting udp socket tests");
+  JNXLOG(LDEBUG,"Testing UDP listener");
   test_udp_listener();
   test_udp_listener_complete = 0;
-  JNX_LOG(NULL,"Testing UDP listener IPV6");
+  JNXLOG(LDEBUG,"Testing UDP listener IPV6");
   test_udp_listener_ipv6();
   test_udp_listener_complete = 0;
-  JNX_LOG(NULL,"Testing UDP broadcast");
+  JNXLOG(LDEBUG,"Testing UDP broadcast");
   test_udp_broadcast(); 
   test_udp_listener_complete = 0;
-  JNX_LOG(NULL,"Test UDP blocking listener");
+  JNXLOG(LDEBUG,"Test UDP blocking listener");
   test_udp_blocking_listener();
   test_udp_listener_complete = 0;
-  JNX_LOG(NULL,"Test UDP multicast listener");
+  JNXLOG(LDEBUG,"Test UDP multicast listener");
   test_udp_multicast();
   return 0;
 }
