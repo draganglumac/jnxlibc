@@ -85,6 +85,11 @@ cmake . -DWARN  #Show only debugging information of level warn and above
 cmake . -DERROR
 cmake . -DPANIC #Only show complete system meltdown level messages
 ```
+
+An example command for a release build of the static library might be the following:
+```
+cmake . -DRUN_TESTS=ON -DPANIC -DRELEASE
+```
 ###Tests
 
 To run tests from root of the project folder
