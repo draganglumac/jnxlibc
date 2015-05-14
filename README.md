@@ -72,6 +72,10 @@ Use `-ljnxcs` for static library
 ####Flags
 
 ```
+cmake . -DRUN_TESTS=ON #To run tests at compile time
+```
+
+```
 cmake . -DRELEASE #Sets library for release mode optimisations
 ```
 ```
@@ -83,10 +87,6 @@ cmake . -DPANIC #Only show complete system meltdown level messages
 ```
 ###Tests
 
-To run tests at compile time
-```
-cmake . -DRUN_TESTS=ON
-```
 To run tests from root of the project folder
 ```
 ./test/run_tests
