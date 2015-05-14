@@ -79,16 +79,16 @@ cmake . -DRUN_TESTS=ON #To run tests at compile time
 cmake . -DRELEASE #Sets library for release mode optimisations
 ```
 ```
-cmake . -DDEBUG #Show all debugging information
-cmake . -DINFO
-cmake . -DWARN  #Show only debugging information of level warn and above
-cmake . -DERROR
-cmake . -DPANIC #Only show complete system meltdown level messages
+cmake . -DLDEBUG #Show all debugging information
+cmake . -DLINFO
+cmake . -DLWARN  #Show only debugging information of level warn and above
+cmake . -DLERROR
+cmake . -DLPANIC #Only show complete system meltdown level messages
 ```
 
 An example command for a release build of the static library might be the following:
 ```
-cmake . -DRUN_TESTS=ON -DPANIC=ON -DRELEASE=ON
+cmake . -DRUN_TESTS=ON -DLPANIC=ON -DRELEASE=ON
 ```
 ###Tests
 
