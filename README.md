@@ -76,6 +76,7 @@ cmake . -DINFO
 cmake . -DWARN  #Show only debugging information of level warn and above
 cmake . -DERROR
 cmake . -DPANIC #Only show complete system meltdown level messages
+```
 ####Flags
 
 -DRELEASE (Sets library for release mode optimisations) 
