@@ -88,7 +88,7 @@ cmake . -DPANIC #Only show complete system meltdown level messages
 
 An example command for a release build of the static library might be the following:
 ```
-cmake . -DRUN_TESTS=ON -DPANIC -DRELEASE
+cmake . -DRUN_TESTS=ON -DPANIC=ON -DRELEASE=ON
 ```
 ###Tests
 
