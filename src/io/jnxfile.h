@@ -51,9 +51,9 @@ extern "C" {
    * @param path path to the target file for reading
    * @param delimiter the token to break the key value pairs on e.g. '='
    * @param max_buffer is maximum line size buffer
-   * @return returns a linkedlist of jnx_file_kvp_nodes, i.e. key-value pairs.
+   * @return returns a hasmap of jnx_file_kvp_nodes, i.e. key-value pairs.
    *
-   * @warning user is responsible for linked list deletion and its node/data
+   * @warning user is responsible for hashmap deletion and its node/data
    */
   jnx_hashmap *jnx_file_read_kvp(jnx_char *path, jnx_size max_buffer, jnx_char *delimiter);
 
