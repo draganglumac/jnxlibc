@@ -167,3 +167,21 @@ jnx_signal_destroy(&s);
 
 ```
 
+Logging files
+
+Provide a logger config (e.g. test/unit/logger.conf)
+`logger.conf`
+```C
+LOG_LEVEL=WARN
+OUTPUT_LOG=MYLOGS-%s.log  #If you do not provide an OUTPUT_LOG it will log to STDOUT
+```
+Creation of logger
+```C
+JNXLOG_CREATE("../logger.conf");
+```
+Usage
+```C
+JNXLOG(LDEBUG,"This is a debug message");
+JNXLOG(LERROR,"This is an error message!");
+```
+
