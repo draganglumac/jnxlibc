@@ -70,7 +70,9 @@ void* jnx_hash_get(jnx_hashmap* hashmap, const jnx_char* key) {
     if (hashmap->data[index].bucket_len == 1) {
       jnx_node* head = hashmap->data[index].bucket->head;
       jnx_hash_bucket_el* bucketel = head->_data;
-      return (void*)bucketel->origin_value;
+      if (strcmp(bucketel->origin_key, key) == 0) {
+        return (void*)bucketel->origin_value;
+      }
     }
     if (hashmap->data[index].bucket_len > 1) {
       jnx_node* head = hashmap->data[index].bucket->head;

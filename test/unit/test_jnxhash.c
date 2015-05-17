@@ -82,6 +82,31 @@ void test_hash_deletion() {
   assert(num == 0);
   jnx_hash_destroy(&testhash);
 }
+void test_hash_keys_that_hash_to_same_index() {
+  jnx_hashmap *testhash = jnx_hash_create(1024);
+  char *key1 = "LocalUser";
+  char *key2 = "OtherUser";
+  int i1 = jnx_hash_string(key1, 1024);
+  int i2 = jnx_hash_string(key2, 1024);
+  jnx_term_printf_in_color(JNX_COL_YELLOW, "Hash indexes -> \
+hash-of(LocalUser) = %d, hash-of(OtherUser) = %d\n", i1, i2);
+  char *test_data = "Void";
+  jnx_hash_put(testhash,key1,test_data);
+  JNXCHECK(NULL == jnx_hash_get(testhash, "OtherUser"));
+}
+void test_hashing_function() {
+  JNXCHECK(jnx_hash_string("LocalUser", 1024)
+      == jnx_hash_string("OtherUser", 1024));
+
+  JNXCHECK(jnx_hash_string("LocalUser", 1024)
+      == jnx_hash_string("AnotherUser", 1024));
+  
+  JNXCHECK(jnx_hash_string("Local User", 1024)
+      == jnx_hash_string("Another User", 1024));
+  
+  JNXCHECK(jnx_hash_string("Local User", 1024)
+      == jnx_hash_string("Other User", 1024));
+}
 int main(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running test for jnxhash\n");
   JNXLOG(LDEBUG,"- test_key_deletion: ");
@@ -92,6 +117,12 @@ int main(int argc, char **argv) {
   jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
   JNXLOG(LDEBUG,"- test_hash_get_keys: ");
   test_hash_get_keys();
+  jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+  JNXLOG(LDEBUG,"- test_hash_keys_that_hash_to_same_index: ");
+  test_hash_keys_that_hash_to_same_index();
+  jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+  JNXLOG(LDEBUG,"- test_hashing_function: ");
+  test_hashing_function();
   jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
   return 0;
 }
