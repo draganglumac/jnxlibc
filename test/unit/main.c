@@ -43,8 +43,8 @@ int main(int argc, char **argv) {
   //test_jnxthread();
   //JNXLOG(LDEBUG,"---------------------TEST test_jnxudpsocket-------------------");
   //test_jnxudpsocket();
-  //JNXLOG(LDEBUG,"---------------------TEST test_jnxunixsocket------------------");
-  //test_jnxunixsocket();
+  JNXLOG(LDEBUG,"---------------------TEST test_jnxunixsocket------------------");
+  test_jnxunixsocket();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxvector----------------------");
   test_jnxvector();
 
