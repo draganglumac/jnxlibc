@@ -37,14 +37,14 @@ int main(int argc, char **argv) {
   test_jnxstack();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxstring---------------------");
   test_jnxstring();
-  //JNXLOG(LDEBUG,"---------------------TEST test_jnxtcpsocket-------------------");
-  //test_jnxtcpsocket();
+  JNXLOG(LDEBUG,"---------------------TEST test_jnxtcpsocket-------------------");
+  test_jnxtcpsocket();
   //JNXLOG(LDEBUG,"---------------------TEST test_jnxthread----------------------");
   //test_jnxthread();
   //JNXLOG(LDEBUG,"---------------------TEST test_jnxudpsocket-------------------");
   //test_jnxudpsocket();
-  JNXLOG(LDEBUG,"---------------------TEST test_jnxunixsocket------------------");
-  test_jnxunixsocket();
+  //JNXLOG(LDEBUG,"---------------------TEST test_jnxunixsocket------------------");
+  //test_jnxunixsocket();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxvector----------------------");
   test_jnxvector();
 
