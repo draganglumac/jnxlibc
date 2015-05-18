@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  main.c
+ *       Filename:  test_jnxhash_ts.c
  *
  *    Description:
  *
@@ -81,7 +81,7 @@ void test_hash_deletion() {
   assert(num == 0);
   jnx_hash_destroy(&testhash);
 }
-int main(int argc, char **argv) {
+int test_jnxhash_ts(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running test for jnxhash\n");
   JNXLOG(LDEBUG,"- test_key_deletion: ");
   test_key_deletion();

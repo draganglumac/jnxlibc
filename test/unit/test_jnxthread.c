@@ -35,13 +35,13 @@ void *worker(void *args) {
   ++counter;
   return 0;
 }
-void *noise(void *args) {
+static void *noise(void *args) {
 
   while(!stop) {
     jnx_queue_pop_ts(queue);
   }
 }
-void test_queue_push() {
+static void test_queue_push() {
   queue = jnx_queue_create();
 
   int y = 5;
@@ -64,7 +64,7 @@ void test_queue_push() {
   assert(current_time < max_time);
   JNXLOG(LDEBUG,"Queue length %d\n",queue->list->counter);
 }
-int main(int argc, char **argv) {
+int test_jnxthread(int argc, char **argv) {
 
   JNXLOG(LDEBUG,"Running jnx_threading tests\n");
   test_queue_push();

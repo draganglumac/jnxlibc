@@ -69,7 +69,7 @@ void test_contains(){
   JNXCHECK(jnx_stack_contains_ts(s,ar[1],compare_func) == 0);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-int main(int argc, char **argv) {
+int test_jnxstack_ts(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running stack tests...\n");
   test_stack_grow();
   test_stack_pop();

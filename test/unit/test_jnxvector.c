@@ -27,7 +27,7 @@ typedef struct {
   int a;
 } teststruct;
 
-void test_complex_insertion() {
+static void test_complex_insertion() {
   JNXLOG(LDEBUG,"- test_complex_insertion");
   jnx_vector *vector = jnx_vector_create();
   int spread[5] = { 1, 200, 412, 55, 65 };
@@ -44,7 +44,7 @@ void test_complex_insertion() {
   jnx_vector_destroy(&vector);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-void test_sequential_insertion() {
+static void test_sequential_insertion() {
   JNXLOG(LDEBUG,"- test_sequential_insertion");
   jnx_vector *vector = jnx_vector_create();
 
@@ -61,7 +61,7 @@ void test_sequential_insertion() {
   jnx_vector_destroy(&vector);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-void test_insert_position() {
+static void test_insert_position() {
   JNXLOG(LDEBUG,"- test_insert_position");
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert_at(vector,15,"Test");
@@ -72,7 +72,7 @@ void test_insert_position() {
   JNXCHECK((char*)vector->vector[100]->data == "Derp");
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-void test_remove_position() {
+static void test_remove_position() {
   JNXLOG(LDEBUG,"- test_remove_position");
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert(vector,"Hello");
@@ -84,13 +84,13 @@ void test_remove_position() {
   jnx_vector_destroy(&vector);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-int vector_compare(void *A, void *B) {
+static int vector_compare(void *A, void *B) {
   if(A == B) {
     return 1;
   }
   return 0;
 }
-void test_contains() {
+static void test_contains() {
   JNXLOG(LDEBUG,"- test_contain");
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert(vector,"Hello");
@@ -99,7 +99,7 @@ void test_contains() {
   JNXCHECK(jnx_vector_contains(vector,"GoodBye",vector_compare) == 0);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-void test_get() {
+static void test_get() {
   JNXLOG(LDEBUG,"- test_get");
   jnx_vector *vector = jnx_vector_create();
   jnx_vector_insert(vector,"Hello");
@@ -110,7 +110,7 @@ void test_get() {
   JNXCHECK(strcmp("Hello",str2) == 0);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-int main(int argc, char **argv) {
+int test_jnxvector(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running vector tests...\n");
   test_insert_position();
   test_remove_position();

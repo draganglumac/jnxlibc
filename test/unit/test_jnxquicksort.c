@@ -75,7 +75,7 @@ void test_empty_array() {
 	JNXCHECK(a == NULL);
 	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
-jnx_int main(jnx_int argc, char **argv) {
+jnx_int test_jnxquicksort(jnx_int argc, char **argv) {
 	JNXLOG(LDEBUG,"Running quicksort tests...\n");
 	test_jnx_int_array();
 	test_string_array();

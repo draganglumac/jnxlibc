@@ -21,7 +21,7 @@
 #include "jnxterm.h"
 #include <assert.h>
 #include <stdio.h>
-int main(int argc, char **argv) { 
+int test_jnxqueue_ts(int argc, char **argv) { 
 
   JNXLOG(LDEBUG,"Running Queue tests:");	
   jnx_queue *q = jnx_queue_create();

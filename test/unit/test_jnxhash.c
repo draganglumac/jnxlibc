@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  main.c
+ *       Filename:  test_jnxhash.c
  *
  *    Description:
  *
@@ -107,7 +107,7 @@ void test_hashing_function() {
   JNXCHECK(jnx_hash_string("Local User", 1024)
       == jnx_hash_string("Other User", 1024));
 }
-int main(int argc, char **argv) {
+int test_jnxhash(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running test for jnxhash\n");
   JNXLOG(LDEBUG,"- test_key_deletion: ");
   test_key_deletion();

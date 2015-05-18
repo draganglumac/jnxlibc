@@ -108,7 +108,7 @@ void test_get() {
   JNXCHECK(strcmp("Hello",str) == 0);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
-int main(int argc, char **argv) {
+int test_jnxvector_ts(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running vector tests...\n");
   test_insert_position();
   test_remove_position();

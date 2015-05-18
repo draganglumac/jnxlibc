@@ -1,5 +1,6 @@
 # Compiled Object files
 # test/test_*
+*stream
 install*
 jnxc_headers
 *Cache.txt

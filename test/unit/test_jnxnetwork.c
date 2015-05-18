@@ -22,7 +22,7 @@
 #include "jnxnetwork.h"
 #include "jnxlog.h"
 #include "jnxterm.h"
-int main(int args, char **argv) {
+int test_jnxnetwork(int args, char **argv) {
   JNXLOG(LDEBUG,"Running network tests...\n");
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
   JNXLOG(LDEBUG,"- displaying endianness\n");

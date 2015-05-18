@@ -24,7 +24,7 @@
 #include "jnxlog.h"
 #include "jnxfile.h"
 #include "jnxterm.h"
-int main(int args, char **argv) {
+int test_jnxlog(int args, char **argv) {
   
   JNXLOG_CREATE("logger.conf");
   JNXLOG(LDEBUG,"Hello from DEBUG");

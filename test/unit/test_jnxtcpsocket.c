@@ -11,28 +11,28 @@
 
 static int test_tcp_listener_complete = 0;
 
-void *worker(void *args) {
+static void *worker(void *args) {
   char *port = (char*)args;
   jnx_socket *t = jnx_socket_tcp_create(AF_INET);
   jnx_socket_tcp_send(t,"127.0.0.1",port,"ping",5);
 }
-void *worker_ipv6(void *args) {
+static void *worker_ipv6(void *args) {
   char *port = (char*)args;
   jnx_socket *t = jnx_socket_tcp_create(AF_INET6);
   jnx_socket_tcp_send(t,"::1",port,"ping",5);
 }
-void fire_threaded_tcp_packet(char *port) {
+static void fire_threaded_tcp_packet(char *port) {
   jnx_thread_create_disposable(worker,port);
 }
-void fire_threaded_tcp_packet_ipv6(char *port) {
+static void fire_threaded_tcp_packet_ipv6(char *port) {
   jnx_thread_create_disposable(worker_ipv6,port);
 }
-void test_tcp_listener_callback(jnx_uint8 *payload,
+static void test_tcp_listener_callback(jnx_uint8 *payload,
     jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
   JNXLOG(LDEBUG,"test_tcp_listener_callback achieved");
   test_tcp_listener_complete = 1;
 }
-void test_tcp_listener() {
+static void test_tcp_listener() {
   jnx_tcp_listener *listener = 
     jnx_socket_tcp_listener_create(TESTPORT,AF_INET,100);
 
@@ -47,7 +47,7 @@ void test_tcp_listener() {
   JNXCHECK(test_tcp_listener_complete);
   JNXCHECK(listener == NULL);
 }
-void test_tcp_listener_ipv6() {
+static void test_tcp_listener_ipv6() {
   jnx_tcp_listener *listener = 
     jnx_socket_tcp_listener_create(TESTPORT,AF_INET6,100);
   fire_threaded_tcp_packet_ipv6(TESTPORT);
@@ -61,18 +61,18 @@ void test_tcp_listener_ipv6() {
   JNXCHECK(test_tcp_listener_complete);
   JNXCHECK(listener == NULL);
 }
-void test_blocking_listener_callback(jnx_uint8 *payload,
+static void test_blocking_listener_callback(jnx_uint8 *payload,
     jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
   test_tcp_listener_complete = 1;
 }
-void worker_blocking_listener(void *args) {
+static void worker_blocking_listener(void *args) {
   jnx_tcp_listener **listener = args;
   *listener = jnx_socket_tcp_listener_create(TESTPORT,
       AF_INET,100);
   jnx_socket_tcp_listener_auto_tick(*listener,test_blocking_listener_callback,
       NULL);
 }
-void test_tcp_blocking_listener() {
+static void test_tcp_blocking_listener() {
   jnx_tcp_listener *listener;
 
   jnx_thread_create_disposable(worker_blocking_listener,&listener);
@@ -87,7 +87,7 @@ void test_tcp_blocking_listener() {
   listener->hint_exit = 1;
   JNXCHECK(test_tcp_listener_complete);
 }
-int main(int argc, char **argv) {
+int test_jnxtcpsocket(int argc, char **argv) {
   JNXLOG(LDEBUG,"Starting tcp socket tests");
   JNXLOG(LDEBUG,"Testing TCP Listener");
   test_tcp_listener();

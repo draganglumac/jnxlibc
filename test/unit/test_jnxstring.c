@@ -22,7 +22,7 @@
 #include "jnxlog.h"
 #include "jnxstring.h"
 #include "jnxterm.h"
-int main(int args, char **argv) {
+int test_jnxstring(int args, char **argv) {
   JNXLOG(LDEBUG,"Running test for jnxstring\n");
 
   JNXLOG(LDEBUG,"- test_string_join");

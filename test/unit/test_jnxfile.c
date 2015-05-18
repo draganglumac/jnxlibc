@@ -63,7 +63,7 @@ void test_jnx_dir() {
   remove(path);
   free(path);
 }
-int main(int args, char **argv) {
+int test_jnxfile(int args, char **argv) {
   JNXLOG(LDEBUG,"Running file tests...\n");
   JNXLOG(LDEBUG,"- test recursive delete");
   test_recursive_delete();

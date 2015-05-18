@@ -26,7 +26,7 @@ struct foo {
   int number;
 } foo;
 
-void test_list_creation() {
+static void test_list_creation() {
   JNXLOG(LDEBUG,"- test_list_creation");
   jnx_list *secondlist = jnx_list_create();
   JNXCHECK(secondlist != NULL);
@@ -45,7 +45,7 @@ void test_list_creation() {
   jnx_list_destroy(&secondlist);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
-void test_list_index() {
+static void test_list_index() {
   JNXLOG(LDEBUG,"- test_list_sequence");
   jnx_list *j = jnx_list_create();
   int count = 6;
@@ -63,7 +63,7 @@ void test_list_index() {
   jnx_list_destroy(&j);
   JNXCHECK(j == NULL);
 }
-void test_data_removal() {
+static void test_data_removal() {
   JNXLOG(LDEBUG,"- test_data_removal");
   char *test_string = "AABBCC";
   jnx_list *list = jnx_list_create();
@@ -81,7 +81,7 @@ void test_data_removal() {
   JNXCHECK(list == NULL);
   jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
 }
-void test_list_tail() {
+static void test_list_tail() {
   jnx_list *l = jnx_list_create();
 
   int count = 3;
@@ -100,7 +100,7 @@ void test_list_tail() {
 
   jnx_list_destroy(&l);
 }
-void test_removal_front() {
+static void test_removal_front() {
   JNXLOG(LDEBUG,"- test_removal_front\n");
   jnx_list *l = jnx_list_create();
   int count = 3;
@@ -121,13 +121,13 @@ void test_removal_front() {
   JNXCHECK(l->counter == 0);
 }
 
-int test_contains_comparator(void *A, void *B) {
+static int test_contains_comparator(void *A, void *B) {
   if(A == B) {
     return 1;
   }
   return 0;
 }
-void test_contains() {
+static void test_contains() {
   jnx_list *l = jnx_list_create();
   
   char *text = "Text";
@@ -141,7 +141,7 @@ void test_contains() {
   JNXCHECK(jnx_list_contains(l,fake,test_contains_comparator) == 0);
 
 }
-int main(int args, char **argv) {
+int test_jnxlist(int args, char **argv) {
   JNXLOG(LDEBUG,"Running list tests...\n");
   test_list_creation();
   test_data_removal();

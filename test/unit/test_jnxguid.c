@@ -63,7 +63,7 @@ void test_string() {
     JNXCHECK(jnx_guid_compare(&g,&f) == JNX_GUID_STATE_SUCCESS);
   }
 }
-int main(int args, char **argv) {
+int test_jnxguid(int args, char **argv) {
   JNXLOG(LDEBUG,"Running test for jnxguid");
 
   test_generate_guid();

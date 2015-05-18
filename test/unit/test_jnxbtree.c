@@ -1163,7 +1163,7 @@ void test_tree_level_1_add_and_remove() {
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
 
-int main() {
+int test_jnxbtree() {
   //	JNXLOG(LDEBUG,"[DEBUG] sizeof(record) = %u\n", sizeof(record));
   //	JNXLOG(LDEBUG,"[DEBUG] sizeof(jnx_btree_node) = %u\n", sizeof(jnx_btree_node));
   //	JNXLOG(LDEBUG,"[DEBUG] sizeof(jnx_btree) = %u\n", sizeof(jnx_btree));
