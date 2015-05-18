@@ -50,8 +50,8 @@ void jnx_log(jnx_int l, const jnx_char *file,
         printf("%s",buffer);
         break;
       case 1:
-          jnx_file_write(_internal_jnx_log_conf.p,
-              buffer,strlen(buffer),"a");
+        jnx_file_write(_internal_jnx_log_conf.p,
+            buffer,strlen(buffer),"a");
         break;
     }
   }
@@ -94,5 +94,6 @@ void jnx_log_create(jnx_char *conf_path) {
       sprintf(buffer,filepath,t);
       _internal_jnx_log_conf.p = strdup(buffer);
     }
+    jnx_hash_destroy(&h);
   }
 }
