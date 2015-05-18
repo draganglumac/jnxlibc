@@ -8,8 +8,8 @@
 #include "jnxthread.h"
 #include <time.h>
 #include "jnxnetwork.h"
-#define TESTPORT "9092"
-#define TESTPORT2 "9093"
+#define UDPTESTPORT "9093"
+#define UDPTESTPORT2 "9041"
 #define BGROUP "225.1.1.1"
 static int test_udp_listener_complete = 0;
 // Broadcast address IPv4
@@ -63,9 +63,9 @@ static void test_udp_listener_callback(jnx_uint8 *payload,
 }
 static void test_udp_listener() {
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_create(TESTPORT,AF_INET);
+    jnx_socket_udp_listener_create(UDPTESTPORT,AF_INET);
 
-  fire_threaded_udp_packet(TESTPORT);
+  fire_threaded_udp_packet(UDPTESTPORT);
   int x = 0;
   while(x < 5) {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
@@ -78,8 +78,8 @@ static void test_udp_listener() {
 }
 static void test_udp_listener_ipv6() {
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_create(TESTPORT,AF_INET6);
-  fire_threaded_udp_packet_ipv6(TESTPORT);
+    jnx_socket_udp_listener_create(UDPTESTPORT,AF_INET6);
+  fire_threaded_udp_packet_ipv6(UDPTESTPORT);
   int x = 0;
   while(x < 5) {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
@@ -93,9 +93,9 @@ static void test_udp_listener_ipv6() {
 
 static void test_udp_broadcast(){
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_broadcast_create(TESTPORT,AF_INET);
+    jnx_socket_udp_listener_broadcast_create(UDPTESTPORT,AF_INET);
 
-  fire_threaded_udp_packet_broadcast(TESTPORT);
+  fire_threaded_udp_packet_broadcast(UDPTESTPORT);
   int x = 0;
   while(x < 5) {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
@@ -112,7 +112,7 @@ static void test_blocking_listener_callback(jnx_uint8 *payload,
 }
 static void worker_blocking_listener(void *args) {
   jnx_udp_listener **listener = args;
-  *listener = jnx_socket_udp_listener_create(TESTPORT,
+  *listener = jnx_socket_udp_listener_create(UDPTESTPORT,
       AF_INET);
   jnx_socket_udp_listener_auto_tick(*listener,test_blocking_listener_callback,
       NULL);
@@ -122,7 +122,7 @@ static void test_udp_blocking_listener() {
 
   jnx_thread_create_disposable(worker_blocking_listener,&listener);
   sleep(1);
-  fire_threaded_udp_packet(TESTPORT);
+  fire_threaded_udp_packet(UDPTESTPORT);
   clock_t start = clock(),diff;
   jnx_float msec = 0;
   while(msec < 500 && !test_udp_listener_complete){
@@ -140,9 +140,9 @@ static void test_udp_multicast(){
   
   JNXLOG(LDEBUG,"Using IP => %s",ip);
   jnx_udp_listener *listener = 
-    jnx_socket_udp_listener_multicast_create(TESTPORT2,AF_INET,ip,BGROUP);
+    jnx_socket_udp_listener_multicast_create(UDPTESTPORT2,AF_INET,ip,BGROUP);
   
-  fire_threaded_udp_packet_multicast(TESTPORT2);
+  fire_threaded_udp_packet_multicast(UDPTESTPORT2);
   int x = 0;
   while(x < 5) {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
