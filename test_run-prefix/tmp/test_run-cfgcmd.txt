@@ -1,1 +1,0 @@
-cmd='/usr/bin/cmake;-GUnix Makefiles;/home/tibbar/Documents/jnxlibc/test/unit_test'

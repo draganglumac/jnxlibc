@@ -1,7 +1,7 @@
 # Compiled Object files
 # test/test_*
 *stream
-test_run
+*test_run*
 install*
 jnxc_headers
 test-run_prefix
