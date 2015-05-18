@@ -41,7 +41,6 @@ int main(int argc, char **argv) {
   test_jnxtcpsocket();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxthread----------------------");
   test_jnxthread();
-    
   JNXLOG(LDEBUG,"---------------------TEST test_jnxudpsocket------------------");
   test_jnxudpsocket();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxunixsocket------------------");
