@@ -170,11 +170,11 @@ int test_jnxudpsocket(int argc, char **argv) {
   test_udp_listener_complete = 0;
    JNXLOG(LDEBUG,"Testing UDP broadcast");
    test_udp_broadcast(); 
-   test_udp_listener_complete = 0;
-   JNXLOG(LDEBUG,"Test UDP blocking listener");
-   test_udp_blocking_listener();
-   test_udp_listener_complete = 0;
-   JNXLOG(LDEBUG,"Test UDP multicast listener");
-   test_udp_multicast();
+   // test_udp_listener_complete = 0;
+   // JNXLOG(LDEBUG,"Test UDP blocking listener");
+   // test_udp_blocking_listener();
+   // test_udp_listener_complete = 0;
+   // JNXLOG(LDEBUG,"Test UDP multicast listener");
+   // test_udp_multicast();
   return 0;
 }
