@@ -56,7 +56,7 @@ void test_jnx_int_array() {
 	for (i = 0; i < 9999; i++) {
 		JNXCHECK(jnx_into[i] < jnx_into[i + 1]);
 	}
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 void test_string_array() {
 	JNXLOG(LDEBUG,"- test_string_array");
@@ -66,14 +66,14 @@ void test_string_array() {
 	for (i = 0; i < 11; i++) {
 		JNXCHECK(strcmp(charo[i], charo[i + 1]) < 0);
 	}
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 void test_empty_array() {
 	JNXLOG(LDEBUG,"- test_empty_array");
 	void **a = NULL;
 	jnx_quicksort(a, 0, cf_string);
 	JNXCHECK(a == NULL);
-	jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 jnx_int test_jnxquicksort(jnx_int argc, char **argv) {
 	JNXLOG(LDEBUG,"Running quicksort tests...\n");

@@ -32,7 +32,6 @@ void test_new_node() {
   // Since this is not an API funciton and is private
   // there's no need to test for order <= 1, since the
   // API functions take care of this case.
-  printf ("- test_new_node: ");
 
   jnx_btree_node *n = new_node(2, 0);
   assert(n != NULL);
@@ -46,7 +45,7 @@ void test_new_node() {
   assert(n->is_leaf == 1);
   delete_node(n);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 int compare_pints(void *first, void *second) {
@@ -117,7 +116,7 @@ void test_new_empty_tree() {
   assert(tree->root->count == 0);
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_insert_first_record_into_tree() {
@@ -149,7 +148,7 @@ void test_insert_first_record_into_tree() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_insert_records_into_leaf_root() {
@@ -177,7 +176,7 @@ void test_insert_records_into_leaf_root() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_growing_to_depth_of_2() {
@@ -212,7 +211,7 @@ void test_growing_to_depth_of_2() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_spliting_a_leaf_node_that_is_not_root() {
@@ -251,7 +250,7 @@ void test_spliting_a_leaf_node_that_is_not_root() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_growing_to_depth_of_3() {
@@ -330,7 +329,7 @@ void test_growing_to_depth_of_3() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_splitting_inner_node() {
@@ -432,7 +431,7 @@ void test_splitting_inner_node() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_lookup_in_empty_tree() {
@@ -446,7 +445,7 @@ void test_lookup_in_empty_tree() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_lookup_in_single_record_tree() {
@@ -465,7 +464,7 @@ void test_lookup_in_single_record_tree() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_lookup_in_leaf_root() {
@@ -494,7 +493,7 @@ void test_lookup_in_leaf_root() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_lookup_in_tree_of_depth_3() {
@@ -523,7 +522,7 @@ void test_lookup_in_tree_of_depth_3() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_lookup_does_not_modify_tree() {
@@ -631,7 +630,7 @@ void test_lookup_does_not_modify_tree() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_removing_key_from_empty_tree() {
@@ -649,7 +648,7 @@ void test_removing_key_from_empty_tree() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_removing_record_from_single_record_tree() {
@@ -672,7 +671,7 @@ void test_removing_record_from_single_record_tree() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_removing_record_from_leaf_root() {
@@ -717,7 +716,7 @@ void test_removing_record_from_leaf_root() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void print_char_tree_at_node(jnx_btree_node *node, char *(*str)(jnx_btree_node *), int level) {
@@ -812,7 +811,7 @@ void test_mixed_tree() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_alphabet_tree() {
@@ -853,7 +852,7 @@ void test_alphabet_tree() {
   jnx_list_destroy(&keys);
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_simple_remove_from_leaf() {
@@ -877,7 +876,7 @@ void test_simple_remove_from_leaf() {
   free(contents);
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 int strcmp_node_contents_with_string(jnx_btree_node *node, char *str) {
@@ -997,7 +996,7 @@ void test_removing_record_from_inner_node() {
 
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_removing_key_from_child_that_has_too_few_records() {
@@ -1069,7 +1068,7 @@ void test_removing_key_from_child_that_has_too_few_records() {
   //    JNXLOG(LDEBUG,"----------------------------------------------\n");
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 void test_removing_key_from_root() {
@@ -1113,7 +1112,7 @@ void test_removing_key_from_root() {
   //    JNXLOG(LDEBUG,"----------------------------------------------\n");
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 int comparo(void *key1, void *key2) {
@@ -1160,7 +1159,7 @@ void test_tree_level_1_add_and_remove() {
   jnx_list_destroy(&keys);
   jnx_btree_destroy(tree);
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 
 int test_jnxbtree() {

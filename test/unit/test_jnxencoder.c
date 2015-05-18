@@ -61,7 +61,7 @@ int test_jnxencoder(int argc, char **argv) {
     JNXCHECK(strcmp(decoded_test,test[x]) == 0);
 
   }
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 
   jnx_encoder_destroy(&e);
   JNXCHECK(e == NULL);

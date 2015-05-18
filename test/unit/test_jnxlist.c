@@ -30,20 +30,20 @@ static void test_list_creation() {
   JNXLOG(LDEBUG,"- test_list_creation");
   jnx_list *secondlist = jnx_list_create();
   JNXCHECK(secondlist != NULL);
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
   struct foo *f = malloc(sizeof(foo));
   f->number = 10;
   JNXLOG(LDEBUG,"- test_list_insertion");
   jnx_list_add(secondlist,(void*)f);
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- test_list_removal");
   struct foo *output = (struct foo*)jnx_list_remove(&secondlist);
   JNXCHECK(output->number == 10);
   free(output);
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- test_list_deletion");
   jnx_list_destroy(&secondlist);
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 static void test_list_index() {
   JNXLOG(LDEBUG,"- test_list_sequence");
@@ -59,7 +59,7 @@ static void test_list_index() {
     char *current = jnx_list_remove(&j);
     JNXCHECK(strcmp(current,ar[x]) == 0);
   }
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
   jnx_list_destroy(&j);
   JNXCHECK(j == NULL);
 }
@@ -79,7 +79,7 @@ static void test_data_removal() {
   }
   jnx_list_destroy(&list);
   JNXCHECK(list == NULL);
-  jnx_term_printf_in_color(JNX_COL_GREEN, " OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 static void test_list_tail() {
   jnx_list *l = jnx_list_create();

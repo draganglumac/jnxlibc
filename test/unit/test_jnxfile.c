@@ -67,12 +67,12 @@ int test_jnxfile(int args, char **argv) {
   JNXLOG(LDEBUG,"Running file tests...\n");
   JNXLOG(LDEBUG,"- test recursive delete");
   test_recursive_delete();
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- test file read");
   test_jnx_file();
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- test temp directory");
   test_jnx_dir();
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
   return 0;
 }

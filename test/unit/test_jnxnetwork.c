@@ -24,12 +24,12 @@
 #include "jnxterm.h"
 int test_jnxnetwork(int args, char **argv) {
   JNXLOG(LDEBUG,"Running network tests...\n");
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- displaying endianness\n");
 
   JNXLOG(LDEBUG,"BIG ENDIAN %s\n",jnx_network_get_endianness() == JNX_BIG_ENDIAN ? "YES" : "NO");
   JNXLOG(LDEBUG,"LITTLE ENDIAN %s\n",jnx_network_get_endianness() == JNX_LITTLE_ENDIAN ? "YES" : "NO");
 
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
   return 0;
 }

@@ -37,7 +37,7 @@ void test_stack_grow() {
   jnx_stack_push(s,C);
   jnx_stack_destroy(&s);
   JNXCHECK(s == NULL);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 void test_stack_pop() {
   JNXLOG(LDEBUG,"- test_stack_pop");
@@ -53,7 +53,7 @@ void test_stack_pop() {
     JNXCHECK(strcmp(ar[c],d) == 0);
     --c;
   }
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 int compare_func(void *a, void *b) {
   if(a == b) {
@@ -67,7 +67,7 @@ void test_contains(){
   jnx_stack_push(s,ar[0]);
   JNXCHECK(jnx_stack_contains(s,ar[0],compare_func) == 1);
   JNXCHECK(jnx_stack_contains(s,ar[1],compare_func) == 0);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 int test_jnxstack(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running stack tests...\n");
