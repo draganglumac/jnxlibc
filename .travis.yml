@@ -2,7 +2,7 @@ language: c
 compiler:
     - gcc
     - clang
-before_script: cmake . -DRUN_TESTS=ON
+before_script: cmake . -DRUN_TESTS=ON && cat *.log
 script: make
 notifications:
     email:
