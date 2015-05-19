@@ -38,7 +38,7 @@ int test_jnxqueue(int argc, char **argv) {
   }
 
   jnx_queue_destroy(&q);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 
   JNXLOG(LDEBUG,"Queue tests completed\n");
   return 0;

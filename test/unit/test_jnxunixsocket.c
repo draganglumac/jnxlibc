@@ -89,7 +89,7 @@ void test_create_and_destroy() {
 	jnx_socket_destroy(&b);
 	assert(b == NULL);
 
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 // stream_send negative scenarios
 void stream_send_connect_fails() {
@@ -110,7 +110,7 @@ void test_negative_send_stream_scenarios() {
 	fflush(stdout);
 	run_error_test(stream_send_connect_fails, "jnx unix stream socket connect:", 31);
 	run_error_test(stream_send_fails, "jnx unix stream socket send:", 28);
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 // datagram_send negative scenarios
 void datagram_send_fails() {
@@ -123,7 +123,7 @@ void test_negative_send_datagram_scenarios() {
 	JNXLOG(LDEBUG,"Test negative send datagram scenarios");
 	fflush(stdout);
 	run_error_test(datagram_send_fails, "jnx unix datagram socket sendto:", 32);
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 // stream_listen negative scenarios
 extern int bind_stream_socket(jnx_unix_socket*);
@@ -167,7 +167,7 @@ void test_negative_stream_listen_scenarios() {
 	run_error_test(stream_listen_fails, "jnx unix stream socket listen:", 30);
 	run_error_test(stream_accept_fails, "jnx unix stream socket accept:", 30);
 	run_error_test(stream_read_fails, "jnx unix stream socket read:", 28);
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 int stream_callback(char *out, size_t len, jnx_unix_socket *rs) {
 	counter++;
@@ -201,11 +201,11 @@ void test_stream_ipc_comms() {
 		}
 		else {
 			jnx_unix_stream_socket_listen(ss, 5, stream_callback);
-			jnx_term_printf_in_color(JNX_COL_WHITE, "closing server socket\n");
+			
 			jnx_unix_socket_destroy(&ss);
 		}
 	}
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 int check_binary_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 	uint8_t expected[] = {'a', 'b', 'c', '\0', '\n', '\t', 0x01, 0xff, 0x13, '\f', '\v'};
@@ -239,7 +239,7 @@ void test_binary_data_in_stream_ipc_comms() {
 			jnx_unix_socket_destroy(&ss);	
 		}
 	}
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 int check_large_stream(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 	counter++;
@@ -288,7 +288,7 @@ void test_large_data_in_stream_ipc_comms() {
 			jnx_unix_socket_destroy(&ss);	
 		}
 	}
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 // datagram_listen negative scenarios
 extern int bind_datagram_socket(jnx_unix_socket*);
@@ -319,7 +319,7 @@ void test_negative_datagram_listen_scenarios() {
 	fflush(stdout);
 	run_error_test(datagram_bind_fails, "jnx unix datagram socket bind:", 30);
 	run_error_test(datagram_receive_fails, "jnx unix datagram socket recvfrom:", 34);
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 int datagram_callback(char *out, size_t len, jnx_unix_socket *rs) {
 	counter++;
@@ -357,7 +357,7 @@ void test_datagram_ipc_comms() {
 			jnx_unix_socket_destroy(&ss);
 		}
 	}
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 void test_binary_data_in_datagram_ipc_comms() {
 	JNXLOG(LDEBUG, "Test binary data sent and received via datagram socket\n");
@@ -381,7 +381,7 @@ void test_binary_data_in_datagram_ipc_comms() {
 			jnx_unix_socket_destroy(&ss);	
 		}
 	}
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 int check_large_datagram(uint8_t *out, size_t len, jnx_unix_socket *rs) {
 	counter++;
@@ -431,7 +431,7 @@ void test_large_data_in_datagram_ipc_comms() {
 			jnx_unix_socket_destroy(&ss);	
 		}
 	}
-	jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+	JNXLOG(LDEBUG,"OK");
 }
 
 // Test runner

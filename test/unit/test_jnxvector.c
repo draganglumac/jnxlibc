@@ -42,7 +42,7 @@ static void test_complex_insertion() {
     ++x;
   }
   jnx_vector_destroy(&vector);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 static void test_sequential_insertion() {
   JNXLOG(LDEBUG,"- test_sequential_insertion");
@@ -59,7 +59,7 @@ static void test_sequential_insertion() {
     ++y;
   }
   jnx_vector_destroy(&vector);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 static void test_insert_position() {
   JNXLOG(LDEBUG,"- test_insert_position");
@@ -70,7 +70,7 @@ static void test_insert_position() {
   JNXCHECK(vector->vector[100]->used == 1);
   JNXCHECK((char*)vector->vector[15]->data == "Test");
   JNXCHECK((char*)vector->vector[100]->data == "Derp");
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 static void test_remove_position() {
   JNXLOG(LDEBUG,"- test_remove_position");
@@ -82,7 +82,7 @@ static void test_remove_position() {
   char *data = jnx_vector_remove_at(vector,90);
   JNXCHECK(strcmp("Bye",(char*)data) == 0);
   jnx_vector_destroy(&vector);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 static int vector_compare(void *A, void *B) {
   if(A == B) {
@@ -97,7 +97,7 @@ static void test_contains() {
   
   JNXCHECK(jnx_vector_contains(vector,"Hello",vector_compare) == 1);
   JNXCHECK(jnx_vector_contains(vector,"GoodBye",vector_compare) == 0);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 static void test_get() {
   JNXLOG(LDEBUG,"- test_get");
@@ -108,7 +108,7 @@ static void test_get() {
   JNXCHECK(strcmp("Hello",str) == 0);
   char *str2 = (char*)jnx_vector_get_at(vector,0);
   JNXCHECK(strcmp("Hello",str2) == 0);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 }
 int test_jnxvector(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running vector tests...\n");

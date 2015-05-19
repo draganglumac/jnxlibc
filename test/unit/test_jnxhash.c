@@ -111,18 +111,18 @@ int test_jnxhash(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running test for jnxhash\n");
   JNXLOG(LDEBUG,"- test_key_deletion: ");
   test_key_deletion();
-  jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- test_hash_deletion: ");
   test_hash_deletion();
-  jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- test_hash_get_keys: ");
   test_hash_get_keys();
-  jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- test_hash_keys_that_hash_to_same_index: ");
   test_hash_keys_that_hash_to_same_index();
-  jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+  JNXLOG(LDEBUG,"OK");
   JNXLOG(LDEBUG,"- test_hashing_function: ");
   test_hashing_function();
-  jnx_term_printf_in_color(JNX_COL_GREEN,"OK\n");
+  JNXLOG(LDEBUG,"OK");
   return 0;
 }

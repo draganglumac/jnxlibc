@@ -30,7 +30,7 @@ int test_jnxstring(int args, char **argv) {
   strcpy(temp,"foo");
   jnx_string_join(&temp,"bar");
   assert(strcmp(temp,"foobar") == 0);
-  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+  JNXLOG(LDEBUG,"OK");
 
   int a = 15;
   char *expected_output="15";
