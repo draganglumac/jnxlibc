@@ -117,14 +117,13 @@ static void test_blocking_listener_callback(const jnx_uint8 *payload, \
 }
 static void *worker_blocking_listener(void *args) {
   jnx_udp_listener **listener = args;
-  *listener = jnx_socket_udp_listener_create(UDPTESTPORT,
-      AF_INET);
   jnx_socket_udp_listener_auto_tick(*listener,test_blocking_listener_callback,
       NULL);
   return NULL;
 }
 static void test_udp_blocking_listener() {
-  jnx_udp_listener *listener;
+  jnx_udp_listener *listener = jnx_socket_udp_listener_create(UDPTESTPORT,
+      AF_INET);
 
   jnx_thread_create_disposable(worker_blocking_listener,&listener);
   sleep(1);
@@ -170,11 +169,11 @@ int test_jnxudpsocket(int argc, char **argv) {
   test_udp_listener_complete = 0;
    JNXLOG(LDEBUG,"Testing UDP broadcast");
    test_udp_broadcast(); 
-   // test_udp_listener_complete = 0;
-   // JNXLOG(LDEBUG,"Test UDP blocking listener");
-   // test_udp_blocking_listener();
-   // test_udp_listener_complete = 0;
-   // JNXLOG(LDEBUG,"Test UDP multicast listener");
-   // test_udp_multicast();
+  // test_udp_listener_complete = 0;
+  // JNXLOG(LDEBUG,"Test UDP blocking listener");
+  // test_udp_blocking_listener();
+  test_udp_listener_complete = 0;
+  JNXLOG(LDEBUG,"Test UDP multicast listener");
+  test_udp_multicast();
   return 0;
 }
