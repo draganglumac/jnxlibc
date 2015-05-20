@@ -27,6 +27,7 @@ typedef int jnx_int; //16 bits (at least)
 typedef signed int jnx_signed_int;
 typedef unsigned int jnx_unsigned_int;
 
+typedef unsigned long jnx_ulong;
 typedef long int jnx_long_int;
 
 typedef uint8_t jnx_uint8;
