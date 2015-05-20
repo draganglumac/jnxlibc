@@ -120,10 +120,8 @@ jnx_int32 jnx_file_recursive_delete(jnx_char* path, int32_t depth) {
 }
 static jnx_int32 jnx_file_path_exists(jnx_char *path) {
   JNXCHECK(path);
-  jnx_size s = 512;
-  jnx_char buffer[s];
-  getcwd(buffer,s);
-  if(buffer == NULL) {
+  jnx_char buffer[512]={};
+  if((getcwd(buffer,512)) == NULL){
     JNXLOG(LDEBUG,"jnx_file_path_exists: Unable to validate cwd\n");
     return 0;
   }
