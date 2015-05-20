@@ -123,7 +123,7 @@ jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,
   hints.ai_family = PF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_flags |= AI_CANONNAME;
-  jnx_char addrstr[100];
+  jnx_char addrstr[100]={};
   void *ptr;
   jnx_int32 errcode = getaddrinfo(host,NULL,&hints,&res);
   if(errcode != 0) {
@@ -147,7 +147,7 @@ jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,
       break;
     }
   }
-  if(addrstr != NULL) {
+  if(strlen(addrstr) > 0) {
     *out_ip = strndup(addrstr,strlen(addrstr));
   }
   return 0;
