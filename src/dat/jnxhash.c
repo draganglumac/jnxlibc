@@ -19,6 +19,8 @@
 #include "jnxcheck.h"
 
 jnx_int32 jnx_hash_string(const jnx_char* str, jnx_int32 map_size) {
+    JNXCHECK(str);
+    JNXCHECK(size > 0);
     jnx_ulong hash = 5381;
     jnx_int c;
     while ((c = *str++))
