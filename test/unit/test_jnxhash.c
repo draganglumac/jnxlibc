@@ -88,24 +88,24 @@ void test_hash_keys_that_hash_to_same_index() {
   char *key2 = "OtherUser";
   int i1 = jnx_hash_string(key1, 1024);
   int i2 = jnx_hash_string(key2, 1024);
-  jnx_term_printf_in_color(JNX_COL_YELLOW, "Hash indexes -> \
-hash-of(LocalUser) = %d, hash-of(OtherUser) = %d\n", i1, i2);
+  JNXLOG(LDEBUG, "Hash indexes -> \
+hash-of(LocalUser) = %d, hash-of(OtherUser) = %d", i1, i2);
   char *test_data = "Void";
   jnx_hash_put(testhash,key1,test_data);
   JNXCHECK(NULL == jnx_hash_get(testhash, "OtherUser"));
 }
 void test_hashing_function() {
-  JNXCHECK(jnx_hash_string("LocalUser", 1024)
-      == jnx_hash_string("OtherUser", 1024));
+ 
+  jnx_char *local = "localUser";
+  jnx_char *other[3] = { "otherUser", "anotherUser","localishUser"};
 
-  JNXCHECK(jnx_hash_string("LocalUser", 1024)
-      == jnx_hash_string("AnotherUser", 1024));
-  
-  JNXCHECK(jnx_hash_string("Local User", 1024)
-      == jnx_hash_string("Another User", 1024));
-  
-  JNXCHECK(jnx_hash_string("Local User", 1024)
-      == jnx_hash_string("Other User", 1024));
+  jnx_int i;
+  for(i=0;i<3; ++i) {
+    jnx_int32 a = jnx_hash_string(local, 1024);
+    jnx_int32 b = jnx_hash_string(other[i], 1024);
+    JNXLOG(LDEBUG,"HASHING %s %s hash values %d %d","LocalUser",local,other[i],a,b);
+    JNXCHECK(a != b);
+  }
 }
 int test_jnxhash(int argc, char **argv) {
   JNXLOG(LDEBUG,"Running test for jnxhash\n");

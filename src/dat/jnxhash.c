@@ -17,16 +17,15 @@
  */
 #include "jnxhash.h"
 #include "jnxcheck.h"
-jnx_int32 jnx_hash_string(const jnx_char* input, jnx_int32 map_size) {
-  JNXCHECK(input);
-  JNXCHECK(map_size);
-  JNXCHECK(input != 0 && input[0] != 0);
-  jnx_int32 i;
-  unsigned h = input[0];
-  for (i = 1; input[i] != 0; ++i) {
-    h = (h << 4) + input[i];
-  }
-  return h % map_size;
+
+jnx_int32 jnx_hash_string(const jnx_char* str, jnx_int32 map_size) {
+    JNXCHECK(str);
+    JNXCHECK(map_size > 0);
+    jnx_ulong hash = 5381;
+    jnx_int c;
+    while ((c = *str++))
+        hash = ((hash << 5) + hash) + c;
+    return hash % map_size;
 }
 void jnx_hash_destroy(jnx_hashmap** hash) {
   jnx_hashmap *hashmap = *hash;
