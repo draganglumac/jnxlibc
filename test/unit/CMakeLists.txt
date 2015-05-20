@@ -15,5 +15,7 @@ include_directories(${PROJECT_ROOT}src/sig)
 include_directories(${PROJECT_ROOT}src/sys)
 include_directories(${PROJECT_ROOT}src/thr)
 
+set(CMAKE_C_FLAGS "-g")
+
 add_executable(test_run ${RAW_SRC} ${TEST_SRC})
 target_link_libraries(test_run pthread)
