@@ -18,17 +18,25 @@ extern "C" {
 #define LERROR 3
 #define LPANIC 4
 
+
+  typedef void(*jnx_log_appender)(const jnx_char *logmessage,jnx_size bytes_read);
+
   void jnx_log_create(jnx_char *conf_path);
 
   void jnx_log_destroy();
+
+  void jnx_log_register_appender(jnx_log_appender ap);
   
   void jnx_log(jnx_int l, const jnx_char *file, 
       const jnx_char *function, 
       const jnx_uint32 line,const jnx_char *format,...);
 
+
 #define JNXLOG_DESTROY() jnx_log_destroy();
 
 #define JNXLOG_CREATE(X) jnx_log_create(X);
+
+ #define JNXLOG_REGISTER_APPENDER(X) jnx_log_register_appender(jnx_log_appender ap);
 
 #define JNXLOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
 

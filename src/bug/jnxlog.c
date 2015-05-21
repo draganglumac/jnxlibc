@@ -25,6 +25,9 @@
 #define IS_WARN(X) (strcmp(X,"WARN")== 0)
 #define IS_ERROR(X) (strcmp(X,"ERROR")== 0)
 #define IS_PANIC(X) (strcmp(X,"PANIC")== 0)
+#define LOGPORT "LOG_PORT"
+#define LOGLEVEL "LOG_LEVEL"
+#define OUTPUTLOG "OUTPUT_LOG"
 
 typedef struct jnx_log_conf {
   jnx_int level;
@@ -39,12 +42,22 @@ typedef struct jnx_log_conf {
   jnx_char is_exiting;
   /* mutex */
   jnx_thread_mutex *locker;
+  /* appender */
+  jnx_log_appender appender;
 }jnx_log_conf;
 
 static jnx_log_conf _internal_jnx_log_conf = { 
   LDEBUG, 0, NULL, 0, 0
 };
-
+static void internal_appender_cli(const jnx_char *message,jnx_size bytes_read){
+  printf("%s",message);
+}
+static void internal_appender_io(const jnx_char *message,jnx_size bytes_read){  
+   jnx_thread_lock(_internal_jnx_log_conf.locker);
+      jnx_file_write(_internal_jnx_log_conf.p,
+          (jnx_char*)message,bytes_read,"a");
+      jnx_thread_unlock(_internal_jnx_log_conf.locker);
+}
 static void internal_write_message(jnx_uint8 *buffer, jnx_size len) {
   jnx_socket_udp_send(_internal_jnx_log_conf.writer,AF_INET4_LOCALHOST,
       _internal_jnx_log_conf.log_port,buffer,len);
@@ -106,12 +119,12 @@ void jnx_log_destroy() {
 static void internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
   if(h) {
-    jnx_char *log_level = jnx_hash_get(h,"LOG_LEVEL");
+    jnx_char *log_level = jnx_hash_get(h,LOGLEVEL);
     if(log_level) {
       internal_set_log_level(log_level);
       free(log_level);
     }
-    jnx_char *filepath = jnx_hash_get(h,"OUTPUT_LOG");
+    jnx_char *filepath = jnx_hash_get(h,OUTPUTLOG);
     if(filepath) {
       _internal_jnx_log_conf.wfile = 1;
       jnx_char buffer[256] ={};
@@ -122,7 +135,7 @@ static void internal_load_from_configuration(jnx_char *conf_path) {
       _internal_jnx_log_conf.p = strdup(buffer);
       _internal_jnx_log_conf.locker = jnx_thread_mutex_create();
     }
-    jnx_char *log_port = jnx_hash_get(h,"LOG_PORT");
+    jnx_char *log_port = jnx_hash_get(h,LOGPORT);
     if(log_port) {
       _internal_jnx_log_conf.log_port = strdup(log_port);
       free(log_port);
@@ -134,17 +147,7 @@ static void internal_load_from_configuration(jnx_char *conf_path) {
 }
 static void internal_listener_callback(const jnx_uint8 *payload, \
     jnx_size bytes_read, void *args) {
-  switch(_internal_jnx_log_conf.wfile) {
-    case 0:
-      printf("%s",payload);
-      break;
-    case 1:
-      jnx_thread_lock(_internal_jnx_log_conf.locker);
-      jnx_file_write(_internal_jnx_log_conf.p,
-          (jnx_char *)payload,bytes_read,"a");
-      jnx_thread_unlock(_internal_jnx_log_conf.locker);
-      break;
-  }
+  _internal_jnx_log_conf.appender((jnx_char*)payload,bytes_read);
 }
 static void *internal_listener_loop() {
   while(!_internal_jnx_log_conf.is_exiting) {
@@ -167,6 +170,17 @@ void jnx_log_create(jnx_char *conf_path) {
   }
   internal_load_from_configuration(conf_path);
   internal_load_listening_thread();
+  switch(_internal_jnx_log_conf.wfile) {
+    case 0:
+      _internal_jnx_log_conf.appender = internal_appender_cli;
+      break;
+    case 1:
+      _internal_jnx_log_conf.appender = internal_appender_io;
+      break;
+  }
   _internal_jnx_log_conf.initialized = 1;
   JNXLOG(LDEBUG,"Logging service has started on port %s",_internal_jnx_log_conf.log_port);
+}
+void jnx_log_register_appender(jnx_log_appender ap) {
+  _internal_jnx_log_conf.appender = ap;
 }
