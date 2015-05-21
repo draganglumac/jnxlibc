@@ -47,6 +47,6 @@ int main(int argc, char **argv) {
   test_jnxunixsocket();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxvector---------------------");
   test_jnxvector();
-
+  JNXLOG_DESTROY();
   return 0;
 }
