@@ -19,7 +19,7 @@ extern "C" {
 #define LPANIC 4
 
 
-  typedef void(*jnx_log_appender)(const jnx_char *logmessage,jnx_size bytes_read);
+  typedef void(*jnx_log_appender)(jnx_char *logmessage,jnx_size bytes_read);
 
   void jnx_log_create(jnx_char *conf_path);
 

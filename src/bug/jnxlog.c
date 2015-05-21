@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2015-05-21 12:09]
+ *     Last Modified       :     [2015-05-21 13:18]
  *     Description         :      
  **********************************************************************************/
 
@@ -49,14 +49,14 @@ typedef struct jnx_log_conf {
 static jnx_log_conf _internal_jnx_log_conf = { 
   LDEBUG, 0, NULL, 0, 0
 };
-static void internal_appender_cli(const jnx_char *message,jnx_size bytes_read){
+static void internal_appender_cli(jnx_char *message,jnx_size bytes_read){
   printf("%s",message);
 }
-static void internal_appender_io(const jnx_char *message,jnx_size bytes_read){  
-   jnx_thread_lock(_internal_jnx_log_conf.locker);
-      jnx_file_write(_internal_jnx_log_conf.p,
-          (jnx_char*)message,bytes_read,"a");
-      jnx_thread_unlock(_internal_jnx_log_conf.locker);
+static void internal_appender_io(jnx_char *message,jnx_size bytes_read){  
+  jnx_thread_lock(_internal_jnx_log_conf.locker);
+  jnx_file_write(_internal_jnx_log_conf.p,
+      message,bytes_read,"a");
+  jnx_thread_unlock(_internal_jnx_log_conf.locker);
 }
 static void internal_write_message(jnx_uint8 *buffer, jnx_size len) {
   jnx_socket_udp_send(_internal_jnx_log_conf.writer,AF_INET4_LOCALHOST,
@@ -147,7 +147,9 @@ static void internal_load_from_configuration(jnx_char *conf_path) {
 }
 static void internal_listener_callback(const jnx_uint8 *payload, \
     jnx_size bytes_read, void *args) {
-  _internal_jnx_log_conf.appender((jnx_char*)payload,bytes_read);
+  jnx_char *buffer = strdup((jnx_char*)payload);
+  _internal_jnx_log_conf.appender(buffer,strlen(buffer));
+  free(buffer);
 }
 static void *internal_listener_loop() {
   while(!_internal_jnx_log_conf.is_exiting) {
