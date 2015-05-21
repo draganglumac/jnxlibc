@@ -23,6 +23,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#define AF_INET4_LOCALHOST "127.0.0.1"
+#define AF_INET6_LOCALHOST "::1"
 
   typedef enum JNX_NETWORK_ENDIAN {
     JNX_LITTLE_ENDIAN,

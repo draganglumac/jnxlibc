@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2015-05-15 15:54]
+ *     Last Modified       :     [2015-05-21 12:09]
  *     Description         :      
  **********************************************************************************/
 
@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include "jnxfile.h"
+#include "jnxnetwork.h"
 #include "jnxthread.h"
 #include "jnxlog.h"
 #include "jnx_udp_socket.h"
@@ -45,17 +46,17 @@ static jnx_log_conf _internal_jnx_log_conf = {
 };
 
 static void internal_write_message(jnx_uint8 *buffer, jnx_size len) {
-
-  jnx_socket_udp_send(_internal_jnx_log_conf.writer,"127.0.0.1",
-    _internal_jnx_log_conf.log_port,buffer,len);
+  jnx_socket_udp_send(_internal_jnx_log_conf.writer,AF_INET4_LOCALHOST,
+      _internal_jnx_log_conf.log_port,buffer,len);
 }
 void jnx_log(jnx_int l, const jnx_char *file, 
     const jnx_char *function, 
-    const jnx_uint32 line,const jnx_char *format,...) {
+    const jnx_uint32 line,
+    const jnx_char *format,...) {
   if(_internal_jnx_log_conf.initialized == 0) {
     printf("Logging system has not been correctly initialized. \
-      \nPlease use 'JNXLOG_CREATE() to start\nCaught trying to log from file[%d]%s\n",line,file); 
-   return; 
+        \nPlease use 'JNXLOG_CREATE() to start\nCaught trying to log from file[%d]%s\n",line,file); 
+      return; 
   }
   jnx_char buffer[MAX_SIZE];
   jnx_char msgbuffer[MAX_SIZE];
@@ -72,7 +73,7 @@ void jnx_log(jnx_int l, const jnx_char *file,
   pbuffer[strlen(pbuffer)-1] = '\0';
   sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",file,function,line,pbuffer,msgbuffer);
   if(l >= _internal_jnx_log_conf.level) {
-      internal_write_message((jnx_uint8*)buffer,strlen(buffer) + 1);   
+    internal_write_message((jnx_uint8*)buffer,strlen(buffer) + 1);   
   }
 }
 void internal_set_log_level(jnx_char *log_level) {
@@ -90,9 +91,7 @@ void internal_set_log_level(jnx_char *log_level) {
   }
 }
 void jnx_log_destroy() {
-
   _internal_jnx_log_conf.is_exiting = 1;
-  
   if(_internal_jnx_log_conf.p) {
     free(_internal_jnx_log_conf.p);
   }  
@@ -105,7 +104,7 @@ void jnx_log_destroy() {
   jnx_socket_udp_listener_destroy(&listener);
 }
 static void internal_load_from_configuration(jnx_char *conf_path) {
- jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
+  jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
   if(h) {
     jnx_char *log_level = jnx_hash_get(h,"LOG_LEVEL");
     if(log_level) {
@@ -134,31 +133,31 @@ static void internal_load_from_configuration(jnx_char *conf_path) {
   }
 }
 static void internal_listener_callback(const jnx_uint8 *payload, \
-      jnx_size bytes_read, void *args) {
-   switch(_internal_jnx_log_conf.wfile) {
-      case 0:
-        printf("%s",payload);
-        break;
-      case 1:
-        jnx_thread_lock(_internal_jnx_log_conf.locker);
-        jnx_file_write(_internal_jnx_log_conf.p,
-            (jnx_char *)payload,bytes_read,"a");
-        jnx_thread_unlock(_internal_jnx_log_conf.locker);
-        break;
-    }
+    jnx_size bytes_read, void *args) {
+  switch(_internal_jnx_log_conf.wfile) {
+    case 0:
+      printf("%s",payload);
+      break;
+    case 1:
+      jnx_thread_lock(_internal_jnx_log_conf.locker);
+      jnx_file_write(_internal_jnx_log_conf.p,
+          (jnx_char *)payload,bytes_read,"a");
+      jnx_thread_unlock(_internal_jnx_log_conf.locker);
+      break;
+  }
 }
 static void *internal_listener_loop() {
   while(!_internal_jnx_log_conf.is_exiting) {
     jnx_socket_udp_listener_tick(_internal_jnx_log_conf.listener,
-      internal_listener_callback,NULL);
+        internal_listener_callback,NULL);
   }
   return NULL;
 }
 static void internal_load_listening_thread() {
   _internal_jnx_log_conf.writer = jnx_socket_udp_create(AF_INET);
   _internal_jnx_log_conf.listener = jnx_socket_udp_listener_create(
-    _internal_jnx_log_conf.log_port,
-    AF_INET);
+      _internal_jnx_log_conf.log_port,
+      AF_INET);
   jnx_thread_create_disposable(internal_listener_loop,NULL);
 }
 void jnx_log_create(jnx_char *conf_path) {
