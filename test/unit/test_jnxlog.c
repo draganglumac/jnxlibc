@@ -28,6 +28,11 @@
 #include "jnxtypes.h"
 
 static jnx_int worker_complete = 0;
+static jnx_int custom_appender_complete = 0;
+static void custom_appender(jnx_char *message,jnx_size bytes_read){
+  printf("%s",message);
+  custom_appender_complete = 1;
+}
 static void *worker(void *args) {
   JNXLOG(LDEBUG,"Hello from DEBUG");
   JNXLOG(LINFO,"Hello from INFO");
@@ -44,11 +49,13 @@ int test_jnxlog(int args, char **argv) {
   jnx_thread_create_disposable(worker,NULL);
   JNXLOG(LDEBUG,"Hello from DEBUG");
   JNXLOG(LINFO,"Hello from INFO");
+  JNXLOG_REGISTER_APPENDER(custom_appender);
   JNXLOG(LWARN,"Hello from WARN");
   JNXLOG(LERROR,"Hello from ERROR");
   JNXLOG(LPANIC,"Hello from PANIC");
   while(!worker_complete) {
   	sleep(.5);
   }
+  JNXCHECK(custom_appender_complete == 1);
   return 0;
 }
