@@ -26,7 +26,7 @@ extern "C" {
       const jnx_char *function, 
       const jnx_uint32 line,const jnx_char *format,...);
 
-#define JNXLOG_DESTROY jnx_log_destroy();
+#define JNXLOG_DESTROY() jnx_log_destroy();
 
 #define JNXLOG_CREATE(X) jnx_log_create(X);
 
