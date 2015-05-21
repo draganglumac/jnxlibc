@@ -159,7 +159,7 @@ static void internal_load_listening_thread() {
 }
 void jnx_log_create(jnx_char *conf_path) {
   if(_internal_jnx_log_conf.initialized) {
-    JNXLOG(LWARN,"Logging has already been initailized");
+    JNXLOG(LWARN,"jnx_log_create: Logging has already been initailized");
     return;
   }
   internal_load_from_configuration(conf_path);
@@ -173,8 +173,9 @@ void jnx_log_create(jnx_char *conf_path) {
       break;
   }
   _internal_jnx_log_conf.initialized = 1;
-  JNXLOG(LDEBUG,"Logging service has started on port %s",_internal_jnx_log_conf.log_port);
+  JNXLOG(LDEBUG,"jnx_log_create: Logging service has started on port %s",_internal_jnx_log_conf.log_port);
 }
 void jnx_log_register_appender(jnx_log_appender ap) {
+  JNXLOG(LDEBUG,"jnx_log_register_appender: Switching appender");
   _internal_jnx_log_conf.appender = ap;
 }
