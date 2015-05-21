@@ -90,18 +90,10 @@ void jnx_log(jnx_int l, const jnx_char *file,
   }
 }
 void internal_set_log_level(jnx_char *log_level) {
-  if(IS_INFO(log_level)) {
-    _internal_jnx_log_conf.level = LINFO;
-  }
-  if(IS_WARN(log_level)) {
-    _internal_jnx_log_conf.level = LWARN;
-  }
-  if(IS_ERROR(log_level)) {
-    _internal_jnx_log_conf.level = LERROR;
-  }
-  if(IS_PANIC(log_level)) {
-    _internal_jnx_log_conf.level = LPANIC;
-  }
+  if(IS_INFO(log_level)) { _internal_jnx_log_conf.level = LINFO;  }
+  if(IS_WARN(log_level)) { _internal_jnx_log_conf.level = LWARN;  }
+  if(IS_ERROR(log_level)){ _internal_jnx_log_conf.level = LERROR; }
+  if(IS_PANIC(log_level)){ _internal_jnx_log_conf.level = LPANIC; }
 }
 void jnx_log_destroy() {
   _internal_jnx_log_conf.is_exiting = 1;
