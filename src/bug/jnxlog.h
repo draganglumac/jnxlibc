@@ -56,7 +56,7 @@ extern "C" {
 
 #define JNXLOG_CREATE(X) jnx_log_create(X);
 
-#define JNXLOG_REGISTER_APPENDER(X) jnx_log_register_appender(jnx_log_appender ap);
+#define JNXLOG_REGISTER_APPENDER(X) jnx_log_register_appender(X);
 
 #define JNXLOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
 

@@ -41,11 +41,11 @@ static void *worker(void *args) {
   JNXLOG(LPANIC,"Hello from PANIC");
   worker_complete = 1;
   return NULL;
- }
+}
 int test_jnxlog(int args, char **argv) {
-  
+
   JNXLOG_CREATE("logger.conf");
-  
+
   jnx_thread_create_disposable(worker,NULL);
   JNXLOG(LDEBUG,"Hello from DEBUG");
   JNXLOG(LINFO,"Hello from INFO");
@@ -54,7 +54,7 @@ int test_jnxlog(int args, char **argv) {
   JNXLOG(LERROR,"Hello from ERROR");
   JNXLOG(LPANIC,"Hello from PANIC");
   while(!worker_complete) {
-  	sleep(.5);
+    sleep(1);
   }
   JNXCHECK(custom_appender_complete == 1);
   return 0;
