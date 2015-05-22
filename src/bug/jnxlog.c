@@ -108,8 +108,9 @@ void jnx_log_destroy() {
   jnx_socket_destroy(&writer);
   jnx_socket_udp_listener_destroy(&listener);
 }
-static void internal_load_from_configuration(jnx_char *conf_path) {
+static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
+  jnx_int is_valid = 1;
   if(h) {
     jnx_char *log_level = jnx_hash_get(h,LOGLEVEL);
     if(log_level) {
@@ -133,9 +134,11 @@ static void internal_load_from_configuration(jnx_char *conf_path) {
       free(log_port);
     }else {
       printf("jnx_log_create: Log port must be set in the conf file e.g. LOG_PORT=9999\n");
+      is_valid = 0;
     }
     jnx_hash_destroy(&h);
   }
+  return is_valid;
 }
 static void internal_listener_callback(const jnx_uint8 *payload, \
     jnx_size bytes_read, void *args) {
@@ -162,7 +165,10 @@ void jnx_log_create(jnx_char *conf_path) {
     JNXLOG(LWARN,"jnx_log_create: Logging has already been initailized");
     return;
   }
-  internal_load_from_configuration(conf_path);
+  if(!internal_load_from_configuration(conf_path)) {
+    JNXLOG(LERROR,"jnx_log_create: Validation errors in internal_load_from_configuration");    
+    return;
+  }
   internal_load_listening_thread();
   switch(_internal_jnx_log_conf.wfile) {
     case 0:
@@ -173,7 +179,8 @@ void jnx_log_create(jnx_char *conf_path) {
       break;
   }
   _internal_jnx_log_conf.initialized = 1;
-  JNXLOG(LDEBUG,"jnx_log_create: Logging service has started on port %s",_internal_jnx_log_conf.log_port);
+  JNXLOG(LDEBUG,"jnx_log_create: Logging service has started on port %s",
+      _internal_jnx_log_conf.log_port);
 }
 void jnx_log_register_appender(jnx_log_appender ap) {
   JNXLOG(LDEBUG,"jnx_log_register_appender: Switching appender");
