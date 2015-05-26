@@ -19,6 +19,7 @@
 #include "jnxthread.h"
 #include "jnxlog.h"
 #include "jnx_udp_socket.h"
+#include "jnxunixsocket.h"
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256
 #define IS_INFO(X) (strcmp(X,"INFO")== 0)
@@ -35,7 +36,10 @@ typedef struct jnx_log_conf {
   jnx_char *p;
   /* listener */
   jnx_char *log_port;
-  jnx_udp_listener *listener;
+  /* unix sock stream */
+  jnx_unix_socket *unix_writer_socket;
+  jnx_unix_socket *unix_listener_socket;
+
   /* writer */
   jnx_socket *writer;
   jnx_char initialized;
@@ -59,8 +63,7 @@ static void internal_appender_io(jnx_char *message,jnx_size bytes_read){
   jnx_thread_unlock(_internal_jnx_log_conf.locker);
 }
 static void internal_write_message(jnx_uint8 *buffer, jnx_size len) {
-  jnx_socket_udp_send(_internal_jnx_log_conf.writer,AF_INET4_LOCALHOST,
-      _internal_jnx_log_conf.log_port,buffer,len);
+  jnx_unix_datagram_socket_send(_internal_jnx_log_conf.unix_listener_socket,buffer,len);
 }
 void jnx_log(jnx_int l, const jnx_char *file, 
     const jnx_char *function, 
@@ -86,7 +89,10 @@ void jnx_log(jnx_int l, const jnx_char *file,
   pbuffer[strlen(pbuffer)-1] = '\0';
   sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",file,function,line,pbuffer,msgbuffer);
   if(l >= _internal_jnx_log_conf.level) {
+
     internal_write_message((jnx_uint8*)buffer,strlen(buffer) + 1);   
+
+
   }
 }
 void internal_set_log_level(jnx_char *log_level) {
@@ -103,10 +109,6 @@ void jnx_log_destroy() {
   if(_internal_jnx_log_conf.log_port) {
     free(_internal_jnx_log_conf.log_port);
   }
-  jnx_udp_listener *listener = _internal_jnx_log_conf.listener;
-  jnx_socket *writer = _internal_jnx_log_conf.writer;
-  jnx_socket_destroy(&writer);
-  jnx_socket_udp_listener_destroy(&listener);
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
@@ -140,24 +142,23 @@ static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   }
   return is_valid;
 }
-static void internal_listener_callback(const jnx_uint8 *payload, \
-    jnx_size bytes_read, void *args) {
+static jnx_int32 internal_listener_callback(jnx_uint8 *payload, \
+    jnx_size bytes_read, jnx_unix_socket *s) {
   jnx_char *buffer = strdup((jnx_char*)payload);
   _internal_jnx_log_conf.appender(buffer,strlen(buffer));
   free(buffer);
+  return 0;
 }
 static void *internal_listener_loop() {
-  while(!_internal_jnx_log_conf.is_exiting) {
-    jnx_socket_udp_listener_tick(_internal_jnx_log_conf.listener,
-        internal_listener_callback,NULL);
-  }
+  jnx_unix_datagram_socket_listen(_internal_jnx_log_conf.unix_listener_socket,
+      internal_listener_callback);
   return NULL;
 }
 static void internal_load_listening_thread() {
-  _internal_jnx_log_conf.writer = jnx_socket_udp_create(AF_INET);
-  _internal_jnx_log_conf.listener = jnx_socket_udp_listener_create(
-      _internal_jnx_log_conf.log_port,
-      AF_INET);
+
+  _internal_jnx_log_conf.unix_listener_socket = 
+    jnx_unix_datagram_socket_create("LOG_STREAM");
+
   jnx_thread_create_disposable(internal_listener_loop,NULL);
 }
 void jnx_log_create(jnx_char *conf_path) {
@@ -166,7 +167,8 @@ void jnx_log_create(jnx_char *conf_path) {
     return;
   }
   if(!internal_load_from_configuration(conf_path)) {
-    JNXLOG(LERROR,"jnx_log_create: Validation errors in internal_load_from_configuration");    
+    JNXLOG(LERROR,
+        "jnx_log_create: Validation errors in internal_load_from_configuration");    
     return;
   }
   internal_load_listening_thread();
