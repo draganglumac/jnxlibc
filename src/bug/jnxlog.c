@@ -137,7 +137,7 @@ static void *internal_listener_loop() {
 }
 static void internal_load_listening_thread() {
   if(jnx_file_exists(IPC_PATH)) {
-    jnx_file_recursive_delete(IPC_PATH,1);
+    remove(IPC_PATH);
   } 
   _internal_jnx_log_conf.unix_socket = 
     jnx_unix_datagram_socket_create(IPC_PATH);
