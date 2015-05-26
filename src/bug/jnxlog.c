@@ -25,7 +25,7 @@
 #define IS_WARN(X) (strcmp(X,"WARN")== 0)
 #define IS_ERROR(X) (strcmp(X,"ERROR")== 0)
 #define IS_PANIC(X) (strcmp(X,"PANIC")== 0)
-#define IPC_PATH "LOG_IPC_TEMP"
+#define IPC_PATH ".log_ipc_temp"
 #define LOGLEVEL "LOG_LEVEL"
 #define OUTPUTLOG "OUTPUT_LOG"
 
@@ -95,7 +95,8 @@ void jnx_log_destroy() {
   _internal_jnx_log_conf.is_exiting = 1;
   if(_internal_jnx_log_conf.p) {
     free(_internal_jnx_log_conf.p);
-  }  
+  }
+  jnx_unix_socket_destroy(&_internal_jnx_log_conf.unix_socket);
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
@@ -141,7 +142,6 @@ static void internal_load_listening_thread() {
   } 
   _internal_jnx_log_conf.unix_socket = 
     jnx_unix_datagram_socket_create(IPC_PATH);
-
   jnx_thread_create_disposable(internal_listener_loop,NULL);
 }
 void jnx_log_create(jnx_char *conf_path) {
