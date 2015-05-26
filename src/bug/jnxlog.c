@@ -18,7 +18,6 @@
 #include "jnxnetwork.h"
 #include "jnxthread.h"
 #include "jnxlog.h"
-#include "jnx_udp_socket.h"
 #include "jnxunixsocket.h"
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256
@@ -26,7 +25,7 @@
 #define IS_WARN(X) (strcmp(X,"WARN")== 0)
 #define IS_ERROR(X) (strcmp(X,"ERROR")== 0)
 #define IS_PANIC(X) (strcmp(X,"PANIC")== 0)
-#define LOGPORT "LOG_PORT"
+#define IPC_PATH "LOG_IPC_TEMP"
 #define LOGLEVEL "LOG_LEVEL"
 #define OUTPUTLOG "OUTPUT_LOG"
 
@@ -34,14 +33,8 @@ typedef struct jnx_log_conf {
   jnx_int level;
   jnx_int wfile;
   jnx_char *p;
-  /* listener */
-  jnx_char *log_port;
   /* unix sock stream */
-  jnx_unix_socket *unix_writer_socket;
-  jnx_unix_socket *unix_listener_socket;
-
-  /* writer */
-  jnx_socket *writer;
+  jnx_unix_socket *unix_socket;
   jnx_char initialized;
   jnx_char is_exiting;
   /* mutex */
@@ -63,7 +56,7 @@ static void internal_appender_io(jnx_char *message,jnx_size bytes_read){
   jnx_thread_unlock(_internal_jnx_log_conf.locker);
 }
 static void internal_write_message(jnx_uint8 *buffer, jnx_size len) {
-  jnx_unix_datagram_socket_send(_internal_jnx_log_conf.unix_listener_socket,buffer,len);
+  jnx_unix_datagram_socket_send(_internal_jnx_log_conf.unix_socket,buffer,len);
 }
 void jnx_log(jnx_int l, const jnx_char *file, 
     const jnx_char *function, 
@@ -89,10 +82,7 @@ void jnx_log(jnx_int l, const jnx_char *file,
   pbuffer[strlen(pbuffer)-1] = '\0';
   sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",file,function,line,pbuffer,msgbuffer);
   if(l >= _internal_jnx_log_conf.level) {
-
     internal_write_message((jnx_uint8*)buffer,strlen(buffer) + 1);   
-
-
   }
 }
 void internal_set_log_level(jnx_char *log_level) {
@@ -106,9 +96,6 @@ void jnx_log_destroy() {
   if(_internal_jnx_log_conf.p) {
     free(_internal_jnx_log_conf.p);
   }  
-  if(_internal_jnx_log_conf.log_port) {
-    free(_internal_jnx_log_conf.log_port);
-  }
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
@@ -118,6 +105,8 @@ static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
     if(log_level) {
       internal_set_log_level(log_level);
       free(log_level);
+    }else {
+      is_valid = 0;
     }
     jnx_char *filepath = jnx_hash_get(h,OUTPUTLOG);
     if(filepath) {
@@ -129,14 +118,6 @@ static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
       sprintf(buffer,filepath,t);
       _internal_jnx_log_conf.p = strdup(buffer);
       _internal_jnx_log_conf.locker = jnx_thread_mutex_create();
-    }
-    jnx_char *log_port = jnx_hash_get(h,LOGPORT);
-    if(log_port) {
-      _internal_jnx_log_conf.log_port = strdup(log_port);
-      free(log_port);
-    }else {
-      printf("jnx_log_create: Log port must be set in the conf file e.g. LOG_PORT=9999\n");
-      is_valid = 0;
     }
     jnx_hash_destroy(&h);
   }
@@ -150,14 +131,16 @@ static jnx_int32 internal_listener_callback(jnx_uint8 *payload, \
   return 0;
 }
 static void *internal_listener_loop() {
-  jnx_unix_datagram_socket_listen(_internal_jnx_log_conf.unix_listener_socket,
+  jnx_unix_datagram_socket_listen(_internal_jnx_log_conf.unix_socket,
       internal_listener_callback);
   return NULL;
 }
 static void internal_load_listening_thread() {
-
-  _internal_jnx_log_conf.unix_listener_socket = 
-    jnx_unix_datagram_socket_create("LOG_STREAM");
+  if(jnx_file_exists(IPC_PATH)) {
+    jnx_file_recursive_delete(IPC_PATH,1);
+  } 
+  _internal_jnx_log_conf.unix_socket = 
+    jnx_unix_datagram_socket_create(IPC_PATH);
 
   jnx_thread_create_disposable(internal_listener_loop,NULL);
 }
@@ -181,8 +164,6 @@ void jnx_log_create(jnx_char *conf_path) {
       break;
   }
   _internal_jnx_log_conf.initialized = 1;
-  JNXLOG(LDEBUG,"jnx_log_create: Logging service has started on port %s",
-      _internal_jnx_log_conf.log_port);
 }
 void jnx_log_register_appender(jnx_log_appender ap) {
   JNXLOG(LDEBUG,"jnx_log_register_appender: Switching appender");
