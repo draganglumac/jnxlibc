@@ -35,6 +35,7 @@ typedef struct jnx_log_conf {
   jnx_char *p;
   /* unix sock stream */
   jnx_unix_socket *unix_socket;
+  jnx_unix_socket *unix_writer_socket;
   jnx_char initialized;
   jnx_char is_exiting;
   /* mutex */
@@ -56,7 +57,7 @@ static void internal_appender_io(jnx_char *message,jnx_size bytes_read){
   jnx_thread_unlock(_internal_jnx_log_conf.locker);
 }
 static void internal_write_message(jnx_uint8 *buffer, jnx_size len) {
-  jnx_unix_datagram_socket_send(_internal_jnx_log_conf.unix_socket,buffer,len);
+  jnx_unix_datagram_socket_send(_internal_jnx_log_conf.unix_writer_socket,buffer,len);
 }
 void jnx_log(jnx_int l, const jnx_char *file, 
     const jnx_char *function, 
@@ -97,6 +98,7 @@ void jnx_log_destroy() {
     free(_internal_jnx_log_conf.p);
   }
   jnx_unix_socket_destroy(&_internal_jnx_log_conf.unix_socket);
+  jnx_unix_socket_destroy(&_internal_jnx_log_conf.unix_writer_socket);
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
@@ -141,6 +143,8 @@ static void internal_load_listening_thread() {
     remove(IPC_PATH);
   } 
   _internal_jnx_log_conf.unix_socket = 
+    jnx_unix_datagram_socket_create(IPC_PATH);
+  _internal_jnx_log_conf.unix_writer_socket = 
     jnx_unix_datagram_socket_create(IPC_PATH);
   jnx_thread_create_disposable(internal_listener_loop,NULL);
 }
