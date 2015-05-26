@@ -175,7 +175,7 @@ jnx_size jnx_socket_udp_send(jnx_socket *s,\
     if(n == -1) {
       freeaddrinfo(res);
       perror("send:");
-      return -1;
+      return 0;
     }
     tbytes +=n;
     rbytes = msg_len - tbytes;
