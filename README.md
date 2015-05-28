@@ -6,7 +6,8 @@
 [![Build Status](https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master)](https://travis-ci.org/AlexsJones/jnxlibc)
 [![License](http://img.shields.io/badge/license-GPLv3-green.svg)](http://img.shields.io/badge/license-GPLv3-green.svg)
 [![Dev](http://img.shields.io/badge/development-active-green.svg)](http://img.shields.io/badge/development-active-green.svg)
-
+![Issues](https://img.shields.io/github/issues/AlexsJones/jnxlibc.svg)
+![Forks](https://img.shields.io/github/forks/AlexsJones/jnxlibc.svg)
 
 >A modern C library that provides a useful self contained API that has built in testing and just works.
 >Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library and tool for learning.
