@@ -48,7 +48,7 @@
 GCC
 CMake
 ```
-####Currently supported platforms: Linux distributions/OS X
+####Currently supported platforms: Linux distributions/OS X (Windows coming soon)
 
 
 Default install location
