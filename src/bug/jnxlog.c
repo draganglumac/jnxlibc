@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2015-05-21 13:18]
+ *     Last Modified       :     [2015-06-04 07:48]
  *     Description         :      
  **********************************************************************************/
 
@@ -99,6 +99,7 @@ void jnx_log_destroy() {
   }
   jnx_unix_socket_destroy(&_internal_jnx_log_conf.unix_socket);
   jnx_unix_socket_destroy(&_internal_jnx_log_conf.unix_writer_socket);
+  _internal_jnx_log_conf.initialized = 0;
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
@@ -150,7 +151,7 @@ static void internal_load_listening_thread() {
 }
 void jnx_log_create(jnx_char *conf_path) {
   if(_internal_jnx_log_conf.initialized) {
-    JNXLOG(LWARN,"jnx_log_create: Logging has already been initailized");
+    JNXLOG(LWARN,"jnx_log_create: Logging has already been initialized");
     return;
   }
   if(!internal_load_from_configuration(conf_path)) {
