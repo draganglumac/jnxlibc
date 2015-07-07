@@ -9,6 +9,7 @@
 int main(int argc, char **argv) {
 
   JNXLOG_CREATE("logger.conf");
+  sleep(3);
   JNXLOG(LDEBUG,"---------------------TEST test_jnxbtree----------------------");
   test_jnxbtree();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxencoder--------------------");
