@@ -46,7 +46,8 @@ jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
   if(family == ifa->ifa_addr->sa_family) {
     if(family == AF_INET) {
       s4 = (struct sockaddr_in *)(ifa->ifa_addr);
-      if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s4->sin_addr), buf, sizeof(buf))){
+      if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s4->sin_addr), 
+            buf, sizeof(buf))){
         JNXLOG(LDEBUG,"%s: inet_ntop failed!\n", ifa->ifa_name);
         return NULL;
       } else {
@@ -55,7 +56,8 @@ jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
       }
     }else {
       s6 = (struct sockaddr_in6 *)(ifa->ifa_addr);
-      if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s6->sin6_addr), buf, sizeof(buf))) {
+      if (NULL == inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s6->sin6_addr),
+            buf, sizeof(buf))) {
         JNXLOG(LDEBUG,"%s: inet_ntop failed!\n", ifa->ifa_name);
         return NULL;
       } else {
@@ -66,21 +68,7 @@ jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
   }
   return NULL;
 }
-JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
-  union { 
-    jnx_uint8 c[4]; 
-    jnx_int32 i;
-  } u; 
-  u.i = 0x01020304; 
-  if(0x04 == u.c[0]) { 
-    return JNX_BIG_ENDIAN;
-  }; 
-  if (0x01 == u.c[0]) {	
-    return JNX_LITTLE_ENDIAN;
-  }; 
-  return JNX_UNKNOWN_ENDIAN;
-}
-jnx_int32 jnx_network_interface_to_string(jnx_char **obuffer,
+jnx_int32 jnx_network_interface_ip(jnx_char **obuffer,
     jnx_char *interface, jnx_unsigned_int family){
   JNXCHECK(interface);
   JNXCHECK(family);
@@ -110,6 +98,20 @@ jnx_int32 jnx_network_interface_to_string(jnx_char **obuffer,
   }
   freeifaddrs(myaddrs);
   return 0;
+}
+JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
+  union { 
+    jnx_uint8 c[4]; 
+    jnx_int32 i;
+  } u; 
+  u.i = 0x01020304; 
+  if(0x04 == u.c[0]) { 
+    return JNX_BIG_ENDIAN;
+  }; 
+  if (0x01 == u.c[0]) {	
+    return JNX_LITTLE_ENDIAN;
+  }; 
+  return JNX_UNKNOWN_ENDIAN;
 }
 jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,
     jnx_char *host, jnx_char **out_ip,jnx_unsigned_int *out_addrfamily) {
@@ -207,27 +209,4 @@ JNX_HTTP_TYPE jnx_http_request_get(const jnx_char *hostname,
     jnx_http_request(JNX_HTTP_GET,hostname,page,args,&reply,out_len);
   *out_reply = reply;
   return t;
-}
-void jnx_network_fetch_local_ipv4(jnx_char *buffer, address_mapping filter) {
- struct ifaddrs *ifap = 0;
-  if (getifaddrs(&ifap) == -1) {
-    perror("getifaddrs");
-    exit(1);
-  }
-  struct ifaddrs *current = ifap;
-  while (0 != current) {
-    struct sockaddr *ip = current->ifa_addr;
-    if (ip->sa_family == AF_INET) {
-      char *aip = inet_ntoa(((struct sockaddr_in *) ip)->sin_addr);
-      if (strcmp("127.0.0.1", aip) == 0) { // skip loopback interface
-        current = current->ifa_next;
-        continue;
-      }
-      char *ip_str = inet_ntoa(((struct sockaddr_in *) filter(current))->sin_addr);
-      strncpy(buffer, ip_str, strlen(ip_str) + 1);
-      break;
-    }
-    current = current->ifa_next;
-  }
-  freeifaddrs(ifap);
 }

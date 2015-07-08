@@ -5,10 +5,12 @@
  * Distributed under terms of the MIT license.
  */
 #include "jnxlog.h"
-
+#include <unistd.h>
 int main(int argc, char **argv) {
 
   JNXLOG_CREATE("logger.conf");
+  sleep(3);
+/*
   sleep(3);
   JNXLOG(LDEBUG,"---------------------TEST test_jnxbtree----------------------");
   test_jnxbtree();
@@ -26,8 +28,10 @@ int main(int argc, char **argv) {
   test_jnxlist();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxlog------------------------");
   test_jnxlog();
+  */
   JNXLOG(LDEBUG,"---------------------TEST test_jnxnetwork--------------------");
   test_jnxnetwork();
+  /*
   JNXLOG(LDEBUG,"---------------------TEST test_jnxqueue----------------------");
   test_jnxqueue();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxquicksort------------------");
@@ -48,6 +52,8 @@ int main(int argc, char **argv) {
   test_jnxunixsocket();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxvector---------------------");
   test_jnxvector();
+  */
+  sleep(3);
   JNXLOG_DESTROY();
   return 0;
 }
