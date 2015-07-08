@@ -140,9 +140,9 @@ static void test_udp_blocking_listener() {
   JNXCHECK(listener == NULL);
 }
 static void test_udp_multicast(){
-  char *ip = calloc(16,sizeof(jnx_char));
-  jnx_network_fetch_local_ipv4(ip,filter_local_ip_address);
-
+  char *ip;
+  jnx_network_interface_ip(&ip,NULL,AF_INET);
+  
   JNXLOG(LDEBUG,"Using IP => %s",ip);
   jnx_udp_listener *listener = 
     jnx_socket_udp_listener_multicast_create(UDPTESTPORT2,AF_INET,ip,BGROUP);

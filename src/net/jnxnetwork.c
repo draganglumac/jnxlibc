@@ -51,6 +51,9 @@ jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
         JNXLOG(LDEBUG,"%s: inet_ntop failed!\n", ifa->ifa_name);
         return NULL;
       } else {
+        if(strcmp(buf,AF_INET4_LOCALHOST) == 0) {
+          return NULL;
+        }
         JNXLOG(LDEBUG,"IPv4 addr %s: %s\n", ifa->ifa_name, buf);
         return strdup(buf);
       }
@@ -61,6 +64,9 @@ jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
         JNXLOG(LDEBUG,"%s: inet_ntop failed!\n", ifa->ifa_name);
         return NULL;
       } else {
+        if(strcmp(buf,AF_INET6_LOCALHOST) == 0) {
+          return NULL;
+        }
         JNXLOG(LDEBUG,"IPv6 addr %s: %s\n", ifa->ifa_name, buf);
         return strdup(buf);
       }
@@ -70,9 +76,11 @@ jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
 }
 jnx_int32 jnx_network_interface_ip(jnx_char **obuffer,
     jnx_char *interface, jnx_unsigned_int family){
-  JNXCHECK(interface);
   JNXCHECK(family);
   JNXCHECK(family == AF_INET || family == AF_INET6);
+  if(!interface) {
+    JNXLOG(LWARN,"No interface selected - Using default");
+  }
   struct ifaddrs *myaddrs, *ifa;
   jnx_int32 status;
   status = getifaddrs(&myaddrs);
@@ -89,11 +97,20 @@ jnx_int32 jnx_network_interface_ip(jnx_char **obuffer,
     if ((ifa->ifa_flags & IFF_UP) == 0) {
       continue;
     }
-    if(strcmp(ifa->ifa_name,interface) == 0) {
-      outaddr = internal_address_info(ifa,family);
-      if(outaddr){
-        *obuffer = outaddr;
+    if(interface != NULL) {
+
+      if(strcmp(ifa->ifa_name,interface) == 0) {
+        outaddr = internal_address_info(ifa,family);
+        if(outaddr){
+          *obuffer = outaddr;
+        }
       }
+    }else {
+      outaddr = internal_address_info(ifa,family);
+        if(outaddr){
+          *obuffer = outaddr;
+          return 2;
+        }
     }
   }
   freeifaddrs(myaddrs);

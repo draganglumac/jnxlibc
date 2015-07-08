@@ -54,11 +54,11 @@ void test_endian() {
 void test_ip() {
   JNXLOG(LDEBUG,"- testing ip detection!");
   jnx_char *buffer;
-  jnx_network_interface_ip(&buffer,"en0",AF_INET);
+  jnx_network_interface_ip(&buffer,NULL,AF_INET);
   free(buffer);
-  JNXLOG(LDEBUG,"en0 => %s",buffer);
-  jnx_network_interface_ip(&buffer,"en0",AF_INET6);
-  JNXLOG(LDEBUG,"en0 => %s",buffer);
+  JNXLOG(LDEBUG,"=>%s",buffer);
+  jnx_network_interface_ip(&buffer,NULL,AF_INET6);
+  JNXLOG(LDEBUG,"=> %s",buffer);
   free(buffer);
   JNXLOG(LDEBUG,"OK");
 }

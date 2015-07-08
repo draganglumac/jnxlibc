@@ -52,9 +52,9 @@ extern "C" {
    * @fn int jnx_network_interface_ip(jnx_char **obuffer,jnx_char *interface, jnx_unsigned_int family)
    * @brief This will attempt to convert the chosen interface and family into a string representing the IP address
    * @param obuffer is pointer to the out buffer that will contained stored data
-   * @param interface is the name of the interface to use (accepts const jnx_char *)
+   * @param interface is the name of the interface to use (accepts const jnx_char *), will accept NULL but will return the default interface
    * @param family is the family type to use - either AF_INET or AF_INET6
-   * @return 0 on success 
+   * @return 0 on success, return 1 on error, return 2 on default interface used 
    */
   jnx_int32 jnx_network_interface_ip(jnx_char **obuffer,jnx_char *interface, jnx_unsigned_int family);
   /*
