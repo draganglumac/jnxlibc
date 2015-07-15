@@ -18,7 +18,12 @@
 
 [Latest travis build](https://travis-ci.org/AlexsJones/jnxlibc/builds)
 
+
 ###Quick start
+Requires: `gcc|llvm & cmake`
+Paste this line into your terminal:
+```
+git clone https://github.com/AlexsJones/jnxlibc.git && cd jnxlibc && cmake . && make && sudo make install
 ```
 
 #Key features
