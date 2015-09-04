@@ -51,7 +51,7 @@ jnx_size internal_jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) 
   return 0;
 }
 jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily) {
-  return create_socket(SOCK_DGRAM,addrfamily);
+  return create_socket(SOCK_DGRAM,addrfamily,0);
 }
 jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
     jnx_unsigned_int family,int broadcast,int multicast,jnx_char *ip, 

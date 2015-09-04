@@ -32,11 +32,11 @@
 #include "jnxcheck.h"
 #include "jnxsocket.h"
 jnx_socket *create_socket(jnx_unsigned_int type,\
-    jnx_unsigned_int addrfamily) {
+    jnx_unsigned_int addrfamily, jnx_unsigned_int protocol) {
   JNXCHECK(addrfamily);
   JNXCHECK(type);
   JNXCHECK(addrfamily);
-  jnx_int32 sock = socket(addrfamily,type,0);
+  jnx_int32 sock = socket(addrfamily,type,protocol);
   JNXCHECK(sock);
   jnx_int32 optval = 1;
   JNXCHECK(setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval) == 0);
