@@ -1,6 +1,8 @@
 #ifndef TEST_SUITE_H
 #define TEST_SUITE_H
 
+#define TEST_CASE(x) { "x", x }
+
 extern int test_jnxbtree();
 extern int test_jnxencoder();
 extern int test_jnxexceptions();
@@ -31,24 +33,24 @@ typedef struct {
  * if you are adding or removing test cases to/from the suite.
  */
 test_case test_suite[] = {
-  {"btree",      test_jnxbtree},
-  {"encoder",    test_jnxencoder},
-  {"exceptions", test_jnxexceptions},
-  {"file",       test_jnxfile},
-  {"guid",       test_jnxguid},
-  {"hash",       test_jnxhash},
-  {"list",       test_jnxlist},
-  {"network",    test_jnxnetwork},
-  {"queue",      test_jnxqueue},
-  {"quicksort",  test_jnxquicksort},
-  {"signal",     test_jnxsignal},
-  {"stack",      test_jnxstack},
-  {"string",     test_jnxstring},
-  {"tcpsocket",  test_jnxtcpsocket},
-  {"thread",     test_jnxthread},
-  {"udpsocket",  test_jnxudpsocket},
-  {"unixsocket", test_jnxunixsocket},
-  {"vector",     test_jnxvector}
+  TEST_CASE(test_jnxbtree),
+  TEST_CASE(test_jnxencoder),
+  TEST_CASE(test_jnxexceptions),
+  TEST_CASE(test_jnxfile),
+  TEST_CASE(test_jnxguid),
+  TEST_CASE(test_jnxhash),
+  TEST_CASE(test_jnxlist),
+  TEST_CASE(test_jnxnetwork),
+  TEST_CASE(test_jnxqueue),
+  TEST_CASE(test_jnxquicksort),
+  TEST_CASE(test_jnxsignal),
+  TEST_CASE(test_jnxstack),
+  TEST_CASE(test_jnxstring),
+  TEST_CASE(test_jnxtcpsocket),
+  TEST_CASE(test_jnxthread),
+  TEST_CASE(test_jnxudpsocket),
+  TEST_CASE(test_jnxunixsocket),
+  TEST_CASE(test_jnxvector)
 };
 
 /*

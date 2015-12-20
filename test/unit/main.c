@@ -14,8 +14,8 @@ void run_test_case(test_case tc) {
   char message[61];
   // format the log message by inserting test case name into formatted string
   strncpy(message,
-          "--------------------TEST test_jnx---------------------------", 61);
-  strncpy(message + 33, tc.test_case_name, strlen(tc.test_case_name));
+          "--------------------TEST -----------------------------------", 61);
+  strncpy(message + 25, tc.test_case_name, strlen(tc.test_case_name));
   // actual run test case code starts here
   JNX_LOG(LDEBUG, message);
   tc.run_test_case();
