@@ -93,7 +93,7 @@ static void test_tcp_blocking_listener() {
   listener->hint_exit = 1;
   JNXCHECK(test_tcp_listener_complete);
 }
-int test_jnxtcpsocket(int argc, char **argv) {
+int test_jnxtcpsocket() {
   JNXLOG(LDEBUG,"Starting tcp socket tests");
   JNXLOG(LDEBUG,"Testing TCP Listener");
   test_tcp_listener();

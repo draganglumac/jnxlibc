@@ -435,7 +435,7 @@ void test_large_data_in_datagram_ipc_comms() {
 }
 
 // Test runner
-int test_jnxunixsocket(int argc, char **argv) {
+int test_jnxunixsocket() {
 	JNXLOG(LDEBUG,"Starting unix socket tests\n");
 	test_stream_ipc_comms();
 	test_binary_data_in_stream_ipc_comms();

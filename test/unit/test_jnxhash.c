@@ -107,7 +107,7 @@ void test_hashing_function() {
     JNXCHECK(a != b);
   }
 }
-int test_jnxhash(int argc, char **argv) {
+int test_jnxhash() {
   JNXLOG(LDEBUG,"Running test for jnxhash\n");
   JNXLOG(LDEBUG,"- test_key_deletion: ");
   test_key_deletion();

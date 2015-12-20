@@ -38,7 +38,7 @@ size_t str_to_hex(char* s,char **out)
   *out = buffer;
   return strlen(buffer);
 }
-int test_jnxencoder(int argc, char **argv) {
+int test_jnxencoder() {
 
   JNXLOG(LDEBUG,"Running test for jnxencoder\n");
 

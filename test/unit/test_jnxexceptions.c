@@ -22,7 +22,7 @@
 #define FOO_EXCEPTION (-2)
 #define BAR_EXCEPTION (-3)
 
-int test_jnxexceptions(int argc, char** argv)
+int test_jnxexceptions()
 {
   JNXLOG(LDEBUG,"Running test_jnxexception tests");
 

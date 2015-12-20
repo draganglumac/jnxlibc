@@ -62,7 +62,7 @@ void test_ip() {
   free(buffer);
   JNXLOG(LDEBUG,"OK");
 }
-int test_jnxnetwork(int args, char **argv) {
+int test_jnxnetwork() {
   JNXLOG(LDEBUG,"Running network tests...");
   test_endian();
   test_ip();
