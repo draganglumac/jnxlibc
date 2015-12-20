@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
   if (argc > 1) {
     int next_tc = 1;
     for (int i = 0; i < test_suite_size; i++) {
-      int cf_res = strcmp(test_suite[i].test_case_name, argv[next_tc]);
+      int cf_res = strcmp(test_suite[i].test_case_name + 8, argv[next_tc]);
 
       if (cf_res == 0) {
         run_test_case(test_suite[i]);
