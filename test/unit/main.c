@@ -10,11 +10,6 @@
 #include "jnxlog.h"
 #include "test_suite.h"
 
-typedef struct {
-  char *test_case_name;
-  int (*run_test_case)();
-} test_case;
-
 void run_test_case(test_case tc) {
   char message[61];
   // format the log message by inserting test case name into formatted string

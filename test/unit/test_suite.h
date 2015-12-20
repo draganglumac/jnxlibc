@@ -20,6 +20,11 @@ extern int test_jnxudpsocket();
 extern int test_jnxunixsocket();
 extern int test_jnxvector();
 
+typedef struct {
+  char *test_case_name;
+  int (*run_test_case)();
+} test_case;
+
 /*
  * WARNING - Keep test_suite array SORTED ALPHABETICALLY by test case name,
  * and remember to ADJUST test_suite_size to correct number of test cases
