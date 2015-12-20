@@ -46,8 +46,10 @@ typedef struct
     jnx_int hint_exit;
   }jnx_ipc_listener;
 
-  typedef void (*jnx_ipc_listener_callback)(const jnx_uint8 *payload, \
-      jnx_size bytes_read, int connected_socket, void *args);
+  typedef void (*jnx_ipc_listener_callback)(const jnx_uint8 *payload,
+                                            jnx_size bytes_read,
+                                            int connected_socket,
+                                            void *args);
 
   /**
    * @fn jnx_socket *jnx_socket_ipc_create(jnx_unsigned_int addrfamily)
