@@ -1,7 +1,7 @@
 #ifndef TEST_SUITE_H
 #define TEST_SUITE_H
 
-#define TEST_CASE(x) { "x", x }
+#define TEST_CASE(x) { #x, x }
 
 extern int test_jnxbtree();
 extern int test_jnxencoder();
