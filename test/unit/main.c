@@ -7,11 +7,11 @@
 #include "jnxlog.h"
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 
 typedef struct {
   char *test_case_name;
-
-  void (*run_test_case)();
+  int (*run_test_case)();
 } test_case;
 
 void run_test_case(test_case tc) {
