@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "jnxlog.h"
 #include "test_suite.h"
 
@@ -27,7 +28,32 @@ int compare_args(void *a1, void *a2) {
   return strcmp(*s1, *s2);
 }
 
+void print_usage() {
+  printf("\n");
+  printf("Usage\n");
+  printf("\n");
+  printf("\ttest_run [test_case1 test_case2 test_case3 ...]\n");
+  printf("\ttest_run [--help]\n");
+  printf("\n");
+  printf("First usage example runs test cases test_case1 test_case2 test_case3 etc \n");
+  printf("if they are specified as arguments. If NO ARGUMENTS are specified the whole\n");
+  printf("test suite is run.\n");
+  printf("\n");
+  printf("The test_case arguments are short name for tests, so for example if you have\n");
+  printf("a test files named test_jnxbtree.c and test_jnxvector.c, you would run them\n");
+  printf("using the following command:\n");
+  printf("\n");
+  printf("\ttest_run btree vector\n");
+  printf("\n");
+  printf("Second usage example prints out this help on the console.\n");
+  printf("\n");
+}
+
 int main(int argc, char **argv) {
+  if (argc == 2 && strcmp(argv[1], "--help") == 0) {
+    print_usage();
+    return 0;
+  }
 
   JNXLOG_CREATE("logger.conf");
   sleep(3);
