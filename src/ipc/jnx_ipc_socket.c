@@ -20,19 +20,81 @@
 #include "jnxlog.h"
 #include "jnxcheck.h"
 #include "jnxsocket.h"
-#include "jnx_tcp_socket.h"
+#include "jnx_ipc_socket.h"
 
-jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily) {
-  return create_socket(SOCK_STREAM,addrfamily,0);
+void jnx_ipc_socket_close(jnx_ipc_socket *s) {
+  JNXCHECK(s);
+  if (!(s->isclosed)) {
+    close(s->socket);
+    if (s->islisten) {
+      remove((s->address).sun_path);
+    }
+    s->isclosed = 1;
+  }
 }
-jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
-    jnx_unsigned_int family, jnx_int max_connections) {
+jnx_int32 bind_stream_socket(jnx_ipc_socket *s) {
+  JNXCHECK(s);
+  if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
+    perror("jnx IPC socket bind");
+    return -1;
+  }
+  s->islisten = 1;
+  return 0;
+}
+jnx_int32 listen_on_stream_socket(jnx_ipc_socket *s, jnx_size max_connections) {
+  JNXCHECK(s);
+  if (listen(s->socket, (int)max_connections) == -1) {
+    perror("jnx IPC socket listen");
+    return -1;
+  }
+  return 0;
+}
+jnx_ipc_socket *accept_stream_socket_connection(jnx_ipc_socket *s) {
+  JNXCHECK(s);
+  jnx_int32 remote_sock;
+  jnx_ipc_socket *rs = jnx_socket_ipc_create("");
+  socklen_t addr_len = sizeof(s->address);
+  if ((remote_sock = accept(s->socket,(struct sockaddr *)&(s->address), &addr_len)) == -1) {
+    perror("jnx IPC socket accept");
+    jnx_ipc_socket_destroy(&rs);
+    return NULL;
+  }
+  else {
+    rs->socket = remote_sock;
+    return rs;
+  }
+}
+
+// -- Public API starts here --
+jnx_ipc_socket *jnx_socket_ipc_create(jnx_char *socket_path) {
+  JNXCHECK(socket_path);
+  jnx_ipc_socket *jus= calloc(1, sizeof(jnx_ipc_socket));
+  jus->isclosed = 0;
+  jus->islisten = 0;
+  jnx_int32 sock = socket(AF_UNIX, SOCK_STREAM, 0);
+  if (sock == -1) {
+    return NULL;
+  }
+  jus->socket = sock;
+  (jus->address).sun_family = AF_UNIX;
+  strncpy((jus->address).sun_path, socket_path, strlen(socket_path));
+  return jus;
+}
+void jnx_ipc_socket_destroy(jnx_ipc_socket **s) {
+  JNXCHECK(*s);
+  jnx_ipc_socket_close(*s);
+  free(*s);
+  *s = NULL;
+}
+jnx_ipc_listener* jnx_socket_ipc_listener_create(jnx_ipc_socket *s,
+                                                 jnx_int max_connections) {
+  // ToDo - implement
   JNXCHECK(max_connections <= 200);
   struct addrinfo hints;
   struct addrinfo *result, *rp;
-  jnx_int on = 1,s;
-  jnx_tcp_listener *l = malloc(sizeof(jnx_tcp_listener));
-  l->socket = jnx_socket_tcp_create(family);
+  jnx_int on = 1;
+  jnx_ipc_listener *l = malloc(sizeof(jnx_ipc_listener));
+  l->socket = s;
   l->hint_exit = 0;
   memset (&hints, 0, sizeof (struct addrinfo));
   hints.ai_family = family;
@@ -65,14 +127,16 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
   l->nfds = 1;
   return l;
 }
-void jnx_socket_tcp_listener_destroy(jnx_tcp_listener **listener) {
+void jnx_socket_ipc_listener_destroy(jnx_ipc_listener **listener) {
   jnx_socket_destroy(&(*listener)->socket);
   free(*listener);
   *listener = NULL;
 }
-void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
-    jnx_tcp_listener_callback callback, void *args) {
-  jnx_int rv = poll(listener->ufds,listener->nfds,listener->poll_timeout); 
+void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
+                                   jnx_ipc_listener_callback callback,
+                                   void *args) {
+  // ToDo - implement
+  jnx_int rv = poll(listener->ufds,listener->nfds,listener->poll_timeout);
   if (rv == -1) {
     perror("poll"); // error occurred in poll()
   } else if (rv == 0) {
@@ -149,37 +213,17 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
     }
   }
 }
-void jnx_socket_tcp_listener_auto_tick(jnx_tcp_listener *listener,
-    jnx_tcp_listener_callback callback, void *args) {
-  while(!listener->hint_exit){
-    jnx_socket_tcp_listener_tick(listener,callback,
-        args);  
+void jnx_socket_ipc_listener_auto_tick(jnx_ipc_listener *listener,
+                                       jnx_ipc_listener_callback callback,
+                                       void *args) {
+  // ToDo - implement
+  while(!listener->hint_exit) {
+    jnx_socket_ipc_listener_tick(listener,callback, args);
   }
 }
-jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket) {
-  jnx_char ipstr[INET6_ADDRSTRLEN];
-  socklen_t len;
-  struct sockaddr_storage addr;
-  len = sizeof(addr);
-
-  if(getpeername(socket,(struct sockaddr*)&addr,&len) == -1) {
-    perror("getpeername:");
-    return NULL;
-  }
-  if(addr.ss_family != AF_INET && addr.ss_family != AF_INET6) {
-    return NULL;
-  }
-  if(addr.ss_family == AF_INET) {
-    struct sockaddr_in *s = (struct sockaddr_in*)&addr;
-    inet_ntop(AF_INET,&s->sin_addr,ipstr,sizeof(ipstr));
-  } else {
-    struct sockaddr_in6 *s = (struct sockaddr_in6*)&addr;
-    inet_ntop(AF_INET6,&s->sin6_addr,ipstr,sizeof(ipstr));
-  }
-  return strdup(ipstr);
-}
-jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
-  jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
+jnx_size jnx_socket_ipc_send(jnx_ipc_socket *s,
+                             jnx_uint8 *msg, jnx_size msg_len) {
+  // ToDo - implement
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -222,9 +266,10 @@ jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
   }
   return tbytes;
 }
-jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
-  jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
-  jnx_size msg_len,jnx_uint8 **out_receipt) {
+jnx_size jnx_socket_ipc_send_with_receipt(jnx_ipc_socket *s,
+                                          jnx_uint8 *msg, jnx_size msg_len,
+                                          jnx_uint8 **out_receipt) {
+  // ToDo - implement
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);

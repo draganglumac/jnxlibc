@@ -29,13 +29,11 @@ extern "C" {
 #endif
 typedef struct sockaddr_un jnx_ipc_socket_address;
 
-typedef struct
-{
+typedef struct {
   jnx_uint32 isclosed;
   jnx_uint32 islisten;
   jnx_int32 socket;
   jnx_ipc_socket_address address;
-  jnx_size stype;
 } jnx_ipc_socket;
 
   typedef struct jnx_ipc_listener {
@@ -52,12 +50,18 @@ typedef struct
                                             void *args);
 
   /**
-   * @fn jnx_socket *jnx_socket_ipc_create(jnx_unsigned_int addrfamily)
+   * @fn jnx_ipc_socket *jnx_socket_ipc_create(jnx_char *socket_path)
    * @brief creates a jnx inter-process communication (AF_UNIX) socket
    * @param socket_path - the path on the file system to use for the Unix socket
    * @return jnx_ipc_socket
    */
   jnx_ipc_socket *jnx_socket_ipc_create(jnx_char *socket_path);
+  /**
+   * @fn void jnx_ipc_socket_destroy(jnx_ipc_socket **s)
+   * @brief destroys and cleans up a jnx IPC socket
+   * @param s - the socket to destroy
+   */
+  void jnx_ipc_socket_destroy(jnx_ipc_socket **s);
   /**
    * @fn jnx_ipc_listener *jnx_socket_ipc_listener_create(char *port,
    unsigned int family, int max_connections);
