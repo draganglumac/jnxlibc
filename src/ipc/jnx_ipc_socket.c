@@ -69,8 +69,6 @@ jnx_ipc_socket *accept_stream_socket_connection(jnx_ipc_socket *s) {
 jnx_ipc_socket *jnx_socket_ipc_create(jnx_char *socket_path) {
   JNXCHECK(socket_path);
   jnx_ipc_socket *jus= calloc(1, sizeof(jnx_ipc_socket));
-  jus->isclosed = 0;
-  jus->islisten = 0;
   jnx_int32 sock = socket(AF_UNIX, SOCK_STREAM, 0);
   if (sock == -1) {
     return NULL;
@@ -114,7 +112,7 @@ jnx_ipc_listener* jnx_socket_ipc_listener_create(jnx_ipc_socket *s,
   return l;
 }
 void jnx_socket_ipc_listener_destroy(jnx_ipc_listener **listener) {
-  jnx_socket_destroy(&(*listener)->socket);
+  jnx_ipc_socket_destroy(&(*listener)->socket);
   free(*listener);
   *listener = NULL;
 }
@@ -144,12 +142,6 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
             exit(0);
           }
           break;
-        }
-        jnx_char *incoming_address = jnx_socket_tcp_resolve_ipaddress(
-            new_fd);
-        if(incoming_address){
-          JNXLOG(0,"Incoming connection from %s on fd %d",incoming_address);
-          free(incoming_address);
         }
         listener->ufds[listener->nfds].fd = new_fd;
         listener->ufds[listener->nfds].events = POLLIN;
@@ -202,7 +194,6 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
 void jnx_socket_ipc_listener_auto_tick(jnx_ipc_listener *listener,
                                        jnx_ipc_listener_callback callback,
                                        void *args) {
-  // ToDo - implement
   while(!listener->hint_exit) {
     jnx_socket_ipc_listener_tick(listener,callback, args);
   }
@@ -211,13 +202,9 @@ jnx_size jnx_socket_ipc_send(jnx_ipc_socket *s,
                              jnx_uint8 *msg, jnx_size msg_len) {
   // ToDo - implement
   JNXCHECK(s);
-  JNXCHECK(host);
-  JNXCHECK(port);
   JNXCHECK(msg);
   JNXCHECK(msg_len);
   JNXCHECK(s->isclosed == 0);
-  JNXCHECK(s->stype == SOCK_STREAM);
-  JNXCHECK(s->addrfamily == AF_INET || s->addrfamily == AF_INET6);
   struct addrinfo hints, *res;
   memset(&hints,0,sizeof(hints));
   hints.ai_family = s->addrfamily;

@@ -32,6 +32,7 @@ typedef struct sockaddr_un jnx_ipc_socket_address;
 typedef struct {
   jnx_uint32 isclosed;
   jnx_uint32 islisten;
+  jnx_uint32 isconnected;
   jnx_int32 socket;
   jnx_ipc_socket_address address;
 } jnx_ipc_socket;
