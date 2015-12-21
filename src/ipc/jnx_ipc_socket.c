@@ -10,17 +10,11 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <net/if.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <ifaddrs.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
 #include "jnxlog.h"
 #include "jnxcheck.h"
-#include "jnxsocket.h"
 #include "jnx_ipc_socket.h"
+
+#define MAXBUFFER 1024
 
 void jnx_ipc_socket_close(jnx_ipc_socket *s) {
   JNXCHECK(s);
@@ -48,21 +42,6 @@ jnx_int32 listen_on_stream_socket(jnx_ipc_socket *s, jnx_int max_connections) {
     return -1;
   }
   return 0;
-}
-jnx_ipc_socket *accept_stream_socket_connection(jnx_ipc_socket *s) {
-  JNXCHECK(s);
-  jnx_int32 remote_sock;
-  jnx_ipc_socket *rs = jnx_socket_ipc_create("");
-  socklen_t addr_len = sizeof(s->address);
-  if ((remote_sock = accept(s->socket,(struct sockaddr *)&(s->address), &addr_len)) == -1) {
-    perror("jnx IPC socket accept");
-    jnx_ipc_socket_destroy(&rs);
-    return NULL;
-  }
-  else {
-    rs->socket = remote_sock;
-    return rs;
-  }
 }
 
 // -- Public API starts here --
@@ -119,10 +98,9 @@ void jnx_socket_ipc_listener_destroy(jnx_ipc_listener **listener) {
 void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
                                    jnx_ipc_listener_callback callback,
                                    void *args) {
-  // ToDo - implement
   jnx_int rv = poll(listener->ufds,listener->nfds,listener->poll_timeout);
   if (rv == -1) {
-    perror("poll"); // error occurred in poll()
+    perror("jnx IPC socket poll"); // error occurred in poll()
   } else if (rv == 0) {
     /* Timeout reached */
   }
@@ -138,7 +116,7 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
         new_fd = accept(listener->socket->socket,NULL,NULL);
         if(new_fd < 0) {
           if(errno != EWOULDBLOCK) {
-            JNXFAIL("Could not accept");
+            JNXFAIL("jnx IPC socket could not accept");
             exit(0);
           }
           break;
@@ -148,7 +126,7 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
         listener->nfds++;
       }while(new_fd != -1);
     }else {
-      jnx_int rc = 0;
+      jnx_size rc = 0;
       JNXLOG(0,"Descriptor is readable %d",listener->ufds[i].fd);
       close_conn = 0;
       compress_array = 0;
@@ -157,7 +135,7 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
       rc = recv(listener->ufds[i].fd,buffer,sizeof(buffer),0);
       if(rc < 0) {
         if(errno != EWOULDBLOCK){
-          perror(" recv() failed");
+          perror("jnx IPC socket recv() failed");
           close_conn = 1;   
         }
       }
@@ -200,31 +178,21 @@ void jnx_socket_ipc_listener_auto_tick(jnx_ipc_listener *listener,
 }
 jnx_size jnx_socket_ipc_send(jnx_ipc_socket *s,
                              jnx_uint8 *msg, jnx_size msg_len) {
-  // ToDo - implement
   JNXCHECK(s);
   JNXCHECK(msg);
   JNXCHECK(msg_len);
   JNXCHECK(s->isclosed == 0);
-  struct addrinfo hints, *res;
-  memset(&hints,0,sizeof(hints));
-  hints.ai_family = s->addrfamily;
-  hints.ai_socktype = s->stype;
 
-  jnx_int32 rg = 0;
-
-  if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-    JNXLOG(LDEBUG,"%s\n",gai_strerror(rg));
-    return 0;
-  }
   if(!s->isconnected) {
-    if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
-      perror("connect:");
-      freeaddrinfo(res);
+    if(connect(s->socket,
+               (struct sockaddr *)&(s->address),
+               sizeof(struct sockaddr_un)) == -1) {
+      perror("jnx IPC socket connect");
       return 0;
     }
     s->isconnected = 1;
   }
-  freeaddrinfo(res);
+
   jnx_size tbytes = 0;
   jnx_size rbytes = msg_len;
 
@@ -242,34 +210,24 @@ jnx_size jnx_socket_ipc_send(jnx_ipc_socket *s,
 jnx_size jnx_socket_ipc_send_with_receipt(jnx_ipc_socket *s,
                                           jnx_uint8 *msg, jnx_size msg_len,
                                           jnx_uint8 **out_receipt) {
-  // ToDo - implement
   JNXCHECK(s);
-  JNXCHECK(host);
-  JNXCHECK(port);
   JNXCHECK(msg);
   JNXCHECK(msg_len);
   JNXCHECK(s->isclosed == 0);
-  JNXCHECK(s->stype == SOCK_STREAM);
-  struct addrinfo hints, *res;
-  jnx_uint8 buffer[MAXBUFFER];
-  memset(&hints,0,sizeof(hints));
-  hints.ai_family = s->addrfamily;
-  hints.ai_socktype = s->stype;
-  *out_receipt = NULL;
-  jnx_int32 rg = 0;
-  if((rg = getaddrinfo(host,port,&hints,&res)) != 0) {
-    JNXLOG(LDEBUG,"%s\n",gai_strerror(rg));
-    return 0;
+
+  if(!s->isconnected) {
+    if(connect(s->socket,
+               (struct sockaddr *)&(s->address),
+               sizeof(struct sockaddr_un)) == -1) {
+      perror("jnx IPC socket connect");
+      return 0;
+    }
+    s->isconnected = 1;
   }
-  if(connect(s->socket,res->ai_addr,res->ai_addrlen) != 0) {
-    perror("connect:");
-    freeaddrinfo(res);
-    return 0;
-  }
-  freeaddrinfo(res);
+
   jnx_size tbytes = 0;
   jnx_size rbytes = msg_len;
-
+  // write
   while(tbytes < rbytes) {
     jnx_size n = write(s->socket,msg,rbytes);
     if(n == -1) {
@@ -279,6 +237,8 @@ jnx_size jnx_socket_ipc_send_with_receipt(jnx_ipc_socket *s,
     tbytes +=n;
     rbytes = msg_len - tbytes;
   }
+  // receive
+  jnx_uint8 buffer[MAXBUFFER];
   memset(buffer,0,MAXBUFFER);
   jnx_size bytes_read = read(s->socket,buffer,MAXBUFFER);
   jnx_uint8 *out = calloc(bytes_read + 1, sizeof(jnx_uint8));
