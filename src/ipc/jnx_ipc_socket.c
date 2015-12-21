@@ -41,9 +41,9 @@ jnx_int32 bind_stream_socket(jnx_ipc_socket *s) {
   s->islisten = 1;
   return 0;
 }
-jnx_int32 listen_on_stream_socket(jnx_ipc_socket *s, jnx_size max_connections) {
+jnx_int32 listen_on_stream_socket(jnx_ipc_socket *s, jnx_int max_connections) {
   JNXCHECK(s);
-  if (listen(s->socket, (int)max_connections) == -1) {
+  if (listen(s->socket, max_connections) == -1) {
     perror("jnx IPC socket listen");
     return -1;
   }
@@ -88,43 +88,29 @@ void jnx_ipc_socket_destroy(jnx_ipc_socket **s) {
 }
 jnx_ipc_listener* jnx_socket_ipc_listener_create(jnx_ipc_socket *s,
                                                  jnx_int max_connections) {
-  // ToDo - implement
+  JNXCHECK(s);
   JNXCHECK(max_connections <= 200);
-  struct addrinfo hints;
-  struct addrinfo *result, *rp;
   jnx_int on = 1;
   jnx_ipc_listener *l = malloc(sizeof(jnx_ipc_listener));
   l->socket = s;
   l->hint_exit = 0;
-  memset (&hints, 0, sizeof (struct addrinfo));
-  hints.ai_family = family;
-  hints.ai_socktype = l->socket->stype;
-  hints.ai_flags = AI_PASSIVE;
-  s = getaddrinfo (NULL, port, &hints, &result);
-  if (s != 0)
-  {
-    fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
-    JNXFAIL("getaddrinfo failure");  
-  }
-  s = ioctl(l->socket->socket,FIONBIO,(char*)&on);
-  for (rp = result; rp != NULL; rp = rp->ai_next)
-  {
-    JNXCHECK(s == 0);
-    s = bind (l->socket->socket, rp->ai_addr, rp->ai_addrlen);
-    if (s == 0)
-    {
-      break;
-    }
-    jnx_socket_tcp_listener_destroy(&l);
-    JNXFAIL("bind failure");
-  }
-  JNXCHECK(l->socket->socket);
-  s = listen(l->socket->socket,max_connections);
-  JNXCHECK(s == 0);
-  l->ufds[0].fd = l->socket->socket;
-  l->ufds[0].events = POLLIN;
   l->poll_timeout = 500;
   l->nfds = 1;
+
+  ioctl(l->socket->socket,FIONBIO,(char*)&on);
+  // attempt bind
+  if (bind_stream_socket(s) == -1) {
+    jnx_socket_ipc_listener_destroy(&l);
+    return NULL;
+  }
+  // attempt listen
+  if (listen_on_stream_socket(s, max_connections) == -1) {
+    jnx_socket_ipc_listener_destroy(&l);
+    return NULL;
+  }
+  l->ufds[0].fd = l->socket->socket;
+  l->ufds[0].events = POLLIN;
+
   return l;
 }
 void jnx_socket_ipc_listener_destroy(jnx_ipc_listener **listener) {
