@@ -64,9 +64,10 @@ int main(int argc, char **argv) {
     qsort(base, argc - 1, sizeof(char *), compare_args);
   }
 
+  int i;
   if (argc > 1) {
     int next_tc = 1;
-    for (int i = 0; i < test_suite_size; i++) {
+    for (i = 0; i < test_suite_size; i++) {
       int cf_res = strcmp(test_suite[i].test_case_name + 8, argv[next_tc]);
 
       if (cf_res == 0) {
@@ -81,7 +82,7 @@ int main(int argc, char **argv) {
     }
   }
   else {
-    for (int i = 0; i < test_suite_size; i++)
+    for (i = 0; i < test_suite_size; i++)
       run_test_case(test_suite[i]);
   }
 
