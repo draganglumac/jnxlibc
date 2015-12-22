@@ -26,7 +26,7 @@ void jnx_ipc_socket_close(jnx_ipc_socket *s) {
     s->isclosed = 1;
   }
 }
-jnx_int32 bind_stream_socket(jnx_ipc_socket *s) {
+jnx_int32 bind_ipc_socket(jnx_ipc_socket *s) {
   JNXCHECK(s);
   if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
     perror("jnx IPC socket bind");
@@ -35,7 +35,7 @@ jnx_int32 bind_stream_socket(jnx_ipc_socket *s) {
   s->islisten = 1;
   return 0;
 }
-jnx_int32 listen_on_stream_socket(jnx_ipc_socket *s, jnx_int max_connections) {
+jnx_int32 listen_on_ipc_socket(jnx_ipc_socket *s, jnx_int max_connections) {
   JNXCHECK(s);
   if (listen(s->socket, max_connections) == -1) {
     perror("jnx IPC socket listen");
@@ -76,12 +76,12 @@ jnx_ipc_listener* jnx_socket_ipc_listener_create(jnx_ipc_socket *s,
 
   ioctl(l->socket->socket,FIONBIO,(char*)&on);
   // attempt bind
-  if (bind_stream_socket(s) == -1) {
+  if (bind_ipc_socket(s) == -1) {
     jnx_socket_ipc_listener_destroy(&l);
     return NULL;
   }
   // attempt listen
-  if (listen_on_stream_socket(s, max_connections) == -1) {
+  if (listen_on_ipc_socket(s, max_connections) == -1) {
     jnx_socket_ipc_listener_destroy(&l);
     return NULL;
   }

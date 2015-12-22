@@ -23,7 +23,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <arpa/inet.h>
-#include "jnxunixsocket.h_"
+#include "jnxunixsocket.h"
 #include "jnxcheck.h"
 #define MAXBUFFER 1024
 
