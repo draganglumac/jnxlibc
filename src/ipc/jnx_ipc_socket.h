@@ -16,8 +16,6 @@
 #include <sys/ioctl.h>
 #include <errno.h>
 #include "jnxcheck.h"
-#include "jnxsocket.h"
-
 #include "jnxtypes.h"
 #include <stddef.h>
 #include <sys/types.h>

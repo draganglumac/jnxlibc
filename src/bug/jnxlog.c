@@ -18,7 +18,7 @@
 #include "jnxnetwork.h"
 #include "jnxthread.h"
 #include "jnxlog.h"
-#include "jnxunixsocket.h"
+#include "jnxunixsocket.h_"
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256
 #define IS_INFO(X) (strcmp(X,"INFO")== 0)

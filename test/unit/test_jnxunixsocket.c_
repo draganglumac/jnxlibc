@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include "jnxlog.h"
 #include "jnxterm.h"
-#include "jnxunixsocket.h"
+#include "jnxunixsocket.h_"
 #include <assert.h>
 #include <pthread.h>
 #include <string.h>
