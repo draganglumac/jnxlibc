@@ -9,6 +9,7 @@ extern int test_jnxexceptions();
 extern int test_jnxfile();
 extern int test_jnxguid();
 extern int test_jnxhash();
+extern int test_jnxipcsocket();
 extern int test_jnxlist();
 extern int test_jnxnetwork();
 extern int test_jnxqueue();
@@ -19,7 +20,6 @@ extern int test_jnxstring();
 extern int test_jnxtcpsocket();
 extern int test_jnxthread();
 extern int test_jnxudpsocket();
-extern int test_jnxunixsocket();
 extern int test_jnxvector();
 
 typedef struct {
@@ -39,6 +39,7 @@ test_case test_suite[] = {
   TEST_CASE(test_jnxfile),
   TEST_CASE(test_jnxguid),
   TEST_CASE(test_jnxhash),
+  TEST_CASE(test_jnxipcsocket),
   TEST_CASE(test_jnxlist),
   TEST_CASE(test_jnxnetwork),
   TEST_CASE(test_jnxqueue),
@@ -49,7 +50,6 @@ test_case test_suite[] = {
   TEST_CASE(test_jnxtcpsocket),
   TEST_CASE(test_jnxthread),
   TEST_CASE(test_jnxudpsocket),
-  TEST_CASE(test_jnxunixsocket),
   TEST_CASE(test_jnxvector)
 };
 
