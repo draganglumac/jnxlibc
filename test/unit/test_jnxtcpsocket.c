@@ -42,7 +42,7 @@ static void test_tcp_listener() {
 
   fire_threaded_tcp_packet(TCPTESTPORT);
   int x = 0;
-  while(x < 5) {
+  while(x < 20) {
     jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback,NULL);
     if(test_tcp_listener_complete)break;
     ++x;
@@ -56,7 +56,7 @@ static void test_tcp_listener_ipv6() {
     jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET6,100);
   fire_threaded_tcp_packet_ipv6(TCPTESTPORT);
   int x = 0;
-  while(x < 5) {
+  while(x < 20) {
     jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback,NULL);
     if(test_tcp_listener_complete)break;
     ++x;
