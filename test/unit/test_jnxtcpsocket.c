@@ -20,6 +20,7 @@ static void *worker(void *args) {
 }
 static void *worker_ipv6(void *args) {
   char *port = (char*)args;
+  sleep(1);
   jnx_socket *t = jnx_socket_tcp_create(AF_INET6);
   jnx_socket_tcp_send(t,"::1",port,"ping",5);
 
