@@ -77,7 +77,6 @@ static void test_ipc_blocking_listener() {
     msec = (diff - start) * 1000 / CLOCKS_PER_SEC;
   }
   listener->hint_exit = 1;
-//  jnx_socket_ipc_listener_destroy(&listener);
   JNXCHECK(test_ipc_listener_complete);
 }
 int test_jnxipcsocket() {
