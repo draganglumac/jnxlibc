@@ -16,7 +16,7 @@
 
 #define MAXBUFFER 1024
 
-void jnx_ipc_socket_close(jnx_ipc_socket *s) {
+static void jnx_ipc_socket_close(jnx_ipc_socket *s) {
   JNXCHECK(s);
   if (!(s->isclosed)) {
     close(s->socket);
@@ -26,7 +26,7 @@ void jnx_ipc_socket_close(jnx_ipc_socket *s) {
     s->isclosed = 1;
   }
 }
-jnx_int32 bind_ipc_socket(jnx_ipc_socket *s) {
+static jnx_int32 bind_ipc_socket(jnx_ipc_socket *s) {
   JNXCHECK(s);
   if (bind(s->socket, (struct sockaddr *)&(s->address), sizeof(struct sockaddr_un)) == -1) {
     perror("jnx IPC socket bind");
@@ -35,7 +35,7 @@ jnx_int32 bind_ipc_socket(jnx_ipc_socket *s) {
   s->islisten = 1;
   return 0;
 }
-jnx_int32 listen_on_ipc_socket(jnx_ipc_socket *s, jnx_int max_connections) {
+static jnx_int32 listen_on_ipc_socket(jnx_ipc_socket *s, jnx_int max_connections) {
   JNXCHECK(s);
   if (listen(s->socket, max_connections) == -1) {
     perror("jnx IPC socket listen");
