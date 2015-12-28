@@ -55,9 +55,20 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+  
   JNXLOG_CREATE("logger.conf");
   sleep(3);
   sleep(3);
+
+#ifdef TEST_DISABLE_TCP
+  JNXLOG(LDEBUG,"Running with disabled TCP tests");
+#endif
+#ifdef TEST_DISABLE_IPC
+  JNXLOG(LDEBUG,"Running with disabled IPC tests");
+#endif
+#ifdef TEST_DISABLE_UDP
+  JNXLOG(LDEBUG,"Running with disabled UDP tests");
+#endif
 
   if (argc > 2) { // sort argv[1] to argv[argc-1] alphabetically
     void *base = (void *)(argv + 1);
