@@ -13,6 +13,7 @@ static int test_tcp_listener_complete = 0;
 
 static void *worker(void *args) {
   char *port = (char*)args;
+  usleep(10000);
   jnx_socket *t = jnx_socket_tcp_create(AF_INET);
   jnx_socket_tcp_send(t,"127.0.0.1",port,"ping",5);
 
@@ -20,6 +21,7 @@ static void *worker(void *args) {
 }
 static void *worker_ipv6(void *args) {
   char *port = (char*)args;
+  usleep(10000);
   jnx_socket *t = jnx_socket_tcp_create(AF_INET6);
   jnx_socket_tcp_send(t,"::1",port,"ping",5);
 
@@ -93,7 +95,7 @@ static void test_tcp_blocking_listener() {
   listener->hint_exit = 1;
   JNXCHECK(test_tcp_listener_complete);
 }
-int test_jnxtcpsocket(int argc, char **argv) {
+int test_jnxtcpsocket() {
   JNXLOG(LDEBUG,"Starting tcp socket tests");
   JNXLOG(LDEBUG,"Testing TCP Listener");
   test_tcp_listener();

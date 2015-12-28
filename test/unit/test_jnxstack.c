@@ -69,7 +69,7 @@ void test_contains(){
   JNXCHECK(jnx_stack_contains(s,ar[1],compare_func) == 0);
   JNXLOG(LDEBUG,"OK");
 }
-int test_jnxstack(int argc, char **argv) {
+int test_jnxstack() {
   JNXLOG(LDEBUG,"Running stack tests...\n");
   test_stack_grow();
   test_stack_pop();

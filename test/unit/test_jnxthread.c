@@ -64,7 +64,7 @@ static void test_queue_push() {
   assert(current_time < max_time);
   JNXLOG(LDEBUG,"Queue length %d\n",queue->list->counter);
 }
-int test_jnxthread(int argc, char **argv) {
+int test_jnxthread() {
 
   JNXLOG(LDEBUG,"Running jnx_threading tests\n");
   test_queue_push();

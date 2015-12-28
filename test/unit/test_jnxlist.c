@@ -141,7 +141,7 @@ static void test_contains() {
   JNXCHECK(jnx_list_contains(l,fake,test_contains_comparator) == 0);
 
 }
-int test_jnxlist(int args, char **argv) {
+int test_jnxlist() {
   JNXLOG(LDEBUG,"Running list tests...\n");
   test_list_creation();
   test_data_removal();

@@ -1,5 +1,5 @@
-/*
- * =====================================================================================
+/* =====================================================================================
+ *
  *
  *       Filename:  test_jnxquicksort.c
  *
@@ -75,7 +75,7 @@ void test_empty_array() {
 	JNXCHECK(a == NULL);
 	JNXLOG(LDEBUG,"OK");
 }
-jnx_int test_jnxquicksort(jnx_int argc, char **argv) {
+jnx_int test_jnxquicksort() {
 	JNXLOG(LDEBUG,"Running quicksort tests...\n");
 	test_jnx_int_array();
 	test_string_array();

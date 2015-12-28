@@ -162,7 +162,7 @@ static void test_udp_multicast(){
   JNXCHECK(listener == NULL);
 
 }
-int test_jnxudpsocket(int argc, char **argv) {
+int test_jnxudpsocket() {
   JNXLOG(LDEBUG,"Starting udp socket tests");
   JNXLOG(LDEBUG,"Testing UDP listener");
   test_udp_listener();

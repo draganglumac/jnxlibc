@@ -152,7 +152,7 @@ void cross_thread_slot_test() {
   }
 
 }
-int test_jnxsignal(int argc, char **argv) {
+int test_jnxsignal() {
 
   JNXLOG(LDEBUG,"Testing signals and slots\n");	
   simple_test(); //one thread

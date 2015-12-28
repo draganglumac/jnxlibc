@@ -110,7 +110,7 @@ static void test_get() {
   JNXCHECK(strcmp("Hello",str2) == 0);
   JNXLOG(LDEBUG,"OK");
 }
-int test_jnxvector(int argc, char **argv) {
+int test_jnxvector() {
   JNXLOG(LDEBUG,"Running vector tests...\n");
   test_insert_position();
   test_remove_position();

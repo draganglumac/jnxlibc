@@ -42,7 +42,7 @@ static void *worker(void *args) {
   worker_complete = 1;
   return NULL;
 }
-int test_jnxlog(int args, char **argv) {
+int test_jnxlog() {
 
   JNXLOG_CREATE("logger.conf");
 
