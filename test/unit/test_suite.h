@@ -39,7 +39,10 @@ test_case test_suite[] = {
   TEST_CASE(test_jnxfile),
   TEST_CASE(test_jnxguid),
   TEST_CASE(test_jnxhash),
+#ifdef TEST_DISABLE_IPC
+#else
   TEST_CASE(test_jnxipcsocket),
+#endif
   TEST_CASE(test_jnxlist),
   TEST_CASE(test_jnxnetwork),
   TEST_CASE(test_jnxqueue),
@@ -47,9 +50,15 @@ test_case test_suite[] = {
   TEST_CASE(test_jnxsignal),
   TEST_CASE(test_jnxstack),
   TEST_CASE(test_jnxstring),
+#ifdef TEST_DISABLE_TCP
+#else
   TEST_CASE(test_jnxtcpsocket),
+#endif
   TEST_CASE(test_jnxthread),
+#ifdef TEST_DISABLE_UDP
+#else
   TEST_CASE(test_jnxudpsocket),
+#endif
   TEST_CASE(test_jnxvector)
 };
 
