@@ -32,6 +32,7 @@ typedef struct {
  * and remember to ADJUST test_suite_size to correct number of test cases
  * if you are adding or removing test cases to/from the suite.
  */
+
 test_case test_suite[] = {
   TEST_CASE(test_jnxbtree),
   TEST_CASE(test_jnxencoder),
@@ -43,24 +44,25 @@ test_case test_suite[] = {
 #else
   TEST_CASE(test_jnxipcsocket),
 #endif
-  TEST_CASE(test_jnxlist),
-  TEST_CASE(test_jnxnetwork),
-  TEST_CASE(test_jnxqueue),
-  TEST_CASE(test_jnxquicksort),
-  TEST_CASE(test_jnxsignal),
-  TEST_CASE(test_jnxstack),
-  TEST_CASE(test_jnxstring),
+    TEST_CASE(test_jnxlist),
+    TEST_CASE(test_jnxnetwork),
+    TEST_CASE(test_jnxqueue),
+    TEST_CASE(test_jnxquicksort),
+    TEST_CASE(test_jnxsignal),
+    TEST_CASE(test_jnxstack),
+    TEST_CASE(test_jnxstring),
 #ifdef TEST_DISABLE_TCP
 #else
   TEST_CASE(test_jnxtcpsocket),
 #endif
-  TEST_CASE(test_jnxthread),
+    TEST_CASE(test_jnxthread),
 #ifdef TEST_DISABLE_UDP
 #else
   TEST_CASE(test_jnxudpsocket),
 #endif
-  TEST_CASE(test_jnxvector)
+    TEST_CASE(test_jnxvector)
 };
+
 
 /*
  * The number of test cases in test_suite array - KEEP THIS CORRECT
@@ -68,5 +70,8 @@ test_case test_suite[] = {
  * the program might crash if you have fewer test cases than test_suite_size.
  */
 int test_suite_size = 18;
+
+
+
 
 #endif // TEST_SUITE_H

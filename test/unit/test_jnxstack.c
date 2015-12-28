@@ -70,10 +70,10 @@ void test_contains(){
   JNXLOG(LDEBUG,"OK");
 }
 int test_jnxstack() {
-  JNXLOG(LDEBUG,"Running stack tests...\n");
+  JNXLOG(LDEBUG,"Running stack tests...");
   test_stack_grow();
   test_stack_pop();
   test_contains();
-  JNXLOG(LDEBUG,"Stack tests completed.\n");
+  JNXLOG(LDEBUG,"Stack tests completed.");
   return 0;
 }
