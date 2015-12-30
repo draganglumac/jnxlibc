@@ -100,9 +100,11 @@ int test_jnxtcpsocket() {
   JNXLOG(LDEBUG,"Testing TCP Listener");
   test_tcp_listener();
   test_tcp_listener_complete = 0;
+#ifndef TEST_DISABLE_IPV6
   JNXLOG(LDEBUG,"Testing TCP Listener IPV6");
   test_tcp_listener_ipv6();
   test_tcp_listener_complete = 0;
+#endif
   JNXLOG(LDEBUG,"Test TCP blocking listener");
   test_tcp_blocking_listener();
   return 0;

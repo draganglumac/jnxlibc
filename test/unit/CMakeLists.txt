@@ -7,10 +7,8 @@ file(GLOB TEST_SRC "*.c")
 
 option(NO_CONNECTIVITY_TESTS "Disabled tests that use transport layer" OFF)
 if(NO_CONNECTIVITY_TESTS)
-  message("Disabling tests that use IPC, TCP and UDP")
-  ADD_DEFINITIONS(-DTEST_DISABLE_TCP)
-  ADD_DEFINITIONS(-DTEST_DISABLE_IPC)
-  ADD_DEFINITIONS(-DTEST_DISABLE_UDP)
+  message("Disabling tests that use IPV6")
+  ADD_DEFINITIONS(-DTEST_DISABLE_IPV6)
 endif()
 
 include_directories(${PROJECT_ROOT}src/alg)

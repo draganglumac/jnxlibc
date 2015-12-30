@@ -68,17 +68,8 @@ int main(int argc, char **argv) {
 
   int tsize = test_suite_size;
 
-#ifdef TEST_DISABLE_TCP
-  JNXLOG(LDEBUG,"Running with disabled TCP tests");
-  tsize--;
-#endif
-#ifdef TEST_DISABLE_IPC
-  JNXLOG(LDEBUG,"Running with disabled IPC tests");
-  tsize--;
-#endif
-#ifdef TEST_DISABLE_UDP
-  JNXLOG(LDEBUG,"Running with disabled UDP tests");
-  tsize--;
+#ifdef TEST_DISABLE_IPV6
+  JNXLOG(LDEBUG,"Running with disabled IPV6 tests");
 #endif
 
   int i;
