@@ -66,25 +66,14 @@ int main(int argc, char **argv) {
     qsort(base, argc - 1, sizeof(char *), compare_args);
   }
 
-  int tsize = test_suite_size;
-
-#ifdef TEST_DISABLE_TCP
-  JNXLOG(LDEBUG,"Running with disabled TCP tests");
-  tsize--;
-#endif
-#ifdef TEST_DISABLE_IPC
-  JNXLOG(LDEBUG,"Running with disabled IPC tests");
-  tsize--;
-#endif
-#ifdef TEST_DISABLE_UDP
-  JNXLOG(LDEBUG,"Running with disabled UDP tests");
-  tsize--;
+#ifdef TEST_DISABLE_IPV6
+  JNXLOG(LDEBUG,"Running with disabled IPv6 tests");
 #endif
 
   int i;
   if (argc > 1) {
     int next_tc = 1;
-    for (i = 0; i < tsize; i++) {
+    for (i = 0; i < test_suite_size; i++) {
       int cf_res = strcmp(test_suite[i].test_case_name + 8, argv[next_tc]);
 
       if (cf_res == 0) {
@@ -99,7 +88,7 @@ int main(int argc, char **argv) {
     }
   }
   else {
-    for (i = 0; i < tsize; i++)
+    for (i = 0; i < test_suite_size; i++)
       run_test_case(test_suite[i]);
   }
 
