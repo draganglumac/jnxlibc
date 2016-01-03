@@ -43,8 +43,10 @@ static void test_ipc_listener_callback(const jnx_uint8 *payload,
     JNXLOG(LERROR, "Unexpected packet received");
     JNXCHECK(1 == 0);
   }
-  if (results[0] == 5 && results[1] == 5 && results[2] == 5)
+  if (results[0] == 5 && results[1] == 5 && results[2] == 5) {
+    JNXLOG(LDEBUG, "All 15 packets received, 5 from each sender.");
     test_ipc_listener_complete = 1;
+  }
 }
 
 static void test_ipc_listener() {
@@ -79,8 +81,10 @@ static void test_blocking_listener_callback(const jnx_uint8 *payload,
     JNXLOG(LERROR, "Unexpected packet received");
     JNXCHECK(1 == 0);
   }
-  if (results[0] == 5 && results[1] == 5 && results[2] == 5)
+  if (results[0] == 5 && results[1] == 5 && results[2] == 5) {
+    JNXLOG(LDEBUG, "All 15 packets received, 5 from each sender.");
     test_ipc_listener_complete = 1;
+  }
 }
 
 static void *worker_blocking_listener(void *args) {
