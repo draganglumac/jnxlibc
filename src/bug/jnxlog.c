@@ -18,7 +18,6 @@
 #include "jnxnetwork.h"
 #include "jnxthread.h"
 #include "jnxlog.h"
-//#include "jnxunixsocket.h"
 #include "jnx_ipc_socket.h"
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256

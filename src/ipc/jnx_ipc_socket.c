@@ -132,7 +132,7 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
       compress_array = 0;
       char buffer[MAXBUFFER];
       bzero(buffer,MAXBUFFER);
-      rc = recv(listener->ufds[i].fd,buffer,sizeof(buffer),0);
+      rc = recv(listener->ufds[i].fd,buffer,MAXBUFFER,0);
       if(rc < 0) {
         if(errno != EWOULDBLOCK){
           perror("jnx IPC socket recv() failed");
