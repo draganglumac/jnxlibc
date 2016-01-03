@@ -46,7 +46,7 @@ typedef struct jnx_log_conf {
 }jnx_log_conf;
 
 static jnx_log_conf _internal_jnx_log_conf = { 
-  LDEBUG, 0, NULL, 0, 0
+  LDEBUG, 0, NULL, 0, 0, 0, 0, NULL, NULL
 };
 static void internal_appender_cli(jnx_char *message,jnx_size bytes_read){
   printf("%s",message);

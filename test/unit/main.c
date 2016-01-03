@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
   }
 
   sleep(3);
-//  JNXLOG_DESTROY();
+  JNXLOG_DESTROY();
 
   printf("Returning 0 from tests\n");
   return 0;
