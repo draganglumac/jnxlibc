@@ -127,7 +127,7 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
       }while(new_fd != -1);
     }else {
       jnx_size rc = 0;
-      JNXLOG(0,"Descriptor is readable %d",listener->ufds[i].fd);
+      JNXLOG(LDEBUG,"Descriptor is readable %d",listener->ufds[i].fd);
       close_conn = 0;
       compress_array = 0;
       char buffer[MAXBUFFER];
