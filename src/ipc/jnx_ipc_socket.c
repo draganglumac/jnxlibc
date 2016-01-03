@@ -140,7 +140,7 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
         }
       }
       if(rc == 0) {
-        JNXLOG(0,"Connection closed on fd %d",listener->ufds[i].fd);
+        // JNXLOG(0,"Connection closed on fd %d",listener->ufds[i].fd);
         close_conn = 1;
       }
       /* Send callback */
