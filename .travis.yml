@@ -2,7 +2,7 @@ language: c
 compiler:
     - gcc
     - clang
-before_script: cmake . -DRUN_TESTS=ON -DNO_CONNECTIVITY_TESTS=ON
+before_script: cmake . -DRUN_TESTS=ON -DNO_IPV6_TESTS=ON
 script: make
 notifications:
     email:

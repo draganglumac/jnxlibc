@@ -127,12 +127,12 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
       }while(new_fd != -1);
     }else {
       jnx_size rc = 0;
-      JNXLOG(0,"Descriptor is readable %d",listener->ufds[i].fd);
+      // JNXLOG(LDEBUG,"Descriptor is readable %d",listener->ufds[i].fd);
       close_conn = 0;
       compress_array = 0;
       char buffer[MAXBUFFER];
       bzero(buffer,MAXBUFFER);
-      rc = recv(listener->ufds[i].fd,buffer,sizeof(buffer),0);
+      rc = recv(listener->ufds[i].fd,buffer,MAXBUFFER,0);
       if(rc < 0) {
         if(errno != EWOULDBLOCK){
           perror("jnx IPC socket recv() failed");
@@ -140,7 +140,7 @@ void jnx_socket_ipc_listener_tick(jnx_ipc_listener* listener,
         }
       }
       if(rc == 0) {
-        JNXLOG(0,"Connection closed on fd %d",listener->ufds[i].fd);
+        // JNXLOG(0,"Connection closed on fd %d",listener->ufds[i].fd);
         close_conn = 1;
       }
       /* Send callback */
