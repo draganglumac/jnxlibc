@@ -1,7 +1,4 @@
 language: c
-sudo: required
-services:
-  - docker
 compiler:
     - gcc
     - clang
