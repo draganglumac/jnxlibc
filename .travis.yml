@@ -1,6 +1,6 @@
 language: c
 compiler:
-    - gcc
+  #    - gcc
     - clang
 before_script: cmake . -DRUN_TESTS=ON -DNO_IPV6_TESTS=ON
 script: make
