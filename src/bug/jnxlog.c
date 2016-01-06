@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2015-06-04 07:48]
+ *     Last Modified       :     [2016-01-06 08:34]
  *     Description         :      
  **********************************************************************************/
 
@@ -36,8 +36,9 @@ typedef struct jnx_log_conf {
   /* unix sock stream */
   jnx_ipc_socket *unix_socket;
   jnx_ipc_socket *unix_writer_socket;
-  jnx_char initialized;
-  jnx_char is_exiting;
+  jnx_int initialized;
+  jnx_int is_exiting;
+  jnx_int has_exited;
   /* mutex */
   jnx_thread_mutex *locker;
   /* appender */
@@ -45,7 +46,7 @@ typedef struct jnx_log_conf {
 }jnx_log_conf;
 
 static jnx_log_conf _internal_jnx_log_conf = { 
-  LDEBUG, 0, NULL, 0, 0, 0, 0, NULL, NULL
+  LDEBUG, 0, NULL, 0, 0, 0, 0,0, NULL, NULL
 };
 static void internal_appender_cli(jnx_char *message,jnx_size bytes_read){
   printf("%s",message);
@@ -100,6 +101,18 @@ void jnx_log_destroy() {
   jnx_ipc_socket_destroy(&_internal_jnx_log_conf.unix_socket);
   jnx_ipc_socket_destroy(&_internal_jnx_log_conf.unix_writer_socket);
   _internal_jnx_log_conf.initialized = 0;
+
+  clock_t start = clock(), diff;
+  jnx_float msec = 0;
+  while(_internal_jnx_log_conf.has_exited && msec < 2000) {
+    diff = clock();
+    msec = (diff - start) * 1000 / CLOCKS_PER_SEC;
+    printf("Awaiting log exit...");
+    sleep(.25);
+  }
+  if(msec > 2000) {
+    JNXFAIL("Could not destroy jnx_log successfully");
+  }
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
@@ -137,8 +150,9 @@ static void *internal_listener_loop(void *args) {
   jnx_ipc_listener *listener = jnx_socket_ipc_listener_create(_internal_jnx_log_conf.unix_socket, 100);
   while (! _internal_jnx_log_conf.is_exiting) {
     jnx_socket_ipc_listener_auto_tick(listener,
-                                    internal_listener_callback, (void *) 5);
+        internal_listener_callback, (void *) 5);
   }
+  _internal_jnx_log_conf.has_exited = 1;
   return NULL;
 }
 static void internal_load_listening_thread() {
