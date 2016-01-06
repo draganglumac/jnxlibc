@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-06 22:00]
+ *     Last Modified       :     [2016-01-06 22:04]
  *     Description         :      
  **********************************************************************************/
 
@@ -99,7 +99,7 @@ void jnx_log_destroy() {
     free(_internal_jnx_log_conf.p);
   }
   jnx_ipc_socket_destroy((jnx_ipc_socket**)&_internal_jnx_log_conf.unix_writer_socket);
-  
+
   _internal_jnx_log_conf.initialized = 0;
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
@@ -130,9 +130,11 @@ static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
 }
 static void internal_listener_callback(const jnx_uint8 *payload, \
     jnx_size bytes_read, int connected_sock, void *args) {
-  jnx_char *buffer = strdup((jnx_char*)payload);
-  _internal_jnx_log_conf.appender(buffer,strlen(buffer));
-  free(buffer);
+  if(bytes_read > 0) {
+    jnx_char *buffer = strdup((jnx_char*)payload);
+    _internal_jnx_log_conf.appender(buffer,strlen(buffer));
+    free(buffer);
+  }
 }
 static void *internal_listener_loop(void *args) {
   jnx_ipc_listener *listener = jnx_socket_ipc_listener_create(_internal_jnx_log_conf.unix_socket, 100);
@@ -146,7 +148,7 @@ static void *internal_listener_loop(void *args) {
 #endif
   jnx_socket_ipc_listener_destroy(&listener);
 #ifndef RELEASE
-  printf("Log destroyed\n");
+  printf("Log has shutdown\n");
 #endif
   return NULL;
 }
