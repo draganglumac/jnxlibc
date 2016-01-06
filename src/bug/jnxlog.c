@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-06 17:45]
+ *     Last Modified       :     [2016-01-06 17:46]
  *     Description         :      
  **********************************************************************************/
 
@@ -38,7 +38,6 @@ typedef struct jnx_log_conf {
   jnx_ipc_socket *unix_writer_socket;
   jnx_int initialized;
   jnx_int is_exiting;
-  jnx_int has_exited;
   /* mutex */
   jnx_thread_mutex *locker;
   /* appender */
@@ -46,7 +45,7 @@ typedef struct jnx_log_conf {
 }jnx_log_conf;
 
 static jnx_log_conf _internal_jnx_log_conf = { 
-  LDEBUG, 0, NULL, 0, 0, 0, 0,0, NULL, NULL
+  LDEBUG, 0, NULL, 0, 0, 0,0, NULL, NULL
 };
 static void internal_appender_cli(jnx_char *message,jnx_size bytes_read){
   printf("%s",message);
@@ -142,7 +141,6 @@ static void *internal_listener_loop(void *args) {
     jnx_socket_ipc_listener_tick(listener,
         internal_listener_callback, (void *) 5);
   }
-  _internal_jnx_log_conf.has_exited = 1;
   return NULL;
 }
 static void internal_load_listening_thread() {
