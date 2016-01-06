@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-06 21:58]
+ *     Last Modified       :     [2016-01-06 22:00]
  *     Description         :      
  **********************************************************************************/
 
@@ -99,8 +99,8 @@ void jnx_log_destroy() {
     free(_internal_jnx_log_conf.p);
   }
   jnx_ipc_socket_destroy((jnx_ipc_socket**)&_internal_jnx_log_conf.unix_writer_socket);
+  
   _internal_jnx_log_conf.initialized = 0;
-  sleep(.25);
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
@@ -141,7 +141,13 @@ static void *internal_listener_loop(void *args) {
     jnx_socket_ipc_listener_tick(listener,
         internal_listener_callback,NULL);
   }
+#ifndef RELEASE
+  printf("Log has shutdown\n");
+#endif
   jnx_socket_ipc_listener_destroy(&listener);
+#ifndef RELEASE
+  printf("Log destroyed\n");
+#endif
   return NULL;
 }
 static void internal_load_listening_thread() {
