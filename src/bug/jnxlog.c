@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-06 17:46]
+ *     Last Modified       :     [2016-01-06 17:57]
  *     Description         :      
  **********************************************************************************/
 
@@ -57,7 +57,8 @@ static void internal_appender_io(jnx_char *message,jnx_size bytes_read){
   jnx_thread_unlock(_internal_jnx_log_conf.locker);
 }
 static void internal_write_message(jnx_uint8 *buffer, jnx_size len) {
-  jnx_socket_ipc_send(_internal_jnx_log_conf.unix_writer_socket,buffer,len);
+  if(_internal_jnx_log_conf.unix_writer_socket)
+    jnx_socket_ipc_send(_internal_jnx_log_conf.unix_writer_socket,buffer,len);
 }
 void jnx_log(jnx_int l, const jnx_char *file, 
     const jnx_char *function, 
