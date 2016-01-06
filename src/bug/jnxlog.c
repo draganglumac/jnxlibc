@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-06 08:34]
+ *     Last Modified       :     [2016-01-06 17:38]
  *     Description         :      
  **********************************************************************************/
 
@@ -148,8 +148,9 @@ static void internal_listener_callback(const jnx_uint8 *payload, \
 }
 static void *internal_listener_loop(void *args) {
   jnx_ipc_listener *listener = jnx_socket_ipc_listener_create(_internal_jnx_log_conf.unix_socket, 100);
+
   while (! _internal_jnx_log_conf.is_exiting) {
-    jnx_socket_ipc_listener_auto_tick(listener,
+    jnx_socket_ipc_listener_tick(listener,
         internal_listener_callback, (void *) 5);
   }
   _internal_jnx_log_conf.has_exited = 1;
