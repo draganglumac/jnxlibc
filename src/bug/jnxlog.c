@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-06 17:57]
+ *     Last Modified       :     [2016-01-06 21:58]
  *     Description         :      
  **********************************************************************************/
 
@@ -44,7 +44,7 @@ typedef struct jnx_log_conf {
   jnx_log_appender appender;
 }jnx_log_conf;
 
-static jnx_log_conf _internal_jnx_log_conf = { 
+static volatile jnx_log_conf _internal_jnx_log_conf = { 
   LDEBUG, 0, NULL, 0, 0, 0,0, NULL, NULL
 };
 static void internal_appender_cli(jnx_char *message,jnx_size bytes_read){
@@ -98,8 +98,7 @@ void jnx_log_destroy() {
   if(_internal_jnx_log_conf.p) {
     free(_internal_jnx_log_conf.p);
   }
-  jnx_ipc_socket_destroy(&_internal_jnx_log_conf.unix_socket);
-  jnx_ipc_socket_destroy(&_internal_jnx_log_conf.unix_writer_socket);
+  jnx_ipc_socket_destroy((jnx_ipc_socket**)&_internal_jnx_log_conf.unix_writer_socket);
   _internal_jnx_log_conf.initialized = 0;
   sleep(.25);
 }
@@ -140,8 +139,9 @@ static void *internal_listener_loop(void *args) {
 
   while (! _internal_jnx_log_conf.is_exiting) {
     jnx_socket_ipc_listener_tick(listener,
-        internal_listener_callback, (void *) 5);
+        internal_listener_callback,NULL);
   }
+  jnx_socket_ipc_listener_destroy(&listener);
   return NULL;
 }
 static void internal_load_listening_thread() {
