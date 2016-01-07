@@ -2,7 +2,7 @@
  *     File Name           :     jnxlog.h
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:01]
- *     Last Modified       :     [2015-05-21 13:48]
+ *     Last Modified       :     [2016-01-06 17:54]
  *     Description         :      
  **********************************************************************************/
 #ifndef __JNXLOG_H__

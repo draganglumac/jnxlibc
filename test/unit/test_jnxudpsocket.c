@@ -172,13 +172,13 @@ int test_jnxudpsocket() {
   test_udp_listener_ipv6();
   test_udp_listener_complete = 0;
 #endif
-  JNXLOG(LDEBUG,"Testing UDP broadcast");
-   test_udp_broadcast();
-    test_udp_listener_complete = 0;
-   JNXLOG(LDEBUG,"Test UDP blocking listener");
-   test_udp_blocking_listener();
-   test_udp_listener_complete = 0;
-   JNXLOG(LDEBUG,"Test UDP multicast listener");
-   test_udp_multicast();
+  // JNXLOG(LDEBUG,"Testing UDP broadcast");
+  // test_udp_broadcast(); 
+  // test_udp_listener_complete = 0;
+  // JNXLOG(LDEBUG,"Test UDP blocking listener");
+  // test_udp_blocking_listener();
+  // test_udp_listener_complete = 0;
+  // JNXLOG(LDEBUG,"Test UDP multicast listener");
+  // test_udp_multicast();
   return 0;
 }

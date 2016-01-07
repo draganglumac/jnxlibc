@@ -5,9 +5,9 @@ project(test_run)
 file(GLOB RAW_SRC "../../src/**/*.c")
 file(GLOB TEST_SRC "*.c")
 
-option(NO_CONNECTIVITY_TESTS "Disabled tests that use transport layer" OFF)
-if(NO_CONNECTIVITY_TESTS)
-  message("Disabling tests that use IPV6")
+option(NO_IPV6_TESTS "Disabled tests that use IPv6" OFF)
+if(NO_IPV6_TESTS)
+  message("Disabling tests that use IPv6")
   ADD_DEFINITIONS(-DTEST_DISABLE_IPV6)
 endif()
 
