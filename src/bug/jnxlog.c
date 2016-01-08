@@ -18,10 +18,6 @@
 #include "jnxnetwork.h"
 #include "jnxthread.h"
 #include "jnxlog.h"
-<<<<<<< HEAD
-//#include "jnxunixsocket.h"
-=======
->>>>>>> upstream/master
 #include "jnx_ipc_socket.h"
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256
@@ -40,13 +36,8 @@ typedef struct jnx_log_conf {
   /* unix sock stream */
   jnx_ipc_socket *unix_socket;
   jnx_ipc_socket *unix_writer_socket;
-<<<<<<< HEAD
-  jnx_char initialized;
-  jnx_char is_exiting;
-=======
   jnx_int initialized;
   jnx_int is_exiting;
->>>>>>> upstream/master
   /* mutex */
   jnx_thread_mutex *locker;
   /* appender */
@@ -66,12 +57,8 @@ static void internal_appender_io(jnx_char *message,jnx_size bytes_read){
   jnx_thread_unlock(_internal_jnx_log_conf.locker);
 }
 static void internal_write_message(jnx_uint8 *buffer, jnx_size len) {
-<<<<<<< HEAD
-  jnx_socket_ipc_send(_internal_jnx_log_conf.unix_writer_socket,buffer,len);
-=======
   if(_internal_jnx_log_conf.unix_writer_socket)
     jnx_socket_ipc_send(_internal_jnx_log_conf.unix_writer_socket,buffer,len);
->>>>>>> upstream/master
 }
 void jnx_log(jnx_int l, const jnx_char *file, 
     const jnx_char *function, 
@@ -111,13 +98,8 @@ void jnx_log_destroy() {
   if(_internal_jnx_log_conf.p) {
     free(_internal_jnx_log_conf.p);
   }
-<<<<<<< HEAD
-  jnx_ipc_socket_destroy(&_internal_jnx_log_conf.unix_socket);
-  jnx_ipc_socket_destroy(&_internal_jnx_log_conf.unix_writer_socket);
-=======
   jnx_ipc_socket_destroy((jnx_ipc_socket**)&_internal_jnx_log_conf.unix_writer_socket);
 
->>>>>>> upstream/master
   _internal_jnx_log_conf.initialized = 0;
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
@@ -146,20 +128,6 @@ static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   }
   return is_valid;
 }
-<<<<<<< HEAD
-static jnx_int32 internal_listener_callback(jnx_uint8 *payload, \
-    jnx_size bytes_read, jnx_ipc_socket *s) {
-  jnx_char *buffer = strdup((jnx_char*)payload);
-  _internal_jnx_log_conf.appender(buffer,strlen(buffer));
-  free(buffer);
-  return 0;
-}
-static void *internal_listener_loop() {
-  jnx_ipc_listener *listener = jnx_socket_ipc_listener_create(_internal_jnx_log_conf.unix_socket, 100);
-  // auto-tick every
-  jnx_unix_datagram_socket_listen(_internal_jnx_log_conf.unix_socket,
-      internal_listener_callback);
-=======
 static void internal_listener_callback(const jnx_uint8 *payload, \
     jnx_size bytes_read, int connected_sock, void *args) {
   if(bytes_read > 0) {
@@ -182,7 +150,6 @@ static void *internal_listener_loop(void *args) {
 #ifndef RELEASE
   printf("Log has shutdown\n");
 #endif
->>>>>>> upstream/master
   return NULL;
 }
 static void internal_load_listening_thread() {
