@@ -57,9 +57,6 @@ int main(int argc, char **argv) {
 
   
   JNXLOG_CREATE("logger.conf");
-  sleep(3);
-  sleep(3);
-
 
   if (argc > 2) { // sort argv[1] to argv[argc-1] alphabetically
     void *base = (void *)(argv + 1);
@@ -92,7 +89,6 @@ int main(int argc, char **argv) {
       run_test_case(test_suite[i]);
   }
 
-  sleep(3);
   JNXLOG_DESTROY();
 
   printf("Returning 0 from tests\n");
