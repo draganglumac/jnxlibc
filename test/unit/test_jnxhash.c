@@ -76,7 +76,7 @@ void test_hash_deletion() {
   int num = jnx_hash_get_keys(testhash,&keys);
   int i;
   for(i=0; i<num; ++i) {
-    char *value = jnx_hash_delete_value(testhash,keys[i]);
+    char *value = jnx_hash_delete_value(testhash,(char*)keys[i]);
   }
   num = jnx_hash_get_keys(testhash,&keys);
   assert(num == 0);
