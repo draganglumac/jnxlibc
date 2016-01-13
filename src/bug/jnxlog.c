@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-06 22:04]
+ *     Last Modified       :     [2016-01-13 17:46]
  *     Description         :      
  **********************************************************************************/
 
@@ -16,6 +16,7 @@
 #include <stdarg.h>
 #include "jnxfile.h"
 #include "jnxnetwork.h"
+#include "jnxterm.h"
 #include "jnxthread.h"
 #include "jnxlog.h"
 #include "jnx_ipc_socket.h"
@@ -101,6 +102,16 @@ void jnx_log_destroy() {
   jnx_ipc_socket_destroy((jnx_ipc_socket**)&_internal_jnx_log_conf.unix_writer_socket);
 
   _internal_jnx_log_conf.initialized = 0;
+  jnx_char buffer[MAX_SIZE];
+  time_t ptime;
+  time(&ptime);
+  jnx_char pbuffer[TIMEBUFFER];
+  sprintf(pbuffer,"%s",ctime(&ptime));
+  pbuffer[MAX_SIZE];
+  pbuffer[strlen(pbuffer)-1] = '\0';
+  sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",__FILE__,__FUNCTION__,__LINE__,pbuffer,
+      "Log shutting down...");
+  printf(buffer);
 }
 static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
   jnx_hashmap *h = jnx_file_read_kvp(conf_path,MAX_SIZE,"=");
@@ -139,13 +150,12 @@ static void internal_listener_callback(const jnx_uint8 *payload, \
 static void *internal_listener_loop(void *args) {
   jnx_ipc_listener *listener = jnx_socket_ipc_listener_create(_internal_jnx_log_conf.unix_socket, 100);
 
+  _internal_jnx_log_conf.initialized = 1;
+
   while (! _internal_jnx_log_conf.is_exiting) {
     jnx_socket_ipc_listener_tick(listener,
         internal_listener_callback,NULL);
   }
-#ifndef RELEASE
-  printf("Log has shutdown\n");
-#endif
   jnx_socket_ipc_listener_destroy(&listener);
 #ifndef RELEASE
   printf("Log has shutdown\n");
@@ -181,7 +191,20 @@ void jnx_log_create(jnx_char *conf_path) {
       _internal_jnx_log_conf.appender = internal_appender_io;
       break;
   }
-  _internal_jnx_log_conf.initialized = 1;
+
+  jnx_char buffer[MAX_SIZE];
+  time_t ptime;
+  time(&ptime);
+  jnx_char pbuffer[TIMEBUFFER];
+  sprintf(pbuffer,"%s",ctime(&ptime));
+  pbuffer[MAX_SIZE];
+  pbuffer[strlen(pbuffer)-1] = '\0';
+  sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",__FILE__,__FUNCTION__,__LINE__,pbuffer,"Log Initialising...");
+  printf(buffer);
+  fflush(stdout);
+  while(!_internal_jnx_log_conf.initialized) {
+    sleep(.5);
+  }
 }
 void jnx_log_register_appender(jnx_log_appender ap) {
   JNXLOG(LDEBUG,"jnx_log_register_appender: Switching appender");
