@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-13 17:46]
+ *     Last Modified       :     [2016-01-13 17:47]
  *     Description         :      
  **********************************************************************************/
 
@@ -107,7 +107,6 @@ void jnx_log_destroy() {
   time(&ptime);
   jnx_char pbuffer[TIMEBUFFER];
   sprintf(pbuffer,"%s",ctime(&ptime));
-  pbuffer[MAX_SIZE];
   pbuffer[strlen(pbuffer)-1] = '\0';
   sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",__FILE__,__FUNCTION__,__LINE__,pbuffer,
       "Log shutting down...");
