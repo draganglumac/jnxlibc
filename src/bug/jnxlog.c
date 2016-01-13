@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-13 18:05]
+ *     Last Modified       :     [2016-01-13 18:17]
  *     Description         :      
  **********************************************************************************/
 
@@ -29,10 +29,11 @@
 #define IPC_PATH ".log_ipc_temp"
 #define LOGLEVEL "LOG_LEVEL"
 #define OUTPUTLOG "OUTPUT_LOG"
-
+#define DISABLED "DISABLED"
 typedef struct jnx_log_conf {
   jnx_int level;
   jnx_int wfile;
+  jnx_int disabled;
   jnx_char *p;
   /* unix sock stream */
   jnx_ipc_socket *unix_socket;
@@ -46,7 +47,7 @@ typedef struct jnx_log_conf {
 }jnx_log_conf;
 
 static volatile jnx_log_conf _internal_jnx_log_conf = { 
-  LDEBUG, 0, NULL, 0, 0, 0,0, NULL, NULL
+  LDEBUG, 0,0, NULL, 0, 0, 0,0, NULL, NULL
 };
 static void internal_appender_cli(jnx_char *message,jnx_size bytes_read){
   printf("%s",message);
@@ -65,6 +66,9 @@ void jnx_log(jnx_int l, const jnx_char *file,
     const jnx_char *function, 
     const jnx_uint32 line,
     const jnx_char *format,...) {
+  if(_internal_jnx_log_conf.disabled) {
+    return;
+  }  
   if(_internal_jnx_log_conf.initialized == 0) {
     printf("Logging system has not been correctly initialized. \
         \nPlease use 'JNXLOG_CREATE() to start\nCaught trying to log from file[%d]%s\n",line,file); 
@@ -95,6 +99,10 @@ void internal_set_log_level(jnx_char *log_level) {
   if(IS_PANIC(log_level)){ _internal_jnx_log_conf.level = LPANIC; }
 }
 void jnx_log_destroy() {
+
+  if(_internal_jnx_log_conf.disabled) {
+    return;
+  }
   _internal_jnx_log_conf.is_exiting = 1;
   if(_internal_jnx_log_conf.p) {
     free(_internal_jnx_log_conf.p);
@@ -134,6 +142,10 @@ static jnx_int internal_load_from_configuration(jnx_char *conf_path) {
       _internal_jnx_log_conf.p = strdup(buffer);
       _internal_jnx_log_conf.locker = jnx_thread_mutex_create();
     }
+    jnx_char *id = jnx_hash_get(h,DISABLED);
+    if(id) {
+      _internal_jnx_log_conf.disabled = atoi(id); 
+    }
     jnx_hash_destroy(&h);
   }
   return is_valid;
@@ -147,7 +159,8 @@ static void internal_listener_callback(const jnx_uint8 *payload, \
   }
 }
 static void *internal_listener_loop(void *args) {
-  jnx_ipc_listener *listener = jnx_socket_ipc_listener_create(_internal_jnx_log_conf.unix_socket, 100);
+  jnx_ipc_listener *listener = jnx_socket_ipc_listener_create(
+      _internal_jnx_log_conf.unix_socket, 100);
 
   _internal_jnx_log_conf.initialized = 1;
 
@@ -181,6 +194,14 @@ void jnx_log_create(jnx_char *conf_path) {
         "jnx_log_create: Validation errors in internal_load_from_configuration");    
     return;
   }
+
+  if(_internal_jnx_log_conf.disabled) {
+#ifndef RELEASE
+    printf("Logging disabled!\n");
+    fflush(stdout);
+#endif
+    return;
+  }  
   internal_load_listening_thread();
   switch(_internal_jnx_log_conf.wfile) {
     case 0:
@@ -197,7 +218,8 @@ void jnx_log_create(jnx_char *conf_path) {
   jnx_char pbuffer[TIMEBUFFER];
   sprintf(pbuffer,"%s",ctime(&ptime));
   pbuffer[strlen(pbuffer)-1] = '\0';
-  sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",__FILE__,__FUNCTION__,__LINE__,pbuffer,"Log Initialising...");
+  sprintf(buffer,"[%s][%s:%d][t:%s]%s\n",__FILE__,__FUNCTION__,__LINE__,pbuffer,
+      "Log Initialising...");
   printf(buffer);
   fflush(stdout);
   while(!_internal_jnx_log_conf.initialized) {
