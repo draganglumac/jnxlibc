@@ -22,35 +22,37 @@
 #include "jnxtypes.h"
 #include "jnxlog.h"
 #ifdef __cplusplus
-extern		"C" {
+extern "C" {
 #endif
+
 #define MAXSTACKFRAMES 20
+
   void jnxcheck_backtrace(void);
 
 #if !defined(RELEASE)
 #define JNXCHECK(X)\
-  do \
-  { \
+  do\
+  {\
     if(!(X)) {\
-      JNXLOG(LERROR,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
-      jnxcheck_backtrace(); \
+      JNXLOG(LERROR,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__);\
+      jnxcheck_backtrace();\
       exit(1);\
-    } \
-  } \
+    }\
+  }\
   while(0) 
 #else
 #define JNXCHECK(X)\
   do { (void)sizeof(X); } while(0)
 #endif
+
 #define JNXFAIL(X)\
-  do \
-  { \
-    JNXLOG(LERROR,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__); \
-    jnxcheck_backtrace(); \
+  do\
+  {\
+    JNXLOG(LERROR,"CHECK FAILED: %s [%s:%s:%d]",#X,__FILE__,__FUNCTION__,__LINE__);\
+    jnxcheck_backtrace();\
     exit(1);\
-  } \
+  }\
   while(0)
-#endif
   /*
    * @brief: JNX_EXCEPTION is the default case for exceptions when using try/catch
    *         This exception can also be replaced with -1
@@ -72,7 +74,7 @@ extern		"C" {
    */
 #define jnx_try do{ jmp_buf ex_buf__; \
   switch( setjmp(ex_buf__) )\
-  { case 0: while(1){
+  { case 0: while(1){ 
 
 #define jnx_catch(x) break; case x:
 
@@ -83,6 +85,8 @@ extern		"C" {
    * @brief: jnx_throw can be used at any point to jump to the last setjmp point
    */
 #define jnx_throw(x) longjmp(ex_buf__, x)
+
 #ifdef __cplusplus
 }
+#endif
 #endif
