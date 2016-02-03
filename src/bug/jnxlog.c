@@ -2,7 +2,7 @@
  *     File Name           :     /home/tibbar/Documents/logger/jnxlog.c
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:08]
- *     Last Modified       :     [2016-01-13 18:17]
+ *     Last Modified       :     [2016-02-03 08:34]
  *     Description         :      
  **********************************************************************************/
 
@@ -189,12 +189,13 @@ void jnx_log_create(jnx_char *conf_path) {
     JNXLOG(LWARN,"jnx_log_create: Logging has already been initialized");
     return;
   }
-  if(!internal_load_from_configuration(conf_path)) {
-    JNXLOG(LERROR,
-        "jnx_log_create: Validation errors in internal_load_from_configuration");    
-    return;
+  if(conf_path) {
+    if(!internal_load_from_configuration(conf_path)) {
+      JNXLOG(LERROR,
+          "jnx_log_create: Validation errors in internal_load_from_configuration");    
+      return;
+    }
   }
-
   if(_internal_jnx_log_conf.disabled) {
 #ifndef RELEASE
     printf("Logging disabled!\n");
@@ -223,6 +224,9 @@ void jnx_log_create(jnx_char *conf_path) {
   printf(buffer);
   fflush(stdout);
   while(!_internal_jnx_log_conf.initialized) {
+#ifndef RELEASE
+    printf("Waiting for logger to initialize...\n");
+#endif
     sleep(.5);
   }
 }

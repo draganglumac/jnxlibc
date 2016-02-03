@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
   }
 
   
-  JNXLOG_CREATE("logger.conf");
+  JNXLOG_CREATE(NULL);
 
   if (argc > 2) { // sort argv[1] to argv[argc-1] alphabetically
     void *base = (void *)(argv + 1);
