@@ -175,29 +175,3 @@ jnx_signal_call(s,NULL);
 jnx_signal_destroy(&s);
 
 ```
-
-Logging files
-
-Provide a logger config (e.g. test/unit/logger.conf)
-`logger.conf`
-```C
-LOG_LEVEL=WARN
-OUTPUT_LOG=MYLOGS-%s.log  #If you do not provide an OUTPUT_LOG it will log to STDOUT
-```
-Creation of logger
-```C
-JNXLOG_CREATE("../logger.conf");
-```
-Usage
-```C
-JNXLOG(LDEBUG,"This is a debug message");
-JNXLOG(LERROR,"This is an error message!");
-```
-Log files should look like this...
-```
-[/home/tibbar/Documents/whisper-cli/src/app/app.c][set_up_discovery_service:209][t:Fri May 15 16:26:22 2015][WARNING] Using the system user name 'tibbar'.
-[/home/tibbar/Documents/whisper-cli/whisper-core/src/net/discovery.c][get_local_ip:299][t:Fri May 15 16:26:22 2015]Local IP is 192.168.23.128
-[/home/tibbar/Documents/whisper-cli/whisper-core/src/net/discovery.c][get_broadcast_ip:304][t:Fri May 15 16:26:22 2015]Broadcast IP is 192.168.23.255
-[/home/tibbar/Documents/whisper-cli/src/app/app.c][set_up_discovery_service:238][t:Fri May 15 16:26:22 2015]Starting discovery service with heartbeat srategy.
-[/home/tibbar/Documents/whisper-cli/whisper-core/jnxlibc/src/net/jnx_udp_socket.c][jnx_socket_udp_listener_setup:84][t:Fri May 15 16:26:22 2015]Creating broadcast listener
-```
