@@ -70,10 +70,11 @@ sudo make install
 Custom install location
 ```
 git clone git@github.com:AlexsJones/jnxlibc jnxlibc && cd jnxlibc
-cmake . -DCMAKE_INSTALL_PREFIX=/Users/alexjo/Projects/jnxlibc/build/ 
+cmake . -DINSTALL_PREFIX:PATH=/Users/alexjo/Projects/jnxlibc/build/ 
 make
 sudo make install
 ```
+> NOTE: You may want to use this option on OS X 10.11 El Capitan because you will not be able to install to the default location. You may want to use /usr/local as the INSTALL_PREFIX.
 
 Use `-ljnxc` when building your project for shared library
 Use `-ljnxcs` for static library
