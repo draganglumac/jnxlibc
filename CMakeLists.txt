@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-set(INSTALL_PREFIX /usr)
+set(INSTALL_PREFIX /usr CACHE PATH "installation root directory")
 project(jnxlibc)
 
 set(SOURCE "")
