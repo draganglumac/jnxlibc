@@ -163,5 +163,6 @@ int test_jnxsignal() {
 
   cross_thread_slot_test();
 
+  sleep(1);
   return 0;
 }

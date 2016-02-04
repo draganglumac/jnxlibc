@@ -55,12 +55,6 @@ int main(int argc, char **argv) {
     return 0;
   }
 
-  
-  JNXLOG_CREATE("logger.conf");
-  sleep(3);
-  sleep(3);
-
-
   if (argc > 2) { // sort argv[1] to argv[argc-1] alphabetically
     void *base = (void *)(argv + 1);
     qsort(base, argc - 1, sizeof(char *), compare_args);
@@ -91,9 +85,6 @@ int main(int argc, char **argv) {
     for (i = 0; i < test_suite_size; i++)
       run_test_case(test_suite[i]);
   }
-
-  sleep(3);
-  JNXLOG_DESTROY();
 
   printf("Returning 0 from tests\n");
   return 0;

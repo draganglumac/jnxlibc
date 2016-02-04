@@ -34,6 +34,7 @@ typedef struct {
  */
 
 test_case test_suite[] = {
+  TEST_CASE(test_jnxsignal),
   TEST_CASE(test_jnxbtree),
   TEST_CASE(test_jnxencoder),
   TEST_CASE(test_jnxexceptions),
@@ -48,7 +49,6 @@ test_case test_suite[] = {
     TEST_CASE(test_jnxnetwork),
     TEST_CASE(test_jnxqueue),
     TEST_CASE(test_jnxquicksort),
-    TEST_CASE(test_jnxsignal),
     TEST_CASE(test_jnxstack),
     TEST_CASE(test_jnxstring),
 #ifdef TEST_DISABLE_TCP
