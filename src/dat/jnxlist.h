@@ -21,7 +21,7 @@ extern		"C" {
   /**
    * @brief Represents the list data structure as seen by the user
    */
-  typedef struct list {
+  typedef struct jnx_list {
     struct node *head;
     struct node *tail;
     jnx_int32 counter;
