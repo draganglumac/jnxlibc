@@ -22,6 +22,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _WIN32
+#define bzero(b,len) (memset((b), '\0', (len)), (void) 0)  
+#endif
+
   typedef char jnx_char; //8 bits
   typedef signed char jnx_signed_char;
   typedef unsigned char jnx_unsigned_char;
@@ -53,7 +58,11 @@ extern "C" {
   }jnx_vector3D;
 
   typedef size_t jnx_size;
+#ifdef _WIN32
+  typedef size_t jnx_ssize;
+#else
   typedef ssize_t jnx_ssize;
+#endif
   typedef double jnx_double;
 #ifdef __cplusplus
 }

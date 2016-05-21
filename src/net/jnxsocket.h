@@ -25,9 +25,12 @@
 #include "jnxtypes.h"
 #include <stddef.h>
 #include <sys/stat.h>
+#ifdef _WIN32
+#else
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <netinet/in.h>
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif

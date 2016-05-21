@@ -13,7 +13,11 @@ extern "C" {
 #endif
 #include <sys/stat.h>
 #include <sys/types.h>
+#ifdef _WIN32
+
+#else
 #include <unistd.h>
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
