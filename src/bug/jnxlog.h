@@ -2,7 +2,7 @@
  *     File Name           :     jnxlog.h
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:01]
- *     Last Modified       :     [2016-02-03 15:12]
+ *     Last Modified       :     [2016-05-21 08:23]
  *     Description         :      
  **********************************************************************************/
 #ifndef __JNXLOG_H__
@@ -63,7 +63,7 @@ extern "C" {
     sprintf(pbuffer,"%s",ctime(&ptime));
     pbuffer[strlen(pbuffer)-1] = '\0';
     sprintf(buffer,"[%s][%s][%s:%d][t:%s]%s\n",levelb,file,function,line,pbuffer,msgbuffer);
-    printf(buffer);
+    printf("%s",buffer);
   }
 #define JNXLOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
 #define JNX_LOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
