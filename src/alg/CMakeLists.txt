@@ -1,7 +1,14 @@
+
+IF (WIN32)
+  set(PATH "win")
+else()
+  set(PATH "unix")
+endif()
+
 set(SOURCE ${SOURCE}
-${CMAKE_CURRENT_SOURCE_DIR}/jnxencoder.c
-${CMAKE_CURRENT_SOURCE_DIR}/jnxguid.c
-${CMAKE_CURRENT_SOURCE_DIR}/jnxquicksort.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxencoder.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxguid.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxquicksort.c
 PARENT_SCOPE)
 
 set(HEADERS

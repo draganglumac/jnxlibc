@@ -1,8 +1,14 @@
+IF (WIN32)
+  set(PATH "win")
+else()
+  set(PATH "unix")
+endif()
+
 set(SOURCE ${SOURCE}
-${CMAKE_CURRENT_SOURCE_DIR}/jnx_tcp_socket.c
-${CMAKE_CURRENT_SOURCE_DIR}/jnx_udp_socket.c
-${CMAKE_CURRENT_SOURCE_DIR}/jnxnetwork.c
-${CMAKE_CURRENT_SOURCE_DIR}/jnxsocket.c
+${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnx_tcp_socket.c
+${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnx_udp_socket.c
+${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxnetwork.c
+${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxsocket.c
 PARENT_SCOPE)
 
 set(HEADERS

@@ -1,5 +1,11 @@
+IF (WIN32)
+  set(PATH "win")
+else()
+  set(PATH "unix")
+endif()
+
 set(SOURCE ${SOURCE}
-${CMAKE_CURRENT_SOURCE_DIR}/jnxcheck.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxcheck.c
 PARENT_SCOPE)
 
 set(HEADERS

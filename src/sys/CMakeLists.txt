@@ -1,6 +1,12 @@
+IF (WIN32)
+  set(PATH "win")
+else()
+  set(PATH "unix")
+endif()
+
 set(SOURCE ${SOURCE}
-${CMAKE_CURRENT_SOURCE_DIR}/jnxstring.c
-${CMAKE_CURRENT_SOURCE_DIR}/jnxterm.c
+${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxstring.c
+${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxterm.c
 PARENT_SCOPE)
 
 set(HEADERS
