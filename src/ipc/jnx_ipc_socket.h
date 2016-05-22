@@ -10,19 +10,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#ifdef _WIN32
+#else
 #include <netdb.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <sys/poll.h>
 #include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#endif
 #include <errno.h>
 #include "jnxcheck.h"
 #include "jnxtypes.h"
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/socket.h>
-#include <sys/un.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,12 +37,19 @@ typedef struct {
   jnx_uint32 islisten;
   jnx_uint32 isconnected;
   jnx_int32 socket;
+#ifdef _WIN32
+#else
   jnx_ipc_socket_address address;
+#endif
 } jnx_ipc_socket;
 
 typedef struct jnx_ipc_listener {
   jnx_ipc_socket *socket;
-  struct pollfd ufds[200];
+#ifdef _WIN32
+#else
+ struct pollfd ufds[200];
+#endif
+ 
   jnx_int nfds;
   jnx_int poll_timeout;
   jnx_int hint_exit;

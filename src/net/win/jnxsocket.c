@@ -15,25 +15,20 @@
  *
  * =====================================================================================
  */
-#include <netdb.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <net/if.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <ifaddrs.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <stdlib.h>
 #include "jnxlog.h"
 #include "jnxcheck.h"
 #include "jnxsocket.h"
+#include <corecrt_io.h>
+
 jnx_socket *create_socket(jnx_unsigned_int type,\
     jnx_unsigned_int addrfamily, jnx_unsigned_int protocol) {
-  JNXCHECK(addrfamily);
+ /* JNXCHECK(addrfamily);
   JNXCHECK(type);
   JNXCHECK(addrfamily);
   jnx_int32 sock = socket(addrfamily,type,protocol);
@@ -47,7 +42,7 @@ jnx_socket *create_socket(jnx_unsigned_int type,\
   s->socket = sock;
   s->stype = type;
   s->ipaddress = NULL;
-  return s;
+  return s;*/
 }
 void jnx_socket_close(jnx_socket *s) {
   JNXCHECK(s);

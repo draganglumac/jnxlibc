@@ -22,6 +22,9 @@
 #include <string.h>
 #include "jnxterm.h"
 #include "jnxthread.h"
+#include <Windows.h>
+#include <winbase.h>
+#include <wincon.h>
 #define JNX_TERM_RESET     0
 #define JNX_TERM_BRIGHT    1
 #define JNX_TERM_DIM       2
@@ -37,10 +40,11 @@ void text_color(jnx_int32 attr, jnx_int32 fg) {
   printf("%c[%d;%dm", 0x1B, attr, fg + 30);
 }
 jnx_int32 get_width() {
-  struct winsize w;
-  ioctl(0, TIOCGWINSZ, &w);
-  printf("columns %d\n", w.ws_col);
-  return w.ws_col;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	int columns, rows;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	return columns;
 }
 void jnx_term_default() {
   printf("%c[0m", 0x1B);

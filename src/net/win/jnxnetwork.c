@@ -16,21 +16,12 @@
  * =====================================================================================
  */
 #define _GNU_SOURCE
-#include <arpa/inet.h>
 #include <assert.h>
-#include <sys/socket.h>
-#include <netdb.h>
 #include <sys/types.h>
-#include <ifaddrs.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
-#include <arpa/inet.h>
-#include <net/if.h>
 #include <string.h>
 #include <errno.h>
-#include <ifaddrs.h>
-#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "jnxnetwork.h"
@@ -40,7 +31,7 @@
 #include <winsock.h>
 
 jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
-  struct sockaddr_in *s4;
+ /* struct sockaddr_in *s4;
   struct sockaddr_in6 *s6;
   jnx_char buf[64];
   bzero(buf,64);
@@ -72,12 +63,12 @@ jnx_char* internal_address_info( struct ifaddrs *ifa,jnx_unsigned_int family){
         return strdup(buf);
       }
     }
-  }
+  }*/
   return NULL;
 }
-jnx_int32 jnx_network_interface_ip(jnx_char **obuffer,
-    jnx_char *interface, jnx_unsigned_int family){
-  JNXCHECK(family);
+jnx_int32 jnx_network_interface_ip(jnx_char **obuffer, jnx_char *iface, 
+	jnx_unsigned_int family){
+ /* JNXCHECK(family);
   JNXCHECK(family == AF_INET || family == AF_INET6);
   if(!interface) {
     JNXLOG(LWARN,"No interface selected - Using default");
@@ -114,7 +105,7 @@ jnx_int32 jnx_network_interface_ip(jnx_char **obuffer,
         }
     }
   }
-  freeifaddrs(myaddrs);
+  freeifaddrs(myaddrs);*/
   return 0;
 }
 JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
@@ -133,7 +124,7 @@ JNX_NETWORK_ENDIAN jnx_network_get_endianness() {
 }
 jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,
     jnx_char *host, jnx_char **out_ip,jnx_unsigned_int *out_addrfamily) {
-  JNXCHECK(hint_family);
+ /* JNXCHECK(hint_family);
   JNXCHECK(host);
   JNXCHECK(hint_family == AF_INET || hint_family == AF_INET6);
   *out_addrfamily = -1;
@@ -169,13 +160,13 @@ jnx_int32 jnx_network_hostname_to_ip(unsigned hint_family,
   }
   if(strlen(addrstr) > 0) {
     *out_ip = strndup(addrstr,strlen(addrstr));
-  }
+  }*/
   return 0;
 }
 size_t jnx_http_request(JNX_HTTP_TYPE type, 
     const jnx_char *hostname, 
     const jnx_char *page, jnx_char *args, jnx_uint8 **out_reply,jnx_size *out_len) {
-  JNXCHECK(hostname);
+ /* JNXCHECK(hostname);
   JNXCHECK(page);
   JNXCHECK(type == JNX_HTTP_POST || type == JNX_HTTP_GET);
   jnx_char *verb = NULL;
@@ -209,7 +200,7 @@ size_t jnx_http_request(JNX_HTTP_TYPE type,
   *out_len = l;  
   if(!l) {
     return JNX_HTTP_STATE_UNKNOWN;
-  }
+  }*/
   return JNX_HTTP_STATE_OKAY;
 }
 JNX_HTTP_TYPE jnx_http_request_post(const jnx_char *hostname, 
