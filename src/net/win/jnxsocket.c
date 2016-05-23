@@ -57,26 +57,21 @@ jnx_socket *create_socket(jnx_unsigned_int type,\
   s->socket = sock;
   s->stype = type;
   s->ipaddress = NULL;
+
+  DWORD reuse = 1;
+  if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) != 0) {
+	  printf("SO_REUSEADDR setsockopt failed with: %d\n", WSAGetLastError());
+	  WSACleanup();
+	  return NULL;
+  }
   return s;
-  /*
-  jnx_int32 sock = socket(addrfamily,type,protocol);
-  JNXCHECK(sock);
-  jnx_int32 optval = 1;
-  JNXCHECK(setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval) == 0);
-  jnx_socket *s = malloc(sizeof(jnx_socket));
-  s->isclosed = 0;
-  s->isconnected = 0;
-  s->addrfamily = addrfamily;
-  s->socket = sock;
-  s->stype = type;
-  s->ipaddress = NULL;
-  return s;*/
 }
 void jnx_socket_close(jnx_socket *s) {
   JNXCHECK(s);
   if(!s->isclosed) {
     if(s->socket != -1) {
 		closesocket(s->socket);
+		//Call once per program or socket?!
 		WSACleanup();
       s->isclosed = 1;
     }

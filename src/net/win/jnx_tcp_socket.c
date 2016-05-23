@@ -14,7 +14,9 @@
 #include "jnxcheck.h"
 #include "jnxsocket.h"
 #include "jnx_tcp_socket.h"
-#include <winsock.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <corecrt_io.h>
 
 jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily) {
   return create_socket(SOCK_STREAM,addrfamily,0);
@@ -174,7 +176,7 @@ jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket) {
 }
 jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
   jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
- /* JNXCHECK(s);
+  JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
   JNXCHECK(msg);
@@ -214,12 +216,12 @@ jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
     tbytes +=n;
     rbytes = msg_len - tbytes;
   }
-  return tbytes;*/
+  return tbytes;
 }
 jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
   jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
   jnx_size msg_len,jnx_uint8 **out_receipt) {
- /* JNXCHECK(s);
+  JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
   JNXCHECK(msg);
@@ -261,5 +263,5 @@ jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
   memset(out,0,bytes_read + 1);
   memcpy(out,buffer,bytes_read + 1);
   *out_receipt = out;
-  return bytes_read;*/
+  return bytes_read;
 }

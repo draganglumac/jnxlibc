@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include "jnxcheck.h"
 #include "jnxtypes.h"
-
 #include <stdio.h>
 void jnxcheck_backtrace() {
 	/*
