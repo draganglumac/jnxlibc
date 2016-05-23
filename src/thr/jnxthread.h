@@ -102,7 +102,11 @@ extern "C" {
    *@brief jnx_thread_create will create and start a new thread but does not add to pool
    *@return error code if any
    */
+#ifdef _WIN32
+  jnx_int32 jnx_thread_create_disposable(LPTHREAD_START_ROUTINE e, void *args);
+#else
   jnx_int32 jnx_thread_create_disposable(entry_point e,void *args);
+#endif
   /**
    *@fn void jnx_thread_destroy(jnx_thread *thr)
    *@brief Destroy the thread data structure and pool listing
@@ -116,8 +120,11 @@ extern "C" {
    *@brief passing a jnx_thread pojnx_int32er will wait for that thread to complete before unblocking
    *@return the ret code from join execution
    */
-  jnx_int32 jnx_thread_join(jnx_thread *thr, void **data);
+#if _WIN32
 
+#else
+  jnx_int32 jnx_thread_join(jnx_thread *thr, void **data);
+#endif
 #ifdef __cplusplus
 }
 #endif

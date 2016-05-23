@@ -26,6 +26,9 @@
 #include <stddef.h>
 #include <sys/stat.h>
 #ifdef _WIN32
+#include<winsock2.h>
+#include <windows.h>
+#include <wincon.h>
 #else
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -41,7 +44,12 @@ extern "C" {
   {
     jnx_int32 isclosed;
     jnx_int32 isconnected;
-    jnx_int32 socket;
+    
+#if _WIN32
+	SOCKET socket;
+#else
+	jnx_int32 socket;
+#endif
     jnx_unsigned_int addrfamily;
     jnx_size stype;
     jnx_char *ipaddress;
