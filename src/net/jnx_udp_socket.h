@@ -101,9 +101,12 @@ extern "C" {
    * the readable IP address
    * @param sa is the sockaddr_stoage to pass through from the accept call
    * @return jnx_char string or NULL
-   */   
+   */ 
+#if _WIN32
+  jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr* sa);
+#else
   jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa);
-
+#endif
   jnx_size jnx_socket_udp_send(jnx_socket *s, jnx_char *host,\
       jnx_char* port, jnx_uint8 *msg, jnx_size msg_len);
       

@@ -153,26 +153,26 @@ void jnx_socket_tcp_listener_auto_tick(jnx_tcp_listener *listener,
   }
 }
 jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket) {
-  //jnx_char ipstr[INET6_ADDRSTRLEN];
-  //socklen_t len;
-  //struct sockaddr_storage addr;
-  //len = sizeof(addr);
+  jnx_char ipstr[INET6_ADDRSTRLEN];
+  socklen_t len;
+  struct sockaddr_storage addr;
+  len = sizeof(addr);
 
-  //if(getpeername(socket,(struct sockaddr*)&addr,&len) == -1) {
-  //  perror("getpeername:");
-  //  return NULL;
-  //}
-  //if(addr.ss_family != AF_INET && addr.ss_family != AF_INET6) {
-  //  return NULL;
-  //}
-  //if(addr.ss_family == AF_INET) {
-  //  struct sockaddr_in *s = (struct sockaddr_in*)&addr;
-  //  inet_ntop(AF_INET,&s->sin_addr,ipstr,sizeof(ipstr));
-  //} else {
-  //  struct sockaddr_in6 *s = (struct sockaddr_in6*)&addr;
-  //  inet_ntop(AF_INET6,&s->sin6_addr,ipstr,sizeof(ipstr));
-  //}
-  //return strdup(ipstr);
+  if(getpeername(socket,(struct sockaddr*)&addr,&len) == -1) {
+    perror("getpeername:");
+    return NULL;
+  }
+  if(addr.ss_family != AF_INET && addr.ss_family != AF_INET6) {
+    return NULL;
+  }
+  if(addr.ss_family == AF_INET) {
+    struct sockaddr_in *s = (struct sockaddr_in*)&addr;
+    inet_ntop(AF_INET,&s->sin_addr,ipstr,sizeof(ipstr));
+  } else {
+    struct sockaddr_in6 *s = (struct sockaddr_in6*)&addr;
+    inet_ntop(AF_INET6,&s->sin6_addr,ipstr,sizeof(ipstr));
+  }
+  return strdup(ipstr);
 }
 jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
   jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {

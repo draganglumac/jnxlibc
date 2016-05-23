@@ -14,36 +14,37 @@
 #include "jnxlog.h"
 #include "jnxcheck.h"
 #include "jnx_udp_socket.h"
-#include <winsock.h>
-
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <corecrt_io.h>
 
 jnx_size internal_jnx_socket_udp_enable_multicast_listen(jnx_socket *s,
     jnx_char *ip,
     jnx_char *group) {
-  //JNXCHECK(s);
-  //JNXCHECK(ip);
-  //JNXCHECK(group);
-  //JNXCHECK(s->stype == SOCK_DGRAM);
-  //struct ip_mreq bgroup;
-  //bgroup.imr_multiaddr.s_addr = inet_addr(group);
-  //bgroup.imr_interface.s_addr = inet_addr(ip);
-  //JNXLOG(0,"internal_jnx_socket_udp_enable_multicast_listen");
-  //if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(jnx_char*)&bgroup,
-  //      sizeof(bgroup)) < 0) {
-  //  perror("setsockopt:");
-  //  return -1;
-  //}
+  JNXCHECK(s);
+  JNXCHECK(ip);
+  JNXCHECK(group);
+  JNXCHECK(s->stype == SOCK_DGRAM);
+  struct ip_mreq bgroup;
+  bgroup.imr_multiaddr.s_addr = inet_addr(group);
+  bgroup.imr_interface.s_addr = inet_addr(ip);
+  JNXLOG(0,"internal_jnx_socket_udp_enable_multicast_listen");
+  if(setsockopt(s->socket,IPPROTO_IP,IP_ADD_MEMBERSHIP,(jnx_char*)&bgroup,
+        sizeof(bgroup)) < 0) {
+    perror("setsockopt:");
+    return -1;
+  }
   return 0;
 }
 jnx_size internal_jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) {
-  /*JNXCHECK(s);
+  JNXCHECK(s);
   JNXCHECK(s->stype == SOCK_DGRAM);
   JNXCHECK(s->addrfamily == AF_INET);
   jnx_int32 optval = 1;
   if(setsockopt(s->socket,SOL_SOCKET,SO_BROADCAST,&optval, sizeof(optval)) != 0) {
     perror("setsockopt:");
     return -1;
-  }*/
+  }
   return 0;
 }
 jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily) {
@@ -52,7 +53,7 @@ jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily) {
 jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
     jnx_unsigned_int family,int broadcast,int multicast,jnx_char *ip, 
     jnx_char *bgroup) {
- /* jnx_udp_listener *l = malloc(sizeof(jnx_udp_listener));
+  jnx_udp_listener *l = malloc(sizeof(jnx_udp_listener));
   l->socket = jnx_socket_udp_create(family);
   l->hint_exit = 0;
   struct addrinfo hints, *res, *p;
@@ -87,7 +88,7 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
     internal_jnx_socket_udp_enable_multicast_listen(l->socket,ip,bgroup);
   }
   freeaddrinfo(res);
-  return l;*/
+  return l;
 }
 jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
     jnx_unsigned_int family) {
@@ -109,14 +110,14 @@ void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener) {
 }
 void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
     jnx_udp_listener_callback callback, void *args) {
- /* jnx_char buffer[MAX_UDP_BUFFER];
+  jnx_char buffer[MAX_UDP_BUFFER];
   memset(buffer,0,MAX_UDP_BUFFER);
   struct sockaddr_storage their_addr;
   socklen_t their_len=0;
   jnx_size bytesread = recvfrom(listener->socket->socket,buffer,
       MAX_UDP_BUFFER,0,(struct sockaddr*)&their_addr,&their_len);
   if(bytesread > 0) {
-    jnx_char *incoming_address = jnx_socket_udp_resolve_ipaddress(their_addr);
+    jnx_char *incoming_address = jnx_socket_udp_resolve_ipaddress((struct sockaddr*)&their_addr);
     if(incoming_address){
       JNXLOG(0,"Incoming data from %s",incoming_address); 
       free(incoming_address);
@@ -126,7 +127,7 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
     memcpy(outbuffer,buffer,bytesread);
     callback(outbuffer,bytesread,args);
     free(outbuffer);
-  }*/
+  }
 }
 void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener, 
     jnx_udp_listener_callback callback, void *args) {
@@ -138,7 +139,7 @@ void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener,
 jnx_size jnx_socket_udp_send(jnx_socket *s,\
     jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
     jnx_size msg_len) {
-  /*JNXCHECK(s);
+  JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
   JNXCHECK(msg);
@@ -177,7 +178,7 @@ jnx_size jnx_socket_udp_send(jnx_socket *s,\
     rbytes = msg_len - tbytes;
   }
   freeaddrinfo(res);
-  return tbytes;*/
+  return tbytes;
 }
 jnx_size jnx_socket_udp_broadcast_send(jnx_socket *s, jnx_char *host,\
     jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
@@ -186,21 +187,21 @@ jnx_size jnx_socket_udp_broadcast_send(jnx_socket *s, jnx_char *host,\
 }
 jnx_size jnx_socket_udp_multicast_send(jnx_socket *s, jnx_char *group,\
     jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
-  internal_jnx_socket_udp_enable_multicast_send(s,group);
+  //internal_jnx_socket_udp_enable_multicast_send(s,group);
   return jnx_socket_udp_send(s,group,port,msg,msg_len);
 }
-jnx_char *jnx_socket_udp_resolve_ipaddress(/*struct sockaddre sa */) {
- /* jnx_char str[INET6_ADDRSTRLEN];
+jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr* sa) {
+  jnx_char str[INET6_ADDRSTRLEN];
   memset(str,0,INET6_ADDRSTRLEN);
   switch (((struct sockaddr*)&sa)->sa_family) {
     case AF_INET:
       inet_ntop(AF_INET, &(((struct sockaddr_in*)&sa)->sin_addr),str,INET_ADDRSTRLEN);
-      return strndup(str,strlen(str));
+      return strdup(str);
       break;
     case AF_INET6:
       inet_ntop(AF_INET6, &(((struct sockaddr_in6*)&sa)->sin6_addr),str,INET6_ADDRSTRLEN);
-      return strndup(str,strlen(str));
+      return strdup(str);
       break;
   }
-  return NULL;*/
+  return NULL;
 }
