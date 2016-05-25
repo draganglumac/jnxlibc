@@ -8,6 +8,7 @@
 #include "jnxthread.h"
 #include <time.h>
 #include <unistd.h>
+#include <ifaddrs.h>
 #include "jnxnetwork.h"
 #define UDPTESTPORT "9093"
 #define UDPTESTPORT2 "9041"

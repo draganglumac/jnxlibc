@@ -18,7 +18,9 @@
 #ifndef __JNX_THREAD_H__
 #define __JNX_THREAD_H__
 #include "jnxtypes.h"
+#ifdef _WIN32
 #include <windows.h>
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
