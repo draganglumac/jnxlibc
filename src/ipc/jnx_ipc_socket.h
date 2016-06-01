@@ -16,8 +16,8 @@
 #include <sys/poll.h>
 #include <sys/ioctl.h>
 #include <errno.h>
-#include "jnxcheck.h"
-#include "jnxtypes.h"
+#include "jnx_check.h"
+#include "jnx_types.h"
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/stat.h>

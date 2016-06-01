@@ -16,13 +16,13 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "jnxvector.h"
+#include "jnx_vector.h"
 #include <stdio.h>
-#include "jnxcheck.h"
-#include "jnxlog.h"
+#include "jnx_check.h"
+#include "jnx_log.h"
 #include <time.h>
 #include <string.h>
-#include "jnxterm.h"
+#include "jnx_term.h"
 typedef struct {
   int a;
 } teststruct;

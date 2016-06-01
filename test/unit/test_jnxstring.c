@@ -19,9 +19,9 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include "jnxlog.h"
-#include "jnxstring.h"
-#include "jnxterm.h"
+#include "jnx_log.h"
+#include "jnx_string.h"
+#include "jnx_term.h"
 int test_jnxstring() {
   JNXLOG(LDEBUG,"Running test for jnxstring\n");
 

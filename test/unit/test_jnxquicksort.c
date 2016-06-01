@@ -18,12 +18,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "jnxtypes.h"
-#include "jnxquicksort.h"
-#include "jnxcheck.h"
-#include "jnxlist.h"
-#include "jnxterm.h"
-#include "jnxlog.h"
+#include "jnx_types.h"
+#include "jnx_quicksort.h"
+#include "jnx_check.h"
+#include "jnx_list.h"
+#include "jnx_term.h"
+#include "jnx_log.h"
 
 #define JNX_FALSE 0
 #define JNX_TRUE  1

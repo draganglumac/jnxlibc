@@ -15,8 +15,8 @@
 #include <sys/poll.h>
 #include <sys/ioctl.h>
 #include <errno.h>
-#include "jnxcheck.h"
-#include "jnxsocket.h"
+#include "jnx_check.h"
+#include "jnx_socket.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

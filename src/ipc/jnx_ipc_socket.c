@@ -10,8 +10,8 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "jnxlog.h"
-#include "jnxcheck.h"
+#include "jnx_log.h"
+#include "jnx_check.h"
 #include "jnx_ipc_socket.h"
 
 #define MAXBUFFER 1024

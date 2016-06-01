@@ -18,10 +18,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "jnxcheck.h"
-#include "jnxlist.h"
-#include "jnxterm.h"
-#include "jnxlog.h"
+#include "jnx_check.h"
+#include "jnx_list.h"
+#include "jnx_term.h"
+#include "jnx_log.h"
 struct foo {
   int number;
 } foo;

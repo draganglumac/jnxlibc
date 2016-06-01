@@ -16,9 +16,9 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "jnxqueue.h"
-#include "jnxlog.h"
-#include "jnxterm.h"
+#include "jnx_queue.h"
+#include "jnx_log.h"
+#include "jnx_term.h"
 #include <assert.h>
 #include <stdio.h>
 int test_jnxqueue() {

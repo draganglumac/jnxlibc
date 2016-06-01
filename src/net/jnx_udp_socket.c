@@ -18,8 +18,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
-#include "jnxlog.h"
-#include "jnxcheck.h"
+#include "jnx_log.h"
+#include "jnx_check.h"
 #include "jnx_udp_socket.h"
 jnx_size internal_jnx_socket_udp_enable_multicast_listen(jnx_socket *s,
     jnx_char *ip,

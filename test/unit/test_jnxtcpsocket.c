@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "jnxlog.h"
-#include "jnxcheck.h"
+#include "jnx_log.h"
+#include "jnx_check.h"
 #include "jnx_tcp_socket.h"
-#include "jnxthread.h"
+#include "jnx_thread.h"
 #include <assert.h>
-#include "jnxthread.h"
+#include "jnx_thread.h"
 #include <time.h>
 #define TCPTESTPORT "9096"
 

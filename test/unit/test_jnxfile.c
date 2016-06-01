@@ -21,9 +21,9 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "jnxlog.h"
-#include "jnxfile.h"
-#include "jnxterm.h"
+#include "jnx_log.h"
+#include "jnx_file.h"
+#include "jnx_term.h"
 void test_recursive_delete() {
   system("mkdir -p bob/james/frank");
   system("touch bob/a.txt");
