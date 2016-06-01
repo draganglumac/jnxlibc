@@ -127,6 +127,8 @@ void test_tcp_listener() {
 ```
 Sending message over network with exception handling.
 ```C
+#include<jnxc_headers/jnx_udp_socket.h>
+
 jnx_socket *udp_sock = jnx_socket_udp_create(AF_INET);
 jnx_try {
  jnx_socket_udp_send(udp_sock,"host","port","message",strlen("message"));
