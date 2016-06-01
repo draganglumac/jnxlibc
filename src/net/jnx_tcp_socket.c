@@ -17,9 +17,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
-#include "jnxlog.h"
-#include "jnxcheck.h"
-#include "jnxsocket.h"
+#include "jnx_log.h"
+#include "jnx_check.h"
+#include "jnx_socket.h"
 #include "jnx_tcp_socket.h"
 
 jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily) {

@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "jnxlog.h"
+#include "jnx_log.h"
 #include "test_suite.h"
 
 void run_test_case(test_case tc) {

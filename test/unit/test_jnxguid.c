@@ -20,8 +20,8 @@
 #include <assert.h>
 #include <string.h>
 #include <unistd.h>
-#include "jnxlog.h"
-#include "jnxguid.h"
+#include "jnx_log.h"
+#include "jnx_guid.h"
 
 void test_generate_guid() {
   jnx_guid g;

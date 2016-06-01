@@ -7,7 +7,7 @@
 
 #ifndef JNX_UDP_SOCKET_H
 #define JNX_UDP_SOCKET_H
-#include "jnxsocket.h"
+#include "jnx_socket.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

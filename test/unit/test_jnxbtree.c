@@ -20,10 +20,10 @@
 #include <assert.h>
 #include <string.h>
 #include <time.h>
-#include "jnxlog.h"
-#include "jnxbtree.h"
-#include "jnxterm.h"
-#include "jnxlist.h"
+#include "jnx_log.h"
+#include "jnx_btree.h"
+#include "jnx_term.h"
+#include "jnx_list.h"
 
 extern jnx_btree_node* new_node(int, int);
 extern void delete_node(jnx_btree_node*);

@@ -19,9 +19,9 @@
 #include <unistd.h>
 #include <assert.h>
 #include <stdio.h>
-#include "jnxsignal.h"
-#include "jnxlog.h"
-#include "jnxthread.h"
+#include "jnx_signal.h"
+#include "jnx_log.h"
+#include "jnx_thread.h"
 int local_slot_tickA =0;
 int local_slot_tickB =0;
 void local_slot(jnx_signal *s) {

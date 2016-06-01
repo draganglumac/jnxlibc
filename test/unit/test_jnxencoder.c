@@ -16,12 +16,12 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "jnxencoder.h"
+#include "jnx_encoder.h"
 #include <string.h>
 #include <stdio.h>
-#include "jnxterm.h"
-#include "jnxcheck.h"
-#include "jnxlog.h"
+#include "jnx_term.h"
+#include "jnx_check.h"
+#include "jnx_log.h"
 
 size_t str_to_hex(char* s,char **out)
 {

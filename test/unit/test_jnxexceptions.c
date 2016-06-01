@@ -16,8 +16,8 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "jnxlog.h"
-#include "jnxcheck.h"
+#include "jnx_log.h"
+#include "jnx_check.h"
 
 #define FOO_EXCEPTION (-2)
 #define BAR_EXCEPTION (-3)

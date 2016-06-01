@@ -19,9 +19,9 @@
 #include <stdio.h>
 #include <assert.h>
 #include <sys/stat.h>
-#include "jnxnetwork.h"
-#include "jnxlog.h"
-#include "jnxterm.h"
+#include "jnx_network.h"
+#include "jnx_log.h"
+#include "jnx_term.h"
 #include <ifaddrs.h>
 #include <arpa/inet.h>
 #include <assert.h>
@@ -40,8 +40,8 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "jnxnetwork.h"
-#include "jnxlog.h"
+#include "jnx_network.h"
+#include "jnx_log.h"
 #include "jnx_tcp_socket.h"
 #include <inttypes.h>
 void test_endian() {

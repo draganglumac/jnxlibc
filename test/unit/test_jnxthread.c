@@ -16,10 +16,10 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-#include "jnxterm.h"
-#include "jnxthread.h"
-#include "jnxlog.h"
-#include "jnxqueue.h"
+#include "jnx_term.h"
+#include "jnx_thread.h"
+#include "jnx_log.h"
+#include "jnx_queue.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>

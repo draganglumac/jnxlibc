@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "jnxlog.h"
-#include "jnxcheck.h"
+#include "jnx_log.h"
+#include "jnx_check.h"
 #include "jnx_udp_socket.h"
-#include "jnxthread.h"
+#include "jnx_thread.h"
 #include <assert.h>
-#include "jnxthread.h"
+#include "jnx_thread.h"
 #include <time.h>
 #include <unistd.h>
-#include "jnxnetwork.h"
+#include "jnx_network.h"
 #define UDPTESTPORT "9093"
 #define UDPTESTPORT2 "9041"
 #define BGROUP "225.1.1.1"
