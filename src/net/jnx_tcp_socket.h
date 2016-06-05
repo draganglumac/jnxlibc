@@ -9,11 +9,16 @@
 #define JNX_TCP_SOCKET_H
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef _WIN32
+#else
 #include <netdb.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <sys/poll.h>
 #include <sys/ioctl.h>
+#endif
+
+#include <fcntl.h>
+
 #include <errno.h>
 #include "jnx_check.h"
 #include "jnx_socket.h"
@@ -23,7 +28,10 @@ extern "C" {
 
   typedef struct jnx_tcp_listener {
     jnx_socket *socket;
-    struct pollfd ufds[200];
+#ifdef _WIN32
+#else
+	struct pollfd ufds[200];
+#endif
     jnx_int nfds;
     jnx_int poll_timeout;
     jnx_int hint_exit;

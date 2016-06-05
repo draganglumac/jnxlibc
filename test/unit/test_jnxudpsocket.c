@@ -8,7 +8,12 @@
 #include "jnx_thread.h"
 #include <time.h>
 #include <unistd.h>
+<<<<<<< HEAD
 #include "jnx_network.h"
+=======
+#include <ifaddrs.h>
+#include "jnxnetwork.h"
+>>>>>>> upstream/pal
 #define UDPTESTPORT "9093"
 #define UDPTESTPORT2 "9041"
 #define BGROUP "225.1.1.1"

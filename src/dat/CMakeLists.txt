@@ -1,4 +1,11 @@
+IF (WIN32)
+  set(PATH "win")
+else()
+  set(PATH "unix")
+endif()
+
 set(SOURCE ${SOURCE}
+<<<<<<< HEAD
 ${CMAKE_CURRENT_SOURCE_DIR}/jnx_btree.c
 ${CMAKE_CURRENT_SOURCE_DIR}/jnx_hash.c
 ${CMAKE_CURRENT_SOURCE_DIR}/jnx_list.c
@@ -16,6 +23,25 @@ ${CMAKE_CURRENT_SOURCE_DIR}/jnx_queue.h
 ${CMAKE_CURRENT_SOURCE_DIR}/jnx_stack.h
 ${CMAKE_CURRENT_SOURCE_DIR}/jnx_vector.h
 PARENT_SCOPE)
+=======
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxbtree.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxhash.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxlist.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxqueue.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxstack.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxvector.c
+  PARENT_SCOPE)
+
+set(HEADERS
+  ${HEADERS}
+  ${CMAKE_CURRENT_SOURCE_DIR}/jnxbtree.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/jnxhash.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/jnxlist.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/jnxqueue.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/jnxstack.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/jnxvector.h
+  PARENT_SCOPE)
+>>>>>>> upstream/pal
 
 set(LINKER_LIBRARIES
   ${LINKER_LIBRARIES}

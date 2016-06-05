@@ -17,8 +17,12 @@
  */
 #ifndef __JNXNETWORK_H__
 #define __JNXNETWORK_H__
+<<<<<<< HEAD:src/net/jnx_network.h
 #include "jnx_types.h"
 #include <ifaddrs.h>
+=======
+#include "jnxtypes.h"
+>>>>>>> upstream/pal:src/net/jnxnetwork.h
 #include <inttypes.h>
 #ifdef __cplusplus
 extern "C" {

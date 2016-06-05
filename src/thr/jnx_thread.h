@@ -17,15 +17,31 @@
  */
 #ifndef __JNX_THREAD_H__
 #define __JNX_THREAD_H__
+<<<<<<< HEAD:src/thr/jnx_thread.h
 #include "jnx_types.h"
+=======
+#include "jnxtypes.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
+>>>>>>> upstream/pal:src/thr/jnxthread.h
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include <pthread.h>
+#if _WIN32
+
+#else
+	#include <pthread.h>
+#endif
+
   typedef struct jnx_thread_attributes{
     //platform specific zone//
     jnx_int32 has_custom_attr;
-    pthread_attr_t *system_attributes;
+#if _WIN32
+
+#else
+	pthread_attr_t *system_attributes;
+#endif
     //platform specific zone//
   }jnx_thread_attributes;
 
@@ -36,17 +52,24 @@ extern "C" {
     void *args;
     jnx_thread_attributes *attributes;
     //platform specific zone//
-    pthread_t system_thread;
+#if _WIN32
+	HANDLE system_thread;
+#else
+	pthread_t system_thread;
+#endif
     //platform specific zone//
   }jnx_thread;
 
   typedef struct jnx_thread_mutex{
     //platform specific zone//
-    pthread_mutex_t system_mutex;
+#if _WIN32
+	  HANDLE system_mutex;
+#else
+	  pthread_mutex_t system_mutex;
+#endif
     //platform specific zone//
     jnx_int32 is_initialized;
   }jnx_thread_mutex;
-
 
   jnx_thread_mutex* jnx_thread_mutex_create();
 
@@ -73,7 +96,11 @@ extern "C" {
    *@brief jnx_thread_create will create and start a new thread, adding to the pool
    *@return jnx_thread object
    */
-  jnx_thread* jnx_thread_create(entry_point e,void *args);
+#ifdef _WIN32
+  jnx_thread* jnx_thread_create(LPTHREAD_START_ROUTINE e, void *args);
+#else
+  jnx_thread* jnx_thread_create(entry_point e, void *args);
+#endif
   /**
    *@fn jnx_int32 jnx_thread_create_disposable(entry_point e,void *args)
    *@param entry_point is the function pojnx_int32er the thread starts with
@@ -81,7 +108,11 @@ extern "C" {
    *@brief jnx_thread_create will create and start a new thread but does not add to pool
    *@return error code if any
    */
+#ifdef _WIN32
+  jnx_int32 jnx_thread_create_disposable(LPTHREAD_START_ROUTINE e, void *args);
+#else
   jnx_int32 jnx_thread_create_disposable(entry_point e,void *args);
+#endif
   /**
    *@fn void jnx_thread_destroy(jnx_thread *thr)
    *@brief Destroy the thread data structure and pool listing
@@ -95,8 +126,11 @@ extern "C" {
    *@brief passing a jnx_thread pojnx_int32er will wait for that thread to complete before unblocking
    *@return the ret code from join execution
    */
-  jnx_int32 jnx_thread_join(jnx_thread *thr, void **data);
+#if _WIN32
 
+#else
+  jnx_int32 jnx_thread_join(jnx_thread *thr, void **data);
+#endif
 #ifdef __cplusplus
 }
 #endif

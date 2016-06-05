@@ -1,5 +1,15 @@
+IF (WIN32)
+  set(PATH "win")
+else()
+  set(PATH "unix")
+endif()
+
 set(SOURCE ${SOURCE}
+<<<<<<< HEAD
 ${CMAKE_CURRENT_SOURCE_DIR}/jnx_signal.c
+=======
+${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnxsignal.c
+>>>>>>> upstream/pal
 PARENT_SCOPE)
 
 set(HEADERS

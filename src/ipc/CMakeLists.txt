@@ -1,5 +1,11 @@
+IF (WIN32)
+  set(PATH "win")
+else()
+  set(PATH "unix")
+endif()
+
 set(SOURCE ${SOURCE}
-${CMAKE_CURRENT_SOURCE_DIR}/jnx_ipc_socket.c
+${CMAKE_CURRENT_SOURCE_DIR}/${PATH}/jnx_ipc_socket.c
 PARENT_SCOPE)
 
 set(HEADERS

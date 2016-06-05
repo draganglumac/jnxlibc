@@ -11,7 +11,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#if _WIN32
+
+#else
 #include <unistd.h>
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif

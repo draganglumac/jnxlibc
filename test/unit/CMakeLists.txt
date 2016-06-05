@@ -2,7 +2,13 @@ cmake_minimum_required(VERSION 2.8)
 set(PROJECT_ROOT ../../)
 project(test_run)
 
-file(GLOB RAW_SRC "../../src/**/*.c")
+IF (WIN32)
+  set(PATH "win")
+else()
+  set(PATH "unix")
+endif()
+
+file(GLOB RAW_SRC "../../src/**/${PATH}/*.c")
 file(GLOB TEST_SRC "*.c")
 
 if(RELEASE)
