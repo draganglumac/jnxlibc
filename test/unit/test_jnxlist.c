@@ -208,6 +208,7 @@ int test_jnxlist() {
   test_list_tail();
   test_removal_front();
   test_removal_from();
+  test_removal_returns_correct_data();
   test_contains();
   JNXLOG(LDEBUG,"List tests completed.\n");
   return 0;
