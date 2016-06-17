@@ -108,13 +108,13 @@ void *jnx_list_remove_front_ts(jnx_list ** A) {
   jnx_thread_unlock(l->internal_lock);
   return ret;
 }
-void *jnx_list_remove_from(jnx_list ** A, void *item) {
-	if ((*A)->compare == NULL) // no compare function so we cannot continue 
+void *jnx_list_remove_from(jnx_list ** A, void *item, ordering compare_func) {
+	if (compare_func == NULL) // no compare function so we cannot continue 
 		return NULL;
 
 	jnx_node *current = (*A)->head;
 	while (current != NULL) {
-		if ((*A)->compare(current->_data, item) == 0) {
+		if (compare_func(current->_data, item) == 0) {
 			jnx_node *prev = current->prev_node;
 			jnx_node *next = current->next_node;
 			
@@ -138,10 +138,10 @@ void *jnx_list_remove_from(jnx_list ** A, void *item) {
 	}
 	return NULL;
 }
-void *jnx_list_remove_from_ts(jnx_list ** A, void *item) {
+void *jnx_list_remove_from_ts(jnx_list ** A, void *item, ordering compare_func) {
   jnx_list *l = *A;
   jnx_thread_lock(l->internal_lock);
-  void *ret = jnx_list_remove_from(A, item);
+  void *ret = jnx_list_remove_from(A, item, compare_func);
   jnx_thread_unlock(l->internal_lock);
   return ret;
 }

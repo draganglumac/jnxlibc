@@ -35,7 +35,6 @@ extern		"C" {
     struct node *tail;
     jnx_int32 counter;
     jnx_thread_mutex *internal_lock;
-		ordering *compare;
 	}		jnx_list;
 
   /** @fn jnx_list_create(void)
@@ -77,9 +76,9 @@ extern		"C" {
    *  @return void* to data, NULL on failure or end of list
    */
 
-	void *jnx_list_remove_from(jnx_list ** A, void *item);
+	void *jnx_list_remove_from(jnx_list ** A, void *item, ordering compare_function);
 
-	void *jnx_list_remove_from_ts(jnx_list ** A, void *item);
+	void *jnx_list_remove_from_ts(jnx_list ** A, void *item, ordering compare_function);
 
 	/** @fn jnx_list_size(jnx_list *A)
    *  @param A is the target list
