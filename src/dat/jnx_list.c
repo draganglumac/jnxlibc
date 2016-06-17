@@ -109,34 +109,34 @@ void *jnx_list_remove_front_ts(jnx_list ** A) {
   return ret;
 }
 void *jnx_list_remove_from(jnx_list ** A, void *item, ordering compare_func) {
-	if (compare_func == NULL) // no compare function so we cannot continue 
-		return NULL;
+  if (compare_func == NULL) // no compare function so we cannot continue 
+    return NULL;
 
-	jnx_node *current = (*A)->head;
-	while (current != NULL) {
-		if (compare_func(current->_data, item) == 0) {
-			jnx_node *prev = current->prev_node;
-			jnx_node *next = current->next_node;
-			
-			if (prev != NULL) {
-				prev->next_node = current->next_node;
-			}
-			else // we are deleting the list head, so update its pointer
-				(*A)->head = current->next_node;
+  jnx_node *current = (*A)->head;
+  while (current != NULL) {
+    if (compare_func(current->_data, item) == 0) {
+      jnx_node *prev = current->prev_node;
+      jnx_node *next = current->next_node;
 
-			if (next != NULL) {
-				next->prev_node = current->prev_node;
-			}
-			else // we are deleting the list tail, so update its pointer
-				(*A)->tail = current->prev_node;
+      if (prev != NULL) {
+        prev->next_node = current->next_node;
+      }
+      else // we are deleting the list head, so update its pointer
+        (*A)->head = current->next_node;
 
-			void *ret = current->_data;
-			free(current);
-			return ret;		
-		}
-		current = current->next_node;
-	}
-	return NULL;
+      if (next != NULL) {
+        next->prev_node = current->prev_node;
+      }
+      else // we are deleting the list tail, so update its pointer
+        (*A)->tail = current->prev_node;
+
+      void *ret = current->_data;
+      free(current);
+      return ret;		
+    }
+    current = current->next_node;
+  }
+  return NULL;
 }
 void *jnx_list_remove_from_ts(jnx_list ** A, void *item, ordering compare_func) {
   jnx_list *l = *A;
