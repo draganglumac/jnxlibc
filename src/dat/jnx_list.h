@@ -18,6 +18,15 @@ extern		"C" {
     struct node *prev_node;
     struct node *next_node;
   }		jnx_node;
+
+	/**
+	 * @brief Type that represent ordering function for _data elements in the nodes
+	 * @return -1 if first element comes after second
+	 *         0 if elements are semantically equal
+	 *         1 if first element comes before second
+	 */
+	typedef int (*ordering)(void *, void *);
+
   /**
    * @brief Represents the list data structure as seen by the user
    */
@@ -26,7 +35,8 @@ extern		"C" {
     struct node *tail;
     jnx_int32 counter;
     jnx_thread_mutex *internal_lock;
-  }		jnx_list;
+		ordering *compare;
+	}		jnx_list;
 
   /** @fn jnx_list_create(void)
    *  @brief Returns newly created list
@@ -60,7 +70,18 @@ extern		"C" {
 
   void *jnx_list_remove_front_ts(jnx_list ** A);
 
-  /** @fn jnx_list_size(jnx_list *A)
+  /** @fn jnx_list_remove_from(jnx_list **A, void *item)
+   *  @brief removes jnx_node structure from the list if its _data field matches the item.
+   *  @param A is a pointer to pointer of the list from which to remove item
+	 *  @param item is a data item we are trying to delete
+   *  @return void* to data, NULL on failure or end of list
+   */
+
+	void *jnx_list_remove_from(jnx_list ** A, void *item);
+
+	void *jnx_list_remove_from_ts(jnx_list ** A, void *item);
+
+	/** @fn jnx_list_size(jnx_list *A)
    *  @param A is the target list
    *  @return the number of elements in the list
    */

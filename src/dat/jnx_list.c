@@ -108,6 +108,43 @@ void *jnx_list_remove_front_ts(jnx_list ** A) {
   jnx_thread_unlock(l->internal_lock);
   return ret;
 }
+void *jnx_list_remove_from(jnx_list ** A, void *item) {
+	if ((*A)->compare == NULL) // no compare function so we cannot continue 
+		return NULL;
+
+	jnx_node *current = (*A)->head;
+	while (current != NULL) {
+		if ((*A)->compare(current->_data, item) == 0) {
+			jnx_node *prev = current->prev_node;
+			jnx_node *next = current->next_node;
+			
+			if (prev != NULL) {
+				prev->next_node = current->next_node;
+			}
+			else // we are deleting the list head, so update its pointer
+				(*A)->head = current->next_node;
+
+			if (next != NULL) {
+				next->prev_node = current->prev_node;
+			}
+			else // we are deleting the list tail, so update its pointer
+				(*A)->tail = current->prev_node;
+
+			void *ret = current->_data;
+			free(current);
+			return ret;		
+		}
+		current = current->next_node;
+	}
+	return NULL;
+}
+void *jnx_list_remove_from_ts(jnx_list ** A, void *item) {
+  jnx_list *l = *A;
+  jnx_thread_lock(l->internal_lock);
+  void *ret = jnx_list_remove_from(A, item);
+  jnx_thread_unlock(l->internal_lock);
+  return ret;
+}
 jnx_size jnx_list_count(jnx_list *A) {
   jnx_size count = A->counter;
   return count;
