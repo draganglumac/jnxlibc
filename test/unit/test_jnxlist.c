@@ -182,6 +182,24 @@ static void test_removal_from() {
   JNXCHECK(strcmp(leftover, "245678") == 0);
 }
 
+static void test_removal_returns_correct_data() {
+  JNXLOG(LDEBUG,"- test_removal_returns_correct_data\n");
+
+  char *data = malloc(strlen("data item") + 1);
+  strcpy(data, "data item");
+
+  char *lookup = malloc(strlen("data item") + 1);
+  strcpy(lookup, "data item");
+
+  jnx_list *ls = jnx_list_create();
+  jnx_list_add(ls, (void *) data);
+
+  void *result = jnx_list_remove_from(&ls, (void *) lookup, (ordering) strcmp);
+  JNXCHECK(result == data);
+  JNXCHECK(result != lookup);
+  JNXCHECK(ls->head == NULL);
+}
+
 int test_jnxlist() {
   JNXLOG(LDEBUG,"Running list tests...\n");
   test_list_creation();
@@ -190,6 +208,7 @@ int test_jnxlist() {
   test_list_tail();
   test_removal_front();
   test_removal_from();
+  test_removal_returns_correct_data();
   test_contains();
   JNXLOG(LDEBUG,"List tests completed.\n");
   return 0;
