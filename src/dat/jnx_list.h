@@ -21,9 +21,9 @@ extern		"C" {
 
   /**
    * @brief Type that represent ordering function for _data elements in the nodes
-   * @return -1 if first element comes after second
+   * @return -1 if first element comes before second
    *         0 if elements are semantically equal
-   *         1 if first element comes before second
+   *         1 if first element comes after second
    */
   typedef int (*ordering)(void *, void *);
 
