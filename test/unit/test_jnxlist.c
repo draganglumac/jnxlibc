@@ -129,7 +129,7 @@ static int test_contains_comparator(void *A, void *B) {
 }
 static void test_contains() {
   jnx_list *l = jnx_list_create();
-  
+
   char *text = "Text";
   char *another = "Another";
   char *fake = "Fake";
@@ -141,6 +141,65 @@ static void test_contains() {
   JNXCHECK(jnx_list_contains(l,fake,test_contains_comparator) == 0);
 
 }
+
+int compare_ints(void *first, void *second) {
+  int f = (int) first;
+  int s = (int) second;
+  if (f > s) return 1;
+  else if (f == s) return 0;
+  else return -1;
+}
+
+static void test_removal_from() {
+  JNXLOG(LDEBUG,"- test_removal_from\n");
+  jnx_list *list = jnx_list_create();
+
+  // Test the empty list removal should succeed without blowing up
+  jnx_list_remove_from(&list, 5, compare_ints);
+
+  int i;
+  for (i = 1; i < 10; i++)
+    jnx_list_add(list, (void *)i);
+
+  // Remove from the middle
+  jnx_list_remove_from(&list, 3, compare_ints);
+  // Remove the head
+  jnx_list_remove_from(&list, 1, compare_ints);
+  // Remove the tail
+  jnx_list_remove_from(&list, 9, compare_ints);
+
+  // Check the remaining elements are 245678
+  char digit[2];
+  char leftover[10];
+  leftover[0] = '\0';
+  jnx_node *current = list->head;
+  while (current != NULL) {
+    sprintf(digit, "%d", (int) current->_data);
+    strcat(leftover, digit);
+    current = current->next_node;		
+  }
+
+  JNXCHECK(strcmp(leftover, "245678") == 0);
+}
+
+static void test_removal_returns_correct_data() {
+  JNXLOG(LDEBUG,"- test_removal_returns_correct_data\n");
+
+  char *data = malloc(strlen("data item") + 1);
+  strcpy(data, "data item");
+
+  char *lookup = malloc(strlen("data item") + 1);
+  strcpy(lookup, "data item");
+
+  jnx_list *ls = jnx_list_create();
+  jnx_list_add(ls, (void *) data);
+
+  void *result = jnx_list_remove_from(&ls, (void *) lookup, (ordering) strcmp);
+  JNXCHECK(result == data);
+  JNXCHECK(result != lookup);
+  JNXCHECK(ls->head == NULL);
+}
+
 int test_jnxlist() {
   JNXLOG(LDEBUG,"Running list tests...\n");
   test_list_creation();
@@ -148,6 +207,8 @@ int test_jnxlist() {
   test_list_index();
   test_list_tail();
   test_removal_front();
+  test_removal_from();
+  test_removal_returns_correct_data();
   test_contains();
   JNXLOG(LDEBUG,"List tests completed.\n");
   return 0;
