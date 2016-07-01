@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "jnx_log.h"
+#include "jnx_file.h"
 #include "test_suite.h"
 
 void run_test_case(test_case tc) {
@@ -49,7 +50,19 @@ void print_usage() {
   printf("\n");
 }
 
+FILE *JNXLOG_OUTPUT_FP = NULL;
+
 int main(int argc, char **argv) {
+
+#if SILENT_LOGGING
+    FILE* fp;
+  if ((fp = fopen("logtest.conf", "a+")) == NULL) {
+    perror("file: ");
+    return -1;
+  }
+  JNXLOG_OUTPUT_REDIRECT_START(fp);
+
+#endif
   if (argc == 2 && strcmp(argv[1], "--help") == 0) {
     print_usage();
     return 0;
@@ -85,7 +98,10 @@ int main(int argc, char **argv) {
     for (i = 0; i < test_suite_size; i++)
       run_test_case(test_suite[i]);
   }
-
+#ifdef SILENT_LOGGING
+  JNXLOG_OUTPUT_REDIRECT_END()
+  fclose(fp);
+#endif
   printf("Returning 0 from tests\n");
   return 0;
 }

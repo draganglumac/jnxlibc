@@ -2,7 +2,7 @@
  *     File Name           :     jnxlog.h
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:01]
- *     Last Modified       :     [2016-06-01 18:32]
+ *     Last Modified       :     [2016-07-01 09:13]
  *     Description         :      
  **********************************************************************************/
 #ifndef __JNXLOG_H__
@@ -27,7 +27,10 @@ extern "C" {
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256
 #ifndef RELEASE
-  static void jnx_log(jnx_int l, const jnx_char *file, 
+  
+  extern FILE *JNXLOG_OUTPUT_FP;
+  
+  static void jnx_log(jnx_int l,const jnx_char *file, 
       const jnx_char *function, 
       const jnx_uint32 line,const jnx_char *format,...) {
     jnx_char levelb[128];
@@ -63,13 +66,25 @@ extern "C" {
     sprintf(pbuffer,"%s",ctime(&ptime));
     pbuffer[strlen(pbuffer)-1] = '\0';
     sprintf(buffer,"[%s][%s][%s:%d][t:%s]%s\n",levelb,file,function,line,pbuffer,msgbuffer);
-    printf("%s",buffer);
+
+    if(!JNXLOG_OUTPUT_FP) {
+      fprintf(stdout,"%s",buffer);
+    }else {
+      fwrite(buffer,1,strlen(buffer) + 1, JNXLOG_OUTPUT_FP);
+    }
+  }
+  static void jnx_log_set_output(FILE *fp) {
+    JNXLOG_OUTPUT_FP = fp;
   }
 #define JNXLOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
 #define JNX_LOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
+#define JNXLOG_OUTPUT_REDIRECT_START(FP) jnx_log_set_output(FP);
+#define JNXLOG_OUTPUT_REDIRECT_END() jnx_log_set_output(NULL);
 #else
 #define JNXLOG(LEVEL,FORMATTER,...)
 #define JNX_LOG(LEVEL,FORMATTER,...)
+#define JNXLOG_OUTPUT_REDIRECT_START(FP)
+#define JNXLOG_OUTPUT_REDIRECT_END()
 #endif
 #ifdef __cplusplus
 }
