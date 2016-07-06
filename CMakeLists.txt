@@ -28,6 +28,15 @@ include_directories(src/thr)
 file(MAKE_DIRECTORY jnxc_headers)
 file(COPY ${HEADERS} DESTINATION jnxc_headers)
 
+# uninstall target -------------------------------------------------------------
+CONFIGURE_FILE(
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/cmake_uninstall.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/cmake_modules/cmake_uninstall.cmake"
+  IMMEDIATE @ONLY)
+ADD_CUSTOM_TARGET(uninstall
+  "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_modules/cmake_uninstall.cmake") 
+
+# set version ------------------------------------------------------------------
 execute_process(
   OUTPUT_VARIABLE _version OUTPUT_STRIP_TRAILING_WHITESPACE
   COMMAND git rev-parse HEAD
@@ -36,7 +45,7 @@ message(STATUS "Current library version ${_version}")
 file(WRITE jnxc_headers/VERSION "${_version}")
 file(WRITE jnxc_headers/jnx_version.h "#define VERSION=${_version}")
 
-#Build and install function
+#Build and install function ----------------------------------------------------
 function(build_install)
   option(OPT_DIR "Compile in optional module" OFF)
   if(OPT_DIR)
@@ -103,7 +112,7 @@ function(build_install)
 endfunction()
 
 
-#Compare versions
+#Compare versions --------------------------------------------------------------
 if(EXISTS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION")
   file(STRINGS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION" _found_version)
   message(STATUS "Existing library -- ${_found_version}")
@@ -111,7 +120,7 @@ if(EXISTS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION")
     OUTPUT_VARIABLE _diffresult
     COMMAND git diff ${_version} ${_found_version}
     )
-  
+
   string(LENGTH "${_diffresult}" _len)
 
   if(${_len} GREATER 0) 
