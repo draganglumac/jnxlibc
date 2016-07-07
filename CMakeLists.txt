@@ -113,6 +113,7 @@ endfunction()
 
 
 #Compare versions --------------------------------------------------------------
+function(start)
 if(EXISTS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION")
   file(STRINGS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION" _found_version)
   message(STATUS "Existing library -- ${_found_version}")
@@ -133,4 +134,12 @@ else()
   message(STATUS "No existing library found -- installing now!")
   build_install()
 endif()
+endfunction()
 
+option(IGNORE_VERSION "Ignore checking for existing library versions" OFF)
+
+if(IGNORE_VERSION)
+  build_install()
+else()
+  start()
+endif()
