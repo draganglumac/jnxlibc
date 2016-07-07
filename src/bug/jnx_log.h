@@ -2,7 +2,7 @@
  *     File Name           :     jnxlog.h
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:01]
- *     Last Modified       :     [2016-07-06 12:41]
+ *     Last Modified       :     [2016-07-07 11:23]
  *     Description         :      
  **********************************************************************************/
 #ifndef __JNXLOG_H__
@@ -27,7 +27,7 @@ extern "C" {
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256
 #ifndef RELEASE
-  extern FILE *JNXLOG_OUTPUT_FP;
+  FILE *JNXLOG_OUTPUT_FP;
   static inline void jnx_log(jnx_int l,const jnx_char *file, 
       const jnx_char *function, 
       const jnx_uint32 line,const jnx_char *format,...) {
