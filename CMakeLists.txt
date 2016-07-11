@@ -25,9 +25,9 @@ include_directories(src/sys)
 include_directories(src/thr)
 
 file(MAKE_DIRECTORY jnxc_headers)
-message("Copying headers ${HEADERS}")
 file(COPY ${HEADERS} DESTINATION jnxc_headers)
-
+execute_process(COMMAND ls -la jnxc_headers)
+execute_process(COMMAND pwd jnxc_headers)
 # uninstall target -------------------------------------------------------------
 CONFIGURE_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/cmake_uninstall.cmake.in"
