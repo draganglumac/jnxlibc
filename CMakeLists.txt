@@ -35,15 +35,6 @@ CONFIGURE_FILE(
 ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_modules/cmake_uninstall.cmake") 
 
-# set version ------------------------------------------------------------------
-execute_process(
-  OUTPUT_VARIABLE _version OUTPUT_STRIP_TRAILING_WHITESPACE
-  COMMAND git rev-parse HEAD
-  )
-message(STATUS "Current library version ${_version}")
-file(WRITE jnxc_headers/VERSION "${_version}")
-file(WRITE jnxc_headers/jnx_version.h "#define VERSION=${_version}")
-
 #Build and install function ----------------------------------------------------
 function(build_install)
   option(OPT_DIR "Compile in optional module" OFF)
@@ -112,29 +103,5 @@ endfunction()
 
 
 #Compare versions --------------------------------------------------------------
-function(start)
-  if(EXISTS "${CMAKE_INSTALL_PREFIX}/include/jnxc_headers/VERSION")
-    file(STRINGS "${CMAKE_INSTALL_PREFIX}/include/jnxc_headers/VERSION" _found_version)
-    message(STATUS "Existing library -- ${_found_version}")
-    execute_process(
-      OUTPUT_VARIABLE _diffresult
-      COMMAND git diff ${_version} ${_found_version}
-      )
-
-    string(LENGTH "${_diffresult}" _len)
-
-    if(${_len} GREATER 0) 
-      message(STATUS "Found a differing library -- installing now!")
-      build_install()
-    else()
-      message(STATUS "Identical library found -- ignoring!")
-    endif()
-  else()
-    message(STATUS "No existing library found -- installing now!")
-    build_install()
-  endif()
-endfunction()
-
-option(IGNORE_VERSION "Ignore checking for existing library versions" OFF)
 
 build_install()
