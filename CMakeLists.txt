@@ -24,8 +24,6 @@ include_directories(src/sig)
 include_directories(src/sys)
 include_directories(src/thr)
 
-file(MAKE_DIRECTORY jnxc_headers)
-file(COPY ${HEADERS} DESTINATION jnxc_headers)
 # uninstall target -------------------------------------------------------------
 CONFIGURE_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/cmake_uninstall.cmake.in"
@@ -93,12 +91,15 @@ function(build_install)
   add_library(jnxcs STATIC ${SOURCE}) 
   add_library(jnxc SHARED ${SOURCE})
 
+  file(MAKE_DIRECTORY jnxc_headers)
+  file(COPY ${HEADERS} DESTINATION jnxc_headers)
+
   target_link_libraries(jnxc ${LINKER_LIBRARIES})
   target_link_libraries(jnxcs ${LINKER_LIBRARIES})
   install(TARGETS jnxcs DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
   install(TARGETS jnxc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-  install(DIRECTORY jnxc_headers DESTINATION "${CMAKE_INSTALL_PREFIX}/include")
+  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/jnxc_headers DESTINATION "${CMAKE_INSTALL_PREFIX}/include")
+
 endfunction()
-#Compare versions --------------------------------------------------------------
 
 build_install()
