@@ -105,9 +105,9 @@ function(build_install)
 
   target_link_libraries(jnxc ${LINKER_LIBRARIES})
   target_link_libraries(jnxcs ${LINKER_LIBRARIES})
-  install(TARGETS jnxcs DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-  install(TARGETS jnxc DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-  install(DIRECTORY jnxc_headers DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
+  install(TARGETS jnxcs DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+  install(TARGETS jnxc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+  install(DIRECTORY jnxc_headers DESTINATION "${CMAKE_INSTALL_PREFIX}/include")
 endfunction()
 
 
