@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 2.8)
-set(INSTALL_PREFIX /usr CACHE PATH "installation root directory")
 project(jnxlibc)
 
 set(SOURCE "")
@@ -106,16 +105,16 @@ function(build_install)
 
   target_link_libraries(jnxc ${LINKER_LIBRARIES})
   target_link_libraries(jnxcs ${LINKER_LIBRARIES})
-  install(TARGETS jnxcs DESTINATION ${INSTALL_PREFIX}/lib)
-  install(TARGETS jnxc DESTINATION ${INSTALL_PREFIX}/lib)
-  install(DIRECTORY jnxc_headers DESTINATION ${INSTALL_PREFIX}/include)
+  install(TARGETS jnxcs DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+  install(TARGETS jnxc DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+  install(DIRECTORY jnxc_headers DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
 endfunction()
 
 
 #Compare versions --------------------------------------------------------------
 function(start)
-  if(EXISTS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION")
-    file(STRINGS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION" _found_version)
+  if(EXISTS "${CMAKE_INSTALL_PREFIX}/include/jnxc_headers/VERSION")
+    file(STRINGS "${CMAKE_INSTALL_PREFIX}/include/jnxc_headers/VERSION" _found_version)
     message(STATUS "Existing library -- ${_found_version}")
     execute_process(
       OUTPUT_VARIABLE _diffresult
@@ -138,8 +137,8 @@ endfunction()
 
 option(IGNORE_VERSION "Ignore checking for existing library versions" OFF)
 
-if(IGNORE_VERSION)
-  build_install()
-else()
-  start()
-endif()
+#if(IGNORE_VERSION)
+#  build_install()
+#else()
+start()
+#endif()
