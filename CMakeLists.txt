@@ -26,8 +26,6 @@ include_directories(src/thr)
 
 file(MAKE_DIRECTORY jnxc_headers)
 file(COPY ${HEADERS} DESTINATION jnxc_headers)
-execute_process(COMMAND ls -la jnxc_headers)
-execute_process(COMMAND pwd jnxc_headers)
 # uninstall target -------------------------------------------------------------
 CONFIGURE_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/cmake_uninstall.cmake.in"
@@ -101,8 +99,6 @@ function(build_install)
   install(TARGETS jnxc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
   install(DIRECTORY jnxc_headers DESTINATION "${CMAKE_INSTALL_PREFIX}/include")
 endfunction()
-
-
 #Compare versions --------------------------------------------------------------
 
 build_install()
