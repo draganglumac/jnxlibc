@@ -137,8 +137,4 @@ endfunction()
 
 option(IGNORE_VERSION "Ignore checking for existing library versions" OFF)
 
-#if(IGNORE_VERSION)
-#  build_install()
-#else()
 build_install()
-#endif()
