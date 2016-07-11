@@ -114,26 +114,26 @@ endfunction()
 
 #Compare versions --------------------------------------------------------------
 function(start)
-if(EXISTS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION")
-  file(STRINGS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION" _found_version)
-  message(STATUS "Existing library -- ${_found_version}")
-  execute_process(
-    OUTPUT_VARIABLE _diffresult
-    COMMAND git diff ${_version} ${_found_version}
-    )
+  if(EXISTS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION")
+    file(STRINGS "${INSTALL_PREFIX}/include/jnxc_headers/VERSION" _found_version)
+    message(STATUS "Existing library -- ${_found_version}")
+    execute_process(
+      OUTPUT_VARIABLE _diffresult
+      COMMAND git diff ${_version} ${_found_version}
+      )
 
-  string(LENGTH "${_diffresult}" _len)
+    string(LENGTH "${_diffresult}" _len)
 
-  if(${_len} GREATER 0) 
-    message(STATUS "Found a differing library -- installing now!")
-    build_install()
+    if(${_len} GREATER 0) 
+      message(STATUS "Found a differing library -- installing now!")
+      build_install()
+    else()
+      message(STATUS "Identical library found -- ignoring!")
+    endif()
   else()
-    message(STATUS "Identical library found -- ignoring!")
+    message(STATUS "No existing library found -- installing now!")
+    build_install()
   endif()
-else()
-  message(STATUS "No existing library found -- installing now!")
-  build_install()
-endif()
 endfunction()
 
 option(IGNORE_VERSION "Ignore checking for existing library versions" OFF)
