@@ -67,7 +67,7 @@ extern "C" {
     if(!JNXLOG_OUTPUT_FP) {
       fprintf(stdout,"%s",buffer);
     }else {
-      fwrite(buffer,1,strlen(buffer) + 1, JNXLOG_OUTPUT_FP);
+      fwrite(buffer,1,strlen(buffer), JNXLOG_OUTPUT_FP);
       fflush(JNXLOG_OUTPUT_FP);
     }
   }
