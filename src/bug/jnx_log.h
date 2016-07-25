@@ -2,7 +2,7 @@
  *     File Name           :     jnxlog.h
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:01]
- *     Last Modified       :     [2016-07-13 10:57]
+ *     Last Modified       :     [2016-07-25 15:50]
  *     Description         :      
  **********************************************************************************/
 #ifndef __JNXLOG_H__
@@ -67,7 +67,7 @@ extern "C" {
     if(!JNXLOG_OUTPUT_FP) {
       fprintf(stdout,"%s",buffer);
     }else {
-      fwrite(buffer,1,strlen(buffer) + 1, JNXLOG_OUTPUT_FP);
+      fprintf(JNXLOG_OUTPUT_FP,"%s",buffer);
       fflush(JNXLOG_OUTPUT_FP);
     }
   }
