@@ -28,7 +28,7 @@ extern "C" {
 #define TIMEBUFFER 256
 #ifndef RELEASE
   FILE *JNXLOG_OUTPUT_FP;
-  static inline void jnx_log(jnx_int l,const jnx_char *file, 
+  inline void jnx_log(jnx_int l,const jnx_char *file, 
       const jnx_char *function, 
       const jnx_uint32 line,const jnx_char *format,...) {
     jnx_char levelb[128];
@@ -71,7 +71,7 @@ extern "C" {
       fflush(JNXLOG_OUTPUT_FP);
     }
   }
-  static inline void jnx_log_set_output(FILE *fp) {
+  inline void jnx_log_set_output(FILE *fp) {
     JNXLOG_OUTPUT_FP = fp;
   }
 #define JNXLOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
