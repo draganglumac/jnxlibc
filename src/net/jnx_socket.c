@@ -49,10 +49,14 @@ jnx_socket *create_socket(jnx_unsigned_int type,\
   s->stype = type;
   s->ipaddress = NULL;
   if(iface) {
+    struct ifreq ifr;
+    memset(&ifr, 0, sizeof(ifr));
     s->interface_name = strdup(iface);
+    snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s",iface);
+    JNXCHECK(setsockopt(s->socket,SOL_SOCKET,SO_BINDTODEVICE,&optval,sizeof optval) == 0);
   }else {
     s->interface_name = NULL;
-  }
+ }
   return s;
 }
 void jnx_socket_close(jnx_socket *s) {
