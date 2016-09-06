@@ -42,10 +42,12 @@ extern "C" {
     jnx_unsigned_int addrfamily;
     jnx_size stype;
     jnx_char *ipaddress;
+    jnx_char *interface_name;
   } jnx_socket;
  
 jnx_socket *create_socket(jnx_unsigned_int type,\
-  jnx_unsigned_int addrfamily, jnx_unsigned_int protocol);
+  jnx_unsigned_int addrfamily, jnx_unsigned_int protocol,
+  jnx_char *iface);
 /**
    *@fn jnx_socket_socket_close(jnx_socket *s)
    *@brief close the socket but maintain the socket object

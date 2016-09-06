@@ -26,7 +26,7 @@ extern "C" {
    * @param addrfamily this is the address family to use (e.g. AF_INET)
    * @return jnx_socket
    */
-  jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily);
+  jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily, jnx_char *iface);
   /**
    *@fn jnx_udp_listener *jnx_socket_udp_listener_create(char *port,
    *jnx_unsigned_int family)
@@ -36,7 +36,7 @@ extern "C" {
    *@return pointer to a listener on success
    */
   jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
-      jnx_unsigned_int family);
+      jnx_unsigned_int family, jnx_char *iface);
     /**
    *@fn jnx_udp_listener *jnx_socket_udp_listener_broadcast_create(char *port,
    *jnx_unsigned_int family)
@@ -46,7 +46,7 @@ extern "C" {
    *@return pointer to a listener on success
    */
   jnx_udp_listener* jnx_socket_udp_listener_broadcast_create(jnx_char *port,
-      jnx_unsigned_int family);
+      jnx_unsigned_int family, jnx_char *iface);
     /**
    *@fn jnx_udp_listener *jnx_socket_udp_listener_multicast_create(char *port,
    *jnx_unsigned_int family, int max_connections)
@@ -57,7 +57,7 @@ extern "C" {
    *@return pointer to a listener on success
    */
   jnx_udp_listener* jnx_socket_udp_listener_multicast_create(jnx_char *port,
-      jnx_unsigned_int family, jnx_char *ip, jnx_char *bgroup);
+      jnx_unsigned_int family, jnx_char *ip, jnx_char *bgroup, jnx_char *iface);
   /**
    *@fn void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener)
    *@brief destroys and closes socket for the udp listener

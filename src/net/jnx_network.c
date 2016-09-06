@@ -192,7 +192,7 @@ size_t jnx_http_request(JNX_HTTP_TYPE type,
   jnx_unsigned_int out_family;
   jnx_int32 ret = jnx_network_hostname_to_ip(AF_INET,(jnx_char*)hostname,&out_ip,&out_family);
   JNXCHECK(ret == 0);
-  jnx_socket *sock = jnx_socket_tcp_create(out_family);
+  jnx_socket *sock = jnx_socket_tcp_create(out_family, NULL);
   JNXCHECK(sock);
   jnx_char sendbuffer[2048];
   snprintf(sendbuffer,sizeof(sendbuffer), 

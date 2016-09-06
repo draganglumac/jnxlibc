@@ -50,14 +50,14 @@ jnx_size internal_jnx_socket_udp_enable_broadcast_send_or_listen(jnx_socket *s) 
   }
   return 0;
 }
-jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily) {
-  return create_socket(SOCK_DGRAM,addrfamily,0);
+jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily, jnx_char *iface) {
+  return create_socket(SOCK_DGRAM,addrfamily,0, iface);
 }
 jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
     jnx_unsigned_int family,int broadcast,int multicast,jnx_char *ip, 
-    jnx_char *bgroup) {
+    jnx_char *bgroup, jnx_char *iface) {
   jnx_udp_listener *l = malloc(sizeof(jnx_udp_listener));
-  l->socket = jnx_socket_udp_create(family);
+  l->socket = jnx_socket_udp_create(family, iface);
   l->hint_exit = 0;
   struct addrinfo hints, *res, *p;
   memset(&hints,0,sizeof(struct addrinfo));
@@ -94,17 +94,17 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
   return l;
 }
 jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
-    jnx_unsigned_int family) {
-  return jnx_socket_udp_listener_setup(port,family,0,0,NULL,NULL);
+    jnx_unsigned_int family, jnx_char *iface) {
+  return jnx_socket_udp_listener_setup(port,family,0,0,NULL,NULL, iface);
 }
 jnx_udp_listener* jnx_socket_udp_listener_broadcast_create(jnx_char *port,
-    jnx_unsigned_int family) {
-  return jnx_socket_udp_listener_setup(port,family,1,0,NULL,NULL);
+    jnx_unsigned_int family, jnx_char *iface) {
+  return jnx_socket_udp_listener_setup(port,family,1,0,NULL,NULL,iface);
 }
 
 jnx_udp_listener* jnx_socket_udp_listener_multicast_create(jnx_char *port,
-    jnx_unsigned_int family,jnx_char *ip,jnx_char *bgroup) {
-  return jnx_socket_udp_listener_setup(port,family,0,1,ip,bgroup);
+    jnx_unsigned_int family,jnx_char *ip,jnx_char *bgroup, jnx_char *iface) {
+  return jnx_socket_udp_listener_setup(port,family,0,1,ip,bgroup, iface);
 }
 void jnx_socket_udp_listener_destroy(jnx_udp_listener **listener) {
   jnx_socket_destroy(&(*listener)->socket);

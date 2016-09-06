@@ -36,9 +36,10 @@ extern "C" {
    * @fn jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily)
    * @brief creates a jnx tcp socket
    * @param addrfamily this is the address family to use (e.g. AF_INET)
+   * @param iface is an optional parameter
    * @return jnx_socket
    */
-  jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int family);
+  jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int family, jnx_char *iface);
   /**
    * @fn jnx_tcp_listener *jnx_socket_tcp_listener_create(char *port,
    unsigned int family, int max_connections);
@@ -47,11 +48,12 @@ extern "C" {
    * @param port is the listening port to bind too locally
    * @param family is the address family type (e.g. AF_INET,AF_INET6)
    * @param max_connections indicate the size 
+   * @param optionally specify the interface or use NULL
    * of listener backlog (must not exceed ufds fd count)
    * @return jnx_tcp_listener
    */
   jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
-      jnx_unsigned_int family, jnx_int max_connections);
+      jnx_unsigned_int family, jnx_int max_connections, jnx_char *iface);
 
   /**
    *@fn void jnx_socket_tcp_listener_destroy(jnx_tcp_listener **listener)

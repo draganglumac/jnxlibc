@@ -32,7 +32,8 @@
 #include "jnx_check.h"
 #include "jnx_socket.h"
 jnx_socket *create_socket(jnx_unsigned_int type,\
-    jnx_unsigned_int addrfamily, jnx_unsigned_int protocol) {
+    jnx_unsigned_int addrfamily, jnx_unsigned_int protocol,
+    jnx_char *iface) {
   JNXCHECK(addrfamily);
   JNXCHECK(type);
   JNXCHECK(addrfamily);
@@ -47,6 +48,11 @@ jnx_socket *create_socket(jnx_unsigned_int type,\
   s->socket = sock;
   s->stype = type;
   s->ipaddress = NULL;
+  if(iface) {
+    s->interface_name = strdup(iface);
+  }else {
+    s->interface_name = NULL;
+  }
   return s;
 }
 void jnx_socket_close(jnx_socket *s) {
@@ -60,6 +66,9 @@ void jnx_socket_close(jnx_socket *s) {
 }
 void jnx_socket_destroy(jnx_socket **s) {
   JNXCHECK(*s);
+  if((*s)->interface_name) {
+    free((*s)->interface_name);
+  }
   jnx_socket_close(*s);
   free(*s);
   *s = NULL;

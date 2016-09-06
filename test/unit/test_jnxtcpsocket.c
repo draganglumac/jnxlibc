@@ -14,7 +14,7 @@ static int test_tcp_listener_complete = 0;
 static void *worker(void *args) {
   char *port = (char*)args;
   usleep(10000);
-  jnx_socket *t = jnx_socket_tcp_create(AF_INET);
+  jnx_socket *t = jnx_socket_tcp_create(AF_INET,NULL);
   jnx_socket_tcp_send(t,"127.0.0.1",port,"ping",5);
 
   return NULL;
@@ -22,7 +22,7 @@ static void *worker(void *args) {
 static void *worker_ipv6(void *args) {
   char *port = (char*)args;
   usleep(10000);
-  jnx_socket *t = jnx_socket_tcp_create(AF_INET6);
+  jnx_socket *t = jnx_socket_tcp_create(AF_INET6, NULL);
   jnx_socket_tcp_send(t,"::1",port,"ping",5);
 
   return NULL;
@@ -40,7 +40,7 @@ static void test_tcp_listener_callback(const jnx_uint8 *payload, \
 }
 static void test_tcp_listener() {
   jnx_tcp_listener *listener = 
-    jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET,100);
+    jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET,100,NULL);
 
   fire_threaded_tcp_packet(TCPTESTPORT);
   int x = 0;
@@ -55,7 +55,7 @@ static void test_tcp_listener() {
 }
 static void test_tcp_listener_ipv6() {
   jnx_tcp_listener *listener = 
-    jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET6,100);
+    jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET6,100,NULL);
   fire_threaded_tcp_packet_ipv6(TCPTESTPORT);
   int x = 0;
   while(x < 20) {
@@ -74,7 +74,7 @@ static void test_blocking_listener_callback(const jnx_uint8 *payload, \
 static void *worker_blocking_listener(void *args) {
   jnx_tcp_listener **listener = args;
   *listener = jnx_socket_tcp_listener_create(TCPTESTPORT,
-      AF_INET,100);
+      AF_INET,100,NULL);
   jnx_socket_tcp_listener_auto_tick(*listener,test_blocking_listener_callback,
       NULL);
 
