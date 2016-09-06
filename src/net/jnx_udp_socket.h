@@ -26,7 +26,7 @@ extern "C" {
    * @param addrfamily this is the address family to use (e.g. AF_INET)
    * @return jnx_socket
    */
-  jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily, jnx_char *iface);
+  jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily);
   /**
    *@fn jnx_udp_listener *jnx_socket_udp_listener_create(char *port,
    *jnx_unsigned_int family)

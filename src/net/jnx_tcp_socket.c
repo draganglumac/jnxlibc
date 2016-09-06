@@ -22,8 +22,8 @@
 #include "jnx_socket.h"
 #include "jnx_tcp_socket.h"
 
-jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily, jnx_char *iface) {
-  return create_socket(SOCK_STREAM,addrfamily,0, iface);
+jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily) {
+  return create_socket(SOCK_STREAM,addrfamily,0);
 }
 jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
     jnx_unsigned_int family, jnx_int max_connections,
@@ -33,7 +33,7 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
   struct addrinfo *result, *rp;
   jnx_int on = 1,s;
   jnx_tcp_listener *l = malloc(sizeof(jnx_tcp_listener));
-  l->socket = jnx_socket_tcp_create(family, iface);
+  l->socket = jnx_socket_tcp_create(family);
   l->hint_exit = 0;
   memset (&hints, 0, sizeof (struct addrinfo));
   hints.ai_family = family;
@@ -45,9 +45,18 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
     fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
     JNXFAIL("getaddrinfo failure");  
   }
+/*
   if(!iface) {
     s = ioctl(l->socket->socket,FIONBIO,(char*)&on);
+  }else {
+    if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,strlen(iface))
+        != 0) {
+      JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
+      perror("setsockopt:");
+      exit(1);
+    }
   }
+  */
   for (rp = result; rp != NULL; rp = rp->ai_next)
   {
     JNXCHECK(s == 0);

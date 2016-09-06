@@ -20,9 +20,11 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <net/if.h>
 #include <sys/types.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <ifaddrs.h>
 #include <netinet/in.h>
@@ -32,8 +34,7 @@
 #include "jnx_check.h"
 #include "jnx_socket.h"
 jnx_socket *create_socket(jnx_unsigned_int type,\
-    jnx_unsigned_int addrfamily, jnx_unsigned_int protocol,
-    jnx_char *iface) {
+    jnx_unsigned_int addrfamily, jnx_unsigned_int protocol) {
   JNXCHECK(addrfamily);
   JNXCHECK(type);
   JNXCHECK(addrfamily);
@@ -48,16 +49,6 @@ jnx_socket *create_socket(jnx_unsigned_int type,\
   s->socket = sock;
   s->stype = type;
   s->ipaddress = NULL;
-  if(iface) {
-    s->interface_name = strdup(iface);
-    if(setsockopt(s->socket,SOL_SOCKET,SO_BINDTODEVICE,s->interface_name,
-          strlen(s->interface_name)) != 0) {
-      JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
-      exit(1);
-    }
-  }else {
-    s->interface_name = NULL;
-  }
   return s;
 }
 void jnx_socket_close(jnx_socket *s) {
@@ -71,9 +62,6 @@ void jnx_socket_close(jnx_socket *s) {
 }
 void jnx_socket_destroy(jnx_socket **s) {
   JNXCHECK(*s);
-  if((*s)->interface_name) {
-    free((*s)->interface_name);
-  }
   jnx_socket_close(*s);
   free(*s);
   *s = NULL;

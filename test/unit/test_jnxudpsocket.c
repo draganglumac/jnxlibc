@@ -27,26 +27,26 @@ static struct sockaddr *filter_local_ip_address(struct ifaddrs *addr) {
 }
 static void *worker(void *args) {
   char *port = (char*)args;
-  jnx_socket *t = jnx_socket_udp_create(AF_INET,NULL);
+  jnx_socket *t = jnx_socket_udp_create(AF_INET);
   jnx_socket_udp_send(t,"127.0.0.1",port,(jnx_uint8*)"ping",5);
   return NULL;
 }
 static void *worker_ipv6(void *args) {
   char *port = (char*)args;
-  jnx_socket *t = jnx_socket_udp_create(AF_INET6,NULL);
+  jnx_socket *t = jnx_socket_udp_create(AF_INET6);
   jnx_socket_udp_send(t,"::1",port,(jnx_uint8*)"ping",5);
   return NULL;
 }
 static void *worker_broadcast(void *args) {
   char *port = (char*)args;
-  jnx_socket *t = jnx_socket_udp_create(AF_INET,NULL);
+  jnx_socket *t = jnx_socket_udp_create(AF_INET);
   JNXLOG(LDEBUG,"worker_broadcast firing...");
   jnx_socket_udp_broadcast_send(t,"255.255.255.255",port,(jnx_uint8*)"ping",5);
   return NULL;
 }
 static void *worker_multicast(void *args) {
   char *port = (char*)args;
-  jnx_socket *t = jnx_socket_udp_create(AF_INET,NULL);
+  jnx_socket *t = jnx_socket_udp_create(AF_INET);
   jnx_socket_udp_multicast_send(t,BGROUP,port,(jnx_uint8*)"ping",5);
   return NULL;
 }
