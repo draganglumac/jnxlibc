@@ -50,9 +50,11 @@ jnx_socket *create_socket(jnx_unsigned_int type,\
   s->ipaddress = NULL;
   if(iface) {
     s->interface_name = strdup(iface);
-    JNXCHECK(setsockopt(s->socket,SOL_SOCKET,SO_BINDTODEVICE,s->interface_name,
-          strlen(s->interface_name)) == 0);
-
+    if(setsockopt(s->socket,SOL_SOCKET,SO_BINDTODEVICE,s->interface_name,
+          strlen(s->interface_name)) != 0) {
+      JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
+      exit(1);
+    }
   }else {
     s->interface_name = NULL;
   }

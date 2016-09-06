@@ -45,11 +45,9 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
     fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
     JNXFAIL("getaddrinfo failure");  
   }
-  
   if(!iface) {
     s = ioctl(l->socket->socket,FIONBIO,(char*)&on);
   }
-  
   for (rp = result; rp != NULL; rp = rp->ai_next)
   {
     JNXCHECK(s == 0);
@@ -146,7 +144,7 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
         jnx_int j;
         for(j=i;j<listener->nfds;++j) {
           if(j+1 < listener->nfds) {
-          listener->ufds[j] = listener->ufds[j+1];
+            listener->ufds[j] = listener->ufds[j+1];
           } 
         }
         listener->nfds--;
@@ -184,7 +182,7 @@ jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket) {
   return strdup(ipstr);
 }
 jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
-  jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
+    jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -228,8 +226,8 @@ jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
   return tbytes;
 }
 jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
-  jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
-  jnx_size msg_len,jnx_uint8 **out_receipt) {
+    jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
+    jnx_size msg_len,jnx_uint8 **out_receipt) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
