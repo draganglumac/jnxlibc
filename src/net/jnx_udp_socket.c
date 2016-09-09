@@ -12,14 +12,22 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#ifndef IFNAMSIZ
 #include <net/if.h>
+#define IFNAMSIZ IF_NAMESIZE
+#endif
+#include <sys/param.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <sys/socket.h>
 #include <ifaddrs.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include "jnx_log.h"
+#include "jnx_network.h"
 #include "jnx_check.h"
 #include "jnx_udp_socket.h"
 jnx_size internal_jnx_socket_udp_enable_multicast_listen(jnx_socket *s,
@@ -55,12 +63,39 @@ jnx_socket *jnx_socket_udp_create(jnx_unsigned_int addrfamily){
   return create_socket(SOCK_DGRAM,addrfamily,0);
 }
 jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
-    jnx_unsigned_int family,int broadcast,int multicast,jnx_char *ip, 
+    jnx_unsigned_int family,int broadcast,int multicast,jnx_char *ip,
     jnx_char *bgroup, jnx_char *iface) {
   jnx_udp_listener *l = malloc(sizeof(jnx_udp_listener));
   JNXLOG(LDEBUG,"Creating listener...");
   l->socket = jnx_socket_udp_create(family);
   l->hint_exit = 0;
+
+  /* Experimental */
+  if(iface) {
+    struct sockaddr_in localaddr;
+    jnx_char *buffer;
+    jnx_network_interface_ip(&buffer, iface, family);
+    JNXLOG(LDEBUG,"Using address %s on port %d",buffer,atoi(port));
+    localaddr.sin_family = family;
+    inet_pton(family, buffer, &(localaddr.sin_addr));
+    localaddr.sin_port = atoi(port);
+
+    if(bind(l->socket->socket, (struct sockaddr *)&localaddr, sizeof(localaddr))
+        == -1) {
+      perror("server: bind");
+      JNXFAIL("bind failure");
+    }
+    if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,strnlen(iface,IFNAMSIZ))
+        != 0) {
+      JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
+      perror("setsockopt:");
+      exit(1);
+    }
+    free(buffer);
+    return l;
+  }
+  /* Experimental */
+  if(iface) {
   struct addrinfo hints, *res, *p;
   memset(&hints,0,sizeof(struct addrinfo));
   hints.ai_family = family;
@@ -69,17 +104,7 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
   JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
   jnx_int optval =0;
   p = res;
-  JNXLOG(LDEBUG,"Got address info...");
-  /*
-     if(iface) {
-     if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,strlen(iface))
-     != 0) {
-     JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
-     perror("setsockopt:");
-     exit(1);
-     }
-     }
-     */
+
   while(p != NULL) {
     if (setsockopt(l->socket->socket, SOL_SOCKET, SO_REUSEADDR,
           &optval,sizeof(jnx_int32)) == -1) {
@@ -96,7 +121,7 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
   }
   if(broadcast) {
     JNXLOG(LDEBUG,"Creating broadcast listener");
-    internal_jnx_socket_udp_enable_broadcast_send_or_listen(l->socket); 
+    internal_jnx_socket_udp_enable_broadcast_send_or_listen(l->socket);
   }
   if(multicast) {
     JNXCHECK(bgroup);
@@ -141,8 +166,7 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
   struct timeval tv;
   tv.tv_sec = 0;
   tv.tv_usec = 0;
-  int rv = select(listener->socket->socket + 1, &readfds, NULL, NULL, &tv); 
-
+  int rv = select(listener->socket->socket + 1, &readfds, NULL, NULL, &tv);
   if(rv == 1) {
 
     jnx_size bytesread = recvfrom(listener->socket->socket,buffer,
@@ -151,7 +175,7 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
     if(bytesread > 0) {
       jnx_char *incoming_address = jnx_socket_udp_resolve_ipaddress(their_addr);
       if(incoming_address){
-        JNXLOG(0,"Incoming data from %s",incoming_address); 
+        JNXLOG(0,"Incoming data from %s",incoming_address);
         free(incoming_address);
       }
       jnx_uint8 *outbuffer = malloc((bytesread + 1) * sizeof(jnx_uint8));
@@ -162,7 +186,7 @@ void jnx_socket_udp_listener_tick(jnx_udp_listener* listener,
     }
   }
 }
-void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener, 
+void jnx_socket_udp_listener_auto_tick(jnx_udp_listener *listener,
     jnx_udp_listener_callback callback, void *args) {
   while(!listener->hint_exit){
     jnx_socket_udp_listener_tick(listener,callback,

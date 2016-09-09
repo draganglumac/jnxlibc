@@ -45,10 +45,7 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
     fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
     JNXFAIL("getaddrinfo failure");  
   }
-/*
-  if(!iface) {
-    s = ioctl(l->socket->socket,FIONBIO,(char*)&on);
-  }else {
+  if(iface) {
     if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,strlen(iface))
         != 0) {
       JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
@@ -56,7 +53,6 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
       exit(1);
     }
   }
-  */
   for (rp = result; rp != NULL; rp = rp->ai_next)
   {
     JNXCHECK(s == 0);
