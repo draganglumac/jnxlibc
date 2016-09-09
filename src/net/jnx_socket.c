@@ -20,9 +20,11 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <net/if.h>
 #include <sys/types.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <ifaddrs.h>
 #include <netinet/in.h>

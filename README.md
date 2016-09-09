@@ -29,7 +29,7 @@ git clone https://github.com/AlexsJones/jnxlibc.git && cd jnxlibc && cmake . && 
 #Key features
 - Lightweight data structures with thread-safe API (`hash, list, vector, btree, stack, queue`) 
 - `Socket` implmentation supporting multiple transport and `IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP & UDP`
-- `Network` utilities (get IP from hostname, resolve hostname from IP, interface to IP)
+- `Network` utilities (get IP from hostname, resolve hostname from IP, interface to IP), multi-interface listeners, multiplexing server 
 - `Threading` interface above POSIX (Ambition to extend x-platform)
 - `Signals` & `Slots`
 - `Interprocess communication`

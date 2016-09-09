@@ -28,6 +28,7 @@ static void *worker_ipv6(void *args) {
   return NULL;
 }
 static void fire_threaded_tcp_packet(char *port) {
+  JNXLOG(LDEBUG,"Firing threaded packet");
   jnx_thread_create_disposable(worker,port);
 }
 static void fire_threaded_tcp_packet_ipv6(char *port) {
@@ -40,14 +41,16 @@ static void test_tcp_listener_callback(const jnx_uint8 *payload, \
 }
 static void test_tcp_listener() {
   jnx_tcp_listener *listener = 
-    jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET,100);
+    jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET,100,NULL);
 
   fire_threaded_tcp_packet(TCPTESTPORT);
   int x = 0;
   while(x < 20) {
+    JNXLOG(LDEBUG,"Ticking...");
     jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback,NULL);
     if(test_tcp_listener_complete)break;
     ++x;
+    sleep(.5);
   }
   jnx_socket_tcp_listener_destroy(&listener);
   JNXCHECK(test_tcp_listener_complete);
@@ -55,13 +58,15 @@ static void test_tcp_listener() {
 }
 static void test_tcp_listener_ipv6() {
   jnx_tcp_listener *listener = 
-    jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET6,100);
+    jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET6,100,NULL);
   fire_threaded_tcp_packet_ipv6(TCPTESTPORT);
   int x = 0;
   while(x < 20) {
     jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback,NULL);
+    JNXLOG(LDEBUG,"Ticking...");
     if(test_tcp_listener_complete)break;
     ++x;
+    sleep(.5);
   }
   jnx_socket_tcp_listener_destroy(&listener);
   JNXCHECK(test_tcp_listener_complete);
@@ -74,7 +79,7 @@ static void test_blocking_listener_callback(const jnx_uint8 *payload, \
 static void *worker_blocking_listener(void *args) {
   jnx_tcp_listener **listener = args;
   *listener = jnx_socket_tcp_listener_create(TCPTESTPORT,
-      AF_INET,100);
+      AF_INET,100,NULL);
   jnx_socket_tcp_listener_auto_tick(*listener,test_blocking_listener_callback,
       NULL);
 

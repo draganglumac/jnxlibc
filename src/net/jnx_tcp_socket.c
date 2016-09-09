@@ -17,6 +17,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
+#include "jnx_network.h"
 #include "jnx_log.h"
 #include "jnx_check.h"
 #include "jnx_socket.h"
@@ -26,7 +27,8 @@ jnx_socket *jnx_socket_tcp_create(jnx_unsigned_int addrfamily) {
   return create_socket(SOCK_STREAM,addrfamily,0);
 }
 jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
-    jnx_unsigned_int family, jnx_int max_connections) {
+    jnx_unsigned_int family, jnx_int max_connections,
+    jnx_char *iface) {
   JNXCHECK(max_connections <= 200);
   struct addrinfo hints;
   struct addrinfo *result, *rp;
@@ -38,7 +40,18 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
   hints.ai_family = family;
   hints.ai_socktype = l->socket->stype;
   hints.ai_flags = AI_PASSIVE;
-  s = getaddrinfo (NULL, port, &hints, &result);
+
+  if(iface) {
+    jnx_char *buffer;
+    jnx_network_interface_ip(&buffer, iface, family);
+    JNXLOG(LDEBUG,"Using interface %s with ip %s",iface,buffer);
+    s = getaddrinfo (buffer, port, &hints, &result);
+    free(buffer);
+  }else {
+    hints.ai_flags = AI_PASSIVE;
+    s = getaddrinfo (NULL, port, &hints, &result);
+  }
+
   if (s != 0)
   {
     fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
@@ -141,7 +154,7 @@ void jnx_socket_tcp_listener_tick(jnx_tcp_listener* listener,
         jnx_int j;
         for(j=i;j<listener->nfds;++j) {
           if(j+1 < listener->nfds) {
-          listener->ufds[j] = listener->ufds[j+1];
+            listener->ufds[j] = listener->ufds[j+1];
           } 
         }
         listener->nfds--;
@@ -179,7 +192,7 @@ jnx_char *jnx_socket_tcp_resolve_ipaddress(jnx_int32 socket) {
   return strdup(ipstr);
 }
 jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
-  jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
+    jnx_char* port, jnx_uint8 *msg, jnx_size msg_len) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
@@ -223,8 +236,8 @@ jnx_size jnx_socket_tcp_send(jnx_socket *s, jnx_char *host,\
   return tbytes;
 }
 jnx_size jnx_socket_tcp_send_with_receipt(jnx_socket *s,\
-  jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
-  jnx_size msg_len,jnx_uint8 **out_receipt) {
+    jnx_char *host, jnx_char* port, jnx_uint8 *msg,\
+    jnx_size msg_len,jnx_uint8 **out_receipt) {
   JNXCHECK(s);
   JNXCHECK(host);
   JNXCHECK(port);
