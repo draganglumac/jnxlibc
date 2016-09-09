@@ -56,6 +56,7 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
     fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
     JNXFAIL("getaddrinfo failure");  
   }
+  s = ioctl(l->socket->socket,FIONBIO,(char*)&on);
   for (rp = result; rp != NULL; rp = rp->ai_next)
   {
     JNXCHECK(s == 0);
