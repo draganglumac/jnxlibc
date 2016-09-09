@@ -243,11 +243,9 @@ jnx_char *jnx_socket_udp_resolve_ipaddress(struct sockaddr_storage sa) {
     case AF_INET:
       inet_ntop(AF_INET, &(((struct sockaddr_in*)&sa)->sin_addr),str,INET_ADDRSTRLEN);
       return strndup(str,strlen(str));
-      break;
     case AF_INET6:
       inet_ntop(AF_INET6, &(((struct sockaddr_in6*)&sa)->sin6_addr),str,INET6_ADDRSTRLEN);
       return strndup(str,strlen(str));
-      break;
   }
   return NULL;
 }
