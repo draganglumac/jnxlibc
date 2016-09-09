@@ -74,37 +74,24 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
   memset(&hints,0,sizeof(struct addrinfo));
   hints.ai_family = family;
   hints.ai_socktype = l->socket->stype;
-  hints.ai_flags = AI_PASSIVE;
-  jnx_int optval =0;
- 
+  jnx_int optval =1;
+    
   if(iface) {
-    if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,
-          strnlen(iface,IFNAMSIZ))
-        != 0) {
-      JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
-      perror("setsockopt:");
-      exit(1);
-    }
-    if(setsockopt(l->socket->socket,SOL_SOCKET,SO_REUSEPORT,&optval,sizeof(optval))) {
-      perror("setsockopt:");
-      exit(1);
-    }
-    jnx_char *buffer;
+  jnx_char *buffer;
     jnx_network_interface_ip(&buffer, iface, family);
-    JNXLOG(LDEBUG,"Using address %s on port %d",buffer,atoi(port));
     JNXCHECK(getaddrinfo(buffer,port,&hints,&res) == 0);
   }else {
+    hints.ai_flags = AI_PASSIVE;
     JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
   }
   p = res;
-
+   
   while(p != NULL) {
     if (setsockopt(l->socket->socket, SOL_SOCKET, SO_REUSEADDR,
           &optval,sizeof(jnx_int32)) == -1) {
       perror("setsockopt");
       exit(1);
     }
-    JNXLOG(LDEBUG,"Binding...");
     if (bind(l->socket->socket, p->ai_addr, p->ai_addrlen) == -1) {
       perror("server: bind");
       JNXFAIL("bind failure");
