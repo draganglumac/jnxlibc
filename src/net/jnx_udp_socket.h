@@ -33,6 +33,7 @@ extern "C" {
    *@brief Creates a listener that can be 
    *ticked and retrieve incoming network traffic
    *@param family is the address family to use (AF_INET/AF_INET6)
+   *@param iface optionally specify the interface to bind to or use NULL
    *@return pointer to a listener on success
    */
   jnx_udp_listener* jnx_socket_udp_listener_create(jnx_char *port,
