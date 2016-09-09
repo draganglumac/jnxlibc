@@ -95,7 +95,6 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
     return l;
   }
   /* Experimental */
-  if(iface) {
   struct addrinfo hints, *res, *p;
   memset(&hints,0,sizeof(struct addrinfo));
   hints.ai_family = family;
