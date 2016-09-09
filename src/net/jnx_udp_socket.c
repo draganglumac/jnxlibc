@@ -75,17 +75,18 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
   hints.ai_family = family;
   hints.ai_socktype = l->socket->stype;
   jnx_int optval =1;
-    
+
   if(iface) {
-  jnx_char *buffer;
+    jnx_char *buffer;
     jnx_network_interface_ip(&buffer, iface, family);
     JNXCHECK(getaddrinfo(buffer,port,&hints,&res) == 0);
+    free(buffer);
   }else {
     hints.ai_flags = AI_PASSIVE;
     JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
   }
   p = res;
-   
+
   while(p != NULL) {
     if (setsockopt(l->socket->socket, SOL_SOCKET, SO_REUSEADDR,
           &optval,sizeof(jnx_int32)) == -1) {

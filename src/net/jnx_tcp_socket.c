@@ -17,6 +17,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
+#include "jnx_network.h"
 #include "jnx_log.h"
 #include "jnx_check.h"
 #include "jnx_socket.h"
@@ -39,19 +40,21 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
   hints.ai_family = family;
   hints.ai_socktype = l->socket->stype;
   hints.ai_flags = AI_PASSIVE;
-  s = getaddrinfo (NULL, port, &hints, &result);
+
+  if(iface) {
+    jnx_char *buffer;
+    jnx_network_interface_ip(&buffer, iface, family);
+    s = getaddrinfo (buffer, port, &hints, &result);
+    free(buffer);
+  }else {
+    hints.ai_flags = AI_PASSIVE;
+    s = getaddrinfo (NULL, port, &hints, &result);
+  }
+
   if (s != 0)
   {
     fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
     JNXFAIL("getaddrinfo failure");  
-  }
-  if(iface) {
-    if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,strlen(iface))
-        != 0) {
-      JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
-      perror("setsockopt:");
-      exit(1);
-    }
   }
   for (rp = result; rp != NULL; rp = rp->ai_next)
   {
