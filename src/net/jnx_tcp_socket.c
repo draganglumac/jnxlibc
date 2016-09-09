@@ -44,6 +44,7 @@ jnx_tcp_listener* jnx_socket_tcp_listener_create(jnx_char *port,
   if(iface) {
     jnx_char *buffer;
     jnx_network_interface_ip(&buffer, iface, family);
+    JNXLOG(LDEBUG,"Using interface %s with ip %s",iface,buffer);
     s = getaddrinfo (buffer, port, &hints, &result);
     free(buffer);
   }else {

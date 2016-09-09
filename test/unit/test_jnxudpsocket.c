@@ -73,9 +73,10 @@ static void test_udp_listener() {
 
   fire_threaded_udp_packet(UDPTESTPORT);
   int x = 0;
-  while(x < 5) {
+  while(x < 20) {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
     if(test_udp_listener_complete)break;
+    sleep(.5);
     ++x;
   }
   jnx_socket_udp_listener_destroy(&listener);
@@ -87,9 +88,10 @@ static void test_udp_listener_ipv6() {
     jnx_socket_udp_listener_create(UDPTESTPORT,AF_INET6,NULL);
   fire_threaded_udp_packet_ipv6(UDPTESTPORT);
   int x = 0;
-  while(x < 5) {
+  while(x < 20) {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
     if(test_udp_listener_complete)break;
+    sleep(.5);
     ++x;
   }
   jnx_socket_udp_listener_destroy(&listener);
@@ -104,10 +106,11 @@ static void test_udp_broadcast(){
   JNXLOG(LDEBUG,"Firing broadcast packet");
   fire_threaded_udp_packet_broadcast(UDPTESTPORT);
   int x = 0;
-  while(x < 5) {
+  while(x < 20) {
     JNXLOG(LDEBUG,"Ticking jnx_socket_udp_listener_tick");
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
     if(test_udp_listener_complete)break;
+    sleep(.5);
     ++x;
   }
   jnx_socket_udp_listener_destroy(&listener);
