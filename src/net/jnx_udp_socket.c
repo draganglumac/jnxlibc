@@ -75,12 +75,17 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
   hints.ai_family = family;
   hints.ai_socktype = l->socket->stype;
   hints.ai_flags = AI_PASSIVE;
+  jnx_int optval =0;
  
   if(iface) {
     if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,
           strnlen(iface,IFNAMSIZ))
         != 0) {
       JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
+      perror("setsockopt:");
+      exit(1);
+    }
+    if(setsockopt(l->socket->socket,SOL_SOCKET,SO_REUSEPORT,&optval,sizeof(optval))) {
       perror("setsockopt:");
       exit(1);
     }
@@ -91,7 +96,6 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
   }else {
     JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
   }
-  jnx_int optval =0;
   p = res;
 
   while(p != NULL) {
