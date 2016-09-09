@@ -70,37 +70,27 @@ jnx_udp_listener* jnx_socket_udp_listener_setup(jnx_char *port,
   l->socket = jnx_socket_udp_create(family);
   l->hint_exit = 0;
 
-  /* Experimental */
-  if(iface) {
-    struct sockaddr_in localaddr;
-    jnx_char *buffer;
-    jnx_network_interface_ip(&buffer, iface, family);
-    JNXLOG(LDEBUG,"Using address %s on port %d",buffer,atoi(port));
-    localaddr.sin_family = family;
-    inet_pton(family, buffer, &(localaddr.sin_addr));
-    localaddr.sin_port = atoi(port);
-
-    if(bind(l->socket->socket, (struct sockaddr *)&localaddr, sizeof(localaddr))
-        == -1) {
-      perror("server: bind");
-      JNXFAIL("bind failure");
-    }
-    if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,strnlen(iface,IFNAMSIZ))
-        != 0) {
-      JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
-      perror("setsockopt:");
-      exit(1);
-    }
-    free(buffer);
-    return l;
-  }
-  /* Experimental */
   struct addrinfo hints, *res, *p;
   memset(&hints,0,sizeof(struct addrinfo));
   hints.ai_family = family;
   hints.ai_socktype = l->socket->stype;
   hints.ai_flags = AI_PASSIVE;
-  JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
+ 
+  if(iface) {
+    if(setsockopt(l->socket->socket,SOL_SOCKET,SO_BINDTODEVICE,iface,
+          strnlen(iface,IFNAMSIZ))
+        != 0) {
+      JNXLOG(LDEBUG,"SO_BINDTODEVICE: This option must be run as super user");
+      perror("setsockopt:");
+      exit(1);
+    }
+    jnx_char *buffer;
+    jnx_network_interface_ip(&buffer, iface, family);
+    JNXLOG(LDEBUG,"Using address %s on port %d",buffer,atoi(port));
+    JNXCHECK(getaddrinfo(buffer,port,&hints,&res) == 0);
+  }else {
+    JNXCHECK(getaddrinfo(NULL,port,&hints,&res) == 0);
+  }
   jnx_int optval =0;
   p = res;
 
