@@ -47,7 +47,7 @@ extern "C" {
    * @param port is the listening port to bind too locally
    * @param family is the address family type (e.g. AF_INET,AF_INET6)
    * @param max_connections indicate the size 
-   * @param optionally specify the interface or use NULL
+   * @param iface optionally specify the interface to bind to or use NULL
    * of listener backlog (must not exceed ufds fd count)
    * @return jnx_tcp_listener
    */
